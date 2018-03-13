@@ -149,6 +149,8 @@ class bot(ch.RoomManager):
       room.message("http://i.imgur.com/qhV8XXH.gif")
     if cmd.lower() == "sewerchat" and prfx:
       room.message("http://i.imgur.com/qhV8XXH.gif")
+    if cmd.lower() == "kash" and prfx:
+      room.message("https://i.imgur.com/gwnUl4i.png")
     if cmd.lower() == "quiplash" and prfx:
       room.message("https://i.imgur.com/PE1ubLy.png")
     if cmd.lower() == "legionofgloom" and prfx:
