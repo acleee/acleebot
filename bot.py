@@ -295,7 +295,7 @@ class bot(ch.RoomManager):
       percentage = z["percentage"]*100
       room.message("LTC: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
-    if cmd.lower() == "ripple" and prfx:
+    if cmd.lower() == "ripple" and prfx or cmd.lower() == "xrp" and prfx:
       r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xrpusd/summary')
       x = r.json()
       y = x["result"]["price"]
