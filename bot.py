@@ -48,6 +48,8 @@ class bot(ch.RoomManager):
 ##      room.message(args)
     if cmd.lower() == "pls" and prfx:
       room.message("pls")
+    if cmd.lower() == "ping" and prfx:
+      room.message("pong!")
     if cmd.lower() == "de" and prfx:
       room.message("FENSE!")
     if cmd.lower() == "aclee" and prfx:
