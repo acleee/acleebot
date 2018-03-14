@@ -102,7 +102,9 @@ class bot(ch.RoomManager):
       room.message("Fuck the Celtics!")
     if cmd.lower() == "doop" and prfx:
       room.message("DOOP DOOP DOOP DADADOOP DOOP DOOP")
-    if cmd.lower() == "jj" and prfx:
+    if cmd.lower() == "jj" and prfx and room.name == "acleenba":
+      room.message("https://i.imgur.com/Fd74CjX.jpg")
+    if cmd.lower() == "jj" and prfx and room.name == "csnphilly":
       room.message("SHOT! High and wide.")
     if cmd.lower() == "lgf" and prfx:
       room.message("let's go flyera")
