@@ -9,6 +9,7 @@ dank af bot tbh fam
 - de
 - aclee
 - dumps
+- lag
 - wawa
 - nice
 - bro

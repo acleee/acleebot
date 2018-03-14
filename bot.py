@@ -58,6 +58,8 @@ class bot(ch.RoomManager):
       room.message("http://i.imgur.com/6I9z75O.png")
     if cmd.lower() == "wawa" and prfx:
       room.message("http://i.imgur.com/VcC5gLV.png")
+    if cmd.lower() == "lag" and prfx:
+      room.message("http://i.imgur.com/wHU7f4P.jpg")
     if cmd.lower() == "nice" and prfx:
       data = ["https://i.imgur.com/QMRxuuP.png", "https://i.imgur.com/XOut2ix.png"]
       random_pic = data[randint(0, len(data) -1)]
