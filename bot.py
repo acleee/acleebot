@@ -230,6 +230,11 @@ class bot(ch.RoomManager):
         resp = "Mark Streit"
       room.message("Flyers goal scored by #"+args+" "+resp+"!")
 
+    if cmd.lower() == "gus" and prfx:
+      data = ["https://i.imgur.com/MD9v228.jpg", "https://i.imgur.com/NxIxHks.jpg", "https://i.imgur.com/B8AF2kW.jpg", "https://i.imgur.com/txywtE0.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+	  
     if cmd.lower() == "legionofdoom" and prfx:
       data = ["https://i.imgur.com/qCxFxvg.jpg", "https://i.imgur.com/cBOOBbs.jpg", "https://i.imgur.com/ArNAXMy.jpg", "https://i.imgur.com/ghAT65v.png", "https://i.imgur.com/o4bt9XY.jpg", "https://i.imgur.com/OW1wczK.jpg", "https://i.imgur.com/bPouF9z.jpg", "https://i.imgur.com/JUIsmkO.png", "https://i.imgur.com/vzfl9oZ.jpg", "https://i.imgur.com/ThbFFs2.jpg"]
       random_pic = data[randint(0, len(data) -1)]

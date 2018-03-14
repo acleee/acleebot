@@ -56,6 +56,7 @@ dank af bot tbh fam
 - sewerchat
 - kash
 - quiplash
+- gus
 - legionofgloom
 - smirk
 - peco
