@@ -54,6 +54,7 @@ dank af bot tbh fam
 - jesus
 - bloodhorse
 - sewerchat
+- kash
 - quiplash
 - legionofgloom
 - smirk
