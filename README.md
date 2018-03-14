@@ -56,6 +56,7 @@ dank af bot tbh fam
 - bloodhorse
 - sewerchat
 - kash
+- trevis
 - quiplash
 - gus
 - legionofgloom
