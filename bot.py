@@ -46,6 +46,8 @@ class bot(ch.RoomManager):
       
 ##    if cmd.lower() == "say" and prfx:
 ##      room.message(args)
+    if user.name.find("!anon") != -1:
+      room.message("anon pls make account")
     if cmd.lower() == "pls" and prfx:
       room.message("pls")
     if cmd.lower() == "ping" and prfx:
