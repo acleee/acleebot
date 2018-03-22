@@ -54,6 +54,8 @@ class bot(ch.RoomManager):
       room.message("FENSE!")
     if cmd.lower() == "aclee" and prfx:
       room.message("based aclee")
+    if cmd.lower() == "cheesesteak" and prfx:
+      room.message("https://i.imgur.com/yDot0lg.gif")
     if cmd.lower() == "dumps" and prfx:
       room.message("http://i.imgur.com/6I9z75O.png")
     if cmd.lower() == "wawa" and prfx:
