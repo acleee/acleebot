@@ -52,6 +52,8 @@ class bot(ch.RoomManager):
       room.message("pls")
     if cmd.lower() == "ping" and prfx:
       room.message("pong!")
+    if cmd.lower() == "donate" and prfx:
+      room.message("If you enjoy the stream, help keep the site going! :) http://aclee.memesyndicate.com/gofundme")
     if cmd.lower() == "de" and prfx:
       room.message("FENSE!")
     if cmd.lower() == "aclee" and prfx:

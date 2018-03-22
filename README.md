@@ -6,6 +6,8 @@ dank af bot tbh fam
 
 ## Commands
 - pls
+- ping
+- donate
 - de
 - aclee
 - cheesesteak
