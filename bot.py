@@ -17,6 +17,7 @@ import threading
 import random
 import nba_py
 from xml.etree import cElementTree as ET
+import pandas
 
 if sys.version_info[0] > 2:
     import urllib.request as urlreq
@@ -29,21 +30,21 @@ class bot(ch.RoomManager):
     self.setFontColor("000000")
     self.setFontFace("Arial")
     self.setFontSize(11)
-    
+
   def onMessage(self, room, user, message):
     print("[{0}] {1}: {2}".format(room.name, user.name.title(), message.body))
-    
+
     try:
       cmd, args = message.body.split(" ", 1)
     except:
       cmd, args = message.body, ""
-      
+
     if cmd[0] == "!":
       prfx = True
       cmd = cmd[1:]
     else:
       fullmsg = cmd
-      
+
 ##    if cmd.lower() == "say" and prfx:
 ##      room.message(args)
     if cmd.lower() == "pls" and prfx:
@@ -180,22 +181,22 @@ class bot(ch.RoomManager):
       if (args == "54"):
         resp = "Oskar Lindblom"
       if (args == "47"):
-        resp = "Andrew MacDonald"  
+        resp = "Andrew MacDonald"
       if (args == "23"):
-        resp = "Brandon Manning"  
+        resp = "Brandon Manning"
       if (args == "9"):
         resp = "Ivan Provorov"
       if (args == "19"):
-        resp = "Nolan Patrick"  
+        resp = "Nolan Patrick"
       if (args == "19h"):
         resp = "Scott Hartnell"
         args = "19"
       if (args == "12"):
         resp = "Michael Raffl"
       if (args == "6"):
-        resp = "Travis Sanheim"  
+        resp = "Travis Sanheim"
       if (args == "17"):
-        resp = "Wayne Simmonds"  
+        resp = "Wayne Simmonds"
       if (args == "93"):
         resp = "Jake Voracek"
       if (args == "40"):
@@ -243,7 +244,7 @@ class bot(ch.RoomManager):
       data = ["https://i.imgur.com/eGNnEMB.png", "https://i.imgur.com/JK1z3aA.jpg", "https://i.imgur.com/7KPclUS.jpg", "http://i.imgur.com/7jfDQ3F.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
-	  
+
     if cmd.lower() == "coinflip" and prfx:
       data = ["heads", "tails"]
       random_pic = data[randint(0, 1)]
@@ -336,7 +337,7 @@ class bot(ch.RoomManager):
       low = str(y["low"])
       percentage = z["percentage"]*100
       room.message("DASH: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
-	  
+
     if cmd.lower() == "xmr" and prfx:
       r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xmrusd/summary')
       x = r.json()
@@ -413,7 +414,7 @@ class bot(ch.RoomManager):
             name=args
             room.message("http://fp.chatango.com/profileimg/"+args[0]+"/"+args[1]+"/"+args+"/full.jpg")
         except:
-            room.message(args+" is not (yet) a chatango username.")    
+            room.message(args+" is not (yet) a chatango username.")
     if cmd.lower() == "score" and prfx:
       if (args == "sixers" or args == "76ers"):
         team_id = '1610612755'
@@ -431,7 +432,7 @@ class bot(ch.RoomManager):
                 home_team_name = game['h']['tc'] + " " + game['h']['tn']
                 visitor_team_name = game['v']['tc'] + " " + game['v']['tn']
                 output = home_team_name + " " + str(home_team_score) + " - " + visitor_team_name + " " + str(visitor_team_score)
-                room.message(output)   
+                room.message(output)
     if fullmsg.lower() == "wew" and user.name != "acleebot":
         room.message("wew")
 rooms = ["acmemed", "csnphilly", "acleenba"]
@@ -440,4 +441,3 @@ username = "acleebot"
 password = ""
 
 bot.easy_start(rooms,username,password)
-
