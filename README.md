@@ -6,9 +6,13 @@ dank af bot tbh fam
 
 ## Commands
 - pls
+- ping
+- donate
 - de
 - aclee
+- cheesesteak
 - dumps
+- lag
 - wawa
 - nice
 - bro
@@ -54,7 +58,10 @@ dank af bot tbh fam
 - jesus
 - bloodhorse
 - sewerchat
+- kash
+- trevis
 - quiplash
+- gus
 - legionofgloom
 - smirk
 - peco

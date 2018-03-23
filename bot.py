@@ -46,16 +46,26 @@ class bot(ch.RoomManager):
       
 ##    if cmd.lower() == "say" and prfx:
 ##      room.message(args)
+    if user.name.find("!") != -1 or user.name.find("#") != -1:
+      room.message("anon pls make account")
     if cmd.lower() == "pls" and prfx:
       room.message("pls")
+    if cmd.lower() == "ping" and prfx:
+      room.message("pong!")
+    if cmd.lower() == "donate" and prfx:
+      room.message("If you enjoy the stream, help keep the site going! :) http://aclee.memesyndicate.com/gofundme")
     if cmd.lower() == "de" and prfx:
       room.message("FENSE!")
     if cmd.lower() == "aclee" and prfx:
       room.message("based aclee")
+    if cmd.lower() == "cheesesteak" and prfx:
+      room.message("https://i.imgur.com/yDot0lg.gif")
     if cmd.lower() == "dumps" and prfx:
       room.message("http://i.imgur.com/6I9z75O.png")
     if cmd.lower() == "wawa" and prfx:
       room.message("http://i.imgur.com/VcC5gLV.png")
+    if cmd.lower() == "lag" and prfx:
+      room.message("http://i.imgur.com/wHU7f4P.jpg")
     if cmd.lower() == "nice" and prfx:
       data = ["https://i.imgur.com/QMRxuuP.png", "https://i.imgur.com/XOut2ix.png"]
       random_pic = data[randint(0, len(data) -1)]
@@ -100,7 +110,9 @@ class bot(ch.RoomManager):
       room.message("Fuck the Celtics!")
     if cmd.lower() == "doop" and prfx:
       room.message("DOOP DOOP DOOP DADADOOP DOOP DOOP")
-    if cmd.lower() == "jj" and prfx:
+    if cmd.lower() == "jj" and prfx and room.name == "acleenba":
+      room.message("https://i.imgur.com/Fd74CjX.jpg")
+    if cmd.lower() == "jj" and prfx and room.name == "csnphilly":
       room.message("SHOT! High and wide.")
     if cmd.lower() == "lgf" and prfx:
       room.message("let's go flyera")
@@ -147,6 +159,10 @@ class bot(ch.RoomManager):
       room.message("http://i.imgur.com/qhV8XXH.gif")
     if cmd.lower() == "sewerchat" and prfx:
       room.message("http://i.imgur.com/qhV8XXH.gif")
+    if cmd.lower() == "kash" and prfx:
+      room.message("https://i.imgur.com/gwnUl4i.png")
+    if cmd.lower() == "trevis" and prfx:
+      room.message("http://i.imgur.com/4Ulws9X.jpg")
     if cmd.lower() == "quiplash" and prfx:
       room.message("https://i.imgur.com/PE1ubLy.png")
     if cmd.lower() == "legionofgloom" and prfx:
@@ -224,6 +240,11 @@ class bot(ch.RoomManager):
         resp = "Mark Streit"
       room.message("Flyers goal scored by #"+args+" "+resp+"!")
 
+    if cmd.lower() == "gus" and prfx:
+      data = ["https://i.imgur.com/MD9v228.jpg", "https://i.imgur.com/NxIxHks.jpg", "https://i.imgur.com/B8AF2kW.jpg", "https://i.imgur.com/txywtE0.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+	  
     if cmd.lower() == "legionofdoom" and prfx:
       data = ["https://i.imgur.com/qCxFxvg.jpg", "https://i.imgur.com/cBOOBbs.jpg", "https://i.imgur.com/ArNAXMy.jpg", "https://i.imgur.com/ghAT65v.png", "https://i.imgur.com/o4bt9XY.jpg", "https://i.imgur.com/OW1wczK.jpg", "https://i.imgur.com/bPouF9z.jpg", "https://i.imgur.com/JUIsmkO.png", "https://i.imgur.com/vzfl9oZ.jpg", "https://i.imgur.com/ThbFFs2.jpg"]
       random_pic = data[randint(0, len(data) -1)]
@@ -293,7 +314,7 @@ class bot(ch.RoomManager):
       percentage = z["percentage"]*100
       room.message("LTC: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
-    if cmd.lower() == "ripple" and prfx:
+    if cmd.lower() == "ripple" and prfx or cmd.lower() == "xrp" and prfx:
       r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xrpusd/summary')
       x = r.json()
       y = x["result"]["price"]
