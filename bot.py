@@ -135,6 +135,8 @@ class bot(ch.RoomManager):
       room.message("based panduh")
     if cmd.lower() == "woat" and prfx:
       room.message("ban goat when")
+    if cmd.lower() == "nephew" and prfx:
+      room.message("https://i.imgur.com/oJ3qLRG.jpg")
     if cmd.lower() == "dance" and prfx:
       room.message('/o/')
     if cmd.lower() == "chant" and prfx:
