@@ -5,6 +5,10 @@
 dank af bot tbh fam
 
 ## Commands
+
+Commands are separted by associated logc:
+
+### Basic Commands
 - pls
 - ping
 - donate
@@ -66,6 +70,17 @@ dank af bot tbh fam
 - legionofgloom
 - smirk
 - peco
+
+### Crypto Commands
+- btc
+- bch
+- eth
+- ltc
+- ripple
+- etc
+- zec
+- dash
+- xmr
 
 ## Dependencies
 - ch.py
