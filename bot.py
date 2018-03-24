@@ -32,6 +32,39 @@ class bot(ch.RoomManager):
         self.setFontFace("Arial")
         self.setFontSize(11)
 
+    def crypto(self, message):
+        print(message.msg.values[0])
+        r = requests.get(url=message.msg.values[0])
+        x = r.json()
+        print(x)
+        y = x["result"]["price"]
+        z = y["change"]
+        last = str(y["last"])
+        high = str(y["high"])
+        low = str(y["low"])
+        percentage = z["percentage"]*100
+        res = message.cmd.values[0] + ": currently at $" + last + ", high today of $" + high + ", low of $" + low + ", change of %.3f" % percentage + "%"
+        return res
+
+    def chat(self, message, room):
+        type = message.type.values[0]
+        if (type == 'basic'):
+            room.message(message.msg.values[0])
+        if (type == 'price'):
+            print('price command')
+            room.message('under development tbh')
+        if (type == 'crypto'):
+            room.message(self.crypto(message))
+        if (type == 'score'):
+            print('score command')
+            room.message('under development tbh')
+        if (type == 'goal'):
+            print('goal command')
+            room.message('under development tbh')
+        if (type == 'custom'):
+            print('custom command')
+            room.message('under development tbh')
+
     def onMessage(self, room, user, message):
         print("[{0}] {1}: {2}".format(room.name, user.name.title(), message.body))
         try:
@@ -42,28 +75,10 @@ class bot(ch.RoomManager):
         if cmd[0] == "!":
             prfx = True
             cmd = cmd[1:]
-            message = cm(cmd.lower())
-            type = message.type.values[0]
-            if (type == 'basic'):
-                print('message = ', message)
-                room.message(message.msg.values[0])
-            if (type == 'price'):
-                print('price command')
-                room.message('under development tbh')
-            if (type == 'crypto'):
-                print('crypto command')
-                room.message('under development tbh')
-            if (type == 'score'):
-                print('score command')
-                room.message('under development tbh')
-            if (type == 'goal'):
-                print('goal command')
-                room.message('under development tbh')
-            if (type == 'custom'):
-                print('custom command')
-                room.message('under development tbh')
-
+            response = cm(cmd.lower())
+            self.chat(response, room)
         else:
             fullmsg = cmd
+
 
 bot.easy_start(config.rooms,config.username,config.password)
