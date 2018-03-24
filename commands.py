@@ -5,4 +5,4 @@ cmdDF = pd.read_csv('commands.csv')
 
 def cm(msg):
     response = cmdDF.loc[cmdDF.cmd == msg]
-    return response.msg.values[0]
+    return response

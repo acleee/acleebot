@@ -1,62 +1,133 @@
-cmd,msg
-pls,pls
-ping,pong!
-donate,"If you enjoy the stream, help keep the site going! :) http://aclee.memesyndicate.com/gofundme"
-de,FENSE!
-aclee,based aclee
-cheesesteak,https://i.imgur.com/yDot0lg.gif
-dumps,http://i.imgur.com/6I9z75O.png
-lag,http://i.imgur.com/wHU7f4P.jpg
-wawa,http://i.imgur.com/VcC5gLV.png
-nice,http://i.imgur.com/ocCYhpL.png
-bro,http://i.imgur.com/7bGsxZC.png
-pogchamp,http://i.imgur.com/UZA7oDD.png
-fap,http://i.imgur.com/BXVlumD.jpg
-stoned,https://i.imgur.com/DxFhJ5G.png
-dab,http://i.imgur.com/PuzhNHg.gif
-woo,https://i.imgur.com/3kblRR8.gif
-amac,https://i.imgur.com/8VoCV6P.png
-frosty,
-meek,FREE MEEK
-suicide,https://i.imgur.com/Lpu455k.png
-popcorn,http://i.imgur.com/8T8fm98.gif
-rocky,https://i.imgur.com/VlDBmj3.png
-clap,Clap your hands everybody for Philadelphia 76ers!
-stomp,Stomp your feet everybody for Philadelphia 76ers!
-htc,"Here they come, Philadelphia, on the run, stand up and cheer!"
-no1,"Number one, Philadelphia, here they come, team of the year!"
-count,1 2 3 4 5 Sixers!
-tnuoc,10 9 8 76ers!
-ftc,Fuck the Celtics!
-doop,DOOP DOOP DOOP DADADOOP DOOP DOOP
-jj,SHOT! High and wide.
-lgf,let's go flyera
-ttp,Trust the process
-belinelli,https://i.imgur.com/PST9VDt.png
-marco,POLO!
-ftp,https://i.imgur.com/KLy5Ads.png
-tj,https://i.imgur.com/r7obJ2O.png
-goat,
-king,where the hoes at
-panduh,based panduh
-woat,ban goat when
-nephew,https://i.imgur.com/oJ3qLRG.jpg
-dance,/o/
-chant,E! A! G! L! E! S! EAGLES!
-falg,https://media.discordapp.net/attachments/271047268763697153/399352313803833346/4R2Mcj1.png
-gilf,http://i.imgur.com/ltsesOa.jpg
-baggage,http://i.imgur.com/M7mvqqR.png
-hype,https://i.imgur.com/6QltyQ0.gif
-reee,https://i.imgur.com/d3JvMNf.gif
-leafs,FUCK THE LEAFS!
-metsfan,mets pls
-jesus,nephew!
-bloodhorse,https://i.imgur.com/PE1ubLy.png
-sewerchat,https://i.imgur.com/XdFJ1Xo.jpg
-kash,https://i.imgur.com/gwnUl4i.png
-trevis,http://i.imgur.com/4Ulws9X.jpg
-quiplash,https://i.imgur.com/ZpZH2A7.png
-gus,
-legionofgloom,AND THE FLYERS ARE GOING ON THE PECOOOOOOOOOOOO POWERPLAY! https://i.imgur.com/bgy1ag6.gif
-smirk,https://i.imgur.com/STIrrXN.png
-peco,http://i.imgur.com/qhV8XXH.gif
+cmd,msg,type
+pls,pls,basic
+ping,pong!,basic
+donate,"If you enjoy the stream, help keep the site going! :) http://aclee.memesyndicate.com/gofundme",basic
+de,FENSE!,basic
+aclee,based aclee,basic
+cheesesteak,https://i.imgur.com/yDot0lg.gif,basic
+dumps,http://i.imgur.com/6I9z75O.png,basic
+lag,http://i.imgur.com/wHU7f4P.jpg,basic
+wawa,http://i.imgur.com/VcC5gLV.png,basic
+nice,http://i.imgur.com/ocCYhpL.png,basic
+bro,http://i.imgur.com/7bGsxZC.png,basic
+pogchamp,http://i.imgur.com/UZA7oDD.png,basic
+fap,http://i.imgur.com/BXVlumD.jpg,basic
+stoned,https://i.imgur.com/DxFhJ5G.png,basic
+dab,http://i.imgur.com/PuzhNHg.gif,basic
+woo,https://i.imgur.com/3kblRR8.gif,basic
+amac,https://i.imgur.com/8VoCV6P.png,basic
+frosty,,basic
+meek,FREE MEEK,basic
+suicide,https://i.imgur.com/Lpu455k.png,basic
+popcorn,http://i.imgur.com/8T8fm98.gif,basic
+rocky,https://i.imgur.com/VlDBmj3.png,basic
+clap,Clap your hands everybody for Philadelphia 76ers!,basic
+stomp,Stomp your feet everybody for Philadelphia 76ers!,basic
+htc,"Here they come, Philadelphia, on the run, stand up and cheer!",basic
+no1,"Number one, Philadelphia, here they come, team of the year!",basic
+count,1 2 3 4 5 Sixers!,basic
+tnuoc,10 9 8 76ers!,basic
+ftc,Fuck the Celtics!,basic
+doop,DOOP DOOP DOOP DADADOOP DOOP DOOP,basic
+jj,SHOT! High and wide.,basic
+lgf,let's go flyera,basic
+ttp,Trust the process,basic
+belinelli,https://i.imgur.com/PST9VDt.png,basic
+marco,POLO!,basic
+ftp,https://i.imgur.com/KLy5Ads.png,basic
+tj,https://i.imgur.com/r7obJ2O.png,basic
+goat,,basic
+king,where the hoes at,basic
+panduh,based panduh,basic
+woat,ban goat when,basic
+nephew,https://i.imgur.com/oJ3qLRG.jpg,basic
+dance,/o/,basic
+chant,E! A! G! L! E! S! EAGLES!,basic
+falg,https://media.discordapp.net/attachments/271047268763697153/399352313803833346/4R2Mcj1.png,basic
+gilf,http://i.imgur.com/ltsesOa.jpg,basic
+baggage,http://i.imgur.com/M7mvqqR.png,basic
+hype,https://i.imgur.com/6QltyQ0.gif,basic
+reee,https://i.imgur.com/d3JvMNf.gif,basic
+leafs,FUCK THE LEAFS!,basic
+metsfan,mets pls,basic
+jesus,nephew!,basic
+bloodhorse,https://i.imgur.com/PE1ubLy.png,basic
+sewerchat,https://i.imgur.com/XdFJ1Xo.jpg,basic
+kash,https://i.imgur.com/gwnUl4i.png,basic
+trevis,http://i.imgur.com/4Ulws9X.jpg,basic
+quiplash,https://i.imgur.com/ZpZH2A7.png,basic
+gus,,basic
+legionofgloom,AND THE FLYERS ARE GOING ON THE PECOOOOOOOOOOOO POWERPLAY! https://i.imgur.com/bgy1ag6.gif,basic
+smirk,https://i.imgur.com/STIrrXN.png,basic
+peco,http://i.imgur.com/qhV8XXH.gif,basic
+gus,,pic
+legionofdoom,,pic
+molly,,pic
+dario,,pic
+fultz,,custom
+coinflip,,crypto
+btc,,crypto
+bch,,crypto
+eth,,crypto
+ltc,,crypto
+ripple,,crypto
+etc,,crypto
+zec,,crypto
+dash,,crypto
+xmr,,crypto
+monero,,crypto
+sc,,crypto
+doge,,crypto
+getavi,,custom
+score,,score
+goal,,goal
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,
+,,

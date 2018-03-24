@@ -11,13 +11,14 @@ import traceback
 import time
 import urllib
 import datetime
-import binascii*
+import binascii
 import json
 import threading
 import random
 import nba_py
 from xml.etree import cElementTree as ET
 from commands import cm
+import config
 
 if sys.version_info[0] > 2:
     import urllib.request as urlreq
@@ -39,12 +40,29 @@ class bot(ch.RoomManager):
             cmd, args = message.body, ""
 
         if cmd[0] == "!":
-            print("its a command")
             prfx = True
             cmd = cmd[1:]
             message = cm(cmd.lower())
-            print('message = ', message)
-            room.message(message)
+            type = message.type.values[0]
+            if (type == 'basic'):
+                print('message = ', message)
+                room.message(message.msg.values[0])
+            if (type == 'price'):
+                print('price command')
+                room.message('under development tbh')
+            if (type == 'crypto'):
+                print('crypto command')
+                room.message('under development tbh')
+            if (type == 'score'):
+                print('score command')
+                room.message('under development tbh')
+            if (type == 'goal'):
+                print('goal command')
+                room.message('under development tbh')
+            if (type == 'custom'):
+                print('custom command')
+                room.message('under development tbh')
+
         else:
             fullmsg = cmd
 
