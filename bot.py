@@ -80,5 +80,4 @@ class bot(ch.RoomManager):
         else:
             fullmsg = cmd
 
-
 bot.easy_start(config.rooms,config.username,config.password)
