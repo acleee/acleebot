@@ -1,11 +1,9 @@
-![acleebot](https://aclee.nyc3.digitaloceanspaces.com/acleebot.jpg)
-  
 # acleebot
-
 
 ![python badge](https://img.shields.io/badge/python-3.6-blue.svg?longCache=true&style=flat-square) ![pandas badge](https://img.shields.io/badge/pandas-0.22.0-blue.svg?longCache=true&style=flat-square) ![Chatango badge](https://img.shields.io/badge/platform-Chatango-lightgray.svg?longCache=true&style=flat-square)
 
 dank af bot tbh fam
+![acleebot](https://aclee.nyc3.digitaloceanspaces.com/acleebot.jpg)
 
 ## Commands
 
