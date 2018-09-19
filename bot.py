@@ -208,6 +208,8 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/uGFLLLt.gif")
     if cmd.lower() == "nephew" and prfx:
       room.message("https://i.imgur.com/oJ3qLRG.jpg")
+    if cmd.lower() == "fins" and prfx:
+      room.message("https://media.giphy.com/media/Px2Zu55ofxfO0/giphy.gif")
     if cmd.lower() == "dance" and prfx:
       room.message('/o/')
     if cmd.lower() == "chant" and prfx:
