@@ -366,7 +366,7 @@ class bot(ch.RoomManager):
       room.message(random_pic)
 
     if cmd.lower() == "bobi" and prfx:
-      data = ["https://i.imgur.com/RCw56IV.png", "http://i.imgur.com/zEB2yPc.jpg", "https://i.imgur.com/zeO9nly.png", "https://media.giphy.com/media/MX6ergTyD9CM79uqS6/giphy.gif", "https://i.imgur.com/p5WRGzL.jpg"]
+      data = ["https://i.imgur.com/RCw56IV.png", "http://i.imgur.com/zEB2yPc.jpg", "https://i.imgur.com/p5WRGzL.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
 
