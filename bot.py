@@ -364,6 +364,19 @@ class bot(ch.RoomManager):
       data = ["https://i.imgur.com/eGNnEMB.png", "https://i.imgur.com/JK1z3aA.jpg", "https://i.imgur.com/7KPclUS.jpg", "http://i.imgur.com/7jfDQ3F.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
+
+    if cmd.lower() == "bobi" and prfx:
+      data = ["https://i.imgur.com/RCw56IV.png", "http://i.imgur.com/zEB2yPc.jpg", "https://i.imgur.com/p5WRGzL.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+
+    if cmd.lower() == "tobi" and prfx:
+      data = ["https://i.imgur.com/WRFsdWk.png", "https://i.imgur.com/8zH4pJ2.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+      
+    if cmd.lower() == "bobitobi" and prfx:
+      room.message("https://i.imgur.com/bqA6G8z.png")
 	  
     if cmd.lower() == "coinflip" and prfx:
       data = ["heads", "tails"]
