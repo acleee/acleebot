@@ -133,7 +133,7 @@ class bot(ch.RoomManager):
     if cmd.lower() == "suicide" and prfx:
       room.message("https://i.imgur.com/Lpu455k.png")
     if cmd.lower() == "popcorn" and prfx:
-      room.message("http://i.imgur.com/8T8fm98.gif")
+      room.message("http://gph.is/2cBJpNx")
     if cmd.lower() == "rocky" and prfx:
       room.message("https://i.imgur.com/VlDBmj3.png")
     if cmd.lower() == "clap" and prfx:
@@ -208,6 +208,8 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/uGFLLLt.gif")
     if cmd.lower() == "nephew" and prfx:
       room.message("https://i.imgur.com/oJ3qLRG.jpg")
+    if cmd.lower() == "fins" and prfx:
+      room.message("https://media.giphy.com/media/Px2Zu55ofxfO0/giphy.gif")
     if cmd.lower() == "dance" and prfx:
       room.message('/o/')
     if cmd.lower() == "chant" and prfx:
