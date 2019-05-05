@@ -8,14 +8,18 @@
 [![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/acleebot.svg?style=flat-square&colorB=daa000&colorA=36363e&logo=GitHub)](https://github.com/toddbirchard/acleebot/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/acleebot.svg?style=flat-square&colorB=FCC624&colorA=36363e&logo=GitHub)](https://github.com/toddbirchard/acleebot/network)
 
-dank af bot tbh fam
-![acleebot](https://github.com/toddbirchard/acleebot/blob/master/acleebot.jpg)
+The baddest bot in the game right now.
+
+![acleebot](https://github.com/toddbirchard/acleebot/blob/master/img/acleebot.jpg)
 
 ## Commands
 
-Commands are separted by associated logc:
+Commands are separated by associated logic:
 
 ### Basic Commands
+
+Basic commands listen for commands in chat and reply with a plaintext response:
+
 - pls
 - ping
 - donate
@@ -79,6 +83,9 @@ Commands are separted by associated logc:
 - peco
 
 ### Crypto Commands
+
+Crypto commands retrieve latest crypto prices from an API:
+
 - btc
 - bch
 - eth
@@ -90,5 +97,8 @@ Commands are separted by associated logc:
 - xmr
 
 ## Dependencies
+
+This bot depends on the following:
+
 - ch.py
 - pandas
