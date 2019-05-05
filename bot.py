@@ -25,14 +25,19 @@ if sys.version_info[0] > 2:
 else:
     import urllib2 as urlreq
 
+
 class bot(ch.RoomManager):
+    """Main bot class."""
+
     def onInit(self):
+        """Initialize bot."""
         self.setNameColor("000000")
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
 
     def crypto(self, message):
+        """Get crypto prices."""
         print(message.msg.values[0])
         r = requests.get(url=message.msg.values[0])
         x = r.json()
@@ -47,6 +52,7 @@ class bot(ch.RoomManager):
         return res
 
     def chat(self, message, room):
+        """Trigger upon chat."""
         type = message.type.values[0]
         if (type == 'basic'):
             room.message(message.msg.values[0])
@@ -66,6 +72,7 @@ class bot(ch.RoomManager):
             room.message('under development tbh')
 
     def onMessage(self, room, user, message):
+        """Boilerplate function trigger on message."""
         print("[{0}] {1}: {2}".format(room.name, user.name.title(), message.body))
         try:
             cmd, args = message.body.split(" ", 1)
@@ -80,4 +87,7 @@ class bot(ch.RoomManager):
         else:
             fullmsg = cmd
 
-bot.easy_start(config.rooms,config.username,config.password)
+
+bot.easy_start(config.rooms,
+               config.username,
+               config.password)

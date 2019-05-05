@@ -1,5 +1,8 @@
 # config
-config.py
+.env
+
+# Backup file
+backup.py
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
