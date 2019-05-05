@@ -18,7 +18,9 @@ import random
 import nba_py
 from xml.etree import cElementTree as ET
 from commands import cm
-import config
+from config import username as username
+from config import password as password
+from config import room as room
 
 if sys.version_info[0] > 2:
     import urllib.request as urlreq
@@ -48,7 +50,11 @@ class bot(ch.RoomManager):
         high = str(y["high"])
         low = str(y["low"])
         percentage = z["percentage"]*100
-        res = message.cmd.values[0] + ": currently at $" + last + ", high today of $" + high + ", low of $" + low + ", change of %.3f" % percentage + "%"
+        res = message.cmd.values[0] \
+            + ": currently at $" + last \
+            + ", high today of $" + high \
+            + ", low of $" + low \
+            + ", change of %.3f" % percentage + "%"
         return res
 
     def chat(self, message, room):
@@ -73,7 +79,8 @@ class bot(ch.RoomManager):
 
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
-        print("[{0}] {1}: {2}".format(room.name, user.name.title(), message.body))
+        print("[{0}] {1}: {2}".format(room.name, user.name.title(),
+                                      message.body))
         try:
             cmd, args = message.body.split(" ", 1)
         except:
@@ -88,6 +95,6 @@ class bot(ch.RoomManager):
             fullmsg = cmd
 
 
-bot.easy_start(config.rooms,
-               config.username,
-               config.password)
+bot.easy_start(room,
+               username,
+               password)
