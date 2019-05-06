@@ -1,6 +1,3 @@
-# config
-.env
-
 # Backup file
 backup.py
 
@@ -105,3 +102,6 @@ ENV/
 
 # mypy
 .mypy_cache/
+
+# DS Store
+.DS_Store

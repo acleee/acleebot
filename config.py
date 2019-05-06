@@ -1,3 +1,4 @@
+"""Bot configuration variables."""
 import os
 
 room = os.environ.get('ROOM')

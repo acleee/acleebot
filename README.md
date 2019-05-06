@@ -1,6 +1,6 @@
 # acleebot
 
-![python badge](https://img.shields.io/badge/python-3.6-blue.svg?longCache=true&style=flat-square)
+![python badge](https://img.shields.io/badge/python-3.7-blue.svg?longCache=true&style=flat-square)
 ![pandas badge](https://img.shields.io/badge/pandas-0.24.0-blue.svg?longCache=true&style=flat-square)
 ![Chatango badge](https://img.shields.io/badge/platform-Chatango-lightgray.svg?longCache=true&style=flat-square)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=36363e&logo=GitHub)
