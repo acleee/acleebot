@@ -38,6 +38,9 @@ class bot(ch.RoomManager):
     self.setFontColor("000000")
     self.setFontFace("Arial")
     self.setFontSize(11)
+
+  def onConnect(self, room):
+    room.message("beep boop i'm alive")
     
   def onMessage(self, room, user, message):
     print("[{0}] {1}: {2}".format(room.name, user.name.title(), message.body))
@@ -51,13 +54,15 @@ class bot(ch.RoomManager):
       prfx = True
       cmd = cmd[1:]
       
-##    if cmd.lower() == "say" and prfx:
-##      room.message(args)
-##    if user.name.find("!") != -1 or user.name.find("#") != -1:
-##      room.message("@"+user.name[1:]+" pls make account")
+    if cmd.lower() == "say" and prfx:
+      room.message(args)
+    if user.name.find("!") != -1 or user.name.find("#") != -1:
+      room.message("@"+user.name[1:]+" pls make account")
 ##     room.message("anon pls make account")
     if cmd.lower() == "pls" and prfx:
       room.message("pls")
+    if cmd.lower() == "hq" and prfx:
+      room.message("https://i.imgur.com/P7CzhYN.png")
     if cmd.lower() == "energy" and prfx:
       room.message("༼ つ ◕_◕ ༽つ "+args.upper()+" TAKE MY ENERGY ༼ つ ◕_◕ ༽つ")
     if cmd.lower() == "ping" and prfx:
@@ -72,8 +77,12 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/x33jisM.jpg")
     if cmd.lower() == "lolbarves" and prfx:
       room.message("https://i.imgur.com/Ch4SecV.png")
+    if cmd.lower() == "discord" and prfx:
+      room.message("https://discord.gg/gSagJfA")
     if cmd.lower() == "jorge" and prfx:
       room.message("HIP HIP!")
+    if cmd.lower() == "firehak" and prfx:
+      room.message("https://i.imgur.com/1Owtd8y.png")
     if cmd.lower() == "over" and prfx:
       room.message("http://i.imgur.com/msOi9Hf.gif")
     if cmd.lower() == "lolmets" and prfx:
@@ -106,6 +115,12 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/gJJhOWh.jpg")
     if cmd.lower() == "pogchamp" and prfx:
       room.message("http://i.imgur.com/7bGsxZC.png")
+    if cmd.lower() == "tableflip" and prfx:
+      room.message("(╯°□°）╯︵ ┻━┻")
+    if cmd.lower() == "unflip" and prfx:
+      room.message("┬─┬ ノ( ゜-゜ノ)")
+    if cmd.lower() == "rip" and prfx:
+      room.message("f")
     if cmd.lower() == "fap" and prfx:
       room.message("http://i.imgur.com/UZA7oDD.png")
     if cmd.lower() == "gay" and prfx:
@@ -116,6 +131,11 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/DxFhJ5G.png")
     if cmd.lower() == "woo" and prfx:
       room.message("http://i.imgur.com/PuzhNHg.gif")
+	  
+    if cmd.lower() == "garbage" and prfx:
+      room.message("https://i.imgur.com/5sCtb5B.png")
+	  
+	  
     if cmd.lower() == "poggers" and prfx:
       room.message("https://i.imgur.com/kdAeJ2i.jpg")
     if cmd.lower() == "flop" and prfx:
@@ -125,15 +145,18 @@ class bot(ch.RoomManager):
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
     if cmd.lower() == "frosty" and prfx:
-      room.message("https://i.imgur.com/8VoCV6P.png")
+##      room.message("https://i.imgur.com/8VoCV6P.png")
+      room.message("https://media.giphy.com/media/1oJRKjIfWTNQSLZtuM/giphy.gif")
     if cmd.lower() == "meek" and prfx:
       room.message("FREED MEEK")
+    if cmd.lower() == "hypers" and prfx:
+      room.message("https://cdn.discordapp.com/attachments/402994245021073428/487430406959005696/hypers.png")
     if cmd.lower() == "birdteams" and prfx:
       room.message("https://i.imgur.com/5VOZrMw.png")
     if cmd.lower() == "suicide" and prfx:
       room.message("https://i.imgur.com/Lpu455k.png")
     if cmd.lower() == "popcorn" and prfx:
-      room.message("http://i.imgur.com/8T8fm98.gif")
+      room.message("https://i.imgur.com/KIkkQ2F.gif")
     if cmd.lower() == "rocky" and prfx:
       room.message("https://i.imgur.com/VlDBmj3.png")
     if cmd.lower() == "clap" and prfx:
@@ -158,8 +181,12 @@ class bot(ch.RoomManager):
       room.message("SHOT! High and wide.")
     if cmd.lower() == "lgf" and prfx:
       room.message("let's go flyera")
+    if cmd.lower() == "dab" and prfx:
+      room.message("\o>")
     if cmd.lower() == "lgp" and prfx:
-      room.message("Let's go Phillies!")
+      data = ["Let's go Phillies!", "https://i.imgur.com/DqBDeNw.png"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
     if cmd.lower() == "raps" and prfx:
       room.message("http://i.imgur.com/9iBTlwm.jpg http://i.imgur.com/KsvMBgi.jpg")
     if cmd.lower() == "k" and prfx:
@@ -168,6 +195,9 @@ class bot(ch.RoomManager):
       else:
         resp = "https://i.imgur.com/4FcCc2Y.gif"
       room.message(resp)
+    if cmd.lower() == "faggot" and prfx:
+      bot.deleteUser(self, user.name)
+      room.message("RUDE")
     if cmd.lower() == "lavy" and prfx:
       room.message("http://i.imgur.com/V4di3qI.gif")
     if cmd.lower() == "ttp" and prfx:
@@ -198,6 +228,12 @@ class bot(ch.RoomManager):
       room.message("where the hoes at")
     if cmd.lower() == "chop" and prfx:
       room.message(":(")
+    if cmd.lower() == "swaggyp" and prfx:
+      room.message("https://i.imgur.com/ymO2gor.gif")
+    if cmd.lower() == "pool" and prfx:
+      room.message("YNWA")
+    if cmd.lower() == "ynwa" and prfx:
+      room.message("YNWA")
     if cmd.lower() == "panduh" and prfx:
       room.message("based panduh")
     if cmd.lower() == "woat" and prfx:
@@ -208,8 +244,16 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/uGFLLLt.gif")
     if cmd.lower() == "nephew" and prfx:
       room.message("https://i.imgur.com/oJ3qLRG.jpg")
+    if cmd.lower() == "fins" and prfx:
+      room.message("https://media.giphy.com/media/Px2Zu55ofxfO0/giphy.gif")
     if cmd.lower() == "dance" and prfx:
       room.message('/o/')
+    if cmd.lower() == "simmer" and prfx:
+      room.message('https://i.imgur.com/LXSbyyW.png')
+    if cmd.lower() == "waynetrain" and prfx:
+      room.message('https://i.imgur.com/LXSbyyW.png')
+    if cmd.lower() == "jori" and prfx:
+      room.message('https://i.imgur.com/PvNCFUT.gif')
     if cmd.lower() == "chant" and prfx:
       room.message("E! A! G! L! E! S! EAGLES!")
     if cmd.lower() == "falg" and prfx:
@@ -235,17 +279,27 @@ class bot(ch.RoomManager):
     if cmd.lower() == "sewerchat" and prfx:
       room.message("http://i.imgur.com/qhV8XXH.gif")
     if cmd.lower() == "kash" and prfx:
-      room.message("https://i.imgur.com/gwnUl4i.png")
+      room.message("https://i.imgur.com/7cnPKpA.png")
     if cmd.lower() == "bales" and prfx:
-      room.message("https://i.imgur.com/frvo5Ke.png")
+      data = ["https://i.imgur.com/MOdT9gN.png", "https://i.imgur.com/frvo5Ke.png", "https://i.imgur.com/nioNcAV.png"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
     if cmd.lower() == "trevis" and prfx:
       room.message("http://i.imgur.com/4Ulws9X.jpg")
+    if cmd.lower() == "scherzer" and prfx:
+      room.message("https://i.imgur.com/Tg45vDy.jpg")
+    if cmd.lower() == "dale" and prfx:
+      room.message("https://i.imgur.com/86V2Sck.png")
     if cmd.lower() == "quiplash" and prfx:
       room.message("https://i.imgur.com/PE1ubLy.png")
     if cmd.lower() == "legionofgloom" and prfx:
       room.message("https://i.imgur.com/XdFJ1Xo.jpg")
     if cmd.lower() == "smirk" and prfx:
       room.message("https://i.imgur.com/ZpZH2A7.png")
+    if cmd.lower() == "kingery" and prfx:
+      room.message("https://i.imgur.com/u75QRpX.png")
+    if cmd.lower() == "harper" and prfx:
+      room.message("https://i.imgur.com/XDhwj0t.jpg")
     if cmd.lower() == "peach" and prfx:
       room.message("put on UFC NOW")
     if cmd.lower() == "peco" and prfx:
@@ -258,20 +312,22 @@ class bot(ch.RoomManager):
       room.message("SWING AND A LONG DRIVE, DEEP LEFT FIELD. THAT BALL IS OUTTAAAAA HERREEEEE!")
     if cmd.lower() == "c2f" and prfx:
       fah = 9.0/5.0*Integer.parseInt(args)+32
-      room.message(args)
-    if cmd.lower() == "ud" and prfx:
-      url = 'http://api.urbandictionary.com/v0/define?term='+args
-      pls = requests.get(url).json()
-      output = pls['list']
-      output2 = output[0]
-      definition = output2['definition']
-      room.message(args+": "+definition)
+      room.message(fah)
+##    if cmd.lower() == "ud" and prfx:
+##      url = 'http://api.urbandictionary.com/v0/define?term='+args
+##      pls = requests.get(url).json()
+##      output = pls['list']
+##      output2 = output[0]
+##      definition = output2['definition']
+##      room.message(args+": "+definition)
 
     if cmd.lower() == "goal" and prfx:
       if (args == "14"):
         resp = "Sean Couturier"
       if (args == "51"):
         resp = "Valtteri Filppula"
+      if (args == "26"):
+        resp = "Christian Folin"
       if (args == "28"):
         resp = "Claude Giroux"
       if (args == "53"):
@@ -285,15 +341,13 @@ class bot(ch.RoomManager):
       if (args == "21"):
         resp = "Scott Laughton"
       if (args == "15"):
-        resp = "Jori Lehtera"
+        resp = "Jorald 'Jori'  Lehtera"
       if (args == "20"):
         resp = "Taylor Leier"
-      if (args == "54"):
+      if (args == "23"):
         resp = "Oskar Lindblom"
       if (args == "47"):
         resp = "Andrew MacDonald"  
-      if (args == "23"):
-        resp = "Brandon Manning"  
       if (args == "9"):
         resp = "Ivan Provorov"
       if (args == "19"):
@@ -306,9 +360,13 @@ class bot(ch.RoomManager):
       if (args == "6"):
         resp = "Travis Sanheim"  
       if (args == "17"):
-        resp = "Wayne Simmonds"  
+        resp = "Wayne Simmonds"
+      if (args == "25"):
+        resp = "James van Riemsdyk"		
       if (args == "93"):
         resp = "Jake Voracek"
+      if (args == "24"):
+        resp = "Misha Vorobyev"
       if (args == "40"):
         resp = "Jordan Weal"
       if (args == "22"):
@@ -333,12 +391,27 @@ class bot(ch.RoomManager):
         resp = "Eric Desjardins"
       if (args == "32"):
         resp = "Mark Streit"
+      if (args == "00"):
+        resp = "Gritty"
       room.message("Flyers goal scored by #"+args+" "+resp+"!")
 
     if cmd.lower() == "gus" and prfx:
       data = ["https://i.imgur.com/MD9v228.jpg", "https://i.imgur.com/NxIxHks.jpg", "https://i.imgur.com/B8AF2kW.jpg", "https://i.imgur.com/txywtE0.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
+	  
+    if cmd.lower() == "bobi" and prfx:
+      data = ["https://i.imgur.com/RCw56IV.png", "http://i.imgur.com/zEB2yPc.jpg", "https://i.imgur.com/p5WRGzL.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+
+    if cmd.lower() == "tobi" and prfx:
+      data = ["https://i.imgur.com/WRFsdWk.png", "https://i.imgur.com/8zH4pJ2.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+
+    if cmd.lower() == "bobitobi" and prfx:
+      room.message("https://i.imgur.com/bqA6G8z.png")	  
 	  
     if cmd.lower() == "legionofdoom" and prfx:
       data = ["https://i.imgur.com/qCxFxvg.jpg", "https://i.imgur.com/cBOOBbs.jpg", "https://i.imgur.com/ArNAXMy.jpg", "https://i.imgur.com/ghAT65v.png", "https://i.imgur.com/o4bt9XY.jpg", "https://i.imgur.com/OW1wczK.jpg", "https://i.imgur.com/bPouF9z.jpg", "https://i.imgur.com/JUIsmkO.png", "https://i.imgur.com/vzfl9oZ.jpg", "https://i.imgur.com/ThbFFs2.jpg"]
@@ -354,14 +427,37 @@ class bot(ch.RoomManager):
       data = ["https://i.imgur.com/l9moZNr.png", "https://i.imgur.com/YsTViAC.png", "https://i.imgur.com/6kHAxlZ.png", "https://i.imgur.com/f3VAfuA.png", "https://i.imgur.com/qU2PBQk.png"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
+	  
+	  
+    if cmd.lower() == "serena" and prfx:
+      data = ["https://i.imgur.com/juBaWWk.jpg", "https://i.imgur.com/M1sE3Ix.jpg", "https://i.imgur.com/RUXBHgY.jpg", "https://i.imgur.com/UIbsSLT.jpg", "https://i.imgur.com/ktGTTir.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+	  
+    if cmd.lower() == "t" and prfx:
+      data = ["https://www.picgifs.com/alphabets/alphabets/dancing/alphabets-dancing-282251.gif", "https://thumbs.gfycat.com/PlaintivePitifulGossamerwingedbutterfly-size_restricted.gif", "https://i.imgur.com/7pl19lU.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+	  
+    if cmd.lower() == "embiid" and prfx:
+      data = ["https://i.imgur.com/UEdZOZp.jpg", "https://i.imgur.com/fXs3oRe.jpg", "https://i.imgur.com/qhqw8Bt.jpg", "https://media.giphy.com/media/9Vtj7JmWJj4wX74FOM/giphy.gif", "https://media.tenor.com/images/5b36c3b41e3a354d75e23f21384bf66d/tenor.gif", "https://chumley.barstoolsports.com/wp-content/uploads/2017/11/21/embiid-flop.gif", "https://media3.giphy.com/media/xT0xejN2KIPYE2BhGo/giphy.gif", "https://media1.giphy.com/media/405pzDdxgreKRHcZf1/giphy.gif", "https://media.giphy.com/media/3iDxdtUdCfY5iIGWdA/giphy.gif", "https://media1.tenor.com/images/b2c7b3ae596bff40d52cacb143d848bb/tenor.gif", "https://media3.giphy.com/media/8cErQ5yxCbh0tTFovQ/giphy.gif"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
+	  
+	  
 
     if cmd.lower() == "dario" and prfx:
       data = ["https://i.imgur.com/8hbwtfV.png", "https://i.imgur.com/4MrAwwn.png", "https://i.imgur.com/YETUJmw.jpg", "http://i.imgur.com/tmVHbPz.png", "https://i.imgur.com/tLKWd9M.jpg", "https://i.imgur.com/NI8d7zQ.jpg", "https://i.imgur.com/F5J2oiN.jpg", "https://i.imgur.com/CohwTgp.jpg", "https://i.imgur.com/MlAgWdP.jpg", "https://i.imgur.com/JreG2cD.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
+	  
+    if cmd.lower() == "kork" and prfx:
+      data = ["https://i.imgur.com/HOeUJSw.jpg", "https://i.imgur.com/DkyI5aO.jpg", "https://i.imgur.com/BPaVPEN.jpg", "https://i.imgur.com/VexRCZf.jpg", "https://i.imgur.com/49vMXwC.jpg", "https://i.imgur.com/cmVAatc.jpg", "https://i.imgur.com/MhJieo8.jpg"]
+      random_pic = data[randint(0, len(data) -1)]
+      room.message(random_pic)
 
     if cmd.lower() == "fultz" and prfx:
-      data = ["https://i.imgur.com/eGNnEMB.png", "https://i.imgur.com/JK1z3aA.jpg", "https://i.imgur.com/7KPclUS.jpg", "http://i.imgur.com/7jfDQ3F.jpg"]
+      data = ["https://media.giphy.com/media/l2ozJgD2s5RQAa7aIk/giphy.gif", "https://i.imgur.com/eGNnEMB.png", "https://i.imgur.com/JK1z3aA.jpg", "https://i.imgur.com/7KPclUS.jpg", "http://i.imgur.com/7jfDQ3F.jpg"]
       random_pic = data[randint(0, len(data) -1)]
       room.message(random_pic)
 	  
@@ -371,7 +467,7 @@ class bot(ch.RoomManager):
       room.message("Just flipped a coin. It's "+random_pic+".")
 
     if cmd.lower() == "btc" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/btcusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/btcusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -407,7 +503,7 @@ class bot(ch.RoomManager):
 
 
     if cmd.lower() == "bch" and prfx or cmd.lower() == "bcash" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/bchusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/bchusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -418,7 +514,7 @@ class bot(ch.RoomManager):
       room.message("BCH: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "eth" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/ethusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/ethusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -429,7 +525,7 @@ class bot(ch.RoomManager):
       room.message("ETH: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "ltc" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/ltcusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/ltcusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -440,7 +536,7 @@ class bot(ch.RoomManager):
       room.message("LTC: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "ripple" and prfx or cmd.lower() == "xrp" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xrpusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/xrpusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -451,7 +547,7 @@ class bot(ch.RoomManager):
       room.message("XRP: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "etc" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/etcusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/etcusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -462,7 +558,7 @@ class bot(ch.RoomManager):
       room.message("ETC: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "zec" and prfx or cmd.lower() == "zcash" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/zecusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/zecusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -473,7 +569,7 @@ class bot(ch.RoomManager):
       room.message("ZEC: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "dash" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/dashusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/dashusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -484,7 +580,7 @@ class bot(ch.RoomManager):
       room.message("DASH: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 	  
     if cmd.lower() == "xmr" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xmrusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/xmrusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -495,7 +591,7 @@ class bot(ch.RoomManager):
       room.message("XMR: currently at $"+last+", high today of $"+high+", low of $"+low+", change of %.3f" % percentage+"%")
 
     if cmd.lower() == "monero" and prfx:
-      r = requests.get(url='https://api.cryptowat.ch/markets/bitfinex/xmrusd/summary')
+      r = requests.get(url='https://api.cryptowat.ch/markets/kraken/xmrusd/summary')
       x = r.json()
       y = x["result"]["price"]
       z = y["change"]
@@ -597,7 +693,9 @@ class bot(ch.RoomManager):
                 room.message(output)
     if "wew" in cmd.lower() and user.name != "acleebot":
        room.message("wew")
-rooms = ["acmemed", "nbcsphilly", "acmemed2"]
+    if "ayy" in cmd.lower() and user.name != "acleebot":
+       room.message("lmao")
+rooms = ["acmemed", "csnphilly", "acleenba", "nbcsphilly", "acmemed2"]
 ##rooms = ["acmemed"]
 username = "acleebot"
 password = ""
