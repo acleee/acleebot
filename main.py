@@ -70,3 +70,4 @@ if __name__ == "__main__":
     bot.easy_start([testRoom, acleeRoom],
                    username,
                    password)
+    command_df = get_commands_from_database()
