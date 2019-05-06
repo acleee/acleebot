@@ -11,13 +11,9 @@ from bot import commands
 # Import config
 from config import username
 from config import password
-from config import room
+from config import testRoom
+from config import acleeRoom
 
-
-if sys.version_info[0] > 2:
-    import urllib.request as urlreq
-else:
-    import urllib2 as urlreq
 
 
 class bot(ch.RoomManager):
@@ -30,9 +26,10 @@ class bot(ch.RoomManager):
         self.setFontFace("Arial")
         self.setFontSize(11)
 
-    def chat(self, message, room):
-        """Trigger upon chat."""
-        type = message.type.values[0]
+    def chat(self, row, room):
+        """Construct a response to a valid command."""
+        type = row['type']
+        message = row['content']
         print('type', type)
         response = 'under development tbh'
         print('type = ', type)
@@ -50,26 +47,26 @@ class bot(ch.RoomManager):
 
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
-        print("[{0}] {1}: {2}".format(room.name, user.name.title(),
+        print("[{0}] {1}: {2}".format(room.name,
+                                      user.name.title(),
                                       message.body))
-        try:
-            cmd, args = message.body.split(" ", 1)
-        except IndexError:
-            cmd, args = message.body, ""
 
+        cmd = message.body.replace(" ", '')
+        print('cmd = ', cmd)
         # Trigger if chat message is a command
         if cmd[0] == "!":
-            prfx = True
             cmd = cmd[1:].lower()
-            print('cmd = ', cmd)
+            print('THIS IS A COMMAND = ', cmd)
             response = db.cm(cmd)
+            print('response = ', response)
             self.chat(response, room)
             print("TESTING")
         else:
+            # Add special commands here
             fullmsg = cmd
 
 
 if __name__ == "__main__":
-    bot.easy_start([room],
+    bot.easy_start([testRoom, acleeRoom],
                    username,
                    password)

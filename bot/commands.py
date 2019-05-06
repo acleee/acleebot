@@ -1,16 +1,17 @@
 """Basic plaintext responses."""
 import requests
 
+
 def send_basic_message(message):
     """Send basic text message to room."""
-    msg = message.msg.values[0]
+    msg = message
     print(msg)
     return message
 
 
 def get_crypto_price(message):
     """Get crypto price for provided ticker label."""
-    req = requests.get(url=message.msg.values[0])
+    req = requests.get(url=message)
     x = req.json()
     y = x["result"]["price"]
     z = y["change"]
@@ -18,7 +19,7 @@ def get_crypto_price(message):
     high = str(y["high"])
     low = str(y["low"])
     percentage = z["percentage"]*100
-    msg = message.cmd.values[0] \
+    msg = message.cmd \
         + ": currently at $" + last \
         + ", high today of $" + high \
         + ", low of $" + low \
@@ -52,3 +53,23 @@ def get_nba_score(message):
 def get_hockey_goals(message):
     """Get hockey goals per player."""
     pass
+
+
+def get_user_avatar(message, args):
+    """Retrieve avatar for provided user."""
+    name = str(args.lower())
+    msg = "http://fp.chatango.com/profileimg/" \
+        + name[0] + "/" \
+        + name[1] + "/" \
+        + name + "/full.jpg"
+    return msg
+
+
+def say_wew():
+    """Say 'wew' in chat."""
+    return 'wew'
+
+
+def say_lmao():
+    """Reply with 'lmao' whenever a user says 'ayyy'."""
+    return 'lmao'

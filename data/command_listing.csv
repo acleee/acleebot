@@ -64,6 +64,18 @@ legionofdoom,https://i.imgur.com/qCxFxvg.jpg; https://i.imgur.com/cBOOBbs.jpg; h
 molly,https://i.imgur.com/l9moZNr.png; https://i.imgur.com/YsTViAC.png; https://i.imgur.com/6kHAxlZ.png; https://i.imgur.com/f3VAfuA.png; https://i.imgur.com/qU2PBQk.png,random
 dario,https://i.imgur.com/YETUJmw.jpg; http://i.imgur.com/tmVHbPz.png; https://i.imgur.com/tLKWd9M.jpg; https://i.imgur.com/NI8d7zQ.jpg; https://i.imgur.com/F5J2oiN.jpg; https://i.imgur.com/CohwTgp.jpg; https://i.imgur.com/MlAgWdP.jpg; https://i.imgur.com/JreG2cD.jpg,random
 fultz,https://i.imgur.com/eGNnEMB.png; https://i.imgur.com/JK1z3aA.jpg; https://i.imgur.com/7KPclUS.jpg; http://i.imgur.com/7jfDQ3F.jpg,random
+bales,https://i.imgur.com/MOdT9gN.png; https://i.imgur.com/frvo5Ke.png; https://i.imgur.com/nioNcAV.png,
+harper,https://i.imgur.com/XDhwj0t.jpg,
+ynwa,YNWA,
+hq,https://i.imgur.com/P7CzhYN.png,
+kelce,https://i.imgur.com/9htC3ze.png,
+jorge,HIP HIP!,
+peach,put on UFC NOW,
+commands,Incomplete list: https://github.com/acleee/acleebot,
+gone,"SWING AND A LONG DRIVE, DEEP LEFT FIELD. THAT BALL IS OUTTAAAAA HERREEEEE!",
+scherzer,https://i.imgur.com/Tg45vDy.jpg,
+pool,YNWA,
+banned,https://i.imgur.com/xuNUZb4.png,
 coinflip,,crypto
 btc,https://api.cryptowat.ch/markets/bitfinex/btcusd/summary,crypto
 bch,https://api.cryptowat.ch/markets/bitfinex/bchusd/summary,crypto
@@ -74,9 +86,9 @@ etc,https://api.cryptowat.ch/markets/bitfinex/etcusd/summary,crypto
 zec,https://api.cryptowat.ch/markets/bitfinex/zecusd/summary,crypto
 dash,https://api.cryptowat.ch/markets/bitfinex/dashusd/summary,crypto
 xmr,https://api.cryptowat.ch/markets/bitfinex/xmrusd/summary,crypto
-monero,,crypto
-sc,,crypto
-doge,,crypto
-getavi,,avi
-score,,nba
-goal,,goal
+monero,https://api.cryptowat.ch/markets/kraken/xmrusd/summary,crypto
+sc,https://api.cryptowat.ch/markets/kraken/dogebtc/summary,crypto
+doge,https://api.cryptowat.ch/markets/kraken/dogebtc/summary,crypto
+getavi,http://fp.chatango.com/profileimg/,avi
+score,https://data.nba.com/data/5s/v2015/json/mobile_teams/nba/2017/scores/00_todays_scores.json,nba
+goal,Sean Couturier; Valtteri Filppula; Christian Folin; Claude Giroux; Shayne Gostisbehere; Radko Gudas; Robert Hagg; Travis Konecny; Scott Laughton; Jorald 'Jori' Lehtera; Taylor Leier; Oskar Lindblom; Andrew MacDonal; Ivan Provorov; Nolan Patrick; Scott Hartnell; Michael Raffl; Travis Sanheim; Wayne Simmonds; James van Riemsdyk; Jake Voracek; Misha Vorobyev; Jordan Weal; Dale Weise; Bernie Paren; Bobby Clarke; Eric Lindros; John LeClair; Danny Briere; Kimmo Timonen; Mike Richards; Eric Desjardins; Mark Streit; Gritty;,goal
