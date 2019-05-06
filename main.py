@@ -2,21 +2,6 @@
 # Core imports
 import sys
 import urllib.request as urlreq
-from time import sleep
-from random import randint
-import json
-import requests
-import sys
-import os
-import cgi
-import traceback
-import time
-import urllib
-import datetime
-import binascii
-import threading
-import random
-from xml.etree import cElementTree as ET
 # Ch.py Chatango Framework
 from bot import ch
 # Import directoryt of commands
@@ -69,13 +54,14 @@ class bot(ch.RoomManager):
                                       message.body))
         try:
             cmd, args = message.body.split(" ", 1)
-        except:
+        except IndexError:
             cmd, args = message.body, ""
 
         # Trigger if chat message is a command
         if cmd[0] == "!":
             prfx = True
             cmd = cmd[1:].lower()
+            print('cmd = ', cmd)
             response = db.cm(cmd)
             self.chat(response, room)
             print("TESTING")

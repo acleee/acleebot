@@ -8,7 +8,7 @@
 [![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/acleebot.svg?style=flat-square&colorB=daa000&colorA=36363e&logo=GitHub)](https://github.com/toddbirchard/acleebot/stargazers)
 [![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/acleebot.svg?style=flat-square&colorB=FCC624&colorA=36363e&logo=GitHub)](https://github.com/toddbirchard/acleebot/network)
 
-The baddest bot in the game right now.
+The baddest bot in the game right now. Uses the *ch.py* Chatango framework for joining and listening for user messages. If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command.
 
 ![acleebot](https://github.com/toddbirchard/acleebot/blob/master/img/acleebot.jpg)
 
