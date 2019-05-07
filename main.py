@@ -1,7 +1,4 @@
 """Entrypoint for app."""
-# Core imports
-import sys
-import urllib.request as urlreq
 # Ch.py Chatango Framework
 from bot import ch
 # Import directoryt of commands
@@ -9,11 +6,7 @@ from bot import db
 # Import commands
 from bot import commands
 # Import config
-from config import username
-from config import password
-from config import testRoom
-from config import acleeRoom
-
+from config import username, password, testRoom, blabroom, acleeRoom
 
 
 class bot(ch.RoomManager):
@@ -55,19 +48,16 @@ class bot(ch.RoomManager):
         print('cmd = ', cmd)
         # Trigger if chat message is a command
         if cmd[0] == "!":
+            print(cmd)
             cmd = cmd[1:].lower()
-            print('THIS IS A COMMAND = ', cmd)
             response = db.cm(cmd)
-            print('response = ', response)
             self.chat(response, room)
-            print("TESTING")
         else:
             # Add special commands here
             fullmsg = cmd
 
 
 if __name__ == "__main__":
-    bot.easy_start([testRoom, acleeRoom],
+    bot.easy_start([testRoom, acleeRoom, blabroom],
                    username,
                    password)
-    command_df = get_commands_from_database()
