@@ -19,7 +19,7 @@ def get_crypto_price(message):
     high = str(y["high"])
     low = str(y["low"])
     percentage = z["percentage"]*100
-    msg = message.cmd \
+    msg = message \
         + ": currently at $" + last \
         + ", high today of $" + high \
         + ", low of $" + low \

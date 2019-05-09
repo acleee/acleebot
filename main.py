@@ -23,9 +23,7 @@ class bot(ch.RoomManager):
         """Construct a response to a valid command."""
         type = row['type']
         message = row['content']
-        print('type', type)
         response = 'under development tbh'
-        print('type = ', type)
         if (type == 'basic'):
             response = commands.send_basic_message(message)
         if (type == 'crypto'):
@@ -49,12 +47,12 @@ class bot(ch.RoomManager):
         # Trigger if chat message is a command
         if cmd[0] == "!":
             print(cmd)
-            cmd = cmd[1:].lower()
-            response = db.cm(cmd)
-            self.chat(response, room)
-        else:
-            # Add special commands here
-            fullmsg = cmd
+            try:
+                cmd = cmd[1:].lower()
+                response = db.cm(cmd)
+                self.chat(response, room)
+            except KeyError:
+                pass
 
 
 if __name__ == "__main__":

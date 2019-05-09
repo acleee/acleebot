@@ -1,6 +1,9 @@
 # Backup file
 backup.py
 
+# Data
+data/command_listing.numbers
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
