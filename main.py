@@ -28,6 +28,8 @@ class bot(ch.RoomManager):
             response = commands.send_basic_message(message)
         if (type == 'crypto'):
             response = commands.get_crypto_price(message)
+        if (type == 'random'):
+            response = commands.randomize_image(message)
         if (type == 'nba score'):
             response = commands.get_nba_score(message)
         if (type == 'goal'):

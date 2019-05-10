@@ -1,5 +1,6 @@
 """Basic plaintext responses."""
 import requests
+from random import randint
 
 
 def send_basic_message(message):
@@ -63,6 +64,13 @@ def get_user_avatar(message, args):
         + name[1] + "/" \
         + name + "/full.jpg"
     return msg
+
+
+def randomize_image(message):
+    """Select a random image."""
+    list = message.replace(' ', '').split(';')
+    random_pic = message[randint(0, len(list)-1)]
+    return random_pic
 
 
 def say_wew():

@@ -18,20 +18,20 @@ def get_commands_from_database():
                + database_schema + '\".\"'
                + database_table + '\";')
     engine.execute(sql)
-    command_df = pd.read_sql_table(con=engine,
-                                   schema=database_schema,
-                                   table_name=database_table,
-                                   index_col="cmd")
-    return command_df
+    commands_df = pd.read_sql_table(con=engine,
+                                    schema=database_schema,
+                                    table_name=database_table,
+                                    index_col="cmd")
+    return commands_df
 
 
-command_df = get_commands_from_database()
+commands_df = get_commands_from_database()
 
 
 def cm(message):
     """Read list of commands from CSV."""
     # Get Table from database
-    row = command_df.loc[message]
+    row = commands_df.loc[message]
     response = {
         'content': row['msg'],
         'type': row['type']
