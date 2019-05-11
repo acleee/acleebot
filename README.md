@@ -14,91 +14,9 @@ The baddest bot in the game right now. Uses the *ch.py* Chatango framework for j
 
 ## Commands
 
-Commands are separated by associated logic:
+Chat commands have 3 properties: 
+* **Command name**: Text which triggers a command (ie: !test)
+* **Response**: Value returned by a command, either to be sent directly as a chat, or additionally processed depending on command type.
+* **Type**: Determines logic associated with a command.
 
-### Basic Commands
-
-Basic commands listen for commands in chat and reply with a plaintext response:
-
-- pls
-- ping
-- donate
-- de
-- aclee
-- cheesesteak
-- dumps
-- lag
-- wawa
-- nice
-- bro
-- pogchamp
-- fap
-- stoned
-- dab
-- woo
-- amac
-- frosty
-- meek
-- suicide
-- popcorn
-- rocky
-- clap
-- stomp
-- htc
-- no1
-- count
-- tnuoc
-- ftc
-- doop
-- jj
-- lgf
-- ttp
-- belinelli
-- marco
-- ftp
-- tj
-- goat
-- king
-- panduh
-- woat
-- nephew
-- dance
-- chant
-- falg
-- gilf
-- baggage
-- hype
-- reee
-- leafs
-- metsfan
-- jesus
-- bloodhorse
-- sewerchat
-- kash
-- trevis
-- quiplash
-- gus
-- legionofgloom
-- smirk
-- peco
-
-### Crypto Commands
-
-Crypto commands retrieve latest crypto prices from an API:
-
-- btc
-- bch
-- eth
-- ltc
-- ripple
-- etc
-- zec
-- dash
-- xmr
-
-## Dependencies
-
-This bot depends on the following:
-
-- ch.py
-- pandas
+A directory of all commands can be found here: http://broiestbro.com/commands/
