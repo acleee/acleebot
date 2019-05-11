@@ -3,6 +3,7 @@ backup.py
 
 # Data
 data/command_listing.numbers
+data
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
