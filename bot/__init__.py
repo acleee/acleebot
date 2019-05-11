@@ -1,2 +1,2 @@
-"""Initialize bot."""
+"""Initialize bot module."""
 all = ['commands', 'db', 'ch']
