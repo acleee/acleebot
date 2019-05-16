@@ -32,6 +32,8 @@ class bot(ch.RoomManager):
             response = commands.randomize_image(message)
         if (type == 'nba score'):
             response = commands.get_nba_score(message)
+        if (type == 'nba score'):
+            response = commands.get_nba_score(message)
         if (type == 'goal'):
             print('goal command')
         if (type == 'custom'):
@@ -45,16 +47,14 @@ class bot(ch.RoomManager):
                                       message.body))
 
         cmd = message.body.replace(" ", '')
-        print('cmd = ', cmd)
         # Trigger if chat message is a command
-        if cmd[0] == "!":
-            print(cmd)
-            try:
-                cmd = cmd[1:].lower()
+        try:
+            if cmd[0] == "!":
+                cmd = cmd[1::].lower()
                 response = db.cm(cmd)
                 self.chat(response, room)
-            except KeyError:
-                pass
+        except KeyError:
+            pass
 
 
 if __name__ == "__main__":

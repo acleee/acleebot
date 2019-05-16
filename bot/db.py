@@ -24,9 +24,11 @@ commands_df = get_commands_from_database()
 def cm(message):
     """Read list of commands from database."""
     # Get Table from database
+    print('message = ', message)
     row = commands_df.loc[message]
+    print('row = ', row)
     response = {
-        'content': row['msg'],
+        'content': row['response'],
         'type': row['type']
         }
     print('response = ', response)

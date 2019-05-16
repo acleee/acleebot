@@ -5,6 +5,7 @@ from random import randint
 
 def send_basic_message(message):
     """Send basic text message to room."""
+    print('BASIC')
     msg = message
     print(msg)
     return message
