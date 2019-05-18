@@ -26,10 +26,8 @@ def cm(message):
     # Get Table from database
     print('message = ', message)
     row = commands_df.loc[message]
-    print('row = ', row)
     response = {
         'content': row['response'],
         'type': row['type']
         }
-    print('response = ', response)
     return response
