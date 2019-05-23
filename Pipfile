@@ -7,7 +7,8 @@ name = "pypi"
 requests = "*"
 pandas = "*"
 sqlalchemy = "*"
-psycopg2-binary="*"
+psycopg2-binary = "*"
+bs4 = "*"
 gunicorn = "*"
 
 [dev-packages]

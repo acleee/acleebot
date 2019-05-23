@@ -26,6 +26,8 @@ class bot(ch.RoomManager):
         response = 'under development tbh'
         if (type == 'basic'):
             response = commands.send_basic_message(message)
+        if (type == 'scrape'):
+            response = commands.scrape_random_image(message)
         if (type == 'crypto'):
             response = commands.get_crypto_price(message)
         if (type == 'random'):
