@@ -4,12 +4,12 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-requests = "*"
-pandas = "*"
-sqlalchemy = "*"
-psycopg2-binary = "*"
-bs4 = "*"
-gunicorn = "*"
+Requests = "*"
+Pandas = "*"
+SQLAlchemy = "*"
+Psycopg2-Binary = "*"
+BS4 = "*"
+Gunicorn = "*"
 
 [dev-packages]
 pytest = "*"

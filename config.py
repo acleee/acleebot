@@ -1,15 +1,15 @@
 """Bot configuration variables."""
-import os
+from os import environ
 
 # Bot vars
-testRoom = os.environ.get('TESTROOM')
-acleeRoom = os.environ.get('ACLEEROOM')
-blabroom = os.environ.get('BLABROOM')
-username = os.environ.get('USERNAME')
-password = os.environ.get('PASSWORD')
+testRoom = environ.get('TESTROOM')
+acleeRoom = environ.get('ACLEEROOM')
+blabroom = environ.get('BLABROOM')
+username = environ.get('USERNAME')
+password = environ.get('PASSWORD')
 
 # DB vars
-database_uri = os.environ.get('SQLALCHEMY_DATABASE_URI')
-database_name = os.environ.get('SQLALCHEMY_DATABASE_NAME')
-database_table = os.environ.get('SQLALCHEMY_TABLE')
-database_schema = os.environ.get('SQLALCHEMY_DB_SCHEMA')
+database_uri = environ.get('SQLALCHEMY_DATABASE_URI')
+database_name = environ.get('SQLALCHEMY_DATABASE_NAME')
+database_table = environ.get('SQLALCHEMY_TABLE')
+database_schema = environ.get('SQLALCHEMY_DB_SCHEMA')
