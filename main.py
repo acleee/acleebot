@@ -38,6 +38,8 @@ class bot(ch.RoomManager):
             response = commands.get_nba_score(message)
         if (type == 'goal'):
             print('goal command')
+        if (type == 'random'):
+            response = commands.randomize_image(message)
         if (type == 'custom'):
             print('custom command')
         room.message(response)

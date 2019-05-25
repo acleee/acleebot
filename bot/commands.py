@@ -1,7 +1,6 @@
 """Basic plaintext responses."""
 import requests
 from random import randint
-import requests
 from bs4 import BeautifulSoup
 import random
 
@@ -24,8 +23,7 @@ def get_crypto_price(message):
     high = str(y["high"])
     low = str(y["low"])
     percentage = z["percentage"]*100
-    msg = message \
-        + ": currently at $" + last \
+    msg = "Currently at $" + last \
         + ", high today of $" + high \
         + ", low of $" + low \
         + ", change of %.3f" % percentage + "%"
@@ -73,7 +71,7 @@ def get_user_avatar(message, args):
 def randomize_image(message):
     """Select a random image."""
     list = message.replace(' ', '').split(';')
-    random_pic = message[randint(0, len(list)-1)]
+    random_pic = list[randint(0, len(list)-1)]
     return random_pic
 
 
@@ -100,8 +98,6 @@ def scrape_random_image(url):
     link = BeautifulSoup(r.content, 'html.parser')
     images = link.find_all("img")
     images = [img.get('src') for img in images if not 'redditstatic' in img]
-    print(images)
-    print(len(images))
     rand = 0
     for x in range(10):
         rand = random.randint(1, len(images))
