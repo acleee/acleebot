@@ -1,7 +1,7 @@
 """Core bot logic."""
 from . import ch
 from . import db
-from .commands import send_basic_message, scrape_random_image, get_crypto_price, get_nba_score, randomize_image
+from .commands import send_basic_message, scrape_random_image, get_crypto_price, get_nba_score, randomize_image, get_stock_price, get_avatar
 
 
 class Bot(ch.RoomManager):
@@ -31,6 +31,10 @@ class Bot(ch.RoomManager):
             response = get_nba_score(message)
         if (type == 'goal'):
             print('goal command')
+        if (type == 'stock'):
+            response = get_stock_price(message)
+        if (type == 'avi'):
+            response = get_avatar(message)
         room.message(response)
 
     def onMessage(self, room, user, message):

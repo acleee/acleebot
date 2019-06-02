@@ -50,7 +50,7 @@ def get_nba_score(message):
                 msg = home_team_name + " " + str(home_team_score) + " - " \
                     + visitor_team_name + " " \
                     + str(visitor_team_score)
-                return msg
+        return msg
 
 
 def get_hockey_goals(message):
@@ -88,18 +88,46 @@ def say_lmao():
 def scrape_random_image(url):
     """Attempt to get image."""
     headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max-Age': '3600',
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Methods': 'GET',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '3600',
+      'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
     r = requests.get(url, headers=headers)
     link = BeautifulSoup(r.content, 'html.parser')
     images = link.find_all("img")
-    images = [img.get('src') for img in images if not 'redditstatic' in img]
+    images = [img.get('src') for img in images if 'redditstatic' not in img]
     rand = 0
     for x in range(10):
         rand = random.randint(1, len(images))
     if images:
         return link.find_all("img")[rand].get('src')
+
+
+def get_stock_price(symbol):
+    r = requests.get('https://api.iextrading.com/1.0/stock/'+ symbol + '/batch?types=quote')
+    x = r.json()
+    y = x["quote"]
+    companyName = y["companyName"]
+    open = str(y["open"])
+    high = str(y["high"])
+    low = str(y["low"])
+    close = str(y["previousClose"])
+    perc = y["changePercent"]*100
+    if perc < 0:
+        plusminus = "down"
+        perc = perc*-1
+    else:
+        plusminus = "up"
+    perc = round(perc, 2)
+    pct = str(perc)
+    last = str(y["latestPrice"])
+    message = "%s (%s) : currently at $%s, last opened at $%s, closed yesterday at $%s, %s %s today." % (companyName, last, open, close, plusminus, pct)
+    return message
+
+def get_avatar(name):
+    try:
+        return "http://fp.chatango.com/profileimg/" + name[0] + "/" + name[1] + "/" + name + "/full.jpg"
+    except:
+        return name + " is not (yet) a chatango username."
