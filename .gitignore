@@ -109,3 +109,6 @@ ENV/
 
 # DS Store
 .DS_Store
+
+# Gcloud
+HackersAndSlackers-b7835abe15a0.json

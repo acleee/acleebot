@@ -10,6 +10,7 @@ SQLAlchemy = "*"
 Psycopg2-Binary = "*"
 BS4 = "*"
 Gunicorn = "*"
+google-cloud-storage = "*"
 
 [dev-packages]
 pytest = "*"

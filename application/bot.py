@@ -1,7 +1,14 @@
 """Core bot logic."""
 from . import ch
 from . import db
-from .commands import send_basic_message, scrape_random_image, get_crypto_price, get_nba_score, randomize_image, get_stock_price, get_avatar
+from .commands.basic import send_basic_message
+from .commands.scrape import scrape_random_image
+from .commands.crypto import get_crypto_price
+from .commands.nba import get_nba_score
+from .commands.random import randomize_image
+from .commands.stock import get_stock_price
+from .commands.avatar import get_user_avatar
+from .commands.storage import fetch_image_from_storage
 
 
 class Bot(ch.RoomManager):
@@ -19,22 +26,24 @@ class Bot(ch.RoomManager):
         type = row['type']
         message = row['content']
         response = 'under development tbh'
-        if (type == 'basic'):
+        if type == 'basic':
             response = send_basic_message(message)
-        if (type == 'scrape'):
+        if type == 'scrape':
             response = scrape_random_image(message)
-        if (type == 'crypto'):
+        if type == 'crypto':
             response = get_crypto_price(message)
-        if (type == 'random'):
+        if type == 'random':
             response = randomize_image(message)
-        if (type == 'nba score'):
+        if type == 'nba score':
             response = get_nba_score(message)
-        if (type == 'goal'):
+        if type == 'goal':
             print('goal command')
-        if (type == 'stock'):
+        if type == 'stock':
             response = get_stock_price(message)
-        if (type == 'avi'):
-            response = get_avatar(message)
+        if type == 'avi':
+            response = get_user_avatar(message)
+        if type == 'storage':
+            response = fetch_image_from_storage(message)
         room.message(response)
 
     def onMessage(self, room, user, message):
