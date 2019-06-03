@@ -9,6 +9,7 @@ from .commands.random import randomize_image
 from .commands.stock import get_stock_price
 from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
+from .commands.reddit import random_subreddit_image
 
 
 class Bot(ch.RoomManager):
@@ -44,6 +45,8 @@ class Bot(ch.RoomManager):
             response = get_user_avatar(message)
         if type == 'storage':
             response = fetch_image_from_storage(message)
+        if type == 'reddit':
+            response = random_subreddit_image(message)
         room.message(response)
 
     def onMessage(self, room, user, message):
