@@ -14,7 +14,10 @@ def random_subreddit_image(message):
     endpoint = message + 'new.json?sort=new'
     print('endpoint = ', endpoint)
     res = requests.get(endpoint, headers=headers).json()
+    print('res = ', res)
     images = [image['data']['preview']['images'][0]['source']['url'] for image in res['data']['children']]
+    print('images = ', images)
     rand = randint(0, len(images) - 1)
     image = images[rand]
+    print('image = ', image)
     return image

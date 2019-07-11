@@ -55,8 +55,8 @@ class Bot(ch.RoomManager):
                                       user.name.title(),
                                       message.body))
 
-        cmd = message.body.replace(" ", '')
-        cmd = cmd.lower()
+        # cmd = message.body.replace(" ", '')
+        cmd = message.body.lower()
         # Trigger if chat message is a command
         try:
             if cmd[0] == "!":
