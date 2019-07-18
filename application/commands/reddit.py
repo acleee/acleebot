@@ -12,11 +12,8 @@ def random_subreddit_image(message):
       'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
     endpoint = message + 'new.json?sort=new'
-    print('endpoint = ', endpoint)
     res = requests.get(endpoint, headers=headers).json()
-    print('res = ', res)
     images = [image['data']['preview']['images'][0]['source']['url'] for image in res['data']['children']]
-    print('images = ', images)
     rand = randint(0, len(images) - 1)
     image = images[rand]
     print('image = ', image)

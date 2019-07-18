@@ -6,6 +6,7 @@ testRoom = environ.get('CHATANGO_TEST_ROOM')
 acleeRoom = environ.get('CHATANGO_ACLEE_ROOM')
 blabRoom = environ.get('CHATANGO_BLAB_ROOM')
 sixersRoom = environ.get('CHATANGO_SIXERS_ROOM')
+philliesRoom = environ.get('CHATANGO_PHILLIES_ROOM')
 username = environ.get('CHATANGO_USERNAME')
 password = environ.get('CHATANGO_PASSWORD')
 
@@ -19,3 +20,7 @@ database_schema = environ.get('SQLALCHEMY_DB_SCHEMA')
 gcloudCredentials = environ.get('GOOGLE_APPLICATION_CREDENTIALS')
 gcloudBucketName = environ.get('GOOGLE_BUCKET_NAME')
 gcloudBucketUrl = environ.get('GOOGLE_BUCKET_URL')
+
+# Giphy
+giphy_api_key = environ.get('GIPHY_API_KEY')
+iex_api_key = environ.get('IEX_API_TOKEN')

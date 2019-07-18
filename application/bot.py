@@ -10,6 +10,8 @@ from .commands.stock import get_stock_price
 from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
 from .commands.reddit import random_subreddit_image
+from .commands.giphy import random_giphy_image
+from .commands.urban import urban_dictionary_defintion
 
 
 class Bot(ch.RoomManager):
@@ -22,7 +24,7 @@ class Bot(ch.RoomManager):
         self.setFontFace("Arial")
         self.setFontSize(11)
 
-    def chat(self, row, room):
+    def chat(self, row, room, args):
         """Construct a response to a valid command."""
         type = row['type']
         message = row['content']
@@ -39,14 +41,21 @@ class Bot(ch.RoomManager):
             response = get_nba_score(message)
         if type == 'goal':
             print('goal command')
-        if type == 'stock':
-            response = get_stock_price(message)
+        if type == 'stock' and args:
+            response = get_stock_price(args)
         if type == 'avi':
             response = get_user_avatar(message)
         if type == 'storage':
             response = fetch_image_from_storage(message)
         if type == 'reddit':
             response = random_subreddit_image(message)
+        if type == 'giphy':
+            response = random_giphy_image(message)
+        if type == 'giphysearch' and args:
+            response = random_giphy_image(args)
+        if type == 'urban' and args:
+            response = urban_dictionary_defintion(args)
+        print('response =', response)
         room.message(response)
 
     def onMessage(self, room, user, message):
@@ -54,14 +63,16 @@ class Bot(ch.RoomManager):
         print("[{0}] {1}: {2}".format(room.name,
                                       user.name.title(),
                                       message.body))
-
-        # cmd = message.body.replace(" ", '')
         cmd = message.body.lower()
         # Trigger if chat message is a command
         try:
             if cmd[0] == "!":
-                cmd = cmd[1::].lower()
-                response = db.cm(cmd)
-                self.chat(response, room)
+                req = cmd[1::].lower()
+                args = None
+                if ' ' in cmd:
+                    req = cmd.split(' ', 1)[0][1::]
+                    args = cmd.split(' ', 1)[1]
+                response = db.cm(req)
+                self.chat(response, room, args)
         except KeyError:
             pass
