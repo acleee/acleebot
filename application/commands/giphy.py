@@ -13,8 +13,8 @@ def random_giphy_image(searchTerm):
               'rating': 'r',
               'lang': 'en'}
     res = requests.get('https://api.giphy.com/v1/gifs/search', params=params)
-    try:
+    if len(res.json()['data']):
         image = res.json()['data'][0]['images']['original']['url']
         return image
-    except KeyError:
-        return None
+    else:
+        return 'image not found :('
