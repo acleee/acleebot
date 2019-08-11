@@ -1,8 +1,7 @@
 from application.bot import Bot
-from config import username, password, testRoom, blabRoom, acleeRoom, sixersRoom, philliesRoom
-
+from config import username, password, chatangoRooms
 
 if __name__ == '__main__':
-    Bot.easy_start([testRoom, acleeRoom, blabRoom, sixersRoom, philliesRoom],
+    Bot.easy_start(chatangoRooms,
                    username,
                    password)

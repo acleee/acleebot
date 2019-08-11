@@ -5,7 +5,7 @@ from config import giphy_api_key
 
 def random_giphy_image(searchTerm):
     """Get a random image from Giphy."""
-    rand = randint(0, 50)
+    rand = randint(0, 60)
     params = {'api_key': giphy_api_key,
               'q': searchTerm,
               'limit': 1,

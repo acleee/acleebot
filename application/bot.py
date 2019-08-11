@@ -12,6 +12,7 @@ from .commands.storage import fetch_image_from_storage
 from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
+from .commands.spam import spam_messages
 
 
 class Bot(ch.RoomManager):
@@ -55,6 +56,8 @@ class Bot(ch.RoomManager):
             response = random_giphy_image(args)
         if type == 'urban' and args:
             response = urban_dictionary_defintion(args)
+        if type == 'spam':
+            response = spam_messages(message)
         print('response =', response)
         room.message(response)
 

@@ -1,14 +1,19 @@
 """Bot configuration variables."""
 from os import environ
 
-# Chatango Vars
+# Chatango rooms
 testRoom = environ.get('CHATANGO_TEST_ROOM')
 acleeRoom = environ.get('CHATANGO_ACLEE_ROOM')
 blabRoom = environ.get('CHATANGO_BLAB_ROOM')
 sixersRoom = environ.get('CHATANGO_SIXERS_ROOM')
+ufcRoom = environ.get('CHATANGO_UFC_ROOM')
 philliesRoom = environ.get('CHATANGO_PHILLIES_ROOM')
+chatangoRooms = [testRoom, acleeRoom, sixersRoom, philliesRoom]
+
+# Chatango creds
 username = environ.get('CHATANGO_USERNAME')
 password = environ.get('CHATANGO_PASSWORD')
+
 
 # DB Vars
 database_uri = environ.get('SQLALCHEMY_DATABASE_URI')
