@@ -3,3 +3,4 @@
 
 def spam_messages(message):
     """Send multiple images to chat."""
+    pass
