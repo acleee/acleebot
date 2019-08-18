@@ -77,5 +77,7 @@ class Bot(ch.RoomManager):
                     args = cmd.split(' ', 1)[1]
                 response = db.cm(req)
                 self.chat(response, room, args)
+            if cmd[::3] == 'bro?' or cmd[::10] == '@broiestbro':
+                self.chat('hellouughhgughhg?', room, args)
         except KeyError:
             pass
