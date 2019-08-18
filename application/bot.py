@@ -68,16 +68,14 @@ class Bot(ch.RoomManager):
                                       message.body))
         cmd = message.body.lower()
         # Trigger if chat message is a command
-        try:
-            if cmd[0] == "!":
-                req = cmd[1::].lower()
-                args = None
-                if ' ' in cmd:
-                    req = cmd.split(' ', 1)[0][1::]
-                    args = cmd.split(' ', 1)[1]
-                response = db.cm(req)
-                self.chat(response, room, args)
-            if cmd[::3] == 'bro?' or cmd[::10] == '@broiestbro':
-                self.chat('hellouughhgughhg?', room, args)
-        except KeyError:
-            pass
+        if cmd[0] == "!":
+            req = cmd[1::].lower()
+            args = None
+            if ' ' in cmd:
+                req = cmd.split(' ', 1)[0][1::]
+                args = cmd.split(' ', 1)[1]
+            response = db.cm(req)
+            self.chat(response, room, args)
+        # Commands reserved to check bot status
+        if cmd == 'bro?' or cmd.replace(' ', '') == '@broiestbot':
+            room.message('hellouughhgughhg?')
