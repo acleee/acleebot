@@ -75,7 +75,8 @@ class Bot(ch.RoomManager):
                 req = cmd.split(' ', 1)[0][1::]
                 args = cmd.split(' ', 1)[1]
             response = db.cm(req)
-            self.chat(response, room, args)
+            if response:
+                self.chat(response, room, args)
         # Commands reserved to check bot status
         if cmd == 'bro?' or cmd.replace(' ', '') == '@broiestbot':
             room.message('hellouughhgughhg?')

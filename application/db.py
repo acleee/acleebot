@@ -23,8 +23,11 @@ commands_df = get_commands_from_database()
 
 def cm(message):
     """Read list of commands from database."""
-    row = commands_df.loc[message]
-    response = {
-        'content': row['response'],
-        'type': row['type']}
-    return response
+    try:
+        row = commands_df.loc[message]
+        response = {
+            'content': row['response'],
+            'type': row['type']}
+        return response
+    except KeyError:
+        print(f'{message} is not a command')
