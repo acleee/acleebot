@@ -2,6 +2,7 @@
 import pandas as pd
 from config import database_uri, database_schema, database_table
 from sqlalchemy import create_engine, text
+from .log import logging
 
 
 def get_commands_from_database():
@@ -30,4 +31,4 @@ def cm(message):
             'type': row['type']}
         return response
     except KeyError:
-        print(f'{message} is not a command')
+        logging.error(f'{message} is not a command')

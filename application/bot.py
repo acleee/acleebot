@@ -13,6 +13,7 @@ from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 from .commands.spam import spam_messages
+from .log import logging
 
 
 class Bot(ch.RoomManager):
@@ -41,7 +42,7 @@ class Bot(ch.RoomManager):
         if type == 'nba score':
             response = get_nba_score(message)
         if type == 'goal':
-            print('goal command')
+            logging.info('no command for goal yet.')
         if type == 'stock' and args:
             response = get_stock_price(args)
         if type == 'avi':
@@ -58,7 +59,7 @@ class Bot(ch.RoomManager):
             response = urban_dictionary_defintion(args)
         if type == 'spam':
             response = spam_messages(message)
-        print('response =', response)
+        logging.error('response =', response)
         room.message(response)
 
     def onMessage(self, room, user, message):
