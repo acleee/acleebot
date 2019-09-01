@@ -31,4 +31,4 @@ def cm(message):
             'type': row['type']}
         return response
     except KeyError:
-        logging.error(f'{message} is not a command')
+        logging.error(f'{message} is not a command.')
