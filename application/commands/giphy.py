@@ -18,5 +18,5 @@ def random_giphy_image(searchTerm):
         image = res.json()['data'][0]['images']['original']['url']
         return image
     else:
-        logging.info(f"Giphy search term {searchTerm} returned no results.”)
+       # logging.info(f"Giphy search term {searchTerm} returned no results.”)
         return 'image not found :('
