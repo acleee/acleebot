@@ -59,7 +59,6 @@ class Bot(ch.RoomManager):
             response = urban_dictionary_defintion(args)
         if type == 'spam':
             response = spam_messages(message)
-        logging.error('response =', response)
         room.message(response)
 
     def onMessage(self, room, user, message):

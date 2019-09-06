@@ -1,2 +1,2 @@
 """Initialize bot module."""
-all = ['commands', 'db', 'ch']
+all = ['commands', 'db', 'ch', 'log']

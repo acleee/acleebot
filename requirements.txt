@@ -9,9 +9,7 @@ google-cloud-core==1.0.3
 google-cloud-storage==1.19.0
 google-resumable-media==0.3.3
 googleapis-common-protos==1.6.0
-gunicorn==19.9.0
 idna==2.8
-nba-py==0.1.1a2
 numpy==1.17.1
 pandas==0.25.1
 protobuf==3.9.1
