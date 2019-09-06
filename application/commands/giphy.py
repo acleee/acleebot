@@ -1,4 +1,4 @@
-Limport requests
+import requests
 from random import randint
 from config import giphy_api_key
 from .log import logging
