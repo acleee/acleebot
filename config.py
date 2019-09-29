@@ -8,6 +8,7 @@ blabRoom = environ.get('CHATANGO_BLAB_ROOM')
 sixersRoom = environ.get('CHATANGO_SIXERS_ROOM')
 eaglesRoom = environ.get('CHATANGO_EAGLES_ROOM')
 philliesRoom = environ.get('CHATANGO_PHILLIES_ROOM')
+nflRoom = environ.get('CHATANGO_NFL_ROOM')
 chatangoRooms = [testRoom, acleeRoom, sixersRoom, philliesRoom, eaglesRoom]
 
 # Chatango creds
