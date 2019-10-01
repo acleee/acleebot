@@ -108,9 +108,18 @@ ENV/
 # mypy
 .mypy_cache/
 
-# DS Store
+# etc
 .DS_Store
+.idea
+.idea/*
+.idea/.gitignore
+.idea/acleebot.iml
+.idea/inspectionProfiles/
+.idea/misc.xml
+.idea/modules.xml
+.idea/vcs.xml
 
 # Gcloud
 HackersAndSlackers-b7835abe15a0.json
 HackersAndSlackers-2e92c71668ca.json
+
