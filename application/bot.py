@@ -7,12 +7,12 @@ from .commands.crypto import get_crypto_price
 from .commands.nba import get_nba_score
 from .commands.random import randomize_image
 from .commands.stock import get_stock_price
-from .commands.avatar import get_user_avatar
+# from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
 from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
-from .commands.spam import spam_messages
+# from .commands.spam import spam_messages
 from .log import logging
 
 
@@ -57,8 +57,8 @@ class Bot(ch.RoomManager):
             response = random_giphy_image(args)
         if cmd_type == 'urban' and args:
             response = urban_dictionary_defintion(args)
-        if cmd_type == 'spam':
-            response = spam_messages(message)
+        # if cmd_type == 'spam':
+            # response = spam_messages(message)
         room.message(response)
 
     def onMessage(self, room, user, message):

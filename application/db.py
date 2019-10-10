@@ -32,3 +32,4 @@ def cm(message):
         return response
     except KeyError:
         logging.error(f'{message} is not a command.')
+        pass
