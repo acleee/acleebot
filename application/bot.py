@@ -6,7 +6,7 @@ from .commands.crypto import get_crypto_price
 from .commands.nba import get_nba_score
 from .commands.random import randomize_image
 from .commands.stock import get_stock_price
-from .commands.avatar import get_user_avatar
+# from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
 from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
@@ -32,39 +32,37 @@ class Bot(RoomManager):
 
     def chat(self, row, room, args):
         """Construct a response to a valid command."""
-        type = row['type']
+        cmd_type = row['type']
         message = row['content']
         response = 'under development tbh'
-        if type == 'basic':
+        if cmd_type == 'basic':
             response = send_basic_message(message)
-        if type == 'scrape':
+        if cmd_type == 'scrape':
             response = scrape_random_image(message)
-        if type == 'crypto':
+        if cmd_type == 'crypto':
             response = get_crypto_price(message)
-        if type == 'random':
+        if cmd_type == 'random':
             response = randomize_image(message)
-        if type == 'nba score':
+        if cmd_type == 'nba score':
             response = get_nba_score(message)
         if type == 'goal':
             self.logger.info('no command for goal yet.')
         if type == 'stock' and args:
             response = get_stock_price(args)
-        if type == 'avi':
-            response = get_user_avatar(message)
-        if type == 'storage':
+        # if type == 'avi':
+        #     response = get_user_avatar(message, args)
+        if cmd_type == 'storage':
             response = fetch_image_from_storage(message)
-        if type == 'reddit':
+        if cmd_type == 'reddit':
             response = random_subreddit_image(message)
-        if type == 'giphy':
+        if cmd_type == 'giphy':
             response = random_giphy_image(message)
-        if type == 'giphysearch' and args:
+        if cmd_type == 'giphysearch' and args:
             response = random_giphy_image(args)
-        if type == 'urban' and args:
+        if cmd_type == 'urban' and args:
             response = urban_dictionary_defintion(args)
-        if type == 'spam':
-            response = spam_messages(message)
-        if type == 'channel':
-            response = channel(message)
+        # if cmd_type == 'spam':
+            # response = spam_messages(message)
         room.message(response)
 
     def get_command(self, message):
