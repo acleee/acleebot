@@ -1,34 +1,19 @@
 """Load directory of commands via database."""
 import pandas as pd
-from config import database_uri, database_schema, database_table
+from config import Config
 from sqlalchemy import create_engine, text
-from .log import logging
 
 
-def get_commands_from_database():
+def get_commands_df():
     """Get list of commands from database."""
-    engine = create_engine(database_uri, echo=True)
-    sql = text('SELECT * from \"'
-               + database_schema + '\".\"'
-               + database_table + '\";')
+    engine = create_engine(Config.database_uri, echo=False)
+    sql = text(f'SELECT * from {Config.database_schema}.{Config.database_table};')
     engine.execute(sql)
     commands_df = pd.read_sql_table(con=engine,
-                                    schema=database_schema,
-                                    table_name=database_table,
+                                    schema=Config.database_schema,
+                                    table_name=Config.database_table,
                                     index_col="command")
     return commands_df
 
 
-commands_df = get_commands_from_database()
-
-
-def cm(message):
-    """Read list of commands from database."""
-    try:
-        row = commands_df.loc[message]
-        response = {
-            'content': row['response'],
-            'type': row['type']}
-        return response
-    except KeyError:
-        logging.error(f'{message} is not a command.')
+commands_df = get_commands_df()

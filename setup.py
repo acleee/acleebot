@@ -32,10 +32,10 @@ setup(
     packages=find_packages(),
     install_requires=['Pandas',
                       'Requests',
-                      'Flask',
                       'nba-py',
                       'SQLAlchemy',
-                      'Psycopg2-Binary'],
+                      'Psycopg2-Binary',
+                      'google-cloud-storage'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
