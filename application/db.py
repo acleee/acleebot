@@ -2,10 +2,10 @@
 import pandas as pd
 from config import database_uri, database_schema, database_table
 from sqlalchemy import create_engine, text
-from .log import logging
+from . import logger
 
 
-def get_commands_from_database():
+def load_commands():
     """Get list of commands from database."""
     engine = create_engine(database_uri, echo=True)
     sql = text('SELECT * from \"'
@@ -19,10 +19,10 @@ def get_commands_from_database():
     return commands_df
 
 
-commands_df = get_commands_from_database()
+commands_df = load_commands()
 
 
-def cm(message):
+def get_command(message):
     """Read list of commands from database."""
     try:
         row = commands_df.loc[message]
@@ -31,5 +31,5 @@ def cm(message):
             'type': row['type']}
         return response
     except KeyError:
-        logging.error(f'{message} is not a command.')
+        logger.error(f'{message} is not a command.')
         pass

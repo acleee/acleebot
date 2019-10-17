@@ -35,6 +35,8 @@ setup(
                       'Flask',
                       'nba-py',
                       'SQLAlchemy',
+                      'BS4',
+                      'Google-cloud-storage',
                       'Psycopg2-Binary'],
     extras_require={
         'dev': ['check-manifest'],

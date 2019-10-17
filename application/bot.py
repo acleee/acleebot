@@ -13,7 +13,7 @@ from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
-from .log import logging
+from . import logger
 
 
 class Bot(ch.RoomManager):
@@ -30,7 +30,7 @@ class Bot(ch.RoomManager):
         """Construct a response to a valid command."""
         cmd_type = row['type']
         message = row['content']
-        response = 'under development tbh'
+        response = None
         if cmd_type == 'basic':
             response = send_basic_message(message)
         if cmd_type == 'scrape':
@@ -42,7 +42,7 @@ class Bot(ch.RoomManager):
         if cmd_type == 'nba score':
             response = get_nba_score(message)
         if cmd_type == 'goal':
-            logging.info('no command for goal yet.')
+            logger.info('no command for goal yet.')
         if cmd_type == 'stock' and args:
             response = get_stock_price(args)
         # if type == 'avi':
@@ -59,7 +59,9 @@ class Bot(ch.RoomManager):
             response = urban_dictionary_defintion(args)
         # if cmd_type == 'spam':
             # response = spam_messages(message)
-        room.message(response)
+        if response:
+            logger.info(response)
+            room.message(response)
 
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
@@ -74,7 +76,7 @@ class Bot(ch.RoomManager):
             if ' ' in cmd:
                 req = cmd.split(' ', 1)[0][1::]
                 args = cmd.split(' ', 1)[1]
-            response = db.cm(req)
+            response = db.get_command(req)
             if response:
                 self.chat(response, room, args)
         # Commands reserved to check bot status
