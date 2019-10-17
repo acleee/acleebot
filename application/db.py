@@ -1,20 +1,18 @@
 """Load directory of commands via database."""
 import pandas as pd
-from config import database_uri, database_schema, database_table
+from config import Config
 from sqlalchemy import create_engine, text
 from . import logger
 
 
 def load_commands():
     """Get list of commands from database."""
-    engine = create_engine(database_uri, echo=True)
-    sql = text('SELECT * from \"'
-               + database_schema + '\".\"'
-               + database_table + '\";')
+    engine = create_engine(Config.database_uri, echo=False)
+    sql = text(f'SELECT * from {Config.database_schema}.{Config.database_table};')
     engine.execute(sql)
     commands_df = pd.read_sql_table(con=engine,
-                                    schema=database_schema,
-                                    table_name=database_table,
+                                    schema=Config.database_schema,
+                                    table_name=Config.database_table,
                                     index_col="command")
     return commands_df
 
@@ -32,4 +30,4 @@ def get_command(message):
         return response
     except KeyError:
         logger.error(f'{message} is not a command.')
-        pass
+        return None

@@ -8,5 +8,5 @@ def urban_dictionary_defintion(word):
         definition = str(req.json()['list'][0]['definition'])[0:300] + '...'
         example = str(req.json()['list'][0]['example'])
         word = req.json()['list'][0]['word'].upper()
-        return f"{word}: {definition}. EXAMPLE: '{example}'"
+        return f"{word}: {definition}. \n EXAMPLE: '{example}'"
     return 'word not found :('

@@ -1,13 +1,12 @@
 import requests
 from random import randint
-from config import giphy_api_key
-from application.log import logging
+from config import Config
 
 
 def random_giphy_image(searchTerm):
     """Get a random image from Giphy."""
     rand = randint(0, 20)
-    params = {'api_key': giphy_api_key,
+    params = {'api_key': Config.giphy_api_key,
               'q': searchTerm,
               'limit': 1,
               'offset': rand,
@@ -17,5 +16,6 @@ def random_giphy_image(searchTerm):
     if len(res.json()['data']):
         image = res.json()['data'][0]['images']['original']['url']
         return image
-    logging.debug(f"Giphy search term {searchTerm} returned no results.")
-    return 'image not found :('
+    else:
+        # logger.warn(f"Giphy search term {searchTerm} returned no results.")
+        return 'image not found :('

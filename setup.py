@@ -32,7 +32,6 @@ setup(
     packages=find_packages(),
     install_requires=['Pandas',
                       'Requests',
-                      'Flask',
                       'nba-py',
                       'SQLAlchemy',
                       'BS4',

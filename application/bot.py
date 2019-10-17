@@ -1,6 +1,5 @@
 """Core bot logic."""
-from . import ch
-from . import db
+from .ch import RoomManager
 from .commands.basic import send_basic_message
 from .commands.scrape import scrape_random_image
 from .commands.crypto import get_crypto_price
@@ -14,10 +13,17 @@ from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
 from . import logger
+from .commands.spam import spam_messages
+from .commands.channel import channel
 
 
-class Bot(ch.RoomManager):
+class Bot(RoomManager):
     """Main bot class."""
+
+    def __init__(self, commands_df, logger, username, password, rooms):
+        self.commands_df = commands_df
+        self.logger = logger
+        self.easy_start(rooms, username, password)
 
     def onInit(self):
         """Initialize bot."""
@@ -42,7 +48,7 @@ class Bot(ch.RoomManager):
         if cmd_type == 'nba score':
             response = get_nba_score(message)
         if cmd_type == 'goal':
-            logger.info('no command for goal yet.')
+            self.logger.info('no command for goal yet.')
         if cmd_type == 'stock' and args:
             response = get_stock_price(args)
         # if type == 'avi':
@@ -63,6 +69,17 @@ class Bot(ch.RoomManager):
             logger.info(response)
             room.message(response)
 
+    def get_command(self, message):
+        """Read list of commands from database."""
+        try:
+            row = self.commands_df.loc[message]
+            response = {
+                'content': row['response'],
+                'type': row['type']}
+            return response
+        except KeyError:
+            self.logger.error(f'{message} is not a command.')
+
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
         print("[{0}] {1}: {2}".format(room.name,
@@ -76,7 +93,7 @@ class Bot(ch.RoomManager):
             if ' ' in cmd:
                 req = cmd.split(' ', 1)[0][1::]
                 args = cmd.split(' ', 1)[1]
-            response = db.get_command(req)
+            response = self.get_command(req)
             if response:
                 self.chat(response, room, args)
         # Commands reserved to check bot status

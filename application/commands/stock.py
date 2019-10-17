@@ -1,9 +1,9 @@
 import requests
-from config import iex_api_key
+from config import Config
 
 
 def get_stock_price(symbol):
-    params = {'token': iex_api_key}
+    params = {'token': Config.iex_api_key}
     req = requests.get('https://sandbox.iexapis.com/stable/stock/' + symbol + '/quote', params=params)
     print(req.status_code)
     if req.status_code == 200:
