@@ -193,7 +193,6 @@ def _parseNameColor(n):
 
 def _parseFont(f):
     """Parses the contents of a f tag and returns color, face and size."""
-    #' xSZCOL="FONT"'
     try:  # TODO: remove quick hack
         sizecolor, fontface = f.split("=", 1)
         sizecolor = sizecolor.strip()
@@ -266,7 +265,7 @@ class _ANON_PM_OBJECT:
 
     def message(self, user, msg):
         """send a pm to a user"""
-        if msg != None:
+        if msg is not None:
             self._sendCommand("msg", user.name, msg)
 
     ####
@@ -646,7 +645,7 @@ class PM:
 
     def message(self, user, msg):
         """send a pm to a user"""
-        if msg != None:
+        if msg is not None:
             self._sendCommand("msg", user.name, msg)
 
     def addContact(self, user):

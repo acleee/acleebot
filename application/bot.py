@@ -1,5 +1,7 @@
 """Core bot logic."""
+import logging
 from .ch import RoomManager
+from .db import load_commands
 from .commands.basic import send_basic_message
 from .commands.scrape import scrape_random_image
 from .commands.crypto import get_crypto_price
@@ -12,18 +14,17 @@ from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
-from . import logger
 from .commands.spam import spam_messages
 from .commands.channel import channel
+
+logging.basicConfig(filename='errors.log',
+                             filemode='w',
+                             format='%(name)s - %(levelname)s - %(message)s',
+                             level=logging.ERROR)
 
 
 class Bot(RoomManager):
     """Main bot class."""
-
-    def __init__(self, commands_df, logger, username, password, rooms):
-        self.commands_df = commands_df
-        self.logger = logger
-        self.easy_start(rooms, username, password)
 
     def onInit(self):
         """Initialize bot."""
@@ -31,6 +32,7 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
+        self.commands_df = load_commands()
 
     def chat(self, row, room, args):
         """Construct a response to a valid command."""
@@ -48,7 +50,7 @@ class Bot(RoomManager):
         if cmd_type == 'nba score':
             response = get_nba_score(message)
         if cmd_type == 'goal':
-            self.logger.info('no command for goal yet.')
+            logging.info('no command for goal yet.')
         if cmd_type == 'stock' and args:
             response = get_stock_price(args)
         # if type == 'avi':
@@ -66,7 +68,7 @@ class Bot(RoomManager):
         # if cmd_type == 'spam':
             # response = spam_messages(message)
         if response:
-            logger.info(response)
+            logging.info(response)
             room.message(response)
 
     def get_command(self, message):
@@ -78,7 +80,7 @@ class Bot(RoomManager):
                 'type': row['type']}
             return response
         except KeyError:
-            self.logger.error(f'{message} is not a command.')
+            logging.error(f'{message} is not a command.')
 
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""

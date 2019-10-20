@@ -1,4 +1,5 @@
 from random import randint
+from collections import defaultdict
 import requests
 
 
@@ -13,8 +14,8 @@ def random_subreddit_image(message):
     }
     endpoint = message + 'new.json?sort=new'
     res = requests.get(endpoint, headers=headers).json()
-    images = [image['data']['preview']['images'][0]['source']['url'] for image in res['data']['children']]
+    images = [image.get('data', None).get('preview', None).get('images', None)[0].get('source', None).get('url') for image in res['data']['children']]
     rand = randint(0, len(images) - 1)
-    image = images[rand]
+    image = images[rand].split('?')[0]
     print('image = ', image)
     return image

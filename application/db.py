@@ -2,7 +2,6 @@
 import pandas as pd
 from config import Config
 from sqlalchemy import create_engine, text
-from . import logger
 
 
 def load_commands():
@@ -29,5 +28,4 @@ def get_command(message):
             'type': row['type']}
         return response
     except KeyError:
-        logger.error(f'{message} is not a command.')
         return None

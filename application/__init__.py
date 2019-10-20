@@ -1,8 +1,10 @@
 """Initialize bot module."""
-import logging
-logger = logging.basicConfig(filename='errors.log',
-                            filemode='w',
-                            format='%(name)s - %(levelname)s - %(message)s',
-                            level=logging.ERROR)
+from .bot import Bot
 
-all = ['commands', 'db', 'ch']
+
+def init_bot(Config):
+    """Starts bot."""
+    print(f'Joining {Config.chatangoRooms}')
+    Bot.easy_start(rooms=Config.chatangoRooms,
+                   name=Config.username,
+                   password=Config.password)
