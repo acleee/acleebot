@@ -8,14 +8,12 @@ from .commands.crypto import get_crypto_price
 from .commands.nba import get_nba_score
 from .commands.random import randomize_image
 from .commands.stock import get_stock_price
-# from .commands.avatar import get_user_avatar
+from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
 from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
-from .commands.spam import spam_messages
-from .commands.channel import channel
 
 logging.basicConfig(filename='errors.log',
                              filemode='w',
@@ -53,8 +51,8 @@ class Bot(RoomManager):
             logging.info('no command for goal yet.')
         if cmd_type == 'stock' and args:
             response = get_stock_price(args)
-        # if type == 'avi':
-        #     response = get_user_avatar(message, args)
+        if type == 'avi':
+            response = get_user_avatar(message, args)
         if cmd_type == 'storage':
             response = fetch_image_from_storage(message)
         if cmd_type == 'reddit':

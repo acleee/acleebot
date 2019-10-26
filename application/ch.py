@@ -507,6 +507,7 @@ class PM:
             data = self._rbuf.split(b"\x00")
             for food in data[:-1]:
                 self._process(food.decode(errors="replace").rstrip("\r\n"))
+                print(food)
             self._rbuf = data[-1]
 
     def _process(self, data):
@@ -573,12 +574,13 @@ class PM:
             self._blocklist.add(User(name))
 
     def _rcmd_idleupdate(self, args):
-        user = User(args[0])
-        last_on, is_on, idle = self._status[user]
-        if args[1] == '1':
-            self._status[user] = [last_on, is_on, 0]
-        else:
-            self._status[user] = [last_on, is_on, time.time()]
+        if args[0]:
+            user = User(args[0])
+            last_on, is_on, idle = self._status[user]
+            if args[1] == '1':
+                self._status[user] = [last_on, is_on, 0]
+            else:
+                self._status[user] = [last_on, is_on, time.time()]
 
     def _rcmd_track(self, args):
         user = User(args[0])
