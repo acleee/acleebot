@@ -19,12 +19,6 @@ setup(
     author_email='toddbirchard@gmail.com',
     classifiers=[
         'Development Status :: 3 - Alpha',
-        'Intended Audience :: Developers',
-        'Topic :: Software Development :: Build Tools',
-        'License :: OSI Approved :: MIT License',
-        'Programming Language :: Python :: 3',
-        'Programming Language :: Python :: 3.4',
-        'Programming Language :: Python :: 3.5',
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
@@ -36,7 +30,7 @@ setup(
                       'SQLAlchemy',
                       'BS4',
                       'Google-cloud-storage',
-                      'Psycopg2-Binary'],
+                      'PyMySQL'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
@@ -44,7 +38,7 @@ setup(
     },
     entry_points={
         'console_scripts': [
-            'main',
+            'run=main:init_bot',
         ],
     },
     project_urls={

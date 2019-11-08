@@ -1,7 +1,6 @@
 """Core bot logic."""
 import logging
 from .ch import RoomManager
-from .db import load_commands
 from .commands.basic import send_basic_message
 from .commands.scrape import scrape_random_image
 from .commands.crypto import get_crypto_price
@@ -30,7 +29,6 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
-        self.commands_df = load_commands()
 
     def chat(self, row, room, args):
         """Construct a response to a valid command."""
@@ -72,7 +70,7 @@ class Bot(RoomManager):
     def get_command(self, message):
         """Read list of commands from database."""
         try:
-            row = self.commands_df.loc[message]
+            row = self.commands.loc[message]
             response = {
                 'content': row['response'],
                 'type': row['type']}

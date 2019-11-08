@@ -1633,9 +1633,10 @@ class RoomManager:
     ####
     # Init
     ####
-    def __init__(self, name=None, password=None, pm=True):
+    def __init__(self, name=None, password=None, commands=None, pm=True):
         self._name = name
         self._password = password
+        self.commands = commands
         self._running = False
         self._tasks = set()
         self._rooms = dict()
@@ -2277,7 +2278,7 @@ class RoomManager:
             self._tick()
 
     @classmethod
-    def easy_start(cl, rooms=None, name=None, password=None, pm=True):
+    def easy_start(cl, rooms=None, name=None, password=None, commands=None, pm=True):
         """
         Prompts the user for missing info, then starts.
 
@@ -2301,7 +2302,7 @@ class RoomManager:
             password = str(input("User password: "))
         if password == "":
             password = None
-        self = cl(name, password, pm=pm)
+        self = cl(name, password, commands)
         for room in rooms:
             self.joinRoom(room)
         self.main()

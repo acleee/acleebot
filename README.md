@@ -4,7 +4,7 @@
 ![Pandas](https://img.shields.io/badge/pandas-0.24.0-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Flask-SQLAlchemy](https://img.shields.io/badge/Flask--SQLAlchemy-2.3.2-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
-![Psycopg2-binary](https://img.shields.io/badge/Psycopg2--Binary-v2.7.7-red.svg?longCache=true&style=flat-square&logo=PostgreSQL&logoColor=white&colorA=4c566a&colorB=bf616a)
+![PyMySQL](https://img.shields.io/badge/PyMySQL-v0.9.3-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/acleebot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/acleebot/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/acleebot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/acleebot/stargazers)
@@ -40,7 +40,6 @@ PASSWORD=yourbotpassword
 SQLALCHEMY_DATABASE_URI=yourdatabaseuri
 SQLALCHEMY_DATABASE_NAME=yourdatabasename
 SQLALCHEMY_TABLE=yourdatabbasetable
-SQLALCHEMY_DB_SCHEMA=yourpostgresschema
 ```
 
 Run the script:
