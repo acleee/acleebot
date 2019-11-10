@@ -94,6 +94,12 @@ class Bot(RoomManager):
             response = self.get_command(req)
             if response:
                 self.chat(response, room, args)
+            elif len(cmd) > 1:
+                self.giphy_fallback(cmd, room, args)
         # Commands reserved to check bot status
         if cmd == 'bro?' or cmd.replace(' ', '') == '@broiestbot':
             room.message('hellouughhgughhg?')
+
+    def giphy_fallback(self, cmd, room, args):
+        response = random_giphy_image(cmd)
+        room.message(response)
