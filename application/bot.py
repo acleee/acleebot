@@ -101,5 +101,6 @@ class Bot(RoomManager):
             room.message('hellouughhgughhg?')
 
     def giphy_fallback(self, cmd, room, args):
+        """Default to Giphy for non-existant commands."""
         response = random_giphy_image(cmd)
         room.message(response)
