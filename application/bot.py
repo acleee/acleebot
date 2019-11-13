@@ -54,7 +54,8 @@ class Bot(RoomManager):
         if cmd_type == 'storage':
             response = fetch_image_from_storage(message)
         if cmd_type == 'reddit':
-            response = random_subreddit_image(message)
+            # response = random_subreddit_image(message)
+            response = 'reddit commands disabled :@'
         if cmd_type == 'giphy':
             response = random_giphy_image(message)
         if cmd_type == 'giphysearch' and args:
