@@ -9,7 +9,7 @@ from .commands.random import randomize_image
 from .commands.stock import get_stock_price
 from .commands.avatar import get_user_avatar
 from .commands.storage import fetch_image_from_storage
-from .commands.reddit import random_subreddit_image
+# from .commands.reddit import random_subreddit_image
 from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
@@ -95,13 +95,19 @@ class Bot(RoomManager):
             response = self.get_command(req)
             if response:
                 self.chat(response, room, args)
-            elif len(cmd) > 1:
-                self.giphy_fallback(cmd, room, args)
-        # Commands reserved to check bot status
+            else:
+                self.giphy_fallback(cmd, room)
+        else:
+            self.bot_status_check(cmd, room)
+
+    def bot_status_check(self, cmd, room):
+        """Check bot status."""
         if cmd == 'bro?' or cmd.replace(' ', '') == '@broiestbot':
             room.message('hellouughhgughhg?')
 
-    def giphy_fallback(self, cmd, room, args):
+    def giphy_fallback(self, cmd, room):
         """Default to Giphy for non-existant commands."""
-        response = random_giphy_image(cmd)
-        room.message(response)
+        cmd = cmd.replace('!', '')
+        if len(cmd) > 1:
+            response = random_giphy_image(cmd)
+            room.message(response)

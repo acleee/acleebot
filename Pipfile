@@ -9,7 +9,7 @@ Pandas = "*"
 SQLAlchemy = "*"
 PyMySQL = "*"
 BS4 = "*"
-google-cloud-storage = "*"
+Google-cloud-storage = "*"
 
 [dev-packages]
 pytest = "*"
