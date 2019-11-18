@@ -1,16 +1,17 @@
 import requests
 
 
-def get_crypto_price(message):
+def get_crypto_price(symbol, message):
     """Get crypto price for provided ticker label."""
     req = requests.get(url=message)
     prices = req.json()["result"]["price"]
-    last = prices["last"]
-    high = prices["high"]
-    low = prices["low"]
+    last = int(prices["last"])
+    high = int(prices["high"])
+    low = int(prices["low"])
     percentage = prices["change"]['percentage']*100
-    msg = "Currently at $" + last \
-        + ", high today of $" + high \
-        + ", low of $" + low \
-        + ", change of %.3f" % percentage + "%"
+    percentage = '%.2f' % (percentage)
+    symbol = symbol.upper()
+    msg = f'{symbol}: Currently at ${last}. \
+            High today of ${high}, low of ${low}. \
+            Change of {percentage}%'
     return msg

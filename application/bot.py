@@ -30,7 +30,7 @@ class Bot(RoomManager):
         self.setFontFace("Arial")
         self.setFontSize(11)
 
-    def chat(self, row, room, args):
+    def chat(self, cmd, row, room, args):
         """Construct a response to a valid command."""
         cmd_type = row['type']
         message = row['content']
@@ -40,7 +40,7 @@ class Bot(RoomManager):
         if cmd_type == 'scrape':
             response = scrape_random_image(message)
         if cmd_type == 'crypto':
-            response = get_crypto_price(message)
+            response = get_crypto_price(cmd, message)
         if cmd_type == 'random':
             response = randomize_image(message)
         if cmd_type == 'nba score':
@@ -94,7 +94,7 @@ class Bot(RoomManager):
                 args = cmd.split(' ', 1)[1]
             response = self.get_command(req)
             if response:
-                self.chat(response, room, args)
+                self.chat(cmd.replace('!', ''), response, room, args)
             else:
                 self.giphy_fallback(cmd, room)
         else:
