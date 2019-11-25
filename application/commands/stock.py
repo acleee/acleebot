@@ -10,8 +10,12 @@ def get_stock_price(symbol):
         company_name = req.json().get("companyName", None)
         # high = req.json()["high"]
         # low = req.json()["low"]
+        print(price)
+        print(company_name)
         if price and company_name:
-            change = round(req.json()["ytdChange"], 2)
+            change = 'idk!'
+            if req.json().get("ytdChange", None):
+                change = round(req.json()["ytdChange"], 2)
             price = round(price, 2)
             message = f"{company_name} current price of ${price}. Percent change of {change}"
             return message
