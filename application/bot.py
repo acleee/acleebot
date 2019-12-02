@@ -4,7 +4,7 @@ from .ch import RoomManager
 from .commands.basic import send_basic_message
 from .commands.scrape import scrape_random_image
 from .commands.crypto import get_crypto_price
-from .commands.nba import get_nba_score
+# from .commands.nba import get_nba_score
 from .commands.random import randomize_image
 from .commands.stock import get_stock_price
 from .commands.avatar import get_user_avatar
@@ -43,19 +43,16 @@ class Bot(RoomManager):
             response = get_crypto_price(cmd, message)
         if cmd_type == 'random':
             response = randomize_image(message)
-        if cmd_type == 'nba score':
-            response = get_nba_score(message)
-        if cmd_type == 'goal':
-            logging.info('no command for goal yet.')
+        # if cmd_type == 'nba score':
+            # response = get_nba_score(message)
         if cmd_type == 'stock' and args:
             response = get_stock_price(args)
         if type == 'avi':
             response = get_user_avatar(message, args)
         if cmd_type == 'storage':
             response = fetch_image_from_storage(message)
-        if cmd_type == 'reddit':
+        # if cmd_type == 'reddit':
             # response = random_subreddit_image(message)
-            response = 'reddit commands disabled :@'
         if cmd_type == 'giphy':
             response = random_giphy_image(message)
         if cmd_type == 'giphysearch' and args:
