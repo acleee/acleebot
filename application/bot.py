@@ -90,7 +90,7 @@ class Bot(RoomManager):
             self.command_response(msg, room)
         elif msg == 'bro?' or msg.replace(' ', '') == '@broiestbot':
             self.bot_status_check(room)
-        elif 'blab' in msg:
+        elif 'blab' in msg and 'south' not in msg:
             self.banned_word(room, message, user)
 
     def command_response(self, cmd, room):
@@ -123,4 +123,4 @@ class Bot(RoomManager):
     def banned_word(room, message, user):
         """Remove banned words."""
         message.delete()
-        room.message(f"DO NOT SAY THAT WORD {user.name.upper()} :@")
+        room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
