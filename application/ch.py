@@ -507,7 +507,7 @@ class PM:
             data = self._rbuf.split(b"\x00")
             for food in data[:-1]:
                 self._process(food.decode(errors="replace").rstrip("\r\n"))
-                print(food)
+                print('food = ' + food)
             self._rbuf = data[-1]
 
     def _process(self, data):

@@ -12,7 +12,7 @@
 
 The baddest bot in the game right now. Uses the *ch.py* Chatango framework for joining and listening for user messages. If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command.
 
-![acleebot](https://github.com/toddbirchard/acleebot/blob/master/img/acleebot.jpg)
+![acleebot](https://storage.cloud.google.com/toddbirchard-cdn/social/acleebot.jpg)
 
 ## Commands
 
@@ -23,27 +23,52 @@ Chat commands have 3 properties:
 * **Response**: Value returned by a command, either to be sent directly as a chat, or additionally processed depending on command type.
 * **Type**: Determines logic associated with a command.
 
-## Installation
 
-Download the repo and install dependencies:
+## Getting Started
+
+### Installation
+
+With Pipenv:
+
 ```
 $ git clone https://github.com/toddbirchard/acleebot.git
 $ cd acleebot
+$ pipenv shell
 $ pipenv update
+$ python3 main.py
 ```
 
-Create a `.env` file with your Chatango configuration:
+With `setup.py`:
+
+```
+$ git clone https://github.com/toddbirchard/acleebot.git
+$ cd acleebot
+$ python3 setup.py install
+$ python3 main.py
+```
+
+### Configuration
+
+Create a `.env` file with your Chatango configuration. These variables are required:
+
 ```
 ROOM=yourchatangoroom
 USERNAME=yourbotusername
 PASSWORD=yourbotpassword
+
 SQLALCHEMY_DATABASE_URI=yourdatabaseuri
 SQLALCHEMY_DATABASE_NAME=yourdatabasename
 SQLALCHEMY_TABLE=yourdatabbasetable
 ```
 
-Run the script:
+These variables are optional to enable different services, such as pulling images from Google Cloud or fetching Stock prices:
+
 ```
-$ pipenv shell
-$ python3 main.py
+GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+GOOGLE_BUCKET_NAME=nameOfStorageBucket
+GOOGLE_BUCKET_URL=http://storage.googleapis.com/
+
+GIPHY_API_KEY=yourGiphyAPIKey
+
+IEX_API_TOKEN=yourIEXStockAPIToken
 ```

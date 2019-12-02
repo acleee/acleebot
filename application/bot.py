@@ -15,9 +15,9 @@ from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
 
 logging.basicConfig(filename='errors.log',
-                             filemode='w',
-                             format='%(name)s - %(levelname)s - %(message)s',
-                             level=logging.ERROR)
+                    filemode='w',
+                    format='%(name)s - %(levelname)s - %(message)s',
+                    level=logging.ERROR)
 
 
 class Bot(RoomManager):
@@ -84,30 +84,43 @@ class Bot(RoomManager):
         print("[{0}] {1}: {2}".format(room.name,
                                       user.name.title(),
                                       message.body))
-        cmd = message.body.lower()
+        msg = message.body.lower()
         # Trigger if chat message is a command
-        if cmd[0] == "!":
-            req = cmd[1::].lower()
-            args = None
-            if ' ' in cmd:
-                req = cmd.split(' ', 1)[0][1::]
-                args = cmd.split(' ', 1)[1]
-            response = self.get_command(req)
-            if response:
-                self.chat(cmd.replace('!', ''), response, room, args)
-            else:
-                self.giphy_fallback(cmd, room)
+        if msg[0] == "!":
+            self.command_response(msg, room)
+        elif msg == 'bro?' or msg.replace(' ', '') == '@broiestbot':
+            self.bot_status_check(room)
+        elif 'blab' in msg:
+            self.banned_word(room, message, user)
+
+    def command_response(self, cmd, room):
+        """Respond to command."""
+        req = cmd[1::].lower()
+        args = None
+        if ' ' in cmd:
+            req = cmd.split(' ', 1)[0][1::]
+            args = cmd.split(' ', 1)[1]
+        response = self.get_command(req)
+        if response:
+            self.chat(cmd.replace('!', ''), response, room, args)
         else:
-            self.bot_status_check(cmd, room)
+            self.giphy_fallback(cmd, room)
 
-    def bot_status_check(self, cmd, room):
+    @staticmethod
+    def bot_status_check(room):
         """Check bot status."""
-        if cmd == 'bro?' or cmd.replace(' ', '') == '@broiestbot':
-            room.message('hellouughhgughhg?')
+        room.message('hellouughhgughhg?')
 
-    def giphy_fallback(self, cmd, room):
+    @staticmethod
+    def giphy_fallback(cmd, room):
         """Default to Giphy for non-existant commands."""
         cmd = cmd.replace('!', '')
         if len(cmd) > 1:
             response = random_giphy_image(cmd)
             room.message(response)
+
+    @staticmethod
+    def banned_word(room, message, user):
+        """Remove banned words."""
+        message.delete()
+        room.message(f"DO NOT SAY THAT WORD {user.name.upper()} :@")
