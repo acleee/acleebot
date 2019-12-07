@@ -12,12 +12,14 @@ class Config:
     eaglesRoom = environ.get('CHATANGO_EAGLES_ROOM')
     philliesRoom = environ.get('CHATANGO_PHILLIES_ROOM')
     nflRoom = environ.get('CHATANGO_NFL_ROOM')
+    obiRoom = environ.get('CHATANGO_OBI_ROOM')
     chatangoRooms = [testRoom,
                      acleeRoom,
                      sixersRoom,
                      philliesRoom,
                      eaglesRoom,
-                     nflRoom]
+                     nflRoom,
+                     obiRoom]
 
     # Chatango creds
     username = environ.get('CHATANGO_USERNAME')
