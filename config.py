@@ -3,6 +3,7 @@ from os import environ
 
 
 class Config:
+    """Configuration variables."""
 
     # Chatango rooms
     testRoom = environ.get('CHATANGO_TEST_ROOM')

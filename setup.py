@@ -1,7 +1,7 @@
 """A setuptools based setup module."""
 from os import path
-from setuptools import setup, find_packages
 from io import open
+from setuptools import setup, find_packages
 
 here = path.abspath(path.dirname(__file__))
 
@@ -22,11 +22,10 @@ setup(
         'Programming Language :: Python :: 3.6',
         'Programming Language :: Python :: 3.7',
     ],
-    keywords='Chat Chatbot Chatango Ch.py',
+    keywords='Chatbot Chatango Chat Bot Ch.py',
     packages=find_packages(),
     install_requires=['Pandas',
                       'Requests',
-                      'nba-py',
                       'SQLAlchemy',
                       'BS4',
                       'Google-cloud-storage',
