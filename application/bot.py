@@ -1,5 +1,5 @@
 """Core bot logic."""
-import logging
+from loguru import logger
 from .ch import RoomManager
 from .commands.basic import send_basic_message
 from .commands.scrape import scrape_random_image
@@ -14,10 +14,10 @@ from .commands.giphy import random_giphy_image
 from .commands.urban import urban_dictionary_defintion
 # from .commands.spam import spam_messages
 
-logging.basicConfig(filename='errors.log',
-                    filemode='w',
-                    format='%(name)s - %(levelname)s - %(message)s',
-                    level=logging.ERROR)
+logger.add('logs/info.log',
+           format="{time} {level} {message}",
+           level="INFO",
+           catch=True)
 
 
 class Bot(RoomManager):
@@ -30,6 +30,7 @@ class Bot(RoomManager):
         self.setFontFace("Arial")
         self.setFontSize(11)
 
+    @logger.catch
     def chat(self, cmd, row, room, args):
         """Construct a response to a valid command."""
         cmd_type = row['type']
@@ -62,9 +63,10 @@ class Bot(RoomManager):
         # if cmd_type == 'spam':
             # response = spam_messages(message)
         if response:
-            logging.info(response)
+            logger.info('info.log')
             room.message(response)
 
+    @logger.catch
     def get_command(self, message):
         """Read list of commands from database."""
         try:
@@ -74,13 +76,13 @@ class Bot(RoomManager):
                 'type': row['type']}
             return response
         except KeyError:
-            logging.error(f'{message} is not a command.')
+            logger.error(f'{message} is not a command.')
 
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
-        print("[{0}] {1}: {2}".format(room.name,
-                                      user.name.title(),
-                                      message.body))
+        logger.info("[{0}] {1}: {2}".format(room.name,
+                                            user.name.title(),
+                                            message.body))
         msg = message.body.lower()
         # Trigger if chat message is a command
         if msg[0] == "!":
