@@ -89,6 +89,8 @@ class Bot(RoomManager):
             self.bot_status_check(room)
         elif 'blab' in msg and 'south' not in msg:
             self.banned_word(room, message, user)
+        elif msg.endswith('aclee'):
+            self.trademarked(room)
 
     def command_response(self, cmd, room):
         """Respond to command."""
@@ -121,3 +123,8 @@ class Bot(RoomManager):
         """Remove banned words."""
         message.delete()
         room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
+
+    @staticmethod
+    def trademarked(room):
+        """ONLY on ACLEE™"""
+        room.message('™')
