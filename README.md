@@ -6,17 +6,16 @@
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.3.11-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![PyMySQL](https://img.shields.io/badge/PyMySQL-v0.9.3-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
-[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/acleebot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/acleebot/issues)
-[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/acleebot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/acleebot/stargazers)
-[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/acleebot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/acleebot/network)
+[![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/issues)
+[![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/stargazers)
+[![GitHub Forks](https://img.shields.io/github/forks/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/network)
 
-The baddest bot in the game right now. Uses the *ch.py* framework for joining Chantango rooms and responding to user messages.
+The baddest bot in the game right now. Uses the *ch.py* framework for joining [Chantango](https://www.chatango.com/) rooms and responding to user messages.
 
-![acleebot](https://i.imgur.com/AwpkZNc.jpg)
 
 ## Commands
 
-If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command. A directory of all commands can be found [here](http://broiestbro.com/commands/).
+If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command. A directory of all commands can be found [here](http://broiestbro.com/table/commands).
 
 Chat commands have 3 properties:
 * **Command name**: Text which triggers a command (ie: !test)
@@ -31,8 +30,8 @@ Chat commands have 3 properties:
 With [Pipenv](https://pipenv.kennethreitz.org/en/latest/):
 
 ```
-$ git clone https://github.com/toddbirchard/acleebot.git
-$ cd acleebot
+$ git clone https://github.com/toddbirchard/broiestbot.git
+$ cd broiestbot
 $ pipenv shell
 $ pipenv update
 $ python3 main.py
@@ -41,8 +40,8 @@ $ python3 main.py
 With **setup.py**:
 
 ```
-$ git clone https://github.com/toddbirchard/acleebot.git
-$ cd acleebot
+$ git clone https://github.com/toddbirchard/broiestbot.git
+$ cd broiestbot
 $ python3 setup.py install
 $ python3 main.py
 ```

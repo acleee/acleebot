@@ -29,7 +29,8 @@ setup(
                       'SQLAlchemy',
                       'BS4',
                       'Google-cloud-storage',
-                      'PyMySQL'],
+                      'PyMySQL',
+                      'Loguru'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
