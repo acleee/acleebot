@@ -66,8 +66,6 @@ These variables are optional to enable different services, such as pulling image
 GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
 GOOGLE_BUCKET_NAME=nameOfStorageBucket
 GOOGLE_BUCKET_URL=http://storage.googleapis.com/
-
 GIPHY_API_KEY=yourGiphyAPIKey
-
 IEX_API_TOKEN=yourIEXStockAPIToken
 ```

@@ -9,12 +9,12 @@ with open(path.join(here, 'README.md'), encoding='utf-8') as f:
     long_description = f.read()
 
 setup(
-    name='acleebot',
-    version='0.0.1',
+    name='broiestbot',
+    version='1.0.0',
     description='Chatbot for the Chatango messaging platform.',
     long_description=long_description,
     long_description_content_type='text/markdown',
-    url='https://github.com/toddbirchard/acleebot',
+    url='https://github.com/toddbirchard/broiestbot',
     author='Todd Birchard',
     author_email='toddbirchard@gmail.com',
     classifiers=[
@@ -42,7 +42,7 @@ setup(
         ],
     },
     project_urls={
-        'Bug Reports': 'https://github.com/toddbirchard/aclee/issues',
-        'Source': 'https://github.com/toddbirchard/acleebot/',
+        'Bug Reports': 'https://github.com/toddbirchard/broiestbot/issues',
+        'Source': 'https://github.com/toddbirchard/broiestbot/',
     },
 )
