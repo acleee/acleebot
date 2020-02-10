@@ -9,9 +9,9 @@ def get_stock_price(symbol):
         price = req.json().get('latestPrice', None)
         company_name = req.json().get("companyName", None)
         if price and company_name:
-            change = 'idk!'
-            if req.json().get("ytdChange", None):
-                change = req.json()["ytdChange"]
-            message = f"{company_name} current price of ${price:.2f}. Percent change of {change:.2f}"
+            message = f"{company_name} current price of ${price:.2f}."
+            change = req.json().get("ytdChange", None)
+            if change:
+                message = f"{message} Percent change of {change:.2f}"
             return message
     return f'There\'s no such company as {symbol} :@'
