@@ -9,9 +9,7 @@ def get_crypto_price(symbol, message):
     high = prices["high"]
     low = prices["low"]
     percentage = prices["change"]['percentage']*100
-    percentage = '%.2f' % (percentage)
-    symbol = symbol.upper()
-    msg = f'{symbol}: Currently at ${last:.2f}. \
+    msg = f'{symbol.upper()}: Currently at ${last:.2f}. \
             High today of ${high:.2f}, low of ${low:.2f}. \
-            Change of {percentage}%'
+            Change of {percentage:.2f}%'
     return msg
