@@ -267,6 +267,31 @@ class bot(ch.RoomManager):
       definition = output2['definition']
       room.message(args+": "+definition)
 
+    # Season High stats
+    if cmd.lower() == "seasonhigh" and prfx:
+        if args == "kork":
+            room.message("https://imgur.com/a/4fcd3Ra")
+        if args == "ben":
+            room.message("https://imgur.com/a/lHW23O8")
+        if args == "joel":
+            room.message("https://imgur.com/a/m4p1KWv")
+        if args == "tobi":
+            room.message("https://imgur.com/a/1wXm017")
+        if args == "tisse":
+            room.message("https://imgur.com/a/8eR99Uy")
+        if args == "al" :
+            room.message("https://imgur.com/a/urlBLB1")
+
+    #GOATMAZ
+    if cmd.lower() == "korkpop" and prfx:
+        room.message("https://imgur.com/a/qrYhrPF")
+
+    if cmd.lower() == "sexykork" and prfx:
+        room.message("https://imgur.com/a/Yhk32kO")
+
+
+
+
     if cmd.lower() == "goal" and prfx:
       if (args == "14"):
         resp = "Sean Couturier"
