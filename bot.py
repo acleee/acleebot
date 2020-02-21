@@ -61,7 +61,7 @@ class bot(ch.RoomManager):
     if cmd.lower() == "energy" and prfx:
       room.message("༼ つ ◕_◕ ༽つ "+args.upper()+" TAKE MY ENERGY ༼ つ ◕_◕ ༽つ")
     if cmd.lower() == "ping" and prfx:
-      room.message("pong!")
+      room.message("https://imgur.com/EXWQ1zc")
     if cmd.lower() == "donate" and prfx:
       room.message("If you enjoy the stream, help keep the site going! :) https://memesyndicate.com/gofundme")
     if cmd.lower() == "de" and prfx:
@@ -289,8 +289,9 @@ class bot(ch.RoomManager):
     if cmd.lower() == "sexykork" and prfx:
         room.message("https://imgur.com/a/Yhk32kO")
 
-   # if cmd.lower() == "goatmaz" and prfx:
-    #    room.message("")
+    if cmd.lower() == "tailgate" and prfx:
+        room.message("I'm a tailgater tailgating to get to my tailgate lets tailgate!")
+
 
 
 
