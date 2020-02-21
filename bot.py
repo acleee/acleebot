@@ -270,17 +270,17 @@ class bot(ch.RoomManager):
     # Season High stats
     if cmd.lower() == "seasonhigh" and prfx:
         if args == "kork":
-            room.message("https://imgur.com/a/4fcd3Ra")
+            room.message("https://imgur.com/a/H7yvcEp")
         if args == "ben":
-            room.message("https://imgur.com/a/lHW23O8")
+            room.message("https://imgur.com/fuLzxGM")
         if args == "joel":
-            room.message("https://imgur.com/a/m4p1KWv")
+            room.message("https://imgur.com/LiqKmN6")
         if args == "tobi":
-            room.message("https://imgur.com/a/1wXm017")
+            room.message("https://imgur.com/D4RdpMQ")
         if args == "tisse":
-            room.message("https://imgur.com/a/8eR99Uy")
-        if args == "al" :
-            room.message("https://imgur.com/a/urlBLB1")
+            room.message("https://imgur.com/QwwHQAc")
+        if args == "al":
+            room.message("https://imgur.com/13XICMB")
 
     #GOATMAZ
     if cmd.lower() == "korkpop" and prfx:
@@ -289,6 +289,8 @@ class bot(ch.RoomManager):
     if cmd.lower() == "sexykork" and prfx:
         room.message("https://imgur.com/a/Yhk32kO")
 
+   # if cmd.lower() == "goatmaz" and prfx:
+    #    room.message("")
 
 
 
