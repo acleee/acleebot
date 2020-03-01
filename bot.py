@@ -270,35 +270,49 @@ class bot(ch.RoomManager):
     # Season High stats
     if cmd.lower() == "seasonhigh" and prfx:
         if args == "kork":
-            room.message("https://imgur.com/a/H7yvcEp")
+            room.message("https://imgur.com/eRpHHxN")
         if args == "ben":
             room.message("https://imgur.com/fuLzxGM")
         if args == "joel":
-            room.message("https://imgur.com/LiqKmN6")
+            room.message("https://imgur.com/CSRpK6B")
         if args == "tobi":
             room.message("https://imgur.com/D4RdpMQ")
         if args == "tisse":
             room.message("https://imgur.com/QwwHQAc")
         if args == "al":
             room.message("https://imgur.com/13XICMB")
+        if args == "shake":
+            room.message("https://imgur.com/FK28TL1")
 
     #GOATMAZ
     if cmd.lower() == "korkpop" and prfx:
         room.message("https://imgur.com/a/qrYhrPF")
 
-    if cmd.lower() == "sexykork" and prfx:
-        room.message("https://imgur.com/a/Yhk32kO")
+    if cmd.lower() == "sexers" and prfx:
+        for x in range(0, 5, 1):
+            if x == 0:
+                room.message("https://imgur.com/bhfVJsT")
+            if x == 1:
+                room.message("https://imgur.com/7EOL1n1")
+            if x == 2:
+                room.message("https://imgur.com/STY0iWU")
+            if x == 3:
+                room.message("https://imgur.com/nSro18Q")
+            if x == 4:
+                room.message("https://imgur.com/lVelZXP")
+            if x == 5:
+                room.message("https://imgur.com/7MqhQW2")
 
     if cmd.lower() == "tailgate" and prfx:
         room.message("I'm a tailgater tailgating to get to my tailgate lets tailgate!")
 
-
-
+    if cmd.lower() == "crab" and prfx:
+        room.message("https://discordemoji.com/assets/emoji/3562_crab_rave.gif")
 
     if cmd.lower() == "goal" and prfx:
       if (args == "14"):
         resp = "Sean Couturier"
-      if (args == "51"):
+      if (args == "52"):
         resp = "Valtteri Filppula"
       if (args == "28"):
         resp = "Claude Giroux"
