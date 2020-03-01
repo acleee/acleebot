@@ -288,6 +288,22 @@ class bot(ch.RoomManager):
     if cmd.lower() == "korkpop" and prfx:
         room.message("https://imgur.com/a/qrYhrPF")
 
+    if cmd.lower() == "tailgate" and prfx:
+        room.message("I'm a tailgater tailgating to get to my tailgate lets tailgate!")
+
+    if cmd.lower() == "crab" and prfx:
+        room.message("https://discordemoji.com/assets/emoji/3562_crab_rave.gif")
+
+    if cmd.lower() == "sniper" and prfx:
+        room.message("https://media.giphy.com/media/mMC6WHS2Xy4Gxqj78l/giphy.gif")
+
+    if cmd.lower() == "MIKE" and prfx:
+        room.message("https://media.giphy.com/media/WpTvMqzeeRxO8TEeE3/giphy.gif")
+
+    if cmd.lower() == "SCOTT" and prfx:
+        room.message("https://media.giphy.com/media/tlGD7PDy1w8fK/giphy.gif")
+
+
     if cmd.lower() == "sexers" and prfx:
         for x in range(0, 5, 1):
             if x == 0:
@@ -303,11 +319,7 @@ class bot(ch.RoomManager):
             if x == 5:
                 room.message("https://imgur.com/7MqhQW2")
 
-    if cmd.lower() == "tailgate" and prfx:
-        room.message("I'm a tailgater tailgating to get to my tailgate lets tailgate!")
 
-    if cmd.lower() == "crab" and prfx:
-        room.message("https://discordemoji.com/assets/emoji/3562_crab_rave.gif")
 
     if cmd.lower() == "goal" and prfx:
       if (args == "14"):
