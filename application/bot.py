@@ -1,24 +1,27 @@
 """Core bot logic."""
+import sys
 from loguru import logger
 from .ch import RoomManager
-from .commands.basic import send_basic_message
-from .commands.scrape import scrape_random_image
-from .commands.crypto import get_crypto_price
-from .commands.random import randomize_image
-from .commands.stock import get_stock_price
-from .commands.avatar import get_user_avatar
-from .commands.storage import fetch_image_from_storage
-from .commands.giphy import random_giphy_image
-from .commands.urban import urban_dictionary_defintion
+from .commands import (basic_message,
+                       get_crypto_price,
+                       random_image,
+                       get_stock_price,
+                       get_user_avatar,
+                       fetch_image_from_gcs,
+                       giphy_image_search,
+                       urban_dictionary_defintion)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
            level="INFO",
+           catch=False)
+logger.add(sys.stdout,
+           format="{time} {level} {message}",
+           level="ERROR",
            catch=True)
 
 
 class Bot(RoomManager):
-    """Main bot class."""
 
     def onInit(self):
         """Initialize bot."""
@@ -26,39 +29,37 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
+        # self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
-    @logger.catch
-    def chat(self, cmd, row, room, args):
+    @staticmethod
+    def chat(room, message):
         """Construct a response to a valid command."""
-        cmd_type = row['type']
-        message = row['content']
+        room.message(message)
+
+    @staticmethod
+    def create_message(cmd, content, args=None):
         response = None
-        if cmd_type == 'basic':
-            response = send_basic_message(message)
-        if cmd_type == 'scrape':
-            response = scrape_random_image(message)
-        if cmd_type == 'crypto':
-            response = get_crypto_price(cmd, message)
-        if cmd_type == 'random':
-            response = randomize_image(message)
-        if cmd_type == 'stock' and args:
+        if cmd == 'basic':
+            response = basic_message(content)
+        if cmd == 'crypto':
+            response = get_crypto_price(cmd, content)
+        if cmd == 'random':
+            response = random_image(content)
+        if cmd == 'stock' and args:
             response = get_stock_price(args)
-        if type == 'avi':
-            response = get_user_avatar(message, args)
-        if cmd_type == 'storage':
-            response = fetch_image_from_storage(message)
-        if cmd_type == 'giphy':
-            response = random_giphy_image(message)
-        if cmd_type == 'giphysearch' and args:
-            response = random_giphy_image(args)
-        if cmd_type == 'urban' and args:
+        if cmd == 'avi':
+            response = get_user_avatar(content, args)
+        if cmd == 'storage':
+            response = fetch_image_from_gcs(content)
+        if cmd == 'giphy':
+            response = giphy_image_search(content)
+        if cmd == 'urban' and args:
             response = urban_dictionary_defintion(args)
-        if response:
-            room.message(response)
+        return response
 
     @logger.catch
     def get_command(self, message):
-        """Read list of commands from database."""
+        """Read commands from database."""
         try:
             row = self.commands.loc[message]
             response = {
@@ -68,33 +69,38 @@ class Bot(RoomManager):
         except KeyError:
             logger.error(f'{message} is not a command.')
 
+    @logger.catch
     def onMessage(self, room, user, message):
         """Boilerplate function trigger on message."""
         logger.info("[{0}] {1} ({2}): {3}".format(room.name,
                                                   user.name.title(),
                                                   message.ip,
                                                   message.body))
-        msg = message.body.lower()
+        user_msg = message.body.lower()
         # Trigger if chat message is a command
-        if msg[0] == "!":
-            self.command_response(msg, room)
-        elif msg == 'bro?' or msg.replace(' ', '') == '@broiestbot':
+        if user_msg[0] == "!":
+            self.command_response(user_msg, room)
+        elif user_msg == 'bro?' or user_msg.replace(' ', '') == '@broiestbot':
             self.bot_status_check(room)
-        elif 'blab' in msg and 'south' not in msg:
+        elif 'blab' in user_msg and 'south' not in user_msg:
             self.banned_word(room, message, user)
-        elif msg.endswith('only on aclee'):
-            self.trademarked(room)
+        elif user_msg.endswith('only on aclee'):
+            self.chat(room, '™')
 
+    @logger.catch
     def command_response(self, cmd, room):
         """Respond to command."""
+        print('cmd = ', cmd)
         req = cmd[1::].lower()
         args = None
         if ' ' in cmd:
             req = cmd.split(' ', 1)[0][1::]
             args = cmd.split(' ', 1)[1]
-        response = self.get_command(req)
-        if response:
-            self.chat(cmd.replace('!', ''), response, room, args)
+        command = self.get_command(req)
+        if command:
+            message = self.create_message(command['type'], command['content'], args=args)
+            if message:
+                self.chat(room, message)
         else:
             self.giphy_fallback(cmd, room)
 
@@ -105,10 +111,10 @@ class Bot(RoomManager):
 
     @staticmethod
     def giphy_fallback(cmd, room):
-        """Default to Giphy for non-existant commands."""
+        """Default to Giphy for non-existent commands."""
         cmd = cmd.replace('!', '')
         if len(cmd) > 1:
-            response = random_giphy_image(cmd)
+            response = giphy_image_search(cmd)
             room.message(response)
 
     @staticmethod

@@ -17,9 +17,9 @@ class Config:
     chatangoRooms = [testRoom,
                      acleeRoom,
                      sixersRoom,
-                     philliesRoom,
-                     eaglesRoom,
-                     nflRoom,
+                     # philliesRoom,
+                     # eaglesRoom,
+                     # nflRoom,
                      obiRoom]
 
     # Chatango creds
@@ -30,6 +30,7 @@ class Config:
     database_uri = environ.get('SQLALCHEMY_DATABASE_URI')
     database_name = environ.get('SQLALCHEMY_DATABASE_NAME')
     database_table = environ.get('SQLALCHEMY_TABLE')
+    database_args = {'ssl': {'ca': './creds/ca-certificate.crt'}}
 
     # Google Cloud Storage Vars
     gcloudCredentials = environ.get('GOOGLE_APPLICATION_CREDENTIALS')
@@ -38,12 +39,6 @@ class Config:
 
     # Giphy
     giphy_api_key = environ.get('GIPHY_API_KEY')
-    iex_api_key = environ.get('IEX_API_TOKEN')
 
-    # Channel
-    channel_cookie_id = environ.get('CHANNEL_COOKIE_ID')
-    channel_session = environ.get('CHANNEL_SESSION')
-    channel_xsrf_token = environ.get('CHANNEL_XSRF_TOKEN')
-    channel_asus_token = environ.get('CHANNEL_ASUS_TOKEN')
-    channel_host = environ.get('CHANNEL_HOST')
-    channel_auth = environ.get('CHANNEL_AUTH')
+    # Stock
+    iex_api_key = environ.get('IEX_API_TOKEN')
