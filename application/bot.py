@@ -37,23 +37,23 @@ class Bot(RoomManager):
         room.message(message)
 
     @staticmethod
-    def create_message(cmd, content, args=None):
+    def create_message(type, content, command, args=None):
         response = None
-        if cmd == 'basic':
+        if type == 'basic':
             response = basic_message(content)
-        if cmd == 'crypto':
-            response = get_crypto_price(cmd, content)
-        if cmd == 'random':
+        if type == 'crypto':
+            response = get_crypto_price(command, content)
+        if type == 'random':
             response = random_image(content)
-        if cmd == 'stock' and args:
+        if type == 'stock' and args:
             response = get_stock_price(args)
-        if cmd == 'avi':
+        if type == 'avi':
             response = get_user_avatar(content, args)
-        if cmd == 'storage':
+        if type == 'storage':
             response = fetch_image_from_gcs(content)
-        if cmd == 'giphy':
+        if type == 'giphy':
             response = giphy_image_search(content)
-        if cmd == 'urban' and args:
+        if type == 'urban' and args:
             response = urban_dictionary_defintion(args)
         return response
 
@@ -98,7 +98,7 @@ class Bot(RoomManager):
             args = cmd.split(' ', 1)[1]
         command = self.get_command(req)
         if command:
-            message = self.create_message(command['type'], command['content'], args=args)
+            message = self.create_message(command['type'], command['content'], cmd.replace('!', ''), args=args)
             if message:
                 self.chat(room, message)
         else:
