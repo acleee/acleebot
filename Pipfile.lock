@@ -1,7 +1,7 @@
 {
     "_meta": {
         "hash": {
-            "sha256": "216266cd6e1df5925dbdb2a3df8f26e71db780eea118d33af3585c7f7fc33f2e"
+            "sha256": "9bd21239e9ffaa965a2f30d4958dc73baedfa569ce24cca9802b4f93c2ec0d4b"
         },
         "pipfile-spec": 6,
         "requires": {
@@ -93,6 +93,14 @@
             ],
             "index": "pypi",
             "version": "==0.4.1"
+        },
+        "nba-api": {
+            "hashes": [
+                "sha256:7a6cdf9b3426fc3a75cf74ad0530953c37424ff2edd1b906801c456713ac039e",
+                "sha256:bc614995b80211d123ae3e9e383e721956939846198e5cbb04392c4765183fc5"
+            ],
+            "index": "pypi",
+            "version": "==1.1.8"
         },
         "numpy": {
             "hashes": [

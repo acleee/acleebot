@@ -2,6 +2,9 @@ import requests
 from google.cloud import storage
 from random import randint
 from config import Config
+from datetime import datetime
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teamgamelog
 
 
 def basic_message(message):
@@ -87,33 +90,20 @@ def random_subreddit_image(message):
     return image
 
 
-def get_nba_score(message):
+def nba_team_score(message):
     """Get score of an NBA game."""
-    if message == "sixers" or message == "76ers":
-        team_id = '1610612755'
-        if not team_id:
-            return "Couldn't find the score for todays game"
-        url = 'https://data.nba.com/data/5s/v2015/json/mobile_teams/nba/2017/scores/00_todays_scores.json'
-        json = requests.get(url).json()
-        games = json['gs']['g']
-        for game in games:
-            home_team_id = game['h']['tid']
-            visitor_team_id = game['v']['tid']
-            if home_team_id == int(team_id) or visitor_team_id == int(team_id):
-                home_team_score = game['h']['s']
-                visitor_team_score = game['v']['s']
-                home_team_name = game['h']['tc'] + " " + game['h']['tn']
-                visitor_team_name = game['v']['tc'] + " " + game['v']['tn']
-                msg = home_team_name + " " + str(home_team_score) + " - " \
-                    + visitor_team_name + " " \
-                    + str(visitor_team_score)
-        return msg
+    team_id = teams.find_teams_by_full_name(message)[0].get('id')
+    season = datetime.now().year
+    season_type = 'Regular Season'
+    game = teamgamelog.TeamGameLog(team_id, season, season_type)
+    print(game.nba_response.__dict__)
+    print(game.data_sets[0].__dict__)
 
 
 def get_stock_price(symbol):
     """Get stock price by symbol."""
     params = {'token': Config.iex_api_key}
-    req = requests.get('https://sandbox.iexapis.com/stable/stock/' + symbol + '/quote', params=params)
+    req = requests.get(f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote', params=params)
     if req.status_code == 200:
         price = req.json().get('latestPrice', None)
         company_name = req.json().get("companyName", None)

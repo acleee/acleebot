@@ -10,6 +10,7 @@ SQLAlchemy = "*"
 PyMySQL = "*"
 Google-cloud-storage = "*"
 Loguru = "*"
+nba_api = "*"
 
 [dev-packages]
 pytest = "*"

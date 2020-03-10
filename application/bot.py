@@ -9,7 +9,8 @@ from .commands import (basic_message,
                        get_user_avatar,
                        fetch_image_from_gcs,
                        giphy_image_search,
-                       urban_dictionary_defintion)
+                       urban_dictionary_defintion,
+                       nba_team_score)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -37,7 +38,7 @@ class Bot(RoomManager):
         room.message(message)
 
     @staticmethod
-    def create_message(type, content, command, args=None):
+    def create_message(type, content, command=None, args=None):
         response = None
         if type == 'basic':
             response = basic_message(content)
@@ -55,6 +56,8 @@ class Bot(RoomManager):
             response = giphy_image_search(content)
         if type == 'urban' and args:
             response = urban_dictionary_defintion(args)
+        if type == 'nba' and args:
+            response = nba_team_score(args)
         return response
 
     @logger.catch
@@ -86,6 +89,8 @@ class Bot(RoomManager):
             self.banned_word(room, message, user)
         elif user_msg.endswith('only on aclee'):
             self.chat(room, '™')
+        elif user_msg.lower() == 'tm':
+            self.replace_word(room, message)
 
     @logger.catch
     def command_response(self, cmd, room):
@@ -98,7 +103,10 @@ class Bot(RoomManager):
             args = cmd.split(' ', 1)[1]
         command = self.get_command(req)
         if command:
-            message = self.create_message(command['type'], command['content'], cmd.replace('!', ''), args=args)
+            message = self.create_message(command['type'],
+                                          command['content'],
+                                          command=cmd.replace('!', ''),
+                                          args=args)
             if message:
                 self.chat(room, message)
         else:
@@ -124,6 +132,7 @@ class Bot(RoomManager):
         room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
 
     @staticmethod
-    def trademarked(room):
-        """ONLY on ACLEE™"""
-        room.message('™')
+    def replace_word(room, message):
+        """Remove banned words."""
+        message.delete()
+        room.message("™")
