@@ -28,13 +28,12 @@ def get_crypto_price(symbol, message):
     low = prices["low"]
     percentage = prices["change"]['percentage']*100
     if last > 1:
-        msg = f'{symbol.upper()}: Currently at ${last:.2f}. \
+        return f'{symbol.upper()}: Currently at ${last:.2f}. \
                 High today of ${high:.2f}, low of ${low:.2f}. \
                 Change of {percentage:.2f}%'
-    msg = f'{symbol.upper()}: Currently at ${last}. \
+    return f'{symbol.upper()}: Currently at ${last}. \
             High today of ${high}, low of ${low}. \
             Change of {percentage:.2f}%'
-    return msg
 
 
 def fetch_image_from_gcs(message):
@@ -111,7 +110,7 @@ def get_stock_price(symbol):
             message = f"{company_name} current price of ${price:.2f}."
             change = req.json().get("ytdChange", None)
             if change:
-                message = f"{message} Percent change of {change:.2f}"
+                message = f"{message} Change of {change:.2f}%"
             return message
     return f'There\'s no such company as {symbol} :@'
 
