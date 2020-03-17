@@ -11,8 +11,8 @@ logger.add(sys.stdout, format="{time} {level} {message}", level="INFO")
 def init_bot():
     """Initiate bot."""
     db = Database(Config)
-    logger.info(f'Joining {Config.chatangoRooms}')
-    Bot.easy_start(rooms=Config.chatangoRooms,
-                   name=Config.username,
-                   password=Config.password,
+    logger.info(f'Joining {Config.CHATANGO_ROOMS}')
+    Bot.easy_start(rooms=Config.CHATANGO_ROOMS,
+                   name=Config.CHATANGO_USERNAME,
+                   password=Config.CHATANGO_PASSWORD,
                    commands=db.commands)

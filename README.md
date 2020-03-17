@@ -1,9 +1,9 @@
 # broiestbot
 
-![Python](https://img.shields.io/badge/python-^3.7-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![Pandas](https://img.shields.io/badge/pandas-0.25.0-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
+![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
+![Pandas](https://img.shields.io/badge/pandas-1.0.1-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.3.11-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.3.13-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![PyMySQL](https://img.shields.io/badge/PyMySQL-v0.9.3-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/issues)
@@ -51,13 +51,13 @@ $ python3 main.py
 Create a `.env` file with your Chatango configuration. These variables are required:
 
 ```
-ROOM=yourchatangoroom
-USERNAME=yourbotusername
-PASSWORD=yourbotpassword
+CHATANGO_ROOMS=yourchatangoroom
+CHATANGO_USERNAME=yourbotusername
+CHATANGO_PASSWORD=yourbotpassword
 
-SQLALCHEMY_DATABASE_URI=yourdatabaseuri
-SQLALCHEMY_DATABASE_NAME=yourdatabasename
-SQLALCHEMY_TABLE=yourdatabbasetable
+DATABASE_URI=yourdatabaseuri
+DATABASE_NAME=yourdatabasename
+DATABASE_TABLE=yourdatabbasetable
 ```
 
 These variables are optional to enable different services, such as pulling images from Google Cloud or fetching Stock prices:

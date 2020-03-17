@@ -30,7 +30,7 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
-        # self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
+        self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
     @staticmethod
     def chat(room, message):
@@ -95,7 +95,6 @@ class Bot(RoomManager):
     @logger.catch
     def command_response(self, cmd, room):
         """Respond to command."""
-        print('cmd = ', cmd)
         req = cmd[1::].lower()
         args = None
         if ' ' in cmd:

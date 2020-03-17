@@ -40,18 +40,18 @@ def get_crypto_price(symbol, message):
 def fetch_image_from_gcs(message):
     """Get a random image from Google Cloud Storage bucket."""
     storage_client = storage.Client()
-    bucket = storage_client.get_bucket(Config.gcloudBucketName)
+    bucket = storage_client.get_bucket(Config.GOOGLE_BUCKET_NAME)
     images = bucket.list_blobs(prefix=message)
     image_list = [image.name for image in images if '.' in image.name]
     rand = randint(0, len(image_list) - 1)
-    image = Config.gcloudBucketUrl + Config.gcloudBucketName + '/' + image_list[rand]
+    image = Config.GOOGLE_BUCKET_URL + Config.GOOGLE_BUCKET_NAME + '/' + image_list[rand]
     return image
 
 
 def giphy_image_search(searchTerm):
     """Giphy image search."""
     rand = randint(0, 20)
-    params = {'api_key': Config.giphy_api_key,
+    params = {'api_key': Config.GIPHY_API_KEY,
               'q': searchTerm,
               'limit': 1,
               'offset': rand,
@@ -102,7 +102,7 @@ def nba_team_score(message):
 
 def get_stock_price(symbol):
     """Get stock price by symbol."""
-    params = {'token': Config.iex_api_key}
+    params = {'token': Config.IEX_API_TOKEN}
     req = requests.get(f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote', params=params)
     if req.status_code == 200:
         price = req.json().get('latestPrice', None)
