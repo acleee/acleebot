@@ -10,7 +10,8 @@ from .commands import (basic_message,
                        fetch_image_from_gcs,
                        giphy_image_search,
                        urban_dictionary_defintion,
-                       nba_team_score)
+                       nba_team_score,
+                       create_market_chart)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -58,6 +59,8 @@ class Bot(RoomManager):
             response = urban_dictionary_defintion(args)
         if type == 'nba' and args:
             response = nba_team_score(args)
+        if type == 'chart':
+            response = create_market_chart(content)
         return response
 
     @logger.catch

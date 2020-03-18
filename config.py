@@ -42,3 +42,4 @@ class Config:
 
     # Stock
     IEX_API_TOKEN = environ.get('IEX_API_TOKEN')
+    ALPHA_VANTAGE_API = environ.get('ALPHA_VANTAGE_API')

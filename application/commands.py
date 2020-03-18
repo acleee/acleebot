@@ -5,6 +5,10 @@ from config import Config
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
+import requests
+import plotly.graph_objects as go
+import pandas as pd
+
 
 
 def basic_message(message):
@@ -127,3 +131,16 @@ def urban_dictionary_defintion(word):
             return f"{word}: {definition}. \n EXAMPLE: '{example}'"
         return f"{word}: {definition}"
     return 'word not found :('
+
+
+def create_market_chart(content):
+    print('test')
+    endpoint = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={content}&apikey={Config.ALPHA_VANTAGE_API}'
+    r = requests.get(endpoint)
+    data = r.json()['Time Series (Daily)']
+    cleaned_data = []
+    for k, v in data.items():
+        cleaned_data.append({k: v.get('4. close')})
+    df = pd.DataFrame.from_dict(cleaned_data, orient='columns')
+    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
+    fig.show()

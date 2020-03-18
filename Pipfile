@@ -11,6 +11,7 @@ PyMySQL = "*"
 Google-cloud-storage = "*"
 Loguru = "*"
 nba_api = "*"
+plotly = "*"
 
 [dev-packages]
 pytest = "*"
