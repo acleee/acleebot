@@ -11,7 +11,7 @@ from .commands import (basic_message,
                        giphy_image_search,
                        urban_dictionary_defintion,
                        nba_team_score,
-                       create_market_chart)
+                       get_market_chart)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -60,7 +60,7 @@ class Bot(RoomManager):
         if type == 'nba' and args:
             response = nba_team_score(args)
         if type == 'chart':
-            response = create_market_chart(content)
+            response = get_market_chart(content)
         return response
 
     @logger.catch
@@ -68,12 +68,11 @@ class Bot(RoomManager):
         """Read commands from database."""
         try:
             row = self.commands.loc[message]
-            response = {
-                'content': row['response'],
-                'type': row['type']}
-            return response
+            return {'content': row['response'],
+                    'type': row['type']}
         except KeyError:
-            logger.error(f'{message} is not a command.')
+            return None
+
 
     @logger.catch
     def onMessage(self, room, user, message):
@@ -104,7 +103,7 @@ class Bot(RoomManager):
             req = cmd.split(' ', 1)[0][1::]
             args = cmd.split(' ', 1)[1]
         command = self.get_command(req)
-        if command:
+        if command is not None:
             message = self.create_message(command['type'],
                                           command['content'],
                                           command=cmd.replace('!', ''),

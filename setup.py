@@ -29,7 +29,9 @@ setup(
                       'BS4',
                       'Google-cloud-storage',
                       'PyMySQL',
-                      'Loguru'],
+                      'Loguru',
+                      'Plotly',
+                      'psutil'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
