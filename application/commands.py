@@ -1,14 +1,16 @@
 import requests
-from google.cloud import storage
+from .google_storage import GCS
 from random import randint
 from config import Config
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
 import requests
-import plotly.graph_objects as go
 import pandas as pd
+import numpy as np
 
+
+gcs = GCS(Config.GOOGLE_BUCKET_NAME, Config.GOOGLE_BUCKET_URL)
 
 
 def basic_message(message):
@@ -42,9 +44,7 @@ def get_crypto_price(symbol, message):
 
 def fetch_image_from_gcs(message):
     """Get a random image from Google Cloud Storage bucket."""
-    storage_client = storage.Client()
-    bucket = storage_client.get_bucket(Config.GOOGLE_BUCKET_NAME)
-    images = bucket.list_blobs(prefix=message)
+    images = gcs.bucket.list_blobs(prefix=message)
     image_list = [image.name for image in images if '.' in image.name]
     rand = randint(0, len(image_list) - 1)
     image = Config.GOOGLE_BUCKET_URL + Config.GOOGLE_BUCKET_NAME + '/' + image_list[rand]
@@ -100,8 +100,8 @@ def nba_team_score(message):
     season = datetime.now().year
     season_type = 'Regular Season'
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
-    print(game.nba_response.__dict__)
-    print(game.data_sets[0].__dict__)
+    # print(game.nba_response.__dict__)
+    # print(game.data_sets[0].__dict__)
 
 
 def get_stock_price(symbol):
@@ -134,14 +134,6 @@ def urban_dictionary_defintion(word):
     return 'word not found :('
 
 
-def create_market_chart(content):
-    print('test')
-    endpoint = f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={content}&apikey={Config.ALPHA_VANTAGE_API}'
-    r = requests.get(endpoint)
-    data = r.json()['Time Series (Daily)']
-    cleaned_data = []
-    for k, v in data.items():
-        cleaned_data.append({k: v.get('4. close')})
-    df = pd.DataFrame.from_dict(cleaned_data, orient='columns')
-    fig = px.line(df, x="year", y="lifeExp", title='Life expectancy in Canada')
-    fig.show()
+def get_market_chart(content):
+    """Fetch chart from GCS."""
+    return f'{Config.GOOGLE_BUCKET_URL}{Config.GOOGLE_BUCKET_NAME}/{content}.jpg'

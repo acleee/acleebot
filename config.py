@@ -33,7 +33,7 @@ class Config:
     DATABASE_ARGS = {'ssl': {'ca': './creds/ca-certificate.crt'}}
 
     # Google Cloud
-    GOOGLE_APPLICATION_CREDENTIALS = environ.get('GOOGLE_APPLICATION_CREDENTIALS')
+    GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json'
     GOOGLE_BUCKET_NAME = environ.get('GOOGLE_BUCKET_NAME')
     GOOGLE_BUCKET_URL = environ.get('GOOGLE_BUCKET_URL')
 
