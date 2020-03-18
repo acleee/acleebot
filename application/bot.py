@@ -11,7 +11,8 @@ from .commands import (basic_message,
                        giphy_image_search,
                        urban_dictionary_defintion,
                        nba_team_score,
-                       create_market_chart)
+                       create_market_chart,
+                       random_subreddit_image)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -61,6 +62,8 @@ class Bot(RoomManager):
             response = nba_team_score(args)
         if type == 'chart':
             response = create_market_chart(content)
+        if type == 'reddit':
+            response = random_subreddit_image(content)
         return response
 
     @logger.catch
@@ -73,7 +76,7 @@ class Bot(RoomManager):
                 'type': row['type']}
             return response
         except KeyError:
-            logger.error(f'{message} is not a command.')
+            return None
 
     @logger.catch
     def onMessage(self, room, user, message):

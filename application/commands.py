@@ -84,10 +84,11 @@ def random_subreddit_image(message):
       'Access-Control-Max-Age': '3600',
       'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
-    endpoint = message + 'new.json?sort=new'
+    endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
-    images = [image['preview']['images'][0]['source']['url'] for image in res if image.get('preview', None)]
+
+    images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if image['data'].get('secure_media')]
     rand = randint(0, len(images) - 1)
     image = images[rand].split('?')[0]
     return image
