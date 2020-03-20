@@ -35,6 +35,7 @@ class Database:
 
     def get_market_data(self, symbol):
         """Fetch 20-day timeseries market data."""
+        print(f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={self.ALPHA_VANTAGE_API}&datatype=csv&outputsize=compact', parse_dates=['timestamp'], dtype={'close': 'Float64'})
         df = pd.read_csv(f'https://www.alphavantage.co/query?function=TIME_SERIES_DAILY&symbol={symbol}&apikey={self.ALPHA_VANTAGE_API}&datatype=csv&outputsize=compact', parse_dates=['timestamp'], dtype={'close': 'Float64'})
         df.drop(columns=['open', 'high', 'low', 'volume'], inplace=True)
         df = df.loc[0:20]

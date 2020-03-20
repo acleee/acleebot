@@ -43,3 +43,7 @@ class Config:
     # Stock
     IEX_API_TOKEN = environ.get('IEX_API_TOKEN')
     ALPHA_VANTAGE_API = environ.get('ALPHA_VANTAGE_API')
+
+    # Plotly
+    PLOTLY_API_KEY = environ.get('PLOTLY_API_KEY')
+    PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')

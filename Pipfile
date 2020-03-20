@@ -12,7 +12,7 @@ Google-cloud-storage = "*"
 Loguru = "*"
 nba_api = "*"
 plotly = "*"
-psutil = "*"
+chart-studio = "*"
 
 [dev-packages]
 pytest = "*"

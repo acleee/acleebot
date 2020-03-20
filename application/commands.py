@@ -8,9 +8,13 @@ from nba_api.stats.endpoints import teamgamelog
 import requests
 import pandas as pd
 import numpy as np
+import plotly.graph_objects as go
+import chart_studio.plotly as py
+import chart_studio
 
 
 gcs = GCS(Config.GOOGLE_BUCKET_NAME, Config.GOOGLE_BUCKET_URL)
+chart_studio.tools.set_credentials_file(username=Config.PLOTLY_USERNAME, api_key=Config.PLOTLY_API_KEY)
 
 
 def basic_message(message):
@@ -117,6 +121,24 @@ def get_stock_price(symbol):
             if change:
                 message = f"{message} Change of {change:.2f}%"
             return message
+    return f'There\'s no such company as {symbol} :@'
+
+
+def stock_price_chart(symbol):
+    params = {'token': Config.IEX_API_TOKEN, 'includeToday': 'true'}
+    url = f'https://sandbox.iexapis.com/stable/stock/{symbol}/chart/1m/'
+    r = requests.get(url, params=params)
+    if r.status_code == 200:
+        df = pd.read_json(r.content)
+        fig = go.Figure(data=[go.Candlestick(x=df['date'],
+                        open=df['open'],
+                        high=df['high'],
+                        low=df['low'],
+                        close=df['close'])])
+        fig.update_layout(xaxis_rangeslider_visible=False, title=symbol.upper())
+        chart = py.plot(fig, filename=symbol, auto_open=False)
+        chart_image = chart[:-1] + '.png'
+        return f'{chart_image} {symbol.upper()} current price of ${df["open"][0]}, change today of %{df["changePercent"][1]:.2f}'
     return f'There\'s no such company as {symbol} :@'
 
 

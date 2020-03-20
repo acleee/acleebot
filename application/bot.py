@@ -5,7 +5,7 @@ from .ch import RoomManager
 from .commands import (basic_message,
                        get_crypto_price,
                        random_image,
-                       get_stock_price,
+                       stock_price_chart,
                        get_user_avatar,
                        fetch_image_from_gcs,
                        giphy_image_search,
@@ -49,7 +49,7 @@ class Bot(RoomManager):
         if type == 'random':
             response = random_image(content)
         if type == 'stock' and args:
-            response = get_stock_price(args)
+            response = stock_price_chart(args)
         if type == 'avi':
             response = get_user_avatar(content, args)
         if type == 'storage':
