@@ -136,9 +136,9 @@ def stock_price_chart(symbol):
                         low=df['low'],
                         close=df['close'])])
         fig.update_layout(xaxis_rangeslider_visible=False, title=symbol.upper())
-        chart = py.plot(fig, filename=symbol, auto_open=False)
+        chart = py.plot(fig, filename=symbol, auto_open=False, fileopt='overwrite', sharing='public')
         chart_image = chart[:-1] + '.png'
-        return f'{chart_image} {symbol.upper()} current price of ${df["open"][0]}, change today of %{df["changePercent"][1]:.2f}'
+        return f'{chart_image} {symbol.upper()} current price of ${df["open"][0]}, change today of {df["changePercent"][1]:.2f}%'
     return f'There\'s no such company as {symbol} :@'
 
 
