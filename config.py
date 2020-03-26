@@ -28,8 +28,7 @@ class Config:
 
     # Database
     DATABASE_URI = environ.get('DATABASE_URI')
-    DATABASE_NAME = environ.get('DATABASE_NAME')
-    DATABASE_TABLE = environ.get('DATABASE_TABLE')
+    DATABASE_COMMANDS_TABLE = environ.get('DATABASE_COMMANDS_TABLE')
     DATABASE_ARGS = {'ssl': {'ca': './creds/ca-certificate.crt'}}
 
     # Google Cloud
