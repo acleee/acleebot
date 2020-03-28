@@ -19,7 +19,7 @@ class Config:
                       # CHATANGO_PHILLIES_ROOM,
                       # CHATANGO_EAGLES_ROOM,
                       # CHATANGO_NFL_ROOM,
-                      # CHATANGO_OBI_ROOM
+                      CHATANGO_OBI_ROOM
                       ]
 
     # Chatango credentials
