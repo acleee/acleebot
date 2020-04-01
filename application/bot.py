@@ -1,24 +1,22 @@
 """Core bot logic."""
-import sys
 from loguru import logger
 from .ch import RoomManager
-from .commands import (basic_message,
-                       get_crypto_price,
-                       random_image,
-                       stock_price_chart,
-                       get_user_avatar,
-                       fetch_image_from_gcs,
-                       giphy_image_search,
-                       urban_dictionary_defintion,
-                       nba_team_score,
-                       get_market_chart,
-                       random_subreddit_image)
+from .logic import (basic_message,
+                    get_crypto_price,
+                    random_image,
+                    stock_price_chart,
+                    get_user_avatar,
+                    fetch_image_from_gcs,
+                    giphy_image_search,
+                    urban_dictionary,
+                    nba_team_score,
+                    random_subreddit_image)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
            level="INFO",
            catch=False)
-logger.add(sys.stdout,
+logger.add('logs/errors.log',
            format="{time} {level} {message}",
            level="ERROR",
            catch=True)
@@ -35,7 +33,7 @@ class Bot(RoomManager):
         self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
     @staticmethod
-    def chat(room, message):
+    def _chat(room, message):
         """Construct a response to a valid command."""
         room.message(message)
 
@@ -57,24 +55,12 @@ class Bot(RoomManager):
         if type == 'giphy':
             response = giphy_image_search(content)
         if type == 'urban' and args:
-            response = urban_dictionary_defintion(args)
+            response = urban_dictionary(args)
         if type == 'nba' and args:
             response = nba_team_score(args)
-        if type == 'chart':
-            response = create_market_chart(content)
         if type == 'reddit':
             response = random_subreddit_image(content)
         return response
-
-    @logger.catch
-    def get_command(self, message):
-        """Read commands from database."""
-        try:
-            row = self.commands.loc[message]
-            return {'content': row['response'],
-                    'type': row['type']}
-        except KeyError:
-            return None
 
     @logger.catch
     def onMessage(self, room, user, message):
@@ -84,34 +70,35 @@ class Bot(RoomManager):
                                                   message.ip,
                                                   message.body))
         user_msg = message.body.lower()
-        # Trigger if chat message is a command
         if user_msg[0] == "!":
-            self.command_response(user_msg, room)
-        elif user_msg == 'bro?' or user_msg.replace(' ', '') == '@broiestbot':
+            self.command_response(user_msg, room)  # Trigger if chat message is a command
+        elif user_msg == 'bro?':
             self.bot_status_check(room)
         elif 'blab' in user_msg and 'south' not in user_msg:
             self.banned_word(room, message, user)
         elif user_msg.endswith('only on aclee'):
-            self.chat(room, '™')
+            self._chat(room, '™')
         elif user_msg.lower() == 'tm':
             self.replace_word(room, message)
 
     @logger.catch
-    def command_response(self, cmd, room):
+    def command_response(self, user_msg, room):
         """Respond to command."""
-        req = cmd[1::].lower()
+        user_msg = user_msg[1::].lower()
         args = None
-        if ' ' in cmd:
-            req = cmd.split(' ', 1)[0][1::]
-            args = cmd.split(' ', 1)[1]
-        command = self.get_command(req)
+        if ' ' not in user_msg:
+            cmd = user_msg
+        else:
+            cmd = user_msg.split(' ', 1)[0]
+            args = user_msg.split(' ', 1)[1]
+        command = self.commands.get(cmd)
         if command is not None:
             message = self.create_message(command['type'],
-                                          command['content'],
-                                          command=cmd.replace('!', ''),
+                                          command['response'],
+                                          command=cmd,
                                           args=args)
             if message:
-                self.chat(room, message)
+                self._chat(room, message)
         else:
             self.giphy_fallback(cmd, room)
 

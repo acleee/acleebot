@@ -1,20 +1,23 @@
-import requests
 from .google_storage import GCS
 from random import randint
-from config import Config
+from config import (GOOGLE_BUCKET_NAME,
+                    GOOGLE_BUCKET_URL,
+                    PLOTLY_USERNAME,
+                    PLOTLY_API_KEY,
+                    GIPHY_API_KEY,
+                    IEX_API_TOKEN)
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
 import requests
 import pandas as pd
-import numpy as np
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 import chart_studio
 
 
-gcs = GCS(Config.GOOGLE_BUCKET_NAME, Config.GOOGLE_BUCKET_URL)
-chart_studio.tools.set_credentials_file(username=Config.PLOTLY_USERNAME, api_key=Config.PLOTLY_API_KEY)
+gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
+chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY)
 
 
 def basic_message(message):
@@ -51,14 +54,14 @@ def fetch_image_from_gcs(message):
     images = gcs.bucket.list_blobs(prefix=message)
     image_list = [image.name for image in images if '.' in image.name]
     rand = randint(0, len(image_list) - 1)
-    image = Config.GOOGLE_BUCKET_URL + Config.GOOGLE_BUCKET_NAME + '/' + image_list[rand]
+    image = GOOGLE_BUCKET_URL + GOOGLE_BUCKET_NAME + '/' + image_list[rand]
     return image
 
 
 def giphy_image_search(searchTerm):
     """Giphy image search."""
     rand = randint(0, 20)
-    params = {'api_key': Config.GIPHY_API_KEY,
+    params = {'api_key': GIPHY_API_KEY,
               'q': searchTerm,
               'limit': 1,
               'offset': rand,
@@ -91,7 +94,6 @@ def random_subreddit_image(message):
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
-
     images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if image['data'].get('secure_media')]
     rand = randint(0, len(images) - 1)
     image = images[rand].split('?')[0]
@@ -110,7 +112,7 @@ def nba_team_score(message):
 
 def get_stock_price(symbol):
     """Get stock price by symbol."""
-    params = {'token': Config.IEX_API_TOKEN}
+    params = {'token': IEX_API_TOKEN}
     req = requests.get(f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote', params=params)
     if req.status_code == 200:
         price = req.json().get('latestPrice', None)
@@ -126,7 +128,7 @@ def get_stock_price(symbol):
 
 def stock_price_chart(symbol):
     """Get 30-day stock chart."""
-    params = {'token': Config.IEX_API_TOKEN, 'includeToday': 'true'}
+    params = {'token': IEX_API_TOKEN, 'includeToday': 'true'}
     url = f'https://sandbox.iexapis.com/stable/stock/{symbol}/chart/1m/'
     r = requests.get(url, params=params)
     if r.status_code == 200:
@@ -144,20 +146,15 @@ def stock_price_chart(symbol):
     return f'There\'s no such company as {symbol} :@'
 
 
-def urban_dictionary_defintion(word):
+def urban_dictionary(word):
     """Fetch urban dictionary definition."""
     params = {'term': word}
     req = requests.get('http://api.urbandictionary.com/v0/define', params=params)
     if req.json().get('list'):
-        definition = str(req.json()['list'][0].get('definition'))[0:300] + '...'
-        example = str(req.json()['list'][0].get('example'))
+        definition = req.json()['list'][0].get('definition')
+        example = req.json()['list'][0].get('example', None)
         word = req.json()['list'][0]['word'].upper()
         if example:
             return f"{word}: {definition}. \n EXAMPLE: '{example}'"
         return f"{word}: {definition}"
     return 'word not found :('
-
-
-def get_market_chart(content):
-    """Fetch chart from GCS."""
-    return f'{Config.GOOGLE_BUCKET_URL}{Config.GOOGLE_BUCKET_NAME}/{content}.jpg'

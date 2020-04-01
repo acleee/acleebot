@@ -1,48 +1,45 @@
 """Bot configuration variables."""
 from os import environ
 
+# Chatango rooms
+CHATANGO_TEST_ROOM = environ.get('CHATANGO_TEST_ROOM')
+CHATANGO_ACLEE_ROOM = environ.get('CHATANGO_ACLEE_ROOM')
+CHATANGO_BLAB_ROOM = environ.get('CHATANGO_BLAB_ROOM')
+CHATANGO_SIXERS_ROOM = environ.get('CHATANGO_SIXERS_ROOM')
+CHATANGO_EAGLES_ROOM = environ.get('CHATANGO_EAGLES_ROOM')
+CHATANGO_PHILLIES_ROOM = environ.get('CHATANGO_PHILLIES_ROOM')
+CHATANGO_NFL_ROOM = environ.get('CHATANGO_NFL_ROOM')
+CHATANGO_OBI_ROOM = environ.get('CHATANGO_OBI_ROOM')
+CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
+                  CHATANGO_ACLEE_ROOM,
+                  CHATANGO_SIXERS_ROOM,
+                  CHATANGO_PHILLIES_ROOM,
+                  CHATANGO_EAGLES_ROOM,
+                  CHATANGO_NFL_ROOM,
+                  CHATANGO_OBI_ROOM
+                  ]
 
-class Config:
+# Chatango credentials
+CHATANGO_USERNAME = environ.get('CHATANGO_USERNAME')
+CHATANGO_PASSWORD = environ.get('CHATANGO_PASSWORD')
 
-    # Chatango rooms
-    CHATANGO_TEST_ROOM = environ.get('CHATANGO_TEST_ROOM')
-    CHATANGO_ACLEE_ROOM = environ.get('CHATANGO_ACLEE_ROOM')
-    CHATANGO_BLAB_ROOM = environ.get('CHATANGO_BLAB_ROOM')
-    CHATANGO_SIXERS_ROOM = environ.get('CHATANGO_SIXERS_ROOM')
-    CHATANGO_EAGLES_ROOM = environ.get('CHATANGO_EAGLES_ROOM')
-    CHATANGO_PHILLIES_ROOM = environ.get('CHATANGO_PHILLIES_ROOM')
-    CHATANGO_NFL_ROOM = environ.get('CHATANGO_NFL_ROOM')
-    CHATANGO_OBI_ROOM = environ.get('CHATANGO_OBI_ROOM')
-    CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
-                      CHATANGO_ACLEE_ROOM,
-                      # CHATANGO_SIXERS_ROOM,
-                      # CHATANGO_PHILLIES_ROOM,
-                      # CHATANGO_EAGLES_ROOM,
-                      # CHATANGO_NFL_ROOM,
-                      CHATANGO_OBI_ROOM
-                      ]
+# Database
+DATABASE_URI = environ.get('DATABASE_URI')
+DATABASE_COMMANDS_TABLE = environ.get('DATABASE_COMMANDS_TABLE')
+DATABASE_ARGS = {'ssl': {'ca': './creds/ca-certificate.crt'}}
 
-    # Chatango credentials
-    CHATANGO_USERNAME = environ.get('CHATANGO_USERNAME')
-    CHATANGO_PASSWORD = environ.get('CHATANGO_PASSWORD')
+# Google Cloud
+GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json'
+GOOGLE_BUCKET_NAME = environ.get('GOOGLE_BUCKET_NAME')
+GOOGLE_BUCKET_URL = environ.get('GOOGLE_BUCKET_URL')
 
-    # Database
-    DATABASE_URI = environ.get('DATABASE_URI')
-    DATABASE_COMMANDS_TABLE = environ.get('DATABASE_COMMANDS_TABLE')
-    DATABASE_ARGS = {'ssl': {'ca': './creds/ca-certificate.crt'}}
+# Giphy
+GIPHY_API_KEY = environ.get('GIPHY_API_KEY')
 
-    # Google Cloud
-    GOOGLE_APPLICATION_CREDENTIALS = 'gcloud.json'
-    GOOGLE_BUCKET_NAME = environ.get('GOOGLE_BUCKET_NAME')
-    GOOGLE_BUCKET_URL = environ.get('GOOGLE_BUCKET_URL')
+# Stock
+IEX_API_TOKEN = environ.get('IEX_API_TOKEN')
+ALPHA_VANTAGE_API = environ.get('ALPHA_VANTAGE_API')
 
-    # Giphy
-    GIPHY_API_KEY = environ.get('GIPHY_API_KEY')
-
-    # Stock
-    IEX_API_TOKEN = environ.get('IEX_API_TOKEN')
-    ALPHA_VANTAGE_API = environ.get('ALPHA_VANTAGE_API')
-
-    # Plotly
-    PLOTLY_API_KEY = environ.get('PLOTLY_API_KEY')
-    PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')
+# Plotly
+PLOTLY_API_KEY = environ.get('PLOTLY_API_KEY')
+PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')

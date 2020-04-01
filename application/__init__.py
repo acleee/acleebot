@@ -1,20 +1,20 @@
 """Initialize bot module."""
-import sys
 from .bot import Bot
 from .database import Database
 from .google_storage import GCS
-from config import Config
-from loguru import logger
+from .cmd import Commands
+from config import (CHATANGO_USERNAME,
+                    CHATANGO_PASSWORD,
+                    DATABASE_COMMANDS_TABLE,
+                    DATABASE_URI,
+                    DATABASE_ARGS)
 
 
-logger.add(sys.stdout, format="{time} {level} {message}", level="INFO")
-
-
-def init_bot():
-    """Initiate bot."""
-    db = Database(Config)
-    logger.info(f'Joining {Config.CHATANGO_ROOMS}')
-    Bot.easy_start(rooms=Config.CHATANGO_ROOMS,
-                   name=Config.CHATANGO_USERNAME,
-                   password=Config.CHATANGO_PASSWORD,
-                   commands=db.commands)
+def start_bot(room):
+    """Join Chatango room on dedicated CPU thread."""
+    db = Database(DATABASE_COMMANDS_TABLE, DATABASE_URI, DATABASE_ARGS)
+    commands = Commands(db.commands)
+    Bot.easy_start(rooms=[room],
+                   name=CHATANGO_USERNAME,
+                   password=CHATANGO_PASSWORD,
+                   commands=commands)
