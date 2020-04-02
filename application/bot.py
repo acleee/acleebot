@@ -100,7 +100,7 @@ class Bot(RoomManager):
             if message:
                 self._chat(room, message)
         else:
-            self.giphy_fallback(cmd, room)
+            self.giphy_fallback(user_msg, room)
 
     @staticmethod
     def bot_status_check(room):
