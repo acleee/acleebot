@@ -10,7 +10,7 @@ from .logic import (basic_message,
                     giphy_image_search,
                     urban_dictionary,
                     nba_team_score,
-                    random_subreddit_image)
+                    subreddit_image)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -59,7 +59,7 @@ class Bot(RoomManager):
         if type == 'nba' and args:
             response = nba_team_score(args)
         if type == 'reddit':
-            response = random_subreddit_image(content)
+            response = subreddit_image(content)
         return response
 
     @logger.catch

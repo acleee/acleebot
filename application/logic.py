@@ -82,7 +82,7 @@ def random_image(message):
     return random_pic
 
 
-def random_subreddit_image(message):
+def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
     headers = {
       'Access-Control-Allow-Origin': '*',
