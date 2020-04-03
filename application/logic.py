@@ -17,7 +17,8 @@ import chart_studio
 
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
-chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY)
+chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
+                                        api_key=PLOTLY_API_KEY)
 
 
 def basic_message(message):
