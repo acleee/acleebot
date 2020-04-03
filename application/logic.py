@@ -15,6 +15,8 @@ import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 import chart_studio
+from application.tables import weather
+import emoji
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
@@ -169,9 +171,12 @@ def weather_by_city(city):
               'units': 'f'}
     r = requests.get(endpoint, params=params)
     data = r.json()
+    weather_emoji = weather.get(data["current"]["weather_code"])
+    if weather_emoji:
+        weather_emoji = emoji.emojize(weather_emoji, use_aliases=True)
     response = f'{data["request"]["query"]}: \
-                 {data["current"]["weather_descriptions"][0]}. \
+                 {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
                  {data["current"]["temperature"]}°f \
                  (feels like {data["current"]["feelslike"]}°f). \
-                 {data["current"]["precip"]}% percipitation'
+                 {data["current"]["precip"]}% precipitation.'
     return response

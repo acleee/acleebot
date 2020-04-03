@@ -31,7 +31,8 @@ setup(
                       'Loguru',
                       'Plotly',
                       'chart-studio',
-                      'nba_api'],
+                      'nba_api',
+                      'emoji'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],

@@ -13,6 +13,7 @@ Loguru = "*"
 nba_api = "*"
 plotly = "*"
 chart-studio = "*"
+emoji = "*"
 
 [dev-packages]
 pytest = "*"

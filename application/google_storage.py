@@ -19,7 +19,6 @@ class GCS:
 
     def upload_file(self, local_file, remote_file):
         """Upload local image to GCS bucket."""
-        blob = self.bucket.blob('dow.jpg')
         blob = Blob(remote_file, self.bucket)
         with open(local_file, "rb") as image:
             blob.upload_from_file(image)

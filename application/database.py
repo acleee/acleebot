@@ -17,3 +17,11 @@ class Database:
                                      table_name=self.table,
                                      index_col='command')
         return table_df
+
+    @property
+    def weather(self):
+        """Load table from SQL database."""
+        weather_df = pd.read_sql_table(con=self.engine,
+                                       table_name='weather',
+                                       index_col='code')
+        return weather_df
