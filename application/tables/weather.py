@@ -1,5 +1,8 @@
+"""Data srtructure associating weather forecasts to emojis."""
+
 
 class Weather:
+    """Table of weather type associations."""
 
     def __init__(self, weather_df):
         self.weather_df = weather_df

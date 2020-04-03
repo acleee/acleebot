@@ -8,7 +8,9 @@ class Database:
 
     def __init__(self, DATABASE_COMMANDS_TABLE, DATABASE_URI, DATABASE_ARGS):
         self.table = DATABASE_COMMANDS_TABLE
-        self.engine = create_engine(DATABASE_URI, connect_args=DATABASE_ARGS, echo=False)
+        self.engine = create_engine(DATABASE_URI,
+                                    connect_args=DATABASE_ARGS,
+                                    echo=False)
 
     @property
     def commands(self):

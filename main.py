@@ -1,3 +1,4 @@
+"""Script entry point."""
 from application import start_bot
 from multiprocessing import Process
 from config import CHATANGO_ROOMS
