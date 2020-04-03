@@ -5,7 +5,8 @@ from config import (GOOGLE_BUCKET_NAME,
                     PLOTLY_USERNAME,
                     PLOTLY_API_KEY,
                     GIPHY_API_KEY,
-                    IEX_API_TOKEN, WEATHERSTACK_API_KEY)
+                    IEX_API_TOKEN,
+                    WEATHERSTACK_API_KEY)
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
@@ -14,7 +15,6 @@ import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 import chart_studio
-
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
@@ -40,7 +40,7 @@ def get_crypto_price(symbol, message):
     last = prices["last"]
     high = prices["high"]
     low = prices["low"]
-    percentage = prices["change"]['percentage']*100
+    percentage = prices["change"]['percentage'] * 100
     if last > 1:
         return f'{symbol.upper()}: Currently at ${last:.2f}. \
                 High today of ${high:.2f}, low of ${low:.2f}. \
@@ -79,23 +79,24 @@ def giphy_image_search(searchTerm):
 def random_image(message):
     """Select a random image from response."""
     image_list = message.replace(' ', '').split(';')
-    random_pic = image_list[randint(0, len(image_list)-1)]
+    random_pic = image_list[randint(0, len(image_list) - 1)]
     return random_pic
 
 
 def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
     headers = {
-      'Access-Control-Allow-Origin': '*',
-      'Access-Control-Allow-Methods': 'GET',
-      'Access-Control-Allow-Headers': 'Content-Type',
-      'Access-Control-Max-Age': '3600',
-      'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+        'Access-Control-Allow-Origin': '*',
+        'Access-Control-Allow-Methods': 'GET',
+        'Access-Control-Allow-Headers': 'Content-Type',
+        'Access-Control-Max-Age': '3600',
+        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
-    images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if image['data'].get('secure_media')]
+    images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if
+              image['data'].get('secure_media')]
     rand = randint(0, len(images) - 1)
     image = images[rand].split('?')[0]
     return image
@@ -136,10 +137,10 @@ def stock_price_chart(symbol):
         message = get_stock_price(symbol)
         stock_df = pd.read_json(r.content)
         fig = go.Figure(data=[go.Candlestick(x=stock_df['date'],
-                        open=stock_df['open'],
-                        high=stock_df['high'],
-                        low=stock_df['low'],
-                        close=stock_df['close'])])
+                                             open=stock_df['open'],
+                                             high=stock_df['high'],
+                                             low=stock_df['low'],
+                                             close=stock_df['close'])])
         fig.update_layout(xaxis_rangeslider_visible=False, title=message)
         chart = py.plot(fig, filename=symbol, auto_open=False, fileopt='overwrite', sharing='public')
         chart_image = chart[:-1] + '.png'
@@ -165,13 +166,12 @@ def weather_by_city(city):
     endpoint = 'http://api.weatherstack.com/current'
     params = {'access_key': WEATHERSTACK_API_KEY,
               'query': city,
-              'units': f}
+              'units': 'f'}
     r = requests.get(endpoint, params=params)
     data = r.json()
-    response = f'{data["location"]["name"]}: \
+    response = f'{data["request"]["query"]}: \
+                 {data["current"]["weather_descriptions"][0]}. \
                  {data["current"]["temperature"]}°f \
-                 {data["current"]["weather_descriptions"]}. \
-                 {data["current"]["precip"]}% percipitation, \
-                 feels like {data["current"]["feelslike"]}°f'
-    print(response)
+                 (feels like {data["current"]["feelslike"]}°f). \
+                 {data["current"]["precip"]}% percipitation'
     return response
