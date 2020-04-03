@@ -4,6 +4,7 @@ from sqlalchemy import create_engine
 
 
 class Database:
+    """Database connection object."""
 
     def __init__(self, DATABASE_COMMANDS_TABLE, DATABASE_URI, DATABASE_ARGS):
         self.table = DATABASE_COMMANDS_TABLE

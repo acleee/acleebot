@@ -10,7 +10,8 @@ from .logic import (basic_message,
                     giphy_image_search,
                     urban_dictionary,
                     nba_team_score,
-                    subreddit_image)
+                    subreddit_image,
+                    weather_by_city)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -60,6 +61,8 @@ class Bot(RoomManager):
             response = nba_team_score(args)
         if type == 'reddit':
             response = subreddit_image(content)
+        if type == 'weather' and args:
+            response = weather_by_city(args)
         return response
 
     @logger.catch

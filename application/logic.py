@@ -5,7 +5,7 @@ from config import (GOOGLE_BUCKET_NAME,
                     PLOTLY_USERNAME,
                     PLOTLY_API_KEY,
                     GIPHY_API_KEY,
-                    IEX_API_TOKEN)
+                    IEX_API_TOKEN, WEATHERSTACK_API_KEY)
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
@@ -158,3 +158,19 @@ def urban_dictionary(word):
             return f"{word}: {definition}. \n EXAMPLE: '{example}'"
         return f"{word}: {definition}"
     return 'word not found :('
+
+
+def weather_by_city(city):
+    endpoint = 'http://api.weatherstack.com/current'
+    params = {'access_key': WEATHERSTACK_API_KEY,
+              'query': city,
+              'units': f}
+    r = requests.get(endpoint, params=params)
+    data = r.json()
+    response = f'{data["location"]["name"]}: \
+                 {data["current"]["temperature"]}°f \
+                 {data["current"]["weather_descriptions"]}. \
+                 {data["current"]["precip"]}% percipitation, \
+                 feels like {data["current"]["feelslike"]}°f'
+    print(response)
+    return response
