@@ -82,7 +82,7 @@ class Bot(RoomManager):
         elif user_msg.lower() == 'tm':
             self.replace_word(room, message)
         else:
-            m = re.search('bl(a+|o+|ä+)b', user_msg)
+            m = re.search('bl(\S+)b', user_msg)
             print(m)
             if m and 'south' not in user_msg:
                 self.banned_word(room, message, user)
