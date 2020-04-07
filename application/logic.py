@@ -28,28 +28,20 @@ def basic_message(message):
     return message
 
 
-def get_user_avatar(message, args):
-    """Retrieve Chatango avatar for provided user."""
-    name = str(args.lower())
-    msg = f"http://fp.chatango.com/profileimg/{name[0]}/{name[1]}/{name}/full.jpg"
-    return msg
-
-
 def get_crypto_price(symbol, message):
     """Get crypto price for provided ticker label."""
     req = requests.get(url=message)
     prices = req.json()["result"]["price"]
-    last = prices["last"]
-    high = prices["high"]
-    low = prices["low"]
     percentage = prices["change"]['percentage'] * 100
-    if last > 1:
-        return f'{symbol.upper()}: Currently at ${last:.2f}. \
-                High today of ${high:.2f}, low of ${low:.2f}. \
-                Change of {percentage:.2f}%'
-    return f'{symbol.upper()}: Currently at ${last}. \
-            High today of ${high}, low of ${low}. \
-            Change of {percentage:.2f}%'
+    if prices["last"] > 1:
+        response = f'{symbol.upper()}: Currently at ${prices["last"]:.2f}.' \
+                   f'High today of ${prices["high"]:.2f}, low of ${prices["low"]:.2f}.' \
+                   f'Change of {percentage:.2f}%'
+    else:
+        response = f'{symbol.upper()}: Currently at ${last}.' \
+                   f'High today of ${high}, low of ${low}.' \
+                   f'Change of {percentage:.2f}%'
+    return response
 
 
 def fetch_image_from_gcs(message):

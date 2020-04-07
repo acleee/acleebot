@@ -1,5 +1,8 @@
+"""Data structure containing all bot commands."""
+
 
 class Commands:
+    """Table of bot commands."""
 
     def __init__(self, commands_df):
         self.commands_df = commands_df
