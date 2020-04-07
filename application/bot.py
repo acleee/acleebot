@@ -1,4 +1,5 @@
 """Core bot logic."""
+import re
 from loguru import logger
 from .ch import RoomManager
 from .logic import (basic_message,
@@ -77,12 +78,15 @@ class Bot(RoomManager):
             self.command_response(user_msg, room)  # Trigger if chat message is a command
         elif user_msg == 'bro?':
             self.bot_status_check(room)
-        elif 'blab' in user_msg and 'south' not in user_msg:
-            self.banned_word(room, message, user)
         elif user_msg.endswith('only on aclee'):
             self._chat(room, '™')
         elif user_msg.lower() == 'tm':
             self.replace_word(room, message)
+        else:
+            m = re.search('bl(a+|o+|ä+)b', user_msg)
+            print(m)
+            if m and 'south' not in user_msg:
+                self.banned_word(room, message, user)
 
     @logger.catch
     def command_response(self, user_msg, room):
