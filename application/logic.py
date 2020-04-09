@@ -157,6 +157,7 @@ def urban_dictionary(word):
 
 
 def weather_by_city(city):
+    """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
     params = {'access_key': WEATHERSTACK_API_KEY,
               'query': city,
