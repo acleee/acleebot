@@ -1,6 +1,9 @@
 """Bot configuration variables."""
 from os import environ
 
+# Environment
+ENVIRONMENT = environ.get('ENVIRONMENT')
+
 # Chatango rooms
 CHATANGO_TEST_ROOM = environ.get('CHATANGO_TEST_ROOM')
 CHATANGO_ACLEE_ROOM = environ.get('CHATANGO_ACLEE_ROOM')

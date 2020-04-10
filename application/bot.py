@@ -11,7 +11,8 @@ from .logic import (basic_message,
                     urban_dictionary,
                     nba_team_score,
                     subreddit_image,
-                    weather_by_city)
+                    weather_by_city,
+                    wiki_summary)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -63,6 +64,8 @@ class Bot(RoomManager):
             response = subreddit_image(content)
         if type == 'weather' and args:
             response = weather_by_city(args)
+        if type == 'wiki' and args:
+            response = wiki_summary(args)
         return response
 
     @logger.catch
@@ -83,7 +86,6 @@ class Bot(RoomManager):
             self.replace_word(room, message)
         else:
             m = re.search('bl(\S+)b', user_msg)
-            print(m)
             if m and 'south' not in user_msg:
                 self.banned_word(room, message, user)
 

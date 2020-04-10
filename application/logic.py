@@ -17,6 +17,8 @@ import chart_studio.plotly as py
 import chart_studio
 from application.tables import weather
 import emoji
+import wikipediaapi
+
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
@@ -172,3 +174,9 @@ def weather_by_city(city):
                  (feels like {data["current"]["feelslike"]}°f). \
                  {data["current"]["precip"]}% precipitation.'
     return response
+
+
+def wiki_summary(msg):
+    wiki = wikipediaapi.Wikipedia('en')
+    page = wiki.page(msg)
+    return page.summary
