@@ -13,13 +13,15 @@ CHATANGO_EAGLES_ROOM = environ.get('CHATANGO_EAGLES_ROOM')
 CHATANGO_PHILLIES_ROOM = environ.get('CHATANGO_PHILLIES_ROOM')
 CHATANGO_NFL_ROOM = environ.get('CHATANGO_NFL_ROOM')
 CHATANGO_OBI_ROOM = environ.get('CHATANGO_OBI_ROOM')
+CHATANGO_DUBS_ROOM = environ.get('CHATANGO_DUBS_ROOM')
 CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
                   CHATANGO_ACLEE_ROOM,
                   CHATANGO_SIXERS_ROOM,
                   CHATANGO_PHILLIES_ROOM,
                   CHATANGO_EAGLES_ROOM,
                   CHATANGO_NFL_ROOM,
-                  CHATANGO_OBI_ROOM
+                  CHATANGO_OBI_ROOM,
+                  CHATANGO_DUBS_ROOM
                   ]
 
 # Chatango credentials
