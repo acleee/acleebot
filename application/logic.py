@@ -93,9 +93,10 @@ def subreddit_image(message):
     res = r.json()['data']['children']
     images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if
               image['data'].get('secure_media')]
-    rand = randint(0, len(images) - 1)
-    image = images[rand].split('?')[0]
-    return image
+    if images:
+        rand = randint(0, len(images) - 1)
+        image = images[rand].split('?')[0]
+        return image
 
 
 def nba_team_score(message):

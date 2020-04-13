@@ -6,10 +6,12 @@ from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, ENVIRONMENT
 
 if __name__ == '__main__':
     if ENVIRONMENT == 'dev':
-        start_bot(CHATANGO_ROOMS)
+        print('Starting in dev mode...')
+        start_bot(CHATANGO_TEST_ROOM)
     else:
         processes = []
         for room in CHATANGO_ROOMS:
+            print(f'Joining {room}...')
             p = Process(target=start_bot, args=(room,))
             processes.append(p)
             p.start()
