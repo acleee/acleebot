@@ -21,7 +21,6 @@ CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
                   CHATANGO_EAGLES_ROOM,
                   CHATANGO_NFL_ROOM,
                   CHATANGO_OBI_ROOM,
-                  CHATANGO_DUBS_ROOM
                   ]
 
 # Chatango credentials
