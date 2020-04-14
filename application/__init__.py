@@ -7,6 +7,8 @@ from config import (CHATANGO_USERNAME,
 
 def start_bot(room):
     """Initialize bot instance for a single room."""
+    print(f'Joining {room}...')
+    print(f'commands = {commands}')
     Bot.easy_start(rooms=room,
                    name=CHATANGO_USERNAME,
                    password=CHATANGO_PASSWORD,

@@ -1,4 +1,4 @@
-"""Data srtructure associating weather forecasts to emojis."""
+"""Data structure associating weather forecasts to emojis."""
 
 
 class Weather:

@@ -11,7 +11,6 @@ if __name__ == '__main__':
     else:
         processes = []
         for room in CHATANGO_ROOMS:
-            print(f'Joining {room}...')
             p = Process(target=start_bot, args=(room,))
             processes.append(p)
             p.start()
