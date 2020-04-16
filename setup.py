@@ -32,7 +32,8 @@ setup(
                       'Plotly',
                       'chart-studio',
                       'nba_api',
-                      'emoji'],
+                      'emoji',
+                      'wikipedia-api'],
     extras_require={
         'dev': ['check-manifest'],
         'test': ['coverage'],
