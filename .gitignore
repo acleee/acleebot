@@ -118,9 +118,14 @@ ENV/
 .idea/misc.xml
 .idea/modules.xml
 .idea/vcs.xml
+.uwsgi_plugins_builder
 
 # credentials
 HackersAndSlackers-b7835abe15a0.json
 HackersAndSlackers-2e92c71668ca.json
 creds/
 gcloud.json
+*.conf
+
+# logs
+nohup.out
