@@ -85,7 +85,7 @@ class Bot(RoomManager):
             self._chat(room, '™')
         elif user_msg.lower() == 'tm':
             self.replace_word(room, message)
-        elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg:
+        elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
             self.banned_word(room, message, user)
 
     @logger.catch
