@@ -17,6 +17,8 @@ import chart_studio.plotly as py
 import chart_studio
 from application.tables import weather
 import emoji
+import wikipediaapi
+
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
@@ -91,9 +93,10 @@ def subreddit_image(message):
     res = r.json()['data']['children']
     images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if
               image['data'].get('secure_media')]
-    rand = randint(0, len(images) - 1)
-    image = images[rand].split('?')[0]
-    return image
+    if images:
+        rand = randint(0, len(images) - 1)
+        image = images[rand].split('?')[0]
+        return image
 
 
 def nba_team_score(message):
@@ -173,3 +176,9 @@ def weather_by_city(city):
                  (feels like {data["current"]["feelslike"]}°f). \
                  {data["current"]["precip"]}% precipitation.'
     return response
+
+
+def wiki_summary(msg):
+    wiki = wikipediaapi.Wikipedia('en')
+    page = wiki.page(msg)
+    return page.summary

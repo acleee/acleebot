@@ -1,6 +1,9 @@
 """Bot configuration variables."""
 from os import environ
 
+# Environment
+ENVIRONMENT = environ.get('ENVIRONMENT')
+
 # Chatango rooms
 CHATANGO_TEST_ROOM = environ.get('CHATANGO_TEST_ROOM')
 CHATANGO_ACLEE_ROOM = environ.get('CHATANGO_ACLEE_ROOM')
@@ -10,13 +13,14 @@ CHATANGO_EAGLES_ROOM = environ.get('CHATANGO_EAGLES_ROOM')
 CHATANGO_PHILLIES_ROOM = environ.get('CHATANGO_PHILLIES_ROOM')
 CHATANGO_NFL_ROOM = environ.get('CHATANGO_NFL_ROOM')
 CHATANGO_OBI_ROOM = environ.get('CHATANGO_OBI_ROOM')
+CHATANGO_DUBS_ROOM = environ.get('CHATANGO_DUBS_ROOM')
 CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
                   CHATANGO_ACLEE_ROOM,
                   CHATANGO_SIXERS_ROOM,
                   CHATANGO_PHILLIES_ROOM,
                   CHATANGO_EAGLES_ROOM,
                   CHATANGO_NFL_ROOM,
-                  CHATANGO_OBI_ROOM
+                  CHATANGO_OBI_ROOM,
                   ]
 
 # Chatango credentials
@@ -46,3 +50,4 @@ PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')
 
 # Weather
 WEATHERSTACK_API_KEY = environ.get('WEATHERSTACK_API_KEY')
+DATABASE_WEATHER_TABLE = environ.get('DATABASE_WEATHER_TABLE')

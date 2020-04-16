@@ -14,6 +14,7 @@ nba_api = "*"
 plotly = "*"
 chart-studio = "*"
 emoji = "*"
+wikipedia-api = "*"
 
 [dev-packages]
 pytest = "*"

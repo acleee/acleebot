@@ -6,24 +6,14 @@ from sqlalchemy import create_engine
 class Database:
     """Database connection object."""
 
-    def __init__(self, DATABASE_COMMANDS_TABLE, DATABASE_URI, DATABASE_ARGS):
-        self.table = DATABASE_COMMANDS_TABLE
+    def __init__(self, DATABASE_URI, DATABASE_ARGS):
         self.engine = create_engine(DATABASE_URI,
                                     connect_args=DATABASE_ARGS,
                                     echo=False)
 
-    @property
-    def commands(self):
+    def get_table(self, table, index):
         """Load table from SQL database."""
         table_df = pd.read_sql_table(con=self.engine,
-                                     table_name=self.table,
-                                     index_col='command')
+                                     table_name=table,
+                                     index_col=index)
         return table_df
-
-    @property
-    def weather(self):
-        """Load table from SQL database."""
-        weather_df = pd.read_sql_table(con=self.engine,
-                                       table_name='weather',
-                                       index_col='code')
-        return weather_df

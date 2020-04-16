@@ -11,7 +11,8 @@ from .logic import (basic_message,
                     urban_dictionary,
                     nba_team_score,
                     subreddit_image,
-                    weather_by_city)
+                    weather_by_city,
+                    wiki_summary)
 
 logger.add('logs/info.log',
            format="{time} {level} {message}",
@@ -43,26 +44,28 @@ class Bot(RoomManager):
         response = None
         if type == 'basic':
             response = basic_message(content)
-        if type == 'crypto':
+        elif type == 'crypto':
             response = get_crypto_price(command, content)
-        if type == 'random':
+        elif type == 'random':
             response = random_image(content)
-        if type == 'stock' and args:
+        elif type == 'stock' and args:
             response = stock_price_chart(args)
-        if type == 'avi':
+        elif type == 'avi':
             response = get_user_avatar(content, args)
-        if type == 'storage':
+        elif type == 'storage':
             response = fetch_image_from_gcs(content)
-        if type == 'giphy':
+        elif type == 'giphy':
             response = giphy_image_search(content)
-        if type == 'urban' and args:
+        elif type == 'urban' and args:
             response = urban_dictionary(args)
-        if type == 'nba' and args:
+        elif type == 'nba' and args:
             response = nba_team_score(args)
-        if type == 'reddit':
+        elif type == 'reddit':
             response = subreddit_image(content)
-        if type == 'weather' and args:
+        elif type == 'weather' and args:
             response = weather_by_city(args)
+        elif type == 'wiki' and args:
+            response = wiki_summary(args)
         return response
 
     @logger.catch
@@ -73,8 +76,9 @@ class Bot(RoomManager):
                                                   message.ip,
                                                   message.body))
         user_msg = message.body.lower()
+        print(user_msg)
         if user_msg[0] == "!":
-            self.command_response(user_msg, room)  # Trigger if chat message is a command
+            self.command_response(user_msg, room)  # Trigger if message is a command
         elif user_msg == 'bro?':
             self.bot_status_check(room)
         elif user_msg.endswith('only on aclee'):
