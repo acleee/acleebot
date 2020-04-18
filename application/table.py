@@ -1,18 +1,18 @@
 """Data structure containing all bot commands."""
 
 
-class Commands:
+class Table:
     """Table of bot commands."""
 
-    def __init__(self, commands_df):
-        self.commands_df = commands_df
+    def __init__(self, df):
+        self.df = df
 
-    def get(self, cmd):
+    def find_row(self, lookup):
         """Read list of rows from DataFrame."""
         response = None
         try:
-            row = self.commands_df.loc[cmd]
-            response = {'response': row['response'], 'type': row['type']}
+            row = self.df.loc[lookup]
+            response = row.to_dict()
         except KeyError:
             pass
         return response

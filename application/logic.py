@@ -15,9 +15,9 @@ import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 import chart_studio
-from application.tables import weather
 import emoji
 import wikipediaapi
+import json
 
 
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
@@ -40,8 +40,8 @@ def get_crypto_price(symbol, message):
                    f'High today of ${prices["high"]:.2f}, low of ${prices["low"]:.2f}.' \
                    f'Change of {percentage:.2f}%'
     else:
-        response = f'{symbol.upper()}: Currently at ${last}.' \
-                   f'High today of ${high}, low of ${low}.' \
+        response = f'{symbol.upper()}: Currently at ${prices["last"]}.' \
+                   f'High today of ${prices["high"]}, low of ${prices["low"]}.' \
                    f'Change of {percentage:.2f}%'
     return response
 
@@ -55,11 +55,11 @@ def fetch_image_from_gcs(message):
     return image
 
 
-def giphy_image_search(searchTerm):
+def giphy_image_search(search_term):
     """Giphy image search."""
     rand = randint(0, 20)
     params = {'api_key': GIPHY_API_KEY,
-              'q': searchTerm,
+              'q': search_term,
               'limit': 1,
               'offset': rand,
               'rating': 'R',
@@ -105,8 +105,6 @@ def nba_team_score(message):
     season = datetime.now().year
     season_type = 'Regular Season'
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
-    # print(game.nba_response.__dict__)
-    # print(game.data_sets[0].__dict__)
 
 
 def get_stock_price(symbol):
@@ -159,7 +157,7 @@ def urban_dictionary(word):
     return 'word not found :('
 
 
-def weather_by_city(city):
+def weather_by_city(city, weather):
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
     params = {'access_key': WEATHERSTACK_API_KEY,
@@ -167,7 +165,8 @@ def weather_by_city(city):
               'units': 'f'}
     r = requests.get(endpoint, params=params)
     data = r.json()
-    weather_emoji = weather.get(data["current"]["weather_code"])
+    code = data["current"]["weather_code"]
+    weather_emoji = weather.find_row(code).get('icon')
     if weather_emoji:
         weather_emoji = emoji.emojize(weather_emoji, use_aliases=True)
     response = f'{data["request"]["query"]}: \

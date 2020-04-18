@@ -8,25 +8,17 @@ from .logic import (basic_message,
                     stock_price_chart,
                     fetch_image_from_gcs,
                     giphy_image_search,
-                    urban_dictionary,
-                    nba_team_score,
                     subreddit_image,
                     weather_by_city,
                     wiki_summary)
 
-logger.add('logs/info.log',
-           format="{time} {level} {message}",
-           level="INFO",
-           catch=False)
-logger.add('logs/errors.log',
-           format="{time} {level} {message}",
-           level="ERROR",
-           catch=True)
+logger.add('logs/info.log', format="{time} {message}", level="INFO", catch=False, rotation="10 MB")
+logger.add('logs/errors.log', format="{time} {message}", level="ERROR", catch=True, rotation="10 MB")
 
 
 class Bot(RoomManager):
 
-    def onInit(self):
+    def on_init(self):
         """Initialize bot."""
         self.setNameColor("000000")
         self.setFontColor("000000")
@@ -39,44 +31,40 @@ class Bot(RoomManager):
         """Construct a response to a valid command."""
         room.message(message)
 
-    @staticmethod
-    def create_message(type, content, command=None, args=None):
+    def create_message(self, cmd_type, content, command=None, args=None):
         response = None
-        if type == 'basic':
+        if cmd_type == 'basic':
             response = basic_message(content)
-        elif type == 'crypto':
+        elif cmd_type == 'crypto':
             response = get_crypto_price(command, content)
-        elif type == 'random':
+        elif cmd_type == 'random':
             response = random_image(content)
-        elif type == 'stock' and args:
+        elif cmd_type == 'stock' and args:
             response = stock_price_chart(args)
-        elif type == 'avi':
-            response = get_user_avatar(content, args)
-        elif type == 'storage':
+        elif cmd_type == 'storage':
             response = fetch_image_from_gcs(content)
-        elif type == 'giphy':
+        elif cmd_type == 'giphy':
             response = giphy_image_search(content)
-        elif type == 'urban' and args:
-            response = urban_dictionary(args)
-        elif type == 'nba' and args:
-            response = nba_team_score(args)
-        elif type == 'reddit':
+        # elif cmd_type == 'urban' and args:
+            # response = urban_dictionary(args)
+        # elif cmd_type == 'nba' and args:
+            # response = nba_team_score(args)
+        elif cmd_type == 'reddit':
             response = subreddit_image(content)
-        elif type == 'weather' and args:
-            response = weather_by_city(args)
-        elif type == 'wiki' and args:
+        elif cmd_type == 'weather' and args:
+            response = weather_by_city(args, self.weather)
+        elif cmd_type == 'wiki' and args:
             response = wiki_summary(args)
         return response
 
     @logger.catch
-    def onMessage(self, room, user, message):
+    def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""
         logger.info("[{0}] {1} ({2}): {3}".format(room.name,
                                                   user.name.title(),
                                                   message.ip,
                                                   message.body))
         user_msg = message.body.lower()
-        print(user_msg)
         if user_msg[0] == "!":
             self.command_response(user_msg, room)  # Trigger if message is a command
         elif user_msg == 'bro?':
@@ -98,7 +86,7 @@ class Bot(RoomManager):
         else:
             cmd = user_msg.split(' ', 1)[0]
             args = user_msg.split(' ', 1)[1]
-        command = self.commands.get(cmd)
+        command = self.commands.find_row(cmd)
         if command is not None:
             message = self.create_message(command['type'],
                                           command['response'],

@@ -814,7 +814,7 @@ class Room:
     def disconnect(self):
         """Disconnect."""
         self._disconnect()
-        self._callEvent("onDisconnect")
+        self._callEvent("on_disconnect")
 
     def _disconnect(self):
         """Disconnect from the server."""
@@ -1080,7 +1080,7 @@ class Room:
             del self._mqueue[args[0]]
             msg.attach(self, args[1])
             self._addHistory(msg)
-            self._callEvent("onMessage", msg.user, msg)
+            self._callEvent("on_message", msg.user, msg)
 
     def _rcmd_i(self, args):
         mtime = float(args[0])
@@ -1158,7 +1158,7 @@ class Room:
                 doEvent = False
             self._userlist.append(user)
             if doEvent or not self.mgr._userlistEventUnique:
-                self._callEvent("onJoin", user, puid)
+                self._callEvent("on_join", user, puid)
 
     def _rcmd_show_fw(self, args):
         self._callEvent("onFloodWarning")
@@ -1174,7 +1174,7 @@ class Room:
         if msg:
             if msg in self._history:
                 self._history.remove(msg)
-                self._callEvent("onMessageDelete", msg.user, msg)
+                self._callEvent("on_messageDelete", msg.user, msg)
                 msg.detach()
 
     def _rcmd_deleteall(self, args):
@@ -1633,10 +1633,11 @@ class RoomManager:
     ####
     # Init
     ####
-    def __init__(self, name=None, password=None, commands=None, pm=True):
+    def __init__(self, name=None, password=None, commands=None, weather=None, pm=True):
         self._name = name
         self._password = password
         self.commands = commands
+        self.weather = weather
         self._running = False
         self._tasks = set()
         self._rooms = dict()
@@ -1731,7 +1732,7 @@ class RoomManager:
     ####
     # Virtual methods
     ####
-    def onInit(self):
+    def on_init(self):
         """Called on init."""
         pass
 
@@ -1749,7 +1750,7 @@ class RoomManager:
         Called when connected to the room.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1758,7 +1759,7 @@ class RoomManager:
         Called when reconnected to the room.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1767,16 +1768,16 @@ class RoomManager:
         Called when the connection failed.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
-    def onDisconnect(self, room):
+    def on_disconnect(self, room):
         """
         Called when the client gets disconnected.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1785,7 +1786,7 @@ class RoomManager:
         Called on login failure, disconnects after.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1794,7 +1795,7 @@ class RoomManager:
         Called when either flood banned or flagged.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1803,7 +1804,7 @@ class RoomManager:
         Called when trying to send something when floodbanned.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1812,16 +1813,16 @@ class RoomManager:
         Called when an overflow warning gets received.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
-    def onMessageDelete(self, room, user, message):
+    def on_messageDelete(self, room, user, message):
         """
         Called when a message gets deleted.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: owner of deleted message
         @type message: Message
@@ -1834,7 +1835,7 @@ class RoomManager:
         Called when the moderator list changes.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1843,7 +1844,7 @@ class RoomManager:
         Called when a moderator gets added.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1852,16 +1853,16 @@ class RoomManager:
         Called when a moderator gets removed.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
-    def onMessage(self, room, user, message):
+    def on_message(self, room, user, message):
         """
         Called when a message gets received.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: owner of message
         @type message: Message
@@ -1874,7 +1875,7 @@ class RoomManager:
         Called when a message gets received from history.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: owner of message
         @type message: Message
@@ -1882,12 +1883,12 @@ class RoomManager:
         """
         pass
 
-    def onJoin(self, room, user, puid):
+    def on_join(self, room, user, puid):
         """
         Called when a user joins. Anonymous users get ignored here.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: the user that has joined
         @type puid: str
@@ -1900,7 +1901,7 @@ class RoomManager:
         Called when a user leaves. Anonymous users get ignored here.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: the user that has left
         @type puid: str
@@ -1913,7 +1914,7 @@ class RoomManager:
         Called before any command parsing occurs.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type raw: str
         @param raw: raw command data
         """
@@ -1924,7 +1925,7 @@ class RoomManager:
         Called when a ping gets sent.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1933,7 +1934,7 @@ class RoomManager:
         Called when the user count changes.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1942,7 +1943,7 @@ class RoomManager:
         Called when a user gets banned.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: user that banned someone
         @type target: User
@@ -1955,7 +1956,7 @@ class RoomManager:
         Called when a user gets unbanned.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type user: User
         @param user: user that unbanned someone
         @type target: User
@@ -1968,7 +1969,7 @@ class RoomManager:
         Called when a banlist gets updated.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -1977,7 +1978,7 @@ class RoomManager:
         Called when a unbanlist gets updated.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         """
         pass
 
@@ -2132,7 +2133,7 @@ class RoomManager:
         Called on every room-based event.
 
         @type room: Room
-        @param room: room where the event occured
+        @param room: room where the event occurred
         @type evt: str
         @param evt: the event
         """
@@ -2246,7 +2247,7 @@ class RoomManager:
     # Main
     ####
     def main(self):
-        self.onInit()
+        self.on_init()
         self._running = True
         for l in range(0, Number_of_Threads):
             t = threading.Thread(target=self._joinThread)
@@ -2278,16 +2279,21 @@ class RoomManager:
             self._tick()
 
     @classmethod
-    def easy_start(cl, rooms=None, name=None, password=None, commands=None, pm=True):
+    def easy_start(cl, rooms=None, name=None, password=None, commands=None, weather=None, pm=True):
         """
         Prompts the user for missing info, then starts.
 
-        @type rooms: list
-        @param room: rooms to join
-        @type name: str
-        @param name: name to join as ("" = None, None = unspecified)
-        @type password: str
-        @param password: password to join with ("" = None, None = unspecified)
+        :param rooms: rooms to join
+        :type rooms: List
+
+        :param name: name to join as ("" = None, None = unspecified)
+        :type name: str
+
+        :param password: password to join with ("" = None, None = unspecified)
+        :type password: str
+
+        :param commands: All available commands.
+        :type commands: DataFrame
         """
         if not rooms:
             rooms = str(
@@ -2302,7 +2308,7 @@ class RoomManager:
             password = str(input("User password: "))
         if password == "":
             password = None
-        self = cl(name, password, commands)
+        self = cl(name, password, commands, weather)
         for room in rooms:
             self.joinRoom(room)
         self.main()

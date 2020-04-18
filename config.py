@@ -30,6 +30,7 @@ CHATANGO_PASSWORD = environ.get('CHATANGO_PASSWORD')
 # Database
 DATABASE_URI = environ.get('DATABASE_URI')
 DATABASE_COMMANDS_TABLE = environ.get('DATABASE_COMMANDS_TABLE')
+DATABASE_WEATHER_TABLE = environ.get('DATABASE_WEATHER_TABLE')
 DATABASE_ARGS = {'ssl': {'ca': './creds/ca-certificate.crt'}}
 
 # Google Cloud
@@ -50,4 +51,3 @@ PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')
 
 # Weather
 WEATHERSTACK_API_KEY = environ.get('WEATHERSTACK_API_KEY')
-DATABASE_WEATHER_TABLE = environ.get('DATABASE_WEATHER_TABLE')
