@@ -16,13 +16,8 @@ def start_bot(room):
     print(f'Joining {room}...')
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
-    Bot.easy_start(rooms=[room],
-                   name=CHATANGO_USERNAME,
-                   password=CHATANGO_PASSWORD,
-                   commands=commands,
-                   weather=weather)
-
-
-def get_table(table, index):
-    table = db.get_table(table, index)
-    return table
+    chatbot = Bot.easy_start(rooms=[room],
+                             name=CHATANGO_USERNAME,
+                             password=CHATANGO_PASSWORD,
+                             commands=commands,
+                             weather=weather)

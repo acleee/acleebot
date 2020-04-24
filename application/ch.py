@@ -42,11 +42,14 @@ import random
 import re
 import sys
 import select
+from loguru import logger
 
 ################################################################
 # Debug stuff
 ################################################################
 debug = False
+logger.add('logs/errors.log', format="{time} {message}", level="ERROR", catch=True, rotation="10 MB")
+
 
 ################################################################
 # Python 2 compatibility
@@ -1749,10 +1752,17 @@ class RoomManager:
         """
         Called when connected to the room.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :param room: Chatango room where the event occurred
+        :type room: Room
         """
-        pass
+
+        def check_connection():
+            connections = self.getConnections()
+            if not bool(connections):
+                logger.error('RECONNECTING...')
+                self.joinRoom(room.name)
+
+        self.setInterval(15, check_connection)
 
     def onReconnect(self, room):
         """
