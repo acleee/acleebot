@@ -10,10 +10,10 @@ from .logic import (basic_message,
                     giphy_image_search,
                     subreddit_image,
                     weather_by_city,
+                    urban_dictionary,
                     wiki_summary)
 
-logger.add('logs/info.log', format="{time} {message}", level="INFO", catch=False, rotation="10 MB")
-logger.add('logs/errors.log', format="{time} {message}", level="ERROR", catch=True, rotation="10 MB")
+logger.add('logs/info.log', format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>", catch=True, colorize=True, rotation="10 MB")
 
 
 class Bot(RoomManager):
@@ -47,8 +47,8 @@ class Bot(RoomManager):
             response = giphy_image_search(content)
         # elif cmd_type == 'urban' and args:
             # response = urban_dictionary(args)
-        # elif cmd_type == 'nba' and args:
-            # response = nba_team_score(args)
+        elif cmd_type == 'nba' and args:
+            response = nba_team_score(args)
         elif cmd_type == 'reddit':
             response = subreddit_image(content)
         elif cmd_type == 'weather' and args:

@@ -51,3 +51,7 @@ PLOTLY_USERNAME = environ.get('PLOTLY_USERNAME')
 
 # Weather
 WEATHERSTACK_API_KEY = environ.get('WEATHERSTACK_API_KEY')
+
+# Email
+GMAIL_EMAIL = environ.get('GMAIL_EMAIL')
+GMAIL_PASSWORD = environ.get('GMAIL_PASSWORD')

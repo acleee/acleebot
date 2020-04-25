@@ -1,4 +1,5 @@
 from .google_storage import GCS
+from .logging import notification_logger
 from random import randint
 from config import (GOOGLE_BUCKET_NAME,
                     GOOGLE_BUCKET_URL,
@@ -20,6 +21,7 @@ import wikipediaapi
 import json
 
 
+logger = notification_logger()
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
                                         api_key=PLOTLY_API_KEY)
@@ -30,6 +32,7 @@ def basic_message(message):
     return message
 
 
+@logger.catch
 def get_crypto_price(symbol, message):
     """Get crypto price for provided ticker label."""
     req = requests.get(url=message)
@@ -46,6 +49,7 @@ def get_crypto_price(symbol, message):
     return response
 
 
+@logger.catch
 def fetch_image_from_gcs(message):
     """Get a random image from Google Cloud Storage bucket."""
     images = gcs.bucket.list_blobs(prefix=message)
@@ -55,6 +59,7 @@ def fetch_image_from_gcs(message):
     return image
 
 
+@logger.catch
 def giphy_image_search(search_term):
     """Giphy image search."""
     rand = randint(0, 20)
@@ -79,6 +84,7 @@ def random_image(message):
     return random_pic
 
 
+@logger.catch
 def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
     headers = {
@@ -99,6 +105,7 @@ def subreddit_image(message):
         return image
 
 
+@logger.catch
 def nba_team_score(message):
     """Get score of an NBA game."""
     team_id = teams.find_teams_by_full_name(message)[0].get('id')
@@ -107,6 +114,7 @@ def nba_team_score(message):
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
 
 
+@logger.catch
 def get_stock_price(symbol):
     """Get stock price by symbol."""
     params = {'token': IEX_API_TOKEN}
@@ -123,6 +131,7 @@ def get_stock_price(symbol):
     return f'There\'s no such company as {symbol} :@'
 
 
+@logger.catch
 def stock_price_chart(symbol):
     """Get 30-day stock chart."""
     params = {'token': IEX_API_TOKEN, 'includeToday': 'true'}
@@ -143,20 +152,20 @@ def stock_price_chart(symbol):
     return f'There\'s no such company as {symbol} :@'
 
 
+@logger.catch
 def urban_dictionary(word):
     """Fetch urban dictionary definition."""
     params = {'term': word}
-    req = requests.get('http://api.urbandictionary.com/v0/define', params=params)
-    if req.json().get('list'):
-        definition = req.json()['list'][0].get('definition')
-        example = req.json()['list'][0].get('example', None)
-        word = req.json()['list'][0]['word'].upper()
-        if example:
-            return f"{word}: {definition}. \n EXAMPLE: '{example}'"
-        return f"{word}: {definition}"
-    return 'word not found :('
+    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
+    req = requests.get('http://api.urbandictionary.com/v0/define', params=params, headers=headers)
+    results = req.json()['list']
+    results = sorted(results, key = lambda i: i['thumbs_down'], reverse=True)
+    definition = results[0].get('definition')
+    word = word.upper()
+    return f"{word}: {definition}."
 
 
+@logger.catch
 def weather_by_city(city, weather):
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
@@ -177,6 +186,7 @@ def weather_by_city(city, weather):
     return response
 
 
+@logger.catch
 def wiki_summary(msg):
     wiki = wikipediaapi.Wikipedia('en')
     page = wiki.page(msg)

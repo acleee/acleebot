@@ -15,6 +15,7 @@ plotly = "*"
 chart-studio = "*"
 emoji = "*"
 wikipedia-api = "*"
+notifiers = "*"
 
 [dev-packages]
 pytest = "*"
