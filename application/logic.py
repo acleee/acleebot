@@ -18,9 +18,7 @@ import chart_studio.plotly as py
 import chart_studio
 import emoji
 import wikipediaapi
-import json
-from imdb import IMDb
-
+from imdb import IMDb, IMDbError
 
 
 logger = notification_logger()
@@ -196,29 +194,28 @@ def wiki_summary(msg):
 
 
 def find_imdb_movie(movie_title):
-    url = "https://imdb8.p.rapidapi.com/title/find"
-    querystring = {"q": movie_title}
-    headers = {
-        'x-rapidapi-host': "imdb8.p.rapidapi.com",
-        'x-rapidapi-key': "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs"
-    }
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    movie_id = response.json()['results'][0]['id'].split('/')[2]
-    get_imdb_movie_details(movie_id)
-
-
-def get_imdb_movie_details(movie_id):
-    url = "https://imdb8.p.rapidapi.com/title/get-details"
-    querystring = {"tconst": movie_id}
-    headers = {
-        'x-rapidapi-host': "imdb8.p.rapidapi.com",
-        'x-rapidapi-key': "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs"
-    }
-
-    response = requests.request("GET", url, headers=headers, params=querystring)
-    title = response['image']['url']
-    image = response['image']['image']
-    url = response['image']['url']
-    year = response['year']
-    length = response['runningTimeInMinutes']
-    return f'{title}: {year}, {length}. {url} {image}. '
+    """Get movie information from IMDB."""
+    ia = IMDb()
+    movie_id = None
+    try:
+        movies = ia.search_movie(movie_title)
+        movie_id = movies[0].getID()
+    except IMDbError as e:
+        print(e)
+        pass
+    if movie_id:
+        movie = ia.get_movie(movie_id)
+        budget = movie.__dict__['data']['box office']['Budget']
+        opening_week = movie.__dict__['data']['box office']['Opening Weekend United States']
+        gross = movie.__dict__['data']['box office']['Cumulative Worldwide Gross']
+        cast = [actor['name'] for actor in movie.__dict__['data']['cast'][:2]]
+        art = movie.__dict__['data']['cover url']
+        director = movie.__dict__['data']['director'][0]['name']
+        genres = movie.__dict__['data']['genres']
+        title = movie.__dict__['data']['title']
+        rating = movie.__dict__['data']['rating']
+        year = movie.__dict__['data']['year']
+        synopsis = movie.__dict__['data']['synopsis'][0].split('. ')[:2]
+        return f'{title.upper()}, {rating}/10 ({",".join(genres)}, {year}). {". ".join(synopsis)}. \
+                + Starring: {",".join(cast)}. Directed by {director}. Budget {budget}, \
+                + Opening week {opening_week}, Cumulative Worldwide Gross {gross}. {art}'

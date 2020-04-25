@@ -16,6 +16,7 @@ chart-studio = "*"
 emoji = "*"
 wikipedia-api = "*"
 notifiers = "*"
+IMDbPY = "*"
 
 [dev-packages]
 pytest = "*"
