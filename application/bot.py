@@ -11,7 +11,8 @@ from .logic import (basic_message,
                     subreddit_image,
                     weather_by_city,
                     urban_dictionary,
-                    wiki_summary)
+                    wiki_summary,
+                    find_imdb_movie)
 
 logger.add('logs/info.log', format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>", catch=True, colorize=True, rotation="10 MB")
 
@@ -55,6 +56,8 @@ class Bot(RoomManager):
             response = weather_by_city(args, self.weather)
         elif cmd_type == 'wiki' and args:
             response = wiki_summary(args)
+        elif cmd_type == 'imdb' and args:
+            response = find_imdb_movie(args)
         return response
 
     @logger.catch

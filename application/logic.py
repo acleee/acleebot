@@ -19,6 +19,8 @@ import chart_studio
 import emoji
 import wikipediaapi
 import json
+from imdb import IMDb
+
 
 
 logger = notification_logger()
@@ -191,3 +193,32 @@ def wiki_summary(msg):
     wiki = wikipediaapi.Wikipedia('en')
     page = wiki.page(msg)
     return page.summary
+
+
+def find_imdb_movie(movie_title):
+    url = "https://imdb8.p.rapidapi.com/title/find"
+    querystring = {"q": movie_title}
+    headers = {
+        'x-rapidapi-host': "imdb8.p.rapidapi.com",
+        'x-rapidapi-key': "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs"
+    }
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    movie_id = response.json()['results'][0]['id'].split('/')[2]
+    get_imdb_movie_details(movie_id)
+
+
+def get_imdb_movie_details(movie_id):
+    url = "https://imdb8.p.rapidapi.com/title/get-details"
+    querystring = {"tconst": movie_id}
+    headers = {
+        'x-rapidapi-host': "imdb8.p.rapidapi.com",
+        'x-rapidapi-key': "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs"
+    }
+
+    response = requests.request("GET", url, headers=headers, params=querystring)
+    title = response['image']['url']
+    image = response['image']['image']
+    url = response['image']['url']
+    year = response['year']
+    length = response['runningTimeInMinutes']
+    return f'{title}: {year}, {length}. {url} {image}. '
