@@ -205,9 +205,6 @@ def find_imdb_movie(movie_title):
         pass
     if movie_id:
         movie = ia.get_movie(movie_id)
-        budget = movie.__dict__['data']['box office']['Budget']
-        opening_week = movie.__dict__['data']['box office']['Opening Weekend United States']
-        gross = movie.__dict__['data']['box office']['Cumulative Worldwide Gross']
         cast = [actor['name'] for actor in movie.__dict__['data']['cast'][:2]]
         art = movie.__dict__['data']['cover url']
         director = movie.__dict__['data']['director'][0]['name']
@@ -215,7 +212,19 @@ def find_imdb_movie(movie_title):
         title = movie.__dict__['data']['title']
         rating = movie.__dict__['data']['rating']
         year = movie.__dict__['data']['year']
-        synopsis = movie.__dict__['data']['synopsis'][0].split('. ')[:2]
-        return f'{title.upper()}, {rating}/10 ({",".join(genres)}, {year}). {". ".join(synopsis)}. \
-                  STARRING {",".join(cast)}. DIRECTED BY {director}. BUDGET {budget}, \
-                  OPENING WEEK {opening_week}, CUMULATIVE WORLDWIDE GROSS {gross}. {art}'
+        budget = movie.__dict__['data']['box office'].get('Budget', None)
+        opening_week = movie.__dict__['data']['box office'].get('Opening Weekend United States', None)
+        gross = movie.__dict__['data']['box office'].get('Cumulative Worldwide Gross', None)
+        synopsis = movie.__dict__['data'].get('synopsis', None)
+        if synopsis:
+            synopsis = synopsis[0].split('. ')[:2]
+        response = f'{title.upper()}, {rating}/10 ({", ".join(genres)}, {year}). STARRING {", ".join(cast)}. DIRECTED BY {director}.'
+        if synopsis:
+            response = response + f' {". ".join(synopsis)}.'
+        if budget:
+            response = response + f' BUDGET {budget}.'
+        if opening_week:
+            response = response + f' OPENING WEEK {opening_week}.'
+        if gross:
+            response = response + f' CUMULATIVE WORLDWIDE GROSS {gross}.'
+        return response + f' {art}'
