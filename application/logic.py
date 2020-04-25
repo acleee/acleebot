@@ -217,5 +217,5 @@ def find_imdb_movie(movie_title):
         year = movie.__dict__['data']['year']
         synopsis = movie.__dict__['data']['synopsis'][0].split('. ')[:2]
         return f'{title.upper()}, {rating}/10 ({",".join(genres)}, {year}). {". ".join(synopsis)}. \
-                + Starring: {",".join(cast)}. Directed by {director}. Budget {budget}, \
-                + Opening week {opening_week}, Cumulative Worldwide Gross {gross}. {art}'
+                  STARRING {",".join(cast)}. DIRECTED BY {director}. BUDGET {budget}, \
+                  OPENING WEEK {opening_week}, CUMULATIVE WORLDWIDE GROSS {gross}. {art}'
