@@ -15,6 +15,11 @@ The baddest bot in the game right now. Uses the *ch.py* framework for joining [C
 
 ## Commands
 
+Each row in the COMMANDS is comprised of tree parts:
+1. **command**: User-submitted command via chat.
+2. **message*: Chat response to reply to original comment.
+3. **type**: Funtion logic to generate response given 
+
 If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command. A directory of all commands can be found [here](http://broiestbro.com/table/commands).
 
 Chat commands have 3 properties:
