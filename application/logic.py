@@ -7,7 +7,8 @@ from config import (GOOGLE_BUCKET_NAME,
                     PLOTLY_API_KEY,
                     GIPHY_API_KEY,
                     IEX_API_TOKEN,
-                    WEATHERSTACK_API_KEY)
+                    WEATHERSTACK_API_KEY,
+                    ALPHA_VANTAGE_API)
 from datetime import datetime
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
@@ -19,7 +20,7 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
-
+import math
 
 logger = notification_logger()
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
@@ -46,7 +47,22 @@ def get_crypto_price(symbol, message):
         response = f'{symbol.upper()}: Currently at ${prices["last"]}.' \
                    f'High today of ${prices["high"]}, low of ${prices["low"]}.' \
                    f'Change of {percentage:.2f}%'
-    return response
+    return response + crypto_chart(symbol)
+
+
+def crypto_chart(symbol):
+    r = requests.get(
+        f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey={ALPHA_VANTAGE_API}'
+    )
+    data = r.json()
+    list_of_dics = [day for day in data['Time Series (Digital Currency Daily)'].items()]
+    labels = []
+    candle = []
+    for k, v in list_of_dics[:20]:
+        labels.append(k.split('2020-')[1])
+        candle.append([int(v["3b. low (USD)"].split('.')[0]), int(v["2a. high (USD)"].split('.')[0])])
+    img = ' https://quickchart.io/chart?bkg=white&width=500&height=300&format=png&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') + '}]}}&.png'
+    return img
 
 
 @logger.catch
