@@ -1,5 +1,9 @@
 """Bot configuration variables."""
-from os import environ
+from os import environ, path
+from dotenv import load_dotenv
+
+basedir = path.abspath(path.dirname(__file__))
+load_dotenv(path.join(basedir, '.env'))
 
 # Environment
 ENVIRONMENT = environ.get('ENVIRONMENT')
@@ -15,7 +19,7 @@ CHATANGO_NFL_ROOM = environ.get('CHATANGO_NFL_ROOM')
 CHATANGO_OBI_ROOM = environ.get('CHATANGO_OBI_ROOM')
 CHATANGO_DUBS_ROOM = environ.get('CHATANGO_DUBS_ROOM')
 CHATANGO_ROOMS = [CHATANGO_TEST_ROOM,
-                  # CHATANGO_ACLEE_ROOM,
+                  CHATANGO_ACLEE_ROOM,
                   # CHATANGO_SIXERS_ROOM,
                   # CHATANGO_PHILLIES_ROOM,
                   # CHATANGO_EAGLES_ROOM,

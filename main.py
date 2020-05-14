@@ -5,7 +5,7 @@ from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, ENVIRONMENT
 
 
 if __name__ == '__main__':
-    if ENVIRONMENT == 'dev':
+    if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
         start_bot(CHATANGO_TEST_ROOM)
     else:

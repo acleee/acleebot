@@ -1,4 +1,4 @@
-"""Initialize bot module."""
+"""Initialize bot."""
 from .bot import Bot
 from application.database import Database
 from config import (CHATANGO_USERNAME,

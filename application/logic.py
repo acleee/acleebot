@@ -1,4 +1,4 @@
-from .google_storage import GCS
+from .gcs import GCS
 from .logging import notification_logger
 from random import randint
 from config import (GOOGLE_BUCKET_NAME,
@@ -113,9 +113,10 @@ def subreddit_image(message):
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
-    images = [image['data']['secure_media']['oembed']['thumbnail_url'] for image in res if
+    images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in res if
               image['data'].get('secure_media')]
-    if images:
+    images = list(filter(None, images))
+    if bool(images):
         rand = randint(0, len(images) - 1)
         image = images[rand].split('?')[0]
         return image

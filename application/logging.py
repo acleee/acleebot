@@ -10,9 +10,12 @@ def notification_logger():
         "password": GMAIL_PASSWORD,
         "to": GMAIL_EMAIL
     }
+    logger.remove()
     logger.add(sys.stderr,
                colorize=True,
-               format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
+               format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
+                      + "<light-green>{level}</light-green>: "
+                      + "<light-white>{message}</light-white>",
                catch=True)
     handler = NotificationHandler("gmail", defaults=params)
     logger.add(handler, level="ERROR")

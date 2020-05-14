@@ -17,6 +17,7 @@ emoji = "*"
 wikipedia-api = "*"
 notifiers = "*"
 IMDbPY = "*"
+python-dotenv = "*"
 
 [dev-packages]
 pytest = "*"
