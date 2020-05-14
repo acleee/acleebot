@@ -20,7 +20,7 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
-import math
+import urbandictionary as ud
 
 logger = notification_logger()
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
@@ -51,17 +51,26 @@ def get_crypto_price(symbol, message):
 
 
 def crypto_chart(symbol):
-    r = requests.get(
-        f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey={ALPHA_VANTAGE_API}'
-    )
+    endpoint = 'https://www.alphavantage.co/'
+    params = {'function': 'DIGITAL_CURRENCY_DAILY',
+              'symbol': symbol,
+              'market': 'USD',
+              'apikey': ALPHA_VANTAGE_API}
+    r = requests.get(endpoint, params=params)
     data = r.json()
     list_of_dics = [day for day in data['Time Series (Digital Currency Daily)'].items()]
     labels = []
     candle = []
     for k, v in list_of_dics[:20]:
         labels.append(k.split('2020-')[1])
-        candle.append([int(v["3b. low (USD)"].split('.')[0]), int(v["2a. high (USD)"].split('.')[0])])
-    img = ' https://quickchart.io/chart?bkg=white&width=500&height=300&format=png&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') + '}]}}&.png'
+        low = int(v["3b. low (USD)"].split('.')[0])
+        high = int(v["2a. high (USD)"].split('.')[0])
+        candle.append([low, high])
+    img = 'https://quickchart.io/chart' \
+          '?bkg=white&width=500&height=300&format=png' \
+          '&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + \
+          ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') \
+          + '}]}}&.png'
     return img
 
 
@@ -135,7 +144,10 @@ def nba_team_score(message):
 def get_stock_price(symbol):
     """Get stock price by symbol."""
     params = {'token': IEX_API_TOKEN}
-    req = requests.get(f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote', params=params)
+    req = requests.get(
+        f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote',
+        params=params
+    )
     if req.status_code == 200:
         price = req.json().get('latestPrice', None)
         company_name = req.json().get("companyName", None)
@@ -163,7 +175,13 @@ def stock_price_chart(symbol):
                                              low=stock_df['low'],
                                              close=stock_df['close'])])
         fig.update_layout(xaxis_rangeslider_visible=False, title=message)
-        chart = py.plot(fig, filename=symbol, auto_open=False, fileopt='overwrite', sharing='public')
+        chart = py.plot(
+            fig,
+            filename=symbol,
+            auto_open=False,
+            fileopt='overwrite',
+            sharing='public'
+        )
         chart_image = chart[:-1] + '.png'
         return f'{chart_image} {message}'
     return f'There\'s no such company as {symbol} :@'
@@ -173,13 +191,18 @@ def stock_price_chart(symbol):
 def urban_dictionary(word):
     """Fetch urban dictionary definition."""
     params = {'term': word}
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    req = requests.get('http://api.urbandictionary.com/v0/define', params=params, headers=headers)
+    headers = {'Content-Type': 'application/json'}
+    req = requests.get(
+        'http://api.urbandictionary.com/v0/define',
+        params=params,
+        headers=headers
+    )
     results = req.json()['list']
-    results = sorted(results, key = lambda i: i['thumbs_down'], reverse=True)
-    definition = results[0].get('definition')
+    results = sorted(results, key=lambda i: i['thumbs_down'], reverse=True)
+    definition = str(results[0].get('definition'))
+    example = str(results[0].get('example'))
     word = word.upper()
-    return f"{word}: {definition}."
+    return f"{word}: {definition}. EXAMPLE: {example}."
 
 
 @logger.catch

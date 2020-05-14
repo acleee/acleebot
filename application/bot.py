@@ -1,5 +1,5 @@
 """Core bot logic."""
-import re
+import sys
 from loguru import logger
 from .ch import RoomManager
 from .logic import (basic_message,
@@ -14,8 +14,12 @@ from .logic import (basic_message,
                     wiki_summary,
                     find_imdb_movie)
 
-logger.add('logs/info.log', format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
-           catch=True, colorize=True, rotation="10 MB")
+logger.add(
+    sys.stderr,
+    format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
+    catch=True,
+    colorize=True,
+)
 
 
 class Bot(RoomManager):
