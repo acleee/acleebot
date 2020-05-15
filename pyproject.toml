@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "Broiestbot"
+name = "broiestbot"
 version = "0.1.0"
 description = "Chatbot for the Chatango messaging platform."
 authors = ["Todd Birchard <toddbirchard@gmail.com>"]
@@ -40,7 +40,7 @@ requires = ["poetry>=0.12"]
 build-backend = "poetry.masonry.api"
 
 [tool.poetry.scripts]
-run = "main"
+run = "broiestbot:make_bots"
 
 [tool.poetry.urls]
 issues = "https://github.com/toddbirchard/broiestbot/issues"

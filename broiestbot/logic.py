@@ -1,6 +1,6 @@
-from .gcs import GCS
-from .logging import log as logger
+"""Bot commands."""
 from random import randint
+from datetime import datetime
 from config import (GOOGLE_BUCKET_NAME,
                     GOOGLE_BUCKET_URL,
                     PLOTLY_USERNAME,
@@ -9,9 +9,6 @@ from config import (GOOGLE_BUCKET_NAME,
                     IEX_API_TOKEN,
                     WEATHERSTACK_API_KEY,
                     ALPHA_VANTAGE_API)
-from datetime import datetime
-from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamgamelog
 import requests
 import pandas as pd
 import plotly.graph_objects as go
@@ -20,8 +17,12 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
+from broiestbot.services import gcs
+from broiestbot.services.logging import logger
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teamgamelog
 
-gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
+
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
                                         api_key=PLOTLY_API_KEY)
 
@@ -50,26 +51,17 @@ def get_crypto_price(symbol, message):
 
 @logger.catch
 def crypto_chart(symbol):
-    endpoint = 'https://www.alphavantage.co/'
-    params = {'function': 'DIGITAL_CURRENCY_DAILY',
-              'symbol': symbol,
-              'market': 'USD',
-              'apikey': ALPHA_VANTAGE_API}
-    r = requests.get(endpoint, params=params)
+    r = requests.get(
+        f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey={ALPHA_VANTAGE_API}'
+    )
     data = r.json()
     list_of_dics = [day for day in data['Time Series (Digital Currency Daily)'].items()]
     labels = []
     candle = []
     for k, v in list_of_dics[:20]:
         labels.append(k.split('2020-')[1])
-        low = int(v["3b. low (USD)"].split('.')[0])
-        high = int(v["2a. high (USD)"].split('.')[0])
-        candle.append([low, high])
-    img = 'https://quickchart.io/chart' \
-          '?bkg=white&width=500&height=300&format=png' \
-          '&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + \
-          ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') \
-          + '}]}}&.png'
+        candle.append([int(v["3b. low (USD)"].split('.')[0]), int(v["2a. high (USD)"].split('.')[0])])
+    img = ' https://quickchart.io/chart?bkg=white&width=500&height=300&format=png&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') + '}]}}&.png'
     return img
 
 
@@ -111,7 +103,8 @@ def random_image(message):
 
 def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
-    images = None
+    image = None
+    images = []
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
@@ -127,14 +120,13 @@ def subreddit_image(message):
                   image['data'].get('secure_media')]
     except KeyError as e:
         logger.error(f'Reddit command threw KeyError {e} for command "{message}."')
+        raise e
     finally:
+        images = list(filter(None, images))
         if bool(images):
-            images = list(filter(None, images))
-            if bool(images):
-                rand = randint(0, len(images) - 1)
-                image = images[rand].split('?')[0]
-                return image
-        return None
+            rand = randint(0, len(images) - 1)
+            image = images[rand].split('?')[0]
+        return image
 
 
 @logger.catch
@@ -197,7 +189,7 @@ def stock_price_chart(symbol):
 def urban_dictionary(word):
     """Fetch urban dictionary definition."""
     params = {'term': word}
-    headers = {'Content-Type': 'application/json'}
+    headers = {'Content-Type': 'broiestbot/json'}
     req = requests.get(
         'http://api.urbandictionary.com/v0/define',
         params=params,
@@ -249,7 +241,6 @@ def find_imdb_movie(movie_title):
         movie_id = movies[0].getID()
     except IMDbError as e:
         print(e)
-        pass
     if movie_id:
         movie = ia.get_movie(movie_id)
         cast = [actor['name'] for actor in movie.__dict__['data']['cast'][:2]]

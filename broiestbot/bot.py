@@ -1,6 +1,6 @@
 """Core bot logic."""
+from .services import logger
 from .ch import RoomManager
-from .logging import log as logger
 from .logic import (basic_message,
                     get_crypto_price,
                     random_image,
@@ -9,7 +9,6 @@ from .logic import (basic_message,
                     giphy_image_search,
                     subreddit_image,
                     weather_by_city,
-                    urban_dictionary,
                     wiki_summary,
                     find_imdb_movie)
 
@@ -65,7 +64,7 @@ class Bot(RoomManager):
                                                   message.body))
         user_msg = message.body.lower()
         if user_msg[0] == "!":
-            self.command_response(user_msg, room)  # Trigger if message is a command
+            self.command_response(user_msg, room)  # Trigger if command
         elif user_msg == 'bro?':
             self.bot_status_check(room)
         elif user_msg.endswith('only on aclee'):
