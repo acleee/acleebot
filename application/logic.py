@@ -1,5 +1,5 @@
 from .gcs import GCS
-from .logging import notification_logger
+from .logging import log as logger
 from random import randint
 from config import (GOOGLE_BUCKET_NAME,
                     GOOGLE_BUCKET_URL,
@@ -20,9 +20,7 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
-import urbandictionary as ud
 
-logger = notification_logger()
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
 chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
                                         api_key=PLOTLY_API_KEY)
@@ -50,6 +48,7 @@ def get_crypto_price(symbol, message):
     return response + crypto_chart(symbol)
 
 
+@logger.catch
 def crypto_chart(symbol):
     endpoint = 'https://www.alphavantage.co/'
     params = {'function': 'DIGITAL_CURRENCY_DAILY',
@@ -102,6 +101,7 @@ def giphy_image_search(search_term):
         return 'image not found :('
 
 
+@logger.catch
 def random_image(message):
     """Select a random image from response."""
     image_list = message.replace(' ', '').split(';')
@@ -109,9 +109,9 @@ def random_image(message):
     return random_pic
 
 
-@logger.catch
 def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
+    images = None
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
@@ -122,13 +122,19 @@ def subreddit_image(message):
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
-    images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in res if
-              image['data'].get('secure_media')]
-    images = list(filter(None, images))
-    if bool(images):
-        rand = randint(0, len(images) - 1)
-        image = images[rand].split('?')[0]
-        return image
+    try:
+        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in res if
+                  image['data'].get('secure_media')]
+    except KeyError as e:
+        logger.error(f'Reddit command threw KeyError {e} for command "{message}."')
+    finally:
+        if bool(images):
+            images = list(filter(None, images))
+            if bool(images):
+                rand = randint(0, len(images) - 1)
+                image = images[rand].split('?')[0]
+                return image
+        return None
 
 
 @logger.catch
@@ -233,6 +239,7 @@ def wiki_summary(msg):
     return page.summary
 
 
+@logger.catch
 def find_imdb_movie(movie_title):
     """Get movie information from IMDB."""
     ia = IMDb()

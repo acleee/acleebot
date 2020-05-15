@@ -1,7 +1,6 @@
 """Core bot logic."""
-import sys
-from loguru import logger
 from .ch import RoomManager
+from .logging import log as logger
 from .logic import (basic_message,
                     get_crypto_price,
                     random_image,
@@ -13,13 +12,6 @@ from .logic import (basic_message,
                     urban_dictionary,
                     wiki_summary,
                     find_imdb_movie)
-
-logger.add(
-    sys.stderr,
-    format="<green>{time:MM-DD HH:mm A}</green> <white>{message}</white>",
-    catch=True,
-    colorize=True,
-)
 
 
 class Bot(RoomManager):
@@ -65,7 +57,6 @@ class Bot(RoomManager):
             response = find_imdb_movie(args)
         return response
 
-    @logger.catch
     def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""
         logger.info("[{0}] {1} ({2}): {3}".format(room.name,
@@ -84,7 +75,6 @@ class Bot(RoomManager):
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
            # self.banned_word(room, message, user)
 
-    @logger.catch
     def command_response(self, user_msg, room):
         """Respond to command."""
         user_msg = user_msg[1::].lower()
