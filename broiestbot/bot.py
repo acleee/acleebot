@@ -21,7 +21,6 @@ class Bot(RoomManager):
         self.setFontColor("000000")
         self.setFontFace("Arial")
         self.setFontSize(11)
-        self.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
     @staticmethod
     def _chat(room, message):

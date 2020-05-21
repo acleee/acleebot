@@ -47,7 +47,9 @@ With **requirements.txt**:
 ```
 $ git clone https://github.com/toddbirchard/broiestbot.git
 $ cd broiestbot
-$ python3 -m pip install -r requirements.txt
+$ python3 -m venv myenv
+$ source myenv/bin/activate
+$ pip install -r requirements.txt
 $ python3 main.py
 ```
 

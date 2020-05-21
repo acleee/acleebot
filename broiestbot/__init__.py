@@ -16,11 +16,14 @@ def start_bot(room):
     print(f'Joining {room}...')
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
-    Bot.easy_start(rooms=[room],
-                   name=CHATANGO_USERNAME,
-                   password=CHATANGO_PASSWORD,
-                   commands=commands,
-                   weather=weather)
+    chat_bot = Bot.easy_start(
+        rooms=[room],
+        name=CHATANGO_USERNAME,
+        password=CHATANGO_PASSWORD,
+        commands=commands,
+        weather=weather
+    )
+    chat_bot.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
 
 def spawn_bot_processes():
@@ -37,4 +40,6 @@ def spawn_bot_processes():
         for process in processes:
             process.join()
 
+
 make_bots = spawn_bot_processes()
+

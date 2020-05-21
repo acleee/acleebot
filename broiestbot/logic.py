@@ -116,10 +116,10 @@ def subreddit_image(message):
     r = requests.get(endpoint, headers=headers)
     res = r.json()['data']['children']
     try:
-        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in res if
-                  image['data'].get('secure_media')]
+        images = [image['data']['media']['oembed'].get('thumbnail_url') for image in res]
+        images = [image for image in images if "https" in image]
     except KeyError as e:
-        logger.error(f'Reddit command threw KeyError {e} for command "{message}."')
+        logger.error(f'Reddit threw KeyError for `{message}`: {e}')
         raise e
     finally:
         images = list(filter(None, images))
@@ -226,6 +226,7 @@ def weather_by_city(city, weather):
 
 @logger.catch
 def wiki_summary(msg):
+    """Fetch Wikipedia summary for a given query."""
     wiki = wikipediaapi.Wikipedia('en')
     page = wiki.page(msg)
     return page.summary
@@ -240,20 +241,18 @@ def find_imdb_movie(movie_title):
         movies = ia.search_movie(movie_title)
         movie_id = movies[0].getID()
     except IMDbError as e:
-        print(e)
+        logger.error(f'IMDB command threw error for command `{movie_title}`: {e}')
     if movie_id:
         movie = ia.get_movie(movie_id)
-        cast = [actor['name'] for actor in movie.__dict__['data']['cast'][:2]]
-        art = movie.__dict__['data']['cover url']
-        director = movie.__dict__['data']['director'][0]['name']
-        genres = movie.__dict__['data']['genres']
-        title = movie.__dict__['data']['title']
-        rating = movie.__dict__['data']['rating']
-        year = movie.__dict__['data']['year']
-        budget = movie.__dict__['data']['box office'].get('Budget', None)
-        opening_week = movie.__dict__['data']['box office'].get('Opening Weekend United States', None)
-        gross = movie.__dict__['data']['box office'].get('Cumulative Worldwide Gross', None)
-        synopsis = movie.__dict__['data'].get('synopsis', None)
+        cast = [actor['name'] for actor in movie.data['cast'][:2]]
+        art = movie.data['cover url']
+        director = movie.data['director'][0]['name']
+        genres = movie.data['genres']
+        title = movie.data['title']
+        rating = movie.data['rating']
+        year = movie.data['year']
+        budget, opening_week, gross = get_boxoffice_data(movie)
+        synopsis = movie.data.get('synopsis', None)
         if synopsis:
             synopsis = synopsis[0].split('. ')[:2]
         response = f'{title.upper()}, {rating}/10 ({", ".join(genres)}, {year}). STARRING {", ".join(cast)}. DIRECTED BY {director}.'
@@ -266,3 +265,13 @@ def find_imdb_movie(movie_title):
         if gross:
             response = response + f' CUMULATIVE WORLDWIDE GROSS {gross}.'
         return response + f' {art}'
+
+
+def get_boxoffice_data(movie):
+    """Get IMDB box office performance for a given film."""
+    if movie.data.get('box office', None):
+        budget = movie.data['box office'].get('Budget', None)
+        opening_week = movie.data['box office'].get('Opening Weekend United States', None)
+        gross = movie.data['box office'].get('Cumulative Worldwide Gross', None)
+        return budget, opening_week, gross
+    return None, None, None
