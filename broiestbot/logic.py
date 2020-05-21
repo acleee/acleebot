@@ -245,7 +245,7 @@ def find_imdb_movie(movie_title):
     if movie_id:
         movie = ia.get_movie(movie_id)
         cast = [actor['name'] for actor in movie.data['cast'][:2]]
-        art = movie.data['cover url']
+        art = movie.data.get('cover url', None)
         director = movie.data['director'][0]['name']
         genres = movie.data['genres']
         title = movie.data['title']
@@ -264,9 +264,12 @@ def find_imdb_movie(movie_title):
             response = response + f' OPENING WEEK {opening_week}.'
         if gross:
             response = response + f' CUMULATIVE WORLDWIDE GROSS {gross}.'
-        return response + f' {art}'
+        if art:
+            response = response + f' {art}'
+        return response
 
 
+@logger.catch
 def get_boxoffice_data(movie):
     """Get IMDB box office performance for a given film."""
     if movie.data.get('box office', None):
