@@ -41,5 +41,3 @@ def spawn_bot_processes():
             process.join()
 
 
-make_bots = spawn_bot_processes()
-
