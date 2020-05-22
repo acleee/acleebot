@@ -244,28 +244,18 @@ def find_imdb_movie(movie_title):
         logger.error(f'IMDB command threw error for command `{movie_title}`: {e}')
     if movie_id:
         movie = ia.get_movie(movie_id)
-        cast = [actor['name'] for actor in movie.data['cast'][:2]]
+        cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
         art = movie.data.get('cover url', None)
-        director = movie.data['director'][0]['name']
-        genres = movie.data['genres']
-        title = movie.data['title']
-        rating = movie.data['rating']
-        year = movie.data['year']
-        budget, opening_week, gross = get_boxoffice_data(movie)
-        synopsis = movie.data.get('synopsis', None)
+        director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
+        year = movie.data.get('year')
+        genres = f"({', '.join(movie.data.get('genres'))}, {year})."
+        title = f"{movie.data.get('title').upper()},"
+        rating = f"{movie.data.get('rating')}/10"
+        boxoffice = get_boxoffice_data(movie)
+        synopsis = movie.data.get('synopsis')
         if synopsis:
             synopsis = synopsis[0].split('. ')[:2]
-        response = f'{title.upper()}, {rating}/10 ({", ".join(genres)}, {year}). STARRING {", ".join(cast)}. DIRECTED BY {director}.'
-        if synopsis:
-            response = response + f' {". ".join(synopsis)}.'
-        if budget:
-            response = response + f' BUDGET {budget}.'
-        if opening_week:
-            response = response + f' OPENING WEEK {opening_week}.'
-        if gross:
-            response = response + f' CUMULATIVE WORLDWIDE GROSS {gross}.'
-        if art:
-            response = response + f' {art}'
+        response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
 
 
@@ -273,8 +263,8 @@ def find_imdb_movie(movie_title):
 def get_boxoffice_data(movie):
     """Get IMDB box office performance for a given film."""
     if movie.data.get('box office', None):
-        budget = movie.data['box office'].get('Budget', None)
-        opening_week = movie.data['box office'].get('Opening Weekend United States', None)
-        gross = movie.data['box office'].get('Cumulative Worldwide Gross', None)
-        return budget, opening_week, gross
-    return None, None, None
+        budget = f"BUDGET {movie.data['box office'].get('Budget', None)}."
+        opening_week = f"OPENING WEEK {movie.data['box office'].get('Opening Weekend United States', None)}."
+        gross = f"CUMULATIVE WORLDWIDE GROSS {movie.data['box office'].get('Cumulative Worldwide Gross', None)}.)"
+        return ' ' .join([budget, opening_week, gross])
+    return None
