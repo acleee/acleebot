@@ -8,7 +8,7 @@ from config import (GOOGLE_BUCKET_NAME,
                     GIPHY_API_KEY,
                     IEX_API_TOKEN,
                     WEATHERSTACK_API_KEY,
-                    ALPHA_VANTAGE_API)
+                    ALPHA_VANTAGE_API_KEY)
 import requests
 import pandas as pd
 import plotly.graph_objects as go
@@ -23,8 +23,10 @@ from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
 
 
-chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME,
-                                        api_key=PLOTLY_API_KEY)
+chart_studio.tools.set_credentials_file(
+    username=PLOTLY_USERNAME,
+    api_key=PLOTLY_API_KEY
+)
 
 
 def basic_message(message):
@@ -39,23 +41,58 @@ def get_crypto_price(symbol, message):
     prices = req.json()["result"]["price"]
     percentage = prices["change"]['percentage'] * 100
     if prices["last"] > 1:
-        response = f'{symbol.upper()}: Currently at ${prices["last"]:.2f}.' \
-                   f'High today of ${prices["high"]:.2f}, low of ${prices["low"]:.2f}.' \
-                   f'Change of {percentage:.2f}%'
+        response = f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. ' \
+                   f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} ' \
+                   f'(change of {percentage:.2f}%).'
     else:
-        response = f'{symbol.upper()}: Currently at ${prices["last"]}.' \
-                   f'High today of ${prices["high"]}, low of ${prices["low"]}.' \
-                   f'Change of {percentage:.2f}%'
-    return response + crypto_chart(symbol)
+        response = f'{symbol.upper()}: Currently at ${prices["last"]}. ' \
+                   f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
+                   f'(change of {percentage:.2f}%).'
+    return f'{response} {crypto_plotly_chart(symbol)}'
+
+
+@logger.catch
+def crypto_plotly_chart(symbol):
+    """Generate 30-day crypto price chart."""
+    params = {
+        'function': 'DIGITAL_CURRENCY_DAILY',
+        'symbol': symbol,
+        'market': 'USD',
+        'apikey': ALPHA_VANTAGE_API_KEY
+    }
+    r = requests.get('https://www.alphavantage.co/query', params=params)
+    data = r.json()
+    df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:30]
+    df = df.apply(pd.to_numeric)
+    fig = go.Figure(data=[go.Candlestick(x=df.index,
+                    open=df['1a. open (USD)'],
+                    high=df['2a. high (USD)'],
+                    low=df['3a. low (USD)'],
+                    close=df['4a. close (USD)'])])
+    fig.update_layout(xaxis_rangeslider_visible=False, title=symbol)
+    chart = py.plot(
+            fig,
+            filename=symbol,
+            auto_open=False,
+            fileopt='overwrite',
+            sharing='public'
+        )
+    chart_image = chart[:-1] + '.png'
+    return chart_image
 
 
 @logger.catch
 def crypto_chart(symbol):
-    r = requests.get(
-        f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey={ALPHA_VANTAGE_API}'
-    )
+    """Generate 20-day crypto price chart."""
+    params = {
+        'function': 'DIGITAL_CURRENCY_DAILY',
+        'symbol': symbol,
+        'market': 'USD',
+        'apikey': ALPHA_VANTAGE_API_KEY
+    }
+    r = requests.get('https://www.alphavantage.co/query', params=params)
     data = r.json()
-    list_of_dics = [day for day in data['Time Series (Digital Currency Daily)'].items()]
+    list_of_dics = data['Time Series (Digital Currency Daily)'].items()
     labels = []
     candle = []
     for k, v in list_of_dics[:20]:
@@ -114,10 +151,9 @@ def subreddit_image(message):
     }
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
-    res = r.json()['data']['children']
+    results = r.json()['data']['children']
     try:
-        images = [image['data']['media']['oembed'].get('thumbnail_url') for image in res]
-        images = [image for image in images if "https" in image]
+        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
     except KeyError as e:
         logger.error(f'Reddit threw KeyError for `{message}`: {e}')
         raise e

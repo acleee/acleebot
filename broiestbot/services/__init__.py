@@ -9,4 +9,4 @@ from .logging import create_logger
 
 db = Database(DATABASE_URI, DATABASE_ARGS)
 logger = create_logger()
-gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL,)
+gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
