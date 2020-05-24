@@ -64,22 +64,24 @@ def crypto_plotly_chart(symbol):
     r = requests.get('https://www.alphavantage.co/query', params=params)
     data = r.json()
     df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:30]
-    df = df.apply(pd.to_numeric)
-    fig = go.Figure(data=[go.Candlestick(x=df.index,
-                    open=df['1a. open (USD)'],
-                    high=df['2a. high (USD)'],
-                    low=df['3a. low (USD)'],
-                    close=df['4a. close (USD)'])])
-    fig.update_layout(xaxis_rangeslider_visible=False, title=symbol)
-    chart = py.plot(
-            fig,
-            filename=symbol,
-            auto_open=False,
-            fileopt='overwrite',
-            sharing='public'
-        )
-    chart_image = chart[:-1] + '.png'
-    return chart_image
+    if df.empty is False:
+        df = df.apply(pd.to_numeric)
+        fig = go.Figure(data=[go.Candlestick(x=df.index,
+                        open=df['1a. open (USD)'],
+                        high=df['2a. high (USD)'],
+                        low=df['3a. low (USD)'],
+                        close=df['4a. close (USD)'])])
+        fig.update_layout(xaxis_rangeslider_visible=False, title=symbol)
+        chart = py.plot(
+                fig,
+                filename=symbol,
+                auto_open=False,
+                fileopt='overwrite',
+                sharing='public'
+            )
+        chart_image = chart[:-1] + '.png'
+        return chart_image
+    return None
 
 
 @logger.catch
@@ -204,21 +206,22 @@ def stock_price_chart(symbol):
     if r.status_code == 200:
         message = get_stock_price(symbol)
         stock_df = pd.read_json(r.content)
-        fig = go.Figure(data=[go.Candlestick(x=stock_df['date'],
-                                             open=stock_df['open'],
-                                             high=stock_df['high'],
-                                             low=stock_df['low'],
-                                             close=stock_df['close'])])
-        fig.update_layout(xaxis_rangeslider_visible=False, title=message)
-        chart = py.plot(
-            fig,
-            filename=symbol,
-            auto_open=False,
-            fileopt='overwrite',
-            sharing='public'
-        )
-        chart_image = chart[:-1] + '.png'
-        return f'{chart_image} {message}'
+        if stock_df.empty is False:
+            fig = go.Figure(data=[go.Candlestick(x=stock_df['date'],
+                                                 open=stock_df['open'],
+                                                 high=stock_df['high'],
+                                                 low=stock_df['low'],
+                                                 close=stock_df['close'])])
+            fig.update_layout(xaxis_rangeslider_visible=False, title=message)
+            chart = py.plot(
+                fig,
+                filename=symbol,
+                auto_open=False,
+                fileopt='overwrite',
+                sharing='public'
+            )
+            chart_image = chart[:-1] + '.png'
+            return f'{chart_image} {message}'
     return f'There\'s no such company as {symbol} :@'
 
 
