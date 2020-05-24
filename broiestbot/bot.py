@@ -10,7 +10,8 @@ from .logic import (basic_message,
                     subreddit_image,
                     weather_by_city,
                     wiki_summary,
-                    find_imdb_movie)
+                    find_imdb_movie,
+                    get_gfycat_gif)
 
 
 class Bot(RoomManager):
@@ -53,6 +54,8 @@ class Bot(RoomManager):
             response = wiki_summary(args)
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
+        elif cmd_type == 'gfycat':
+            response = get_gfycat_gif(content)
         return response
 
     def on_message(self, room, user, message):

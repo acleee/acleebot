@@ -42,8 +42,9 @@ GOOGLE_broiestbot_CREDENTIALS = 'gcloud.json'
 GOOGLE_BUCKET_NAME = getenv('GOOGLE_BUCKET_NAME')
 GOOGLE_BUCKET_URL = getenv('GOOGLE_BUCKET_URL')
 
-# Giphy
+# Gifs
 GIPHY_API_KEY = getenv('GIPHY_API_KEY')
+RED_API_KEY = getenv('RED_API_KEY')
 
 # Stock
 IEX_API_TOKEN = getenv('IEX_API_TOKEN')

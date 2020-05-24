@@ -8,7 +8,8 @@ from config import (GOOGLE_BUCKET_NAME,
                     GIPHY_API_KEY,
                     IEX_API_TOKEN,
                     WEATHERSTACK_API_KEY,
-                    ALPHA_VANTAGE_API_KEY)
+                    ALPHA_VANTAGE_API_KEY,
+                    RED_API_KEY)
 import requests
 import pandas as pd
 import plotly.graph_objects as go
@@ -304,3 +305,23 @@ def get_boxoffice_data(movie):
         gross = f"CUMULATIVE WORLDWIDE GROSS {movie.data['box office'].get('Cumulative Worldwide Gross', None)}.)"
         return ' ' .join([budget, opening_week, gross])
     return None
+
+
+@logger.catch
+def get_gfycat_gif(query):
+    """Fetch specific kind of gif."""
+    rand = randint(0, 200)
+    endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
+    params = {
+        'search_text': query,
+        'count': 1,
+        'start': rand
+    }
+    headers = {
+        'Authorization': f'Bearer {RED_API_KEY}'
+    }
+    r = requests.get(endpoint, params=params, headers=headers)
+    result = r.json()['gfycats'][0]
+    image = result.get('max5mbGif')
+    return image
+
