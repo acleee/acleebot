@@ -311,14 +311,17 @@ def get_boxoffice_data(movie):
 
 
 @logger.catch
-def get_gfycat_gif(query):
+def get_gfycat_gif(query, custom_query=False):
     """Fetch specific kind of gif."""
-    rand = randint(0, 200)
+    if custom_query:
+        index_range = 30
+    else:
+        index_range = randint(0, 200)
     endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
     params = {
         'search_text': query,
         'count': 1,
-        'start': rand
+        'start': index_range
     }
     headers = {
         'Authorization': f'Bearer {RED_API_KEY}'
