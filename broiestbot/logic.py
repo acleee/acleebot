@@ -314,7 +314,7 @@ def get_boxoffice_data(movie):
 def get_gfycat_gif(query, custom_query=False):
     """Fetch specific kind of gif."""
     if custom_query:
-        index_range = 30
+        index_range = randint(0, 35)
     else:
         index_range = randint(0, 200)
     endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
