@@ -54,8 +54,10 @@ class Bot(RoomManager):
             response = wiki_summary(args)
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
-        elif cmd_type == 'gfycat':
+        elif cmd_type == 'gfycat' and args is None:
             response = get_gfycat_gif(content)
+        elif cmd_type == 'gfycat' and args:
+            response = get_gfycat_gif(args)
         return response
 
     def on_message(self, room, user, message):
