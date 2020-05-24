@@ -9,7 +9,9 @@ from config import (GOOGLE_BUCKET_NAME,
                     IEX_API_TOKEN,
                     WEATHERSTACK_API_KEY,
                     ALPHA_VANTAGE_API_KEY,
-                    RED_API_KEY)
+                    GFYCAT_CLIENT_ID,
+                    GFYCAT_CLIENT_SECRET,
+                    REDGIFS_ACCESS_KEY)
 import requests
 import pandas as pd
 import plotly.graph_objects as go
@@ -311,23 +313,47 @@ def get_boxoffice_data(movie):
 
 
 @logger.catch
-def get_gfycat_gif(query, custom_query=False):
+def get_gfycat_gif(query):
     """Fetch specific kind of gif."""
-    if custom_query:
-        index_range = randint(0, 35)
-    else:
-        index_range = randint(0, 200)
+    token = redgifs_auth_token()
     endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
     params = {
         'search_text': query,
-        'count': 1,
-        'start': index_range
+        'count': 100,
+        'start': 0
     }
     headers = {
-        'Authorization': f'Bearer {RED_API_KEY}'
+        'Authorization': f'Bearer {token}'
     }
     r = requests.get(endpoint, params=params, headers=headers)
-    result = r.json()['gfycats'][0]
-    image = result.get('max5mbGif')
+    results = r.json()['gfycats']
+    rand = randint(0, len(results) - 1)
+    image_json = results[rand]
+    image = image_json.get('max5mbGif')
     return image
 
+
+@logger.catch
+def gfycat_auth_token():
+    """Get auth token."""
+    endpoint = 'https://api.gfycat.com/v1/oauth/token'
+    body = {
+        "grant_type": "client_credentials",
+        "client_id": GFYCAT_CLIENT_ID,
+        "client_secret": GFYCAT_CLIENT_SECRET
+      }
+    headers = {'Content-Type': 'application/json'}
+    r = requests.post(endpoint, json=body, headers=headers)
+    if r.status_code == 200:
+        return r.json()['access_token']
+    return None
+
+
+def redgifs_auth_token():
+    endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
+    body = {"access_key": REDGIFS_ACCESS_KEY}
+    headers = {'Content-Type': 'application/json'}
+    r = requests.post(endpoint, json=body, headers=headers)
+    if r.status_code == 200:
+        return r.json()['access_token']
+    return None
