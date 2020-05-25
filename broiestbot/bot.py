@@ -55,7 +55,7 @@ class Bot(RoomManager):
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
         elif cmd_type == 'gfycat' and args:
-            response = get_gfycat_gif(args)
+            response = 'https://i.imgur.com/oGMHkqT.jpg'
         elif cmd_type == 'gfycat':
             response = get_gfycat_gif(content)
         return response
