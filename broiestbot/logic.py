@@ -315,7 +315,7 @@ def get_boxoffice_data(movie):
 @logger.catch
 def get_gfycat_gif(query):
     """Fetch specific kind of gif."""
-    token = redgifs_auth_token()
+    '''token = redgifs_auth_token()
     endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
     params = {
         'search_text': query,
@@ -329,8 +329,9 @@ def get_gfycat_gif(query):
     results = r.json()['gfycats']
     rand = randint(0, len(results) - 1)
     image_json = results[rand]
-    image = image_json.get('max5mbGif')
-    return image
+    image = image_json.get('max5mbGif')'''
+    return 'https://i.imgur.com/oGMHkqT.jpg'
+
 
 
 @logger.catch
