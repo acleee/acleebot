@@ -11,10 +11,11 @@ from .logic import (basic_message,
                     weather_by_city,
                     wiki_summary,
                     find_imdb_movie,
-                    get_gfycat_gif)
+                    get_redgifs_gif)
 
 
 class Bot(RoomManager):
+    """Chatango bot object."""
 
     def on_init(self):
         """Initialize bot."""
@@ -29,6 +30,7 @@ class Bot(RoomManager):
         room.message(message)
 
     def create_message(self, cmd_type, content, command=None, args=None):
+        """Router to resolve bot response."""
         response = None
         if cmd_type == 'basic':
             response = basic_message(content)
@@ -42,10 +44,6 @@ class Bot(RoomManager):
             response = fetch_image_from_gcs(content)
         elif cmd_type == 'giphy':
             response = giphy_image_search(content)
-        # elif cmd_type == 'urban' and args:
-            # response = urban_dictionary(args)
-        # elif cmd_type == 'nba' and args:
-            # response = nba_team_score(args)
         elif cmd_type == 'reddit':
             response = subreddit_image(content)
         elif cmd_type == 'weather' and args:
@@ -54,10 +52,14 @@ class Bot(RoomManager):
             response = wiki_summary(args)
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
-        elif cmd_type == 'gfycat' and args:
-            response = 'https://i.imgur.com/oGMHkqT.jpg'
-        elif cmd_type == 'gfycat':
-            response = get_gfycat_gif(content)
+        elif cmd_type == 'nsfw' and args:
+            response = get_redgifs_gif(args, nightmode_only=True)
+        elif cmd_type == 'nsfw':
+            response = get_redgifs_gif(content, nightmode_only=False)
+        # elif cmd_type == 'urban' and args:
+            # response = urban_dictionary(args)
+        # elif cmd_type == 'nba' and args:
+            # response = nba_team_score(args)
         return response
 
     def on_message(self, room, user, message):

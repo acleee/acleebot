@@ -27,6 +27,7 @@ def start_bot(room):
 
 
 def spawn_bot_processes():
+    """Dedicate a single process per bot."""
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
         start_bot(CHATANGO_TEST_ROOM)
@@ -36,8 +37,8 @@ def spawn_bot_processes():
             p = Process(target=start_bot, args=(room,))
             processes.append(p)
             p.start()
-
         for process in processes:
             process.join()
 
+    return len(f'Joined {len(CHATANGO_ROOMS)} rooms.')
 

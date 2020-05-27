@@ -24,6 +24,7 @@ from broiestbot.services import gcs
 from broiestbot.services.logging import logger
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
+from .nightmode import is_night_mode
 
 
 chart_studio.tools.set_credentials_file(
@@ -69,17 +70,17 @@ def crypto_plotly_chart(symbol):
     if df.empty is False:
         df = df.apply(pd.to_numeric)
         fig = go.Figure(data=[go.Candlestick(x=df.index,
-                        open=df['1a. open (USD)'],
-                        high=df['2a. high (USD)'],
-                        low=df['3a. low (USD)'],
-                        close=df['4a. close (USD)'])])
+                                             open=df['1a. open (USD)'],
+                                             high=df['2a. high (USD)'],
+                                             low=df['3a. low (USD)'],
+                                             close=df['4a. close (USD)'])])
         fig.update_layout(xaxis_rangeslider_visible=False, title=symbol)
         chart = py.plot(
-                fig,
-                filename=symbol,
-                auto_open=False,
-                fileopt='overwrite',
-                sharing='public'
+            fig,
+            filename=symbol,
+            auto_open=False,
+            fileopt='overwrite',
+            sharing='public'
             )
         chart_image = chart[:-1] + '.png'
         return chart_image
@@ -131,8 +132,7 @@ def giphy_image_search(search_term):
     if len(res.json()['data']):
         image = res.json()['data'][0]['images']['original']['url']
         return image
-    else:
-        return 'image not found :('
+    return 'image not found :('
 
 
 @logger.catch
@@ -157,17 +157,13 @@ def subreddit_image(message):
     endpoint = message + '?sort=new'
     r = requests.get(endpoint, headers=headers)
     results = r.json()['data']['children']
-    try:
-        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
-    except KeyError as e:
-        logger.error(f'Reddit threw KeyError for `{message}`: {e}')
-        raise e
-    finally:
-        images = list(filter(None, images))
-        if bool(images):
-            rand = randint(0, len(images) - 1)
-            image = images[rand].split('?')[0]
+    images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
+    images = list(filter(None, images))
+    if bool(images):
+        rand = randint(0, len(images) - 1)
+        image = images[rand].split('?')[0]
         return image
+    return 'No images found bc reddit SUCKS.'
 
 
 @logger.catch
@@ -294,9 +290,9 @@ def find_imdb_movie(movie_title):
         title = f"{movie.data.get('title').upper()},"
         rating = f"{movie.data.get('rating')}/10"
         boxoffice = get_boxoffice_data(movie)
-        synopsis = movie.data.get('synopsis')
+        synopsis = movie.data.get('synopsis')[0]
         if synopsis:
-            synopsis = synopsis[0].split('. ')[:2]
+            synopsis = ' '.join(synopsis[0].split('. ')[:2])
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
 
@@ -304,33 +300,43 @@ def find_imdb_movie(movie_title):
 @logger.catch
 def get_boxoffice_data(movie):
     """Get IMDB box office performance for a given film."""
+    response = []
     if movie.data.get('box office', None):
-        budget = f"BUDGET {movie.data['box office'].get('Budget', None)}."
-        opening_week = f"OPENING WEEK {movie.data['box office'].get('Opening Weekend United States', None)}."
-        gross = f"CUMULATIVE WORLDWIDE GROSS {movie.data['box office'].get('Cumulative Worldwide Gross', None)}.)"
-        return ' ' .join([budget, opening_week, gross])
+        budget = movie.data['box office'].get('Budget', None)
+        opening_week = movie.data['box office'].get('Opening Weekend United States', None)
+        gross = movie.data['box office'].get('Cumulative Worldwide Gross', None)
+        if budget:
+            response.append(f"BUDGET {budget}.")
+        if opening_week:
+            response.append(f"OPENING WEEK {opening_week}.")
+        if gross:
+            response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
+        return ' ' .join(response)
     return None
 
 
 @logger.catch
-def get_gfycat_gif(query):
+def get_redgifs_gif(query, nightmode_only=False):
     """Fetch specific kind of gif."""
-    token = redgifs_auth_token()
-    endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
-    params = {
-        'search_text': query,
-        'count': 100,
-        'start': 0
-    }
-    headers = {
-        'Authorization': f'Bearer {token}'
-    }
-    r = requests.get(endpoint, params=params, headers=headers)
-    results = r.json()['gfycats']
-    rand = randint(0, len(results) - 1)
-    image_json = results[rand]
-    image = image_json.get('max5mbGif')
-    return image
+    night_more = is_night_mode()
+    if (nightmode_only and night_more) or nightmode_only is False:
+        token = redgifs_auth_token()
+        endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
+        params = {
+            'search_text': query,
+            'count': 100,
+            'start': 0
+        }
+        headers = {
+            'Authorization': f'Bearer {token}'
+        }
+        r = requests.get(endpoint, params=params, headers=headers)
+        results = r.json()['gfycats']
+        rand = randint(0, len(results) - 1)
+        image_json = results[rand]
+        image = image_json.get('max5mbGif')
+        return image
+    return 'https://i.imgur.com/oGMHkqT.jpg'
 
 
 @logger.catch
@@ -350,6 +356,7 @@ def gfycat_auth_token():
 
 
 def redgifs_auth_token():
+    """Get redgifs auth via webtoken method."""
     endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {'Content-Type': 'application/json'}
