@@ -53,9 +53,9 @@ class Bot(RoomManager):
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
         elif cmd_type == 'nsfw' and args:
-            response = get_redgifs_gif(args, nightmode_only=True)
+            response = get_redgifs_gif(args, after_dark_only=True)
         elif cmd_type == 'nsfw':
-            response = get_redgifs_gif(content, nightmode_only=False)
+            response = get_redgifs_gif(content, after_dark_only=False)
         # elif cmd_type == 'urban' and args:
             # response = urban_dictionary(args)
         # elif cmd_type == 'nba' and args:

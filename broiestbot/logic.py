@@ -1,6 +1,16 @@
 """Bot commands."""
 from random import randint
 from datetime import datetime
+import requests
+import pandas as pd
+import plotly.graph_objects as go
+import chart_studio.plotly as py
+import chart_studio
+import emoji
+import wikipediaapi
+from imdb import IMDb, IMDbError
+from nba_api.stats.static import teams
+from nba_api.stats.endpoints import teamgamelog
 from config import (GOOGLE_BUCKET_NAME,
                     GOOGLE_BUCKET_URL,
                     PLOTLY_USERNAME,
@@ -12,19 +22,9 @@ from config import (GOOGLE_BUCKET_NAME,
                     GFYCAT_CLIENT_ID,
                     GFYCAT_CLIENT_SECRET,
                     REDGIFS_ACCESS_KEY)
-import requests
-import pandas as pd
-import plotly.graph_objects as go
-import chart_studio.plotly as py
-import chart_studio
-import emoji
-import wikipediaapi
-from imdb import IMDb, IMDbError
 from broiestbot.services import gcs
 from broiestbot.services.logging import logger
-from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamgamelog
-from .nightmode import is_night_mode
+from broiestbot.nightmode import is_after_dark
 
 
 chart_studio.tools.set_credentials_file(
@@ -64,8 +64,8 @@ def crypto_plotly_chart(symbol):
         'market': 'USD',
         'apikey': ALPHA_VANTAGE_API_KEY
     }
-    r = requests.get('https://www.alphavantage.co/query', params=params)
-    data = r.json()
+    req = requests.get('https://www.alphavantage.co/query', params=params)
+    data = req.json()
     df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:30]
     if df.empty is False:
         df = df.apply(pd.to_numeric)
@@ -96,14 +96,16 @@ def crypto_chart(symbol):
         'market': 'USD',
         'apikey': ALPHA_VANTAGE_API_KEY
     }
-    r = requests.get('https://www.alphavantage.co/query', params=params)
-    data = r.json()
+    req = requests.get('https://www.alphavantage.co/query', params=params)
+    data = req.json()
     list_of_dics = data['Time Series (Digital Currency Daily)'].items()
     labels = []
     candle = []
     for k, v in list_of_dics[:20]:
         labels.append(k.split('2020-')[1])
-        candle.append([int(v["3b. low (USD)"].split('.')[0]), int(v["2a. high (USD)"].split('.')[0])])
+        low = int(v["3b. low (USD)"].split('.')[0])
+        high = int(v["2a. high (USD)"].split('.')[0])
+        candle.append([low, high])
     img = ' https://quickchart.io/chart?bkg=white&width=500&height=300&format=png&c={type:%27bar%27,data:{labels:' + str(labels).replace(' ', '') + ',datasets:[{label:%27Price%27,data:' + str(candle).replace(' ', '') + '}]}}&.png'
     return img
 
@@ -155,8 +157,8 @@ def subreddit_image(message):
         'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
     }
     endpoint = message + '?sort=new'
-    r = requests.get(endpoint, headers=headers)
-    results = r.json()['data']['children']
+    req = requests.get(endpoint, headers=headers)
+    results = req.json()['data']['children']
     images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
     images = list(filter(None, images))
     if bool(images):
@@ -200,10 +202,10 @@ def stock_price_chart(symbol):
     """Get 30-day stock chart."""
     params = {'token': IEX_API_TOKEN, 'includeToday': 'true'}
     url = f'https://sandbox.iexapis.com/stable/stock/{symbol}/chart/1m/'
-    r = requests.get(url, params=params)
-    if r.status_code == 200:
+    req = requests.get(url, params=params)
+    if req.status_code == 200:
         message = get_stock_price(symbol)
-        stock_df = pd.read_json(r.content)
+        stock_df = pd.read_json(req.content)
         if stock_df.empty is False:
             fig = go.Figure(data=[go.Candlestick(x=stock_df['date'],
                                                  open=stock_df['open'],
@@ -248,8 +250,8 @@ def weather_by_city(city, weather):
     params = {'access_key': WEATHERSTACK_API_KEY,
               'query': city,
               'units': 'f'}
-    r = requests.get(endpoint, params=params)
-    data = r.json()
+    req = requests.get(endpoint, params=params)
+    data = req.json()
     code = data["current"]["weather_code"]
     weather_emoji = weather.find_row(code).get('icon')
     if weather_emoji:
@@ -317,10 +319,10 @@ def get_boxoffice_data(movie):
 
 
 @logger.catch
-def get_redgifs_gif(query, nightmode_only=False):
+def get_redgifs_gif(query, after_dark_only=False):
     """Fetch specific kind of gif."""
-    night_more = is_night_mode()
-    if (nightmode_only and night_more) or nightmode_only is False:
+    night_mode = is_after_dark()
+    if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
         endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
         params = {
@@ -331,8 +333,8 @@ def get_redgifs_gif(query, nightmode_only=False):
         headers = {
             'Authorization': f'Bearer {token}'
         }
-        r = requests.get(endpoint, params=params, headers=headers)
-        results = r.json()['gfycats']
+        req = requests.get(endpoint, params=params, headers=headers)
+        results = req.json()['gfycats']
         rand = randint(0, len(results) - 1)
         image_json = results[rand]
         image = image_json.get('max5mbGif')
@@ -348,11 +350,11 @@ def gfycat_auth_token():
         "grant_type": "client_credentials",
         "client_id": GFYCAT_CLIENT_ID,
         "client_secret": GFYCAT_CLIENT_SECRET
-      }
+        }
     headers = {'Content-Type': 'application/json'}
-    r = requests.post(endpoint, json=body, headers=headers)
-    if r.status_code == 200:
-        return r.json()['access_token']
+    req = requests.post(endpoint, json=body, headers=headers)
+    if req.status_code == 200:
+        return req.json()['access_token']
     return None
 
 
@@ -361,7 +363,7 @@ def redgifs_auth_token():
     endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {'Content-Type': 'application/json'}
-    r = requests.post(endpoint, json=body, headers=headers)
-    if r.status_code == 200:
-        return r.json()['access_token']
+    req = requests.post(endpoint, json=body, headers=headers)
+    if req.status_code == 200:
+        return req.json()['access_token']
     return None
