@@ -295,6 +295,7 @@ def find_imdb_movie(movie_title):
             synopsis = ' '.join(synopsis[0].split('. ')[:2])
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
+    return None
 
 
 @logger.catch
