@@ -24,7 +24,7 @@ from config import (GOOGLE_BUCKET_NAME,
                     REDGIFS_ACCESS_KEY)
 from broiestbot.services import gcs
 from broiestbot.services.logging import logger
-from broiestbot.nightmode import is_after_dark
+from broiestbot.afterdark import is_after_dark
 
 
 chart_studio.tools.set_credentials_file(
