@@ -11,17 +11,19 @@ import wikipediaapi
 from imdb import IMDb, IMDbError
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
-from config import (GOOGLE_BUCKET_NAME,
-                    GOOGLE_BUCKET_URL,
-                    PLOTLY_USERNAME,
-                    PLOTLY_API_KEY,
-                    GIPHY_API_KEY,
-                    IEX_API_TOKEN,
-                    WEATHERSTACK_API_KEY,
-                    ALPHA_VANTAGE_API_KEY,
-                    GFYCAT_CLIENT_ID,
-                    GFYCAT_CLIENT_SECRET,
-                    REDGIFS_ACCESS_KEY)
+from config import (
+    GOOGLE_BUCKET_NAME,
+    GOOGLE_BUCKET_URL,
+    PLOTLY_USERNAME,
+    PLOTLY_API_KEY,
+    GIPHY_API_KEY,
+    IEX_API_TOKEN,
+    WEATHERSTACK_API_KEY,
+    ALPHA_VANTAGE_API_KEY,
+    GFYCAT_CLIENT_ID,
+    GFYCAT_CLIENT_SECRET,
+    REDGIFS_ACCESS_KEY
+)
 from broiestbot.services import gcs
 from broiestbot.services.logging import logger
 from broiestbot.afterdark import is_after_dark
@@ -147,8 +149,6 @@ def random_image(message):
 
 def subreddit_image(message):
     """Fetch a random image from latest posts in a subreddit."""
-    image = None
-    images = []
     headers = {
         'Access-Control-Allow-Origin': '*',
         'Access-Control-Allow-Methods': 'GET',
@@ -292,9 +292,13 @@ def find_imdb_movie(movie_title):
         title = f"{movie.data.get('title').upper()},"
         rating = f"{movie.data.get('rating')}/10"
         boxoffice = get_boxoffice_data(movie)
-        synopsis = movie.data.get('synopsis')[0]
+        synopsis = movie.data.get('synopsis')
         if synopsis:
-            synopsis = ' '.join(synopsis[0].split('. ')[:2])
+            try:
+                synopsis = synopsis[0]
+                synopsis = ' '.join(synopsis[0].split('. ')[:2])
+            except KeyError as e:
+                logger.error(f'IMDB movie `{title}` does not have a synopsis: {e}')
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
     return None

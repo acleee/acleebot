@@ -91,10 +91,12 @@ class Bot(RoomManager):
             args = user_msg.split(' ', 1)[1]
         command = self.commands.find_row(cmd)
         if command is not None:
-            message = self.create_message(command['type'],
-                                          command['response'],
-                                          command=cmd,
-                                          args=args)
+            message = self.create_message(
+                command['type'],
+                command['response'],
+                command=cmd,
+                args=args
+            )
             if message:
                 self._chat(room, message)
         else:
