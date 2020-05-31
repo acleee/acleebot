@@ -326,7 +326,7 @@ def get_boxoffice_data(movie):
 def get_redgifs_gif(query, after_dark_only=False):
     """Fetch specific kind of gif."""
     night_mode = is_after_dark()
-    if (after_dark_only and night_mode) or after_dark_only is False or query.beginswith('lesbians'):
+    if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
         endpoint = 'https://napi.redgifs.com/v1/gfycats/search'
         params = {
