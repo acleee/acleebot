@@ -51,9 +51,12 @@ def get_crypto_price(symbol, message):
 
 
 def crypto_chart(symbol):
-    r = requests.get(
-        f'https://www.alphavantage.co/query?function=DIGITAL_CURRENCY_DAILY&symbol={symbol}&market=USD&apikey={ALPHA_VANTAGE_API}'
-    )
+    endpoint = 'https://www.alphavantage.co/'
+    params = {'function': 'DIGITAL_CURRENCY_DAILY',
+              'symbol': symbol,
+              'market': 'USD',
+              'apikey': ALPHA_VANTAGE_API}
+    r = requests.get(endpoint, params=params)
     data = r.json()
     list_of_dics = [day for day in data['Time Series (Digital Currency Daily)'].items()]
     labels = []
@@ -134,7 +137,10 @@ def nba_team_score(message):
 def get_stock_price(symbol):
     """Get stock price by symbol."""
     params = {'token': IEX_API_TOKEN}
-    req = requests.get(f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote', params=params)
+    req = requests.get(
+        f'https://sandbox.iexapis.com/stable/stock/{symbol}/quote',
+        params=params
+    )
     if req.status_code == 200:
         price = req.json().get('latestPrice', None)
         company_name = req.json().get("companyName", None)
@@ -172,8 +178,12 @@ def stock_price_chart(symbol):
 def urban_dictionary(word):
     """Fetch urban dictionary definition."""
     params = {'term': word}
-    headers = {'Accept': 'application/json', 'Content-Type': 'application/json'}
-    req = requests.get('http://api.urbandictionary.com/v0/define', params=params, headers=headers)
+    headers = {'Accept': 'application/json',
+               'Content-Type': 'application/json'}
+    req = requests.get(
+        'http://api.urbandictionary.com/v0/define',
+        params=params,
+        headers=headers)
     results = req.json()['list']
     results = sorted(results, key = lambda i: i['thumbs_down'], reverse=True)
     definition = results[0].get('definition')
