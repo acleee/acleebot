@@ -18,7 +18,7 @@ The baddest bot in the game right now. Uses the *ch.py* framework for joining [C
 Each row in the COMMANDS is comprised of tree parts:
 1. **command**: User-submitted command via chat.
 2. **message**: Chat response to reply to original comment.
-3. **type**: Funtion logic to generate response given 
+3. **type**: Function logic to generate response given .
 
 If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command. A directory of all commands can be found [here](http://broiestbro.com/table/commands).
 
@@ -47,7 +47,9 @@ With **requirements.txt**:
 ```
 $ git clone https://github.com/toddbirchard/broiestbot.git
 $ cd broiestbot
-$ python3 -m pip install -r requirements.txt
+$ python3 -m venv myenv
+$ source myenv/bin/activate
+$ pip install -r requirements.txt
 $ python3 main.py
 ```
 
@@ -68,7 +70,7 @@ DATABASE_TABLE=yourdatabbasetable
 These variables are optional to enable different services, such as pulling images from Google Cloud or fetching Stock prices:
 
 ```
-GOOGLE_APPLICATION_CREDENTIALS=/path/to/credentials.json
+GOOGLE_broiestbot_CREDENTIALS=/path/to/credentials.json
 GOOGLE_BUCKET_NAME=nameOfStorageBucket
 GOOGLE_BUCKET_URL=http://storage.googleapis.com/
 GIPHY_API_KEY=yourGiphyAPIKey
