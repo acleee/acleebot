@@ -1,5 +1,6 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
 from typing import Optional
+from datetime import datetime
 import requests
 import pandas as pd
 import plotly.graph_objects as go
@@ -115,7 +116,7 @@ class CryptoChartHandler:
         )
         chart = py.plot(
             fig,
-            filename=symbol,
+            filename=f'{symbol}_{datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")}',
             auto_open=False,
             fileopt='overwrite',
             sharing='public'
