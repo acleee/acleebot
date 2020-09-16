@@ -47,8 +47,8 @@ class Bot(RoomManager):
             response = fetch_image_from_gcs(content)
         elif cmd_type == 'giphy':
             response = giphy_image_search(content)
-        # elif cmd_type == 'reddit':
-            # response = subreddit_image(content)
+        elif cmd_type == 'reddit':
+            response = subreddit_image(content)
         elif cmd_type == 'weather' and args:
             response = weather_by_city(args, self.weather)
         elif cmd_type == 'wiki' and args:
@@ -73,19 +73,19 @@ class Bot(RoomManager):
             message.ip,
             message.body)
         )
-        user_msg = message.body.lower()
-        if user_msg[0] == "!":
-            self.command_response(user_msg, room)  # Trigger if command
-        elif user_msg == 'bro?':
+        chat_message = message.body.lower()
+        if chat_message[0] == "!":
+            self.parse_command(chat_message, room, user)  # Trigger if command
+        elif chat_message == 'bro?':
             self.bot_status_check(room)
-        elif user_msg.endswith('only on aclee'):
+        elif chat_message.endswith('only on aclee'):
             self._chat(room, '™')
-        elif user_msg.lower() == 'tm':
+        elif chat_message.lower() == 'tm':
             self.replace_word(room, message)
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
            # self.banned_word(room, message, user)
 
-    def command_response(self, user_msg, room):
+    def parse_command(self, user_msg, room, user):
         """Respond to command."""
         user_msg = user_msg[1::].lower()
         args = None
@@ -103,6 +103,7 @@ class Bot(RoomManager):
                 args=args
             )
             if message:
+                logger.info(f'{user.name.title()} | {room.name} | {message}')
                 self._chat(room, message)
         else:
             self.giphy_fallback(user_msg, room)

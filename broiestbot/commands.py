@@ -3,9 +3,7 @@ from typing import Optional
 from random import randint
 from datetime import datetime
 import requests
-import pandas as pd
-import plotly.graph_objects as go
-import chart_studio.plotly as py
+from requests.exceptions import HTTPError
 import chart_studio
 import emoji
 import wikipediaapi
@@ -59,17 +57,23 @@ def fetch_image_from_gcs(message):
 def giphy_image_search(search_term):
     """Giphy image search."""
     rand = randint(0, 20)
-    params = {'api_key': GIPHY_API_KEY,
-              'q': search_term,
-              'limit': 1,
-              'offset': rand,
-              'rating': 'R',
-              'lang': 'en'}
-    res = requests.get('https://api.giphy.com/v1/gifs/search', params=params)
-    if len(res.json()['data']):
-        image = res.json()['data'][0]['images']['original']['url']
-        return image
-    return 'image not found :('
+    params = {
+        'api_key': GIPHY_API_KEY,
+        'q': search_term,
+        'limit': 1,
+        'offset': rand,
+        'rating': 'R',
+        'lang': 'en',
+    }
+    try:
+        res = requests.get('https://api.giphy.com/v1/gifs/search', params=params)
+        if len(res.json()['data']):
+            image = res.json()['data'][0]['images']['original']['url']
+            return image
+        return 'image not found :('
+    except HTTPError as e:
+        logger.error(f'Giphy failed to fetch `{search_term}`: {e.response.content}')
+    return None
 
 
 @logger.catch
@@ -91,14 +95,18 @@ def subreddit_image(message):
     }
     endpoint = message + '?sort=new'
     req = requests.get(endpoint, headers=headers)
-    results = req.json()['data']['children']
-    images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
-    images = list(filter(None, images))
-    if bool(images):
-        rand = randint(0, len(images) - 1)
-        image = images[rand].split('?')[0]
-        return image
-    return 'No images found bc reddit SUCKS.'
+    try:
+        results = req.json()['data']['children']
+        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
+        images = list(filter(None, images))
+        if bool(images):
+            rand = randint(0, len(images) - 1)
+            image = images[rand].split('?')[0]
+            return image
+        return 'No images found bc reddit SUCKS.'
+    except HTTPError as e:
+        logger.error(f'Reddit failed to fetch `{message}`: {e.response.content}')
+    return None
 
 
 @logger.catch
@@ -126,13 +134,16 @@ def get_urban_definition(word) -> Optional[str]:
         params=params,
         headers=headers
     )
-    results = req.json().get('list')
-    if results:
-        results = sorted(results, key=lambda i: i['thumbs_down'], reverse=True)
-        definition = str(results[0].get('definition'))
-        example = str(results[0].get('example'))
-        word = word.upper()
-        return f"{word}: {definition}. EXAMPLE: {example}."
+    try:
+        results = req.json().get('list')
+        if results:
+            results = sorted(results, key=lambda i: i['thumbs_down'], reverse=True)
+            definition = str(results[0].get('definition'))
+            example = str(results[0].get('example'))
+            word = word.upper()
+            return f"{word}: {definition}. EXAMPLE: {example}."
+    except HTTPError as e:
+        logger.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
     return None
 
 
@@ -140,21 +151,27 @@ def get_urban_definition(word) -> Optional[str]:
 def weather_by_city(city, weather):
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
-    params = {'access_key': WEATHERSTACK_API_KEY,
-              'query': city,
-              'units': 'f'}
-    req = requests.get(endpoint, params=params)
-    data = req.json()
-    code = data["current"]["weather_code"]
-    weather_emoji = weather.find_row(code).get('icon')
-    if weather_emoji:
-        weather_emoji = emoji.emojize(weather_emoji, use_aliases=True)
-    response = f'{data["request"]["query"]}: \
-                 {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                 {data["current"]["temperature"]}°f \
-                 (feels like {data["current"]["feelslike"]}°f). \
-                 {data["current"]["precip"]}% precipitation.'
-    return response
+    params = {
+        'access_key': WEATHERSTACK_API_KEY,
+        'query': city,
+        'units': 'f'
+    }
+    try:
+        req = requests.get(endpoint, params=params)
+        data = req.json()
+        code = data["current"]["weather_code"]
+        weather_emoji = weather.find_row(code).get('icon')
+        if weather_emoji:
+            weather_emoji = emoji.emojize(weather_emoji, use_aliases=True)
+        response = f'{data["request"]["query"]}: \
+                         {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
+                         {data["current"]["temperature"]}°f \
+                         (feels like {data["current"]["feelslike"]}°f). \
+                         {data["current"]["precip"]}% precipitation.'
+        return response
+    except HTTPError as e:
+        logger.error(f'Failed to get weather for `{city}`: {e.response.content}')
+    return None
 
 
 @logger.catch
@@ -174,7 +191,7 @@ def find_imdb_movie(movie_title):
         movies = ia.search_movie(movie_title)
         movie_id = movies[0].getID()
     except IMDbError as e:
-        logger.error(f'IMDB command threw error for command `{movie_title}`: {e}')
+        logger.error(f'IMDB failed to find `{movie_title}`: {e}')
     if movie_id:
         movie = ia.get_movie(movie_id)
         cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
@@ -230,12 +247,15 @@ def get_redgifs_gif(query, after_dark_only=False):
         headers = {
             'Authorization': f'Bearer {token}'
         }
-        req = requests.get(endpoint, params=params, headers=headers)
-        results = req.json()['gfycats']
-        rand = randint(0, len(results) - 1)
-        image_json = results[rand]
-        image = image_json.get('max5mbGif')
-        return image
+        try:
+            req = requests.get(endpoint, params=params, headers=headers)
+            results = req.json()['gfycats']
+            rand = randint(0, len(results) - 1)
+            image_json = results[rand]
+            image = image_json.get('max5mbGif')
+            return image
+        except HTTPError as e:
+            logger.error(f'Failed to get nsfw image for `{query}`: {e.response.content}')
     return 'https://i.imgur.com/oGMHkqT.jpg'
 
 
@@ -249,9 +269,12 @@ def gfycat_auth_token():
         "client_secret": GFYCAT_CLIENT_SECRET
         }
     headers = {'Content-Type': 'application/json'}
-    req = requests.post(endpoint, json=body, headers=headers)
-    if req.status_code == 200:
-        return req.json()['access_token']
+    try:
+        req = requests.post(endpoint, json=body, headers=headers)
+        if req.status_code == 200:
+            return req.json().get('access_token')
+    except HTTPError as e:
+        logger.error(f'Failed to get gfycat auth token: {e.response.content}')
     return None
 
 
@@ -260,7 +283,10 @@ def redgifs_auth_token():
     endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {'Content-Type': 'application/json'}
-    req = requests.post(endpoint, json=body, headers=headers)
-    if req.status_code == 200:
-        return req.json()['access_token']
+    try:
+        req = requests.post(endpoint, json=body, headers=headers)
+        if req.status_code == 200:
+            return req.json()['access_token']
+    except HTTPError as e:
+        logger.error(f'Failed to get redgifs auth token: {e.response.content}')
     return None
