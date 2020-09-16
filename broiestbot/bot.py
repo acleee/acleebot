@@ -47,8 +47,8 @@ class Bot(RoomManager):
             response = fetch_image_from_gcs(content)
         elif cmd_type == 'giphy':
             response = giphy_image_search(content)
-        elif cmd_type == 'reddit':
-            response = subreddit_image(content)
+        # elif cmd_type == 'reddit':
+            # response = subreddit_image(content)
         elif cmd_type == 'weather' and args:
             response = weather_by_city(args, self.weather)
         elif cmd_type == 'wiki' and args:
