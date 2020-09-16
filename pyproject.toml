@@ -9,11 +9,13 @@ readme = "README.md"
 homepage = "https://github.com/toddbirchard/broiestbot/"
 repository = "https://github.com/toddbirchard/broiestbot/"
 documentation = "https://github.com/toddbirchard/broiestbot/"
-keywords = ["Chatbot",
-            "Chat",
-            "Chatango",
-            "Python",
-            "Bot"]
+keywords = [
+    "Chatbot",
+    "Chat",
+    "Chatango",
+    "Python",
+    "Bot"
+]
 
 [tool.poetry.dependencies]
 python = "^3.8"
@@ -30,6 +32,11 @@ emoji = "*"
 wikipedia-api = "*"
 notifiers = "*"
 imdbpy = "*"
+simplejson = "*"
+ddtrace = "*"
+boto = "*"
+botocore = "*"
+uWSGI = "*"
 python-dotenv = "*"
 
 [tool.poetry.dev-dependencies]

@@ -17,6 +17,11 @@ emoji = "*"
 wikipedia-api = "*"
 notifiers = "*"
 IMDbPY = "*"
+simplejson = "*"
+ddtrace = "*"
+boto = "*"
+botocore = "*"
+uWSGI = "*"
 python-dotenv = "*"
 
 [dev-packages]

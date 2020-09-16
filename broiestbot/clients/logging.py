@@ -1,12 +1,25 @@
-"""Create logger to catch and notify on failure."""
+"""Create logger to catch errors, SMS on failure, and trace via Datadog."""
 import sys
-from notifiers.logging import NotificationHandler
+import simplejson as json
 from loguru import logger
-from config import (ENVIRONMENT,
-                    TWILIO_ACCOUNT_SID,
-                    TWILIO_AUTH_TOKEN,
-                    TWILIO_RECIPIENT_PHONE,
-                    TWILIO_SENDER_PHONE)
+from notifiers.logging import NotificationHandler
+from config import (
+    ENVIRONMENT,
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
+    TWILIO_RECIPIENT_PHONE,
+    TWILIO_SENDER_PHONE
+)
+
+
+def serialize(record):
+    subset = {"time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"), "message": record["message"]}
+    return json.dumps(subset)
+
+
+def formatter(record):
+    record["extra"]["serialized"] = serialize(record)
+    return "{extra[serialized]},\n"
 
 
 def create_logger():
@@ -20,39 +33,52 @@ def create_logger():
             'auth_token': TWILIO_AUTH_TOKEN,
         }
         handler = NotificationHandler("twilio", defaults=params)
-        logger.add('logs/info.log',
-                   colorize=True,
-                   format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-red>{level}</light-red>:"
-                   + " <light-white>{message}</light-white>",
-                   catch=True,
-                   rotation="500 MB",
-                   level="INFO")
-        logger.add('logs/errors.log',
-                   colorize=True,
-                   format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-red>{level}</light-red>: "
-                   + " <light-white>{message}</light-white>",
-                   catch=True,
-                   rotation="500 MB",
-                   level="ERROR")
+        logger.add(
+            'logs/info.log',
+            colorize=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
+            + " | <light-red>{level}</light-red>:"
+            + " <light-white>{message}</light-white>",
+            catch=True,
+            rotation="500 MB",
+            level="INFO"
+        )
+        logger.add(
+            'logs/errors.log',
+            colorize=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
+            + " | <light-red>{level}</light-red>: "
+            + " <light-white>{message}</light-white>",
+            catch=True,
+            rotation="500 MB",
+            level="ERROR"
+        )
+        logger.add(
+            'logs/errors.json',
+            format=formatter,
+            level="ERROR",
+        )
         logger.add(handler,
                    catch=True,
                    format="<light-red>BROBOT ERROR</light-red>: "
                    + "<light-white>{message}</light-white>",
                    level="ERROR")
     else:
-        logger.add(sys.stdout,
-                   colorize=True,
-                   format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-green>{level}</light-green>: "
-                   + " <light-white>{message}</light-white>",
-                   level="INFO")
-        logger.add(sys.stderr,
-                   colorize=True,
-                   format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-red>{level}</light-red>: "
-                   + " <light-white>{message}</light-white>",
-                   catch=True,
-                   level="ERROR")
+        logger.add(
+            sys.stdout,
+            colorize=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
+            + " | <light-green>{level}</light-green>: "
+            + " <light-white>{message}</light-white>",
+            level="INFO"
+        )
+        logger.add(
+            sys.stderr,
+            colorize=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
+             + " | <light-red>{level}</light-red>: "
+            + " <light-white>{message}</light-white>",
+            catch=True,
+            level="ERROR"
+        )
     return logger
