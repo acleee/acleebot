@@ -129,12 +129,12 @@ def get_urban_definition(word) -> Optional[str]:
     """Fetch UrbanDictionary word definition."""
     params = {'term': word}
     headers = {'Content-Type': 'application/json'}
-    req = requests.get(
-        'http://api.urbandictionary.com/v0/define',
-        params=params,
-        headers=headers
-    )
     try:
+        req = requests.get(
+            'http://api.urbandictionary.com/v0/define',
+            params=params,
+            headers=headers
+        )
         results = req.json().get('list')
         if results:
             results = sorted(results, key=lambda i: i['thumbs_down'], reverse=True)

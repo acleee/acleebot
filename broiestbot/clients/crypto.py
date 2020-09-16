@@ -5,10 +5,12 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
+from .logging import logger
+from requests.exceptions import HTTPError
 
 
 class CryptoChartHandler:
-    """Create chart from stock market data."""
+    """Create chart from crypto price data."""
 
     def __init__(self, token: str, price_endpoint: str, chart_endpoint: str):
         self.token = token
@@ -21,21 +23,24 @@ class CryptoChartHandler:
         chart = self._create_chart(symbol)
         return f'{price} {chart}'
 
-    def _get_price(self, symbol) -> str:
+    def _get_price(self, symbol) -> Optional[str]:
         """Get crypto price for provided ticker label."""
         endpoint = f'{self.price_endpoint}{symbol.lower()}usd/summary'
-        req = requests.get(url=endpoint)
-        prices = req.json()["result"]["price"]
-        percentage = prices["change"]['percentage'] * 100
-        if prices["last"] > 1:
-            response = f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. ' \
-                       f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} ' \
-                       f'(change of {percentage:.2f}%).'
-        else:
-            response = f'{symbol.upper()}: Currently at ${prices["last"]}. ' \
-                       f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
-                       f'(change of {percentage:.2f}%).'
-        return response
+        try:
+            req = requests.get(url=endpoint)
+            prices = req.json()["result"]["price"]
+            percentage = prices["change"]['percentage'] * 100
+            if prices["last"] > 1:
+                return f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. ' \
+                           f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} ' \
+                           f'(change of {percentage:.2f}%).'
+            else:
+                return f'{symbol.upper()}: Currently at ${prices["last"]}. ' \
+                           f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
+                           f'(change of {percentage:.2f}%).'
+        except HTTPError as e:
+            logger.error(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
+        return None
 
     def _get_chart_data(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch 60-day crypto prices."""
@@ -45,11 +50,14 @@ class CryptoChartHandler:
             'market': 'USD',
             'apikey': self.token
         }
-        req = requests.get(self.chart_endpoint, params=params)
-        data = req.json()
-        df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:60]
-        if df.empty is False:
-            return df
+        try:
+            req = requests.get(self.chart_endpoint, params=params)
+            data = req.json()
+            df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:60]
+            if df.empty is False:
+                return df
+        except HTTPError as e:
+            logger.error(f'Failed to feth crypto data for `{symbol}`: {e.response.content}')
         return None
 
     def _create_chart(self, symbol: str) -> Optional[str]:

@@ -4,10 +4,12 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
+from .logging import logger
+from requests.exceptions import HTTPError
 
 
 class StockChartHandler:
-    """Create chart from stock market data."""
+    """Create chart from stock price data."""
 
     def __init__(self, token: str, endpoint: str):
         self.token = token
@@ -19,35 +21,41 @@ class StockChartHandler:
         chart = self._create_chart(symbol)
         return f'{message} {chart}'
 
-    def _get_price(self, symbol: str):
+    def _get_price(self, symbol: str) -> Optional[str]:
         """Get daily price summary."""
         params = {'token': self.token}
-        req = requests.get(
-            f'{self.endpoint}{symbol}/quote',
-            params=params
-        )
-        if req.status_code == 200:
-            price = req.json().get('latestPrice', None)
-            company_name = req.json().get("companyName", None)
-            change = req.json().get("ytdChange", None)
-            if price and company_name:
-                message = f"{company_name}: Current price of ${price:.2f}."
-                if change:
-                    message = f"{company_name}: Current price of ${price:.2f}, change of {change:.2f}%"
-                return message
+        try:
+            req = requests.get(
+                f'{self.endpoint}{symbol}/quote',
+                params=params
+            )
+            if req.status_code == 200:
+                price = req.json().get('latestPrice', None)
+                company_name = req.json().get("companyName", None)
+                change = req.json().get("ytdChange", None)
+                if price and company_name:
+                    message = f"{company_name}: Current price of ${price:.2f}."
+                    if change:
+                        message = f"{company_name}: Current price of ${price:.2f}, change of {change:.2f}%"
+                    return message
+        except HTTPError as e:
+            logger.error(f'Failed to fetch stock price for `{symbol}`: {e.response.content}')
         return None
 
     def _get_chart_data(self, symbol: str) -> Optional[pd.DataFrame]:
         """Fetch 30-day performance data from API."""
         params = {'token': self.token, 'includeToday': 'true'}
         url = f'{self.endpoint}{symbol}/chart/1m'
-        req = requests.get(url, params=params)
-        if req.status_code == 200:
-            stock_df = pd.read_json(req.content)
-            if stock_df.empty is False:
-                stock_df = stock_df.loc[stock_df['date'].dt.dayofweek < 5]
-                stock_df.set_index(keys=stock_df['date'], inplace=True)
-                return stock_df
+        try:
+            req = requests.get(url, params=params)
+            if req.status_code == 200:
+                stock_df = pd.read_json(req.content)
+                if stock_df.empty is False:
+                    stock_df = stock_df.loc[stock_df['date'].dt.dayofweek < 5]
+                    stock_df.set_index(keys=stock_df['date'], inplace=True)
+                    return stock_df
+        except HTTPError as e:
+            logger.error(f'Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}')
         return None
 
     def _create_chart(self, symbol: str) -> Optional[str]:
