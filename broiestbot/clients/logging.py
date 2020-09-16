@@ -57,7 +57,7 @@ def create_logger():
         logger.add(
             'logs/brobot.json',
             format=formatter,
-            level="info",
+            level="INFO",
         )
         logger.add(
             handler,
