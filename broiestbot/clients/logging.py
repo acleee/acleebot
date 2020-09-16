@@ -53,10 +53,11 @@ def create_logger():
             rotation="500 MB",
             level="ERROR"
         )
+        # Datadog
         logger.add(
-            'logs/errors.json',
+            'logs/brobot.json',
             format=formatter,
-            level="ERROR",
+            level="info",
         )
         logger.add(
             handler,
