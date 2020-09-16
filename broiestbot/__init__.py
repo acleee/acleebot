@@ -2,13 +2,16 @@
 from multiprocessing import Process
 from broiestbot.bot import Bot
 from broiestbot.clients import db
-from config import (CHATANGO_USERNAME,
-                    CHATANGO_PASSWORD,
-                    DATABASE_COMMANDS_TABLE,
-                    DATABASE_WEATHER_TABLE,
-                    CHATANGO_ROOMS,
-                    CHATANGO_TEST_ROOM,
-                    ENVIRONMENT)
+from ddtrace import patch_all
+from config import (
+    CHATANGO_USERNAME,
+    CHATANGO_PASSWORD,
+    DATABASE_COMMANDS_TABLE,
+    DATABASE_WEATHER_TABLE,
+    CHATANGO_ROOMS,
+    CHATANGO_TEST_ROOM,
+    ENVIRONMENT
+)
 
 
 def start_bot(room):
@@ -28,6 +31,7 @@ def start_bot(room):
 
 def spawn_bot_processes():
     """Dedicate a single process per bot."""
+    patch_all()
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
         start_bot(CHATANGO_TEST_ROOM)

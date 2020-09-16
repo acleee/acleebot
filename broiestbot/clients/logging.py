@@ -58,11 +58,18 @@ def create_logger():
             format=formatter,
             level="ERROR",
         )
-        logger.add(handler,
-                   catch=True,
-                   format="<light-red>BROBOT ERROR</light-red>: "
-                   + "<light-white>{message}</light-white>",
-                   level="ERROR")
+        logger.add(
+            handler,
+            catch=True,
+            format="<light-red>BROBOT ERROR</light-red>: "
+            + "<light-white>{message}</light-white>",
+            level="ERROR"
+        )
+        logger.add(
+            'logs/info.json',
+            format=formatter,
+            level="INFO",
+        )
     else:
         logger.add(
             sys.stdout,
