@@ -49,6 +49,12 @@ def create_logger():
             'logs/brobot.json',
             format=formatter,
         )
+        logger.add(
+            'logs/errors.json',
+            format=formatter,
+            level="ERROR"
+        )
+
         # SMS
         logger.add(
             handler,
