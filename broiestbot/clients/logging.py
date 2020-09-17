@@ -44,26 +44,6 @@ def create_logger():
             'auth_token': TWILIO_AUTH_TOKEN,
         }
         handler = NotificationHandler("twilio", defaults=params)
-        logger.add(
-            'logs/info.log',
-            colorize=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-            + " | <light-red>{level}</light-red>:"
-            + " <light-white>{message}</light-white>",
-            catch=True,
-            rotation="500 MB",
-            level="INFO"
-        )
-        logger.add(
-            'logs/errors.log',
-            colorize=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-            + " | <light-red>{level}</light-red>: "
-            + " <light-white>{message}</light-white>",
-            catch=True,
-            rotation="500 MB",
-            level="ERROR",
-        )
         # Datadog
         logger.add(
             'logs/brobot.json',

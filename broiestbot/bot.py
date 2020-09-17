@@ -55,8 +55,6 @@ class Bot(RoomManager):
             response = wiki_summary(args)
         elif cmd_type == 'imdb' and args:
             response = find_imdb_movie(args)
-        elif cmd_type == 'nsfw':
-            response = get_redgifs_gif(content, after_dark_only=False)
         elif cmd_type == 'nsfw' and args:
             response = get_redgifs_gif(args, after_dark_only=True)
         elif cmd_type == 'urban' and args:

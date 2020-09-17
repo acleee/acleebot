@@ -8,6 +8,7 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
+import praw
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
 from config import (
@@ -19,11 +20,23 @@ from config import (
     WEATHERSTACK_API_KEY,
     GFYCAT_CLIENT_ID,
     GFYCAT_CLIENT_SECRET,
-    REDGIFS_ACCESS_KEY
+    REDGIFS_ACCESS_KEY,
+    REDDIT_CLIENT_ID,
+    REDDIT_CLIENT_SECRET,
+    REDDIT_PASSWORD
 )
 from broiestbot.clients import gcs, sch, cch
 from broiestbot.clients.logging import logger
 from broiestbot.afterdark import is_after_dark
+
+
+reddit = praw.Reddit(
+    client_id=REDDIT_CLIENT_ID,
+    client_secret=REDDIT_CLIENT_SECRET,
+    username='broiestbro',
+    password=REDDIT_PASSWORD,
+    user_agent="bot"
+)
 
 
 chart_studio.tools.set_credentials_file(
@@ -84,29 +97,10 @@ def random_image(message):
     return random_pic
 
 
-def subreddit_image(message):
+def subreddit_image(subreddit: str):
     """Fetch a random image from latest posts in a subreddit."""
-    headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'GET',
-        'Access-Control-Allow-Headers': 'Content-Type',
-        'Access-Control-Max-Age': '3600',
-        'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
-    }
-    endpoint = message + '?sort=new'
-    req = requests.get(endpoint, headers=headers)
-    try:
-        results = req.json()['data']['children']
-        images = [image['data']['secure_media']['oembed'].get('thumbnail_url') for image in results]
-        images = list(filter(None, images))
-        if bool(images):
-            rand = randint(0, len(images) - 1)
-            image = images[rand].split('?')[0]
-            return image
-        return 'No images found bc reddit SUCKS.'
-    except HTTPError as e:
-        logger.error(f'Reddit failed to fetch `{message}`: {e.response.content}')
-    return None
+    images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
+    print(images)
 
 
 @logger.catch
@@ -249,11 +243,13 @@ def get_redgifs_gif(query, after_dark_only=False):
         }
         try:
             req = requests.get(endpoint, params=params, headers=headers)
-            results = req.json()['gfycats']
-            rand = randint(0, len(results) - 1)
-            image_json = results[rand]
-            image = image_json.get('max5mbGif')
-            return image
+            if bool(req.json()):
+                results = req.json()['gfycats']
+                rand = randint(0, len(results) - 1)
+                image_json = results[rand]
+                image = image_json.get('max5mbGif')
+                return image
+            return f'Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@'
         except HTTPError as e:
             logger.error(f'Failed to get nsfw image for `{query}`: {e.response.content}')
     return 'https://i.imgur.com/oGMHkqT.jpg'
