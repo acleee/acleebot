@@ -57,7 +57,6 @@ def create_logger():
         logger.add(
             'logs/brobot.json',
             format=formatter,
-            level="INFO",
         )
         logger.add(
             handler,
@@ -65,11 +64,6 @@ def create_logger():
             format="<light-red>BROBOT ERROR</light-red>: "
             + "<light-white>{message}</light-white>",
             level="ERROR"
-        )
-        logger.add(
-            'logs/info.json',
-            format=formatter,
-            level="INFO",
         )
     else:
         logger.add(
