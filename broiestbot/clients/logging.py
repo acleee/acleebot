@@ -51,19 +51,13 @@ def create_logger():
             + " <light-white>{message}</light-white>",
             catch=True,
             rotation="500 MB",
-            level="ERROR"
+            level="ERROR",
+            handler=handler
         )
         # Datadog
         logger.add(
             'logs/brobot.json',
             format=formatter,
-        )
-        logger.add(
-            handler,
-            catch=True,
-            format="<light-red>BROBOT ERROR</light-red>: "
-            + "<light-white>{message}</light-white>",
-            level="ERROR"
         )
     else:
         logger.add(
