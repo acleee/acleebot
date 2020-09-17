@@ -13,7 +13,18 @@ from config import (
 
 
 def serialize(record):
-    subset = {"time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"), "message": record["message"]}
+    """Construct JSON log record."""
+    meta = record["message"].split('): ', 1)[0]
+    user = meta.split(' ', 2)[1]
+    room = meta.split('] ', 1)[0].replace('[', '')
+    ip = meta.split('(')[1]
+    subset = {
+        "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+        "message": record["message"].split('): ', 1)[1],
+        "room": room,
+        "user": user,
+        "ip": ip
+    }
     return json.dumps(subset)
 
 
