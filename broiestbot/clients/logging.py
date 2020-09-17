@@ -52,12 +52,17 @@ def create_logger():
             catch=True,
             rotation="500 MB",
             level="ERROR",
-            handler=handler
         )
         # Datadog
         logger.add(
             'logs/brobot.json',
             format=formatter,
+        )
+        # SMS
+        logger.add(
+            handler,
+            catch=True,
+            level="ERROR"
         )
     else:
         logger.add(
