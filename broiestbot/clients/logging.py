@@ -1,5 +1,6 @@
 """Create logger to catch errors, SMS on failure, and trace via Datadog."""
 import sys
+import re
 import simplejson as json
 from loguru import logger
 from notifiers.logging import NotificationHandler
@@ -14,13 +15,12 @@ from config import (
 
 def serialize(record):
     """Construct JSON log record."""
-    meta = record["message"].split('): ', 1)[0]
-    user = meta.split(' ', 2)[1]
-    room = meta.split('] ', 1)[0].replace('[', '')
-    ip = meta.split('(')[1]
+    room = re.findall(r'\[(\S+)\]', record["message"])[0]
+    user = re.findall(r'\[(\S+)\]', record["message"])[1]
+    ip = re.findall(r'\[(\S+)\]', record["message"])[2]
     subset = {
         "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-        "message": record["message"].split('): ', 1)[1],
+        "message": record["message"].split(': ', 1)[1],
         "room": room,
         "user": user,
         "ip": ip
@@ -54,7 +54,6 @@ def create_logger():
             format=formatter,
             level="ERROR"
         )
-
         # SMS
         logger.add(
             handler,
@@ -66,17 +65,21 @@ def create_logger():
             sys.stdout,
             colorize=True,
             format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-            + " | <light-green>{level}</light-green>: "
-            + " <light-white>{message}</light-white>",
+                   + " | <light-green>{level}</light-green>: "
+                   + " <light-white>{message}</light-white>",
             level="INFO"
         )
         logger.add(
             sys.stderr,
             colorize=True,
             format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-             + " | <light-red>{level}</light-red>: "
-            + " <light-white>{message}</light-white>",
+                   + " | <light-red>{level}</light-red>: "
+                   + " <light-white>{message}</light-white>",
             catch=True,
             level="ERROR"
+        )
+        logger.add(
+            sys.stdout,
+            format=formatter,
         )
     return logger
