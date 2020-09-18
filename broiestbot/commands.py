@@ -97,10 +97,11 @@ def random_image(message):
     return random_pic
 
 
+@logger.catch
 def subreddit_image(subreddit: str):
     """Fetch a random image from latest posts in a subreddit."""
     images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
-    print(images)
+    logger.info(images)
 
 
 @logger.catch
@@ -110,6 +111,7 @@ def nba_team_score(message):
     season = datetime.now().year
     season_type = 'Regular Season'
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
+    logger.info(game)
 
 
 def get_stock(symbol):
@@ -274,6 +276,7 @@ def gfycat_auth_token():
     return None
 
 
+@logger.catch
 def redgifs_auth_token():
     """Get redgifs auth via webtoken method."""
     endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
