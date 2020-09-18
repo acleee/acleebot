@@ -131,3 +131,4 @@ nohup.out
 nohup.*
 *.out
 *.log
+*.json
