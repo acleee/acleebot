@@ -67,7 +67,6 @@ class Bot(RoomManager):
         """Boilerplate function trigger on message."""
         chat_message = message.body.lower()
         if chat_message[0] == "!":
-            logger.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
             self.parse_command(chat_message, room, user)  # Trigger if command
         elif chat_message == 'bro?':
             self.bot_status_check(room)
