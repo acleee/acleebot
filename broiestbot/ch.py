@@ -1799,7 +1799,7 @@ class RoomManager:
         @param room: room where the event occurred
         """
         LOGGER.error(f'Failed to join room.')
-        self.joinRoom(room.name)
+
 
     def onFloodBan(self, room):
         """
