@@ -28,6 +28,7 @@ def serialize(record):
             "ip": ip
         }
         return json.dumps(subset)
+    return json.dumps(record)
 
 
 def formatter(record):
