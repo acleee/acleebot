@@ -86,6 +86,7 @@ def giphy_image_search(search_term) -> Optional[str]:
         return 'image not found :('
     except HTTPError as e:
         LOGGER.error(f'Giphy failed to fetch `{search_term}`: {e.response.content}')
+    LOGGER.warning(f'No results found for `{search_term}`.')
     return None
 
 
@@ -140,6 +141,7 @@ def get_urban_definition(word) -> Optional[str]:
             return f"{word}: {definition}. EXAMPLE: {example}."
     except HTTPError as e:
         LOGGER.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
+    LOGGER.warning(f'No definitions found for `{word}`.')
     return None
 
 
@@ -167,6 +169,7 @@ def weather_by_city(city, weather) -> Optional[str]:
         return response
     except HTTPError as e:
         LOGGER.error(f'Failed to get weather for `{city}`: {e.response.content}')
+    LOGGER.warning(f'No weather found for `{city}`.')
     return None
 
 
@@ -207,6 +210,7 @@ def find_imdb_movie(movie_title) -> Optional[str]:
                 LOGGER.error(f'IMDB movie `{title}` does not have a synopsis: {e}')
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
+    LOGGER.warning(f'No IMDB info found for `{movie_title}`.')
     return None
 
 
@@ -225,6 +229,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
         if gross:
             response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
         return ' ' .join(response)
+    LOGGER.warning(f'No IMDB box office info found for `{movie}`.')
     return None
 
 
@@ -273,6 +278,7 @@ def gfycat_auth_token() -> Optional[str]:
             return req.json().get('access_token')
     except HTTPError as e:
         LOGGER.error(f'Failed to get gfycat auth token: {e.response.content}')
+    LOGGER.warning(f'No auth token received for gfycat request.')
     return None
 
 
@@ -288,4 +294,5 @@ def redgifs_auth_token() -> Optional[str]:
             return req.json()['access_token']
     except HTTPError as e:
         LOGGER.error(f'Failed to get redgifs auth token: {e.response.content}')
+    LOGGER.warning(f'No auth token received for redgifs request.')
     return None

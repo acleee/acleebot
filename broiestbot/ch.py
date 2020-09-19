@@ -1788,7 +1788,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.error('Bot disconnected. Retying...')
+        LOGGER.error(f'Disconnected from {room}. Retying...')
         self.joinRoom(room.name)
 
     def onLoginFail(self, room):
@@ -1798,7 +1798,8 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f'Failed to join {room}. Retying...')
+        self.joinRoom(room.name)
 
     def onFloodBan(self, room):
         """

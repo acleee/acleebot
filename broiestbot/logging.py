@@ -15,17 +15,19 @@ from config import (
 
 def serialize(record):
     """Construct JSON log record."""
-    room = re.findall(r'\[(\S+)\]', record["message"])[0]
-    user = re.findall(r'\[(\S+)\]', record["message"])[1]
-    ip = re.findall(r'\[(\S+)\]', record["message"])[2]
-    subset = {
-        "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-        "message": record["message"].split(': ', 1)[1],
-        "room": room,
-        "user": user,
-        "ip": ip
-    }
-    return json.dumps(subset)
+    chat_data = re.findall(r'\[(\S+)\]', record["message"])
+    if bool(chat_data):
+        room = [0]
+        user = chat_data[1]
+        ip = chat_data[2]
+        subset = {
+            "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+            "message": record["message"].split(': ', 1)[1],
+            "room": room,
+            "user": user,
+            "ip": ip
+        }
+        return json.dumps(subset)
 
 
 def formatter(record):
@@ -46,7 +48,7 @@ def create_logger():
         handler = NotificationHandler("twilio", defaults=params)
         # Datadog
         logger.add(
-            'logs/brobot.json',
+            'logs/info.json',
             format=formatter,
             level="INFO"
         )
@@ -77,11 +79,16 @@ def create_logger():
                    + " | <light-red>{level}</light-red>: "
                    + " <light-white>{message}</light-white>",
             catch=True,
-            level="ERROR"
+            level="WARNING"
         )
         logger.add(
-            sys.stdout,
-            format=formatter,
+            sys.stderr,
+            colorize=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
+                   + " | <light-red>{level}</light-red>: "
+                   + " <light-white>{message}</light-white>",
+            catch=True,
+            level="ERROR"
         )
     return logger
 

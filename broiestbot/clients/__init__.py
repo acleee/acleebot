@@ -12,7 +12,6 @@ from config import (
 )
 from .database import Database
 from .gcs import GCS
-from broiestbot.logging import create_logger
 from .crypto import CryptoChartHandler
 from .stock import StockChartHandler
 
@@ -22,8 +21,6 @@ db = Database(
     DATABASE_URI,
     DATABASE_ARGS
 )
-
-logger = create_logger()
 
 gcs = GCS(
     GOOGLE_BUCKET_NAME,

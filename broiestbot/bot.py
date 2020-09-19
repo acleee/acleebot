@@ -61,7 +61,9 @@ class Bot(RoomManager):
             response = get_urban_definition(args)
         # elif cmd_type == 'nba' and args:
             # response = nba_team_score(args)
-        return response
+        if response:
+            return response
+        LOGGER.debug(f'No response for command {command} with args {args}')
 
     def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""
