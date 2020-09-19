@@ -42,13 +42,12 @@ import random
 import re
 import sys
 import select
-from loguru import logger
+from broiestbot.logging import LOGGER
 
 ################################################################
 # Debug stuff
 ################################################################
 debug = False
-logger.add('logs/errors.log', format="{time} {message}", level="ERROR", catch=True, rotation="10 MB")
 
 
 ################################################################
@@ -1759,7 +1758,7 @@ class RoomManager:
         def check_connection():
             connections = self.getConnections()
             if not bool(connections):
-                logger.error('RECONNECTING...')
+                LOGGER.error('RECONNECTING...')
                 self.joinRoom(room.name)
 
         self.setInterval(15, check_connection)
@@ -1789,7 +1788,8 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.error('Bot disconnected. Retying...')
+        self.joinRoom(room.name)
 
     def onLoginFail(self, room):
         """

@@ -1,14 +1,13 @@
 attrs==20.2.0
 boto==2.49.0
-botocore==1.17.62
+botocore==1.18.1
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
 chardet==3.0.4
 chart-studio==1.1.0
 click==7.1.2
-ddtrace==0.41.2
-docutils==0.15.2
+ddtrace==0.42.0
 emoji==0.6.0
 google-api-core==1.22.2
 google-auth==1.21.2
@@ -33,6 +32,8 @@ packaging==20.4
 pandas==1.1.2
 plotly==4.10.0
 pluggy==0.13.1
+praw==7.1.0
+prawcore==1.5.0
 protobuf==3.13.0
 psutil==5.7.0
 py==1.9.0
@@ -56,6 +57,8 @@ sortedcontainers==2.2.2
 SQLAlchemy==1.3.19
 tenacity==6.2.0
 toml==0.10.1
+update-checker==0.18.0
 urllib3==1.25.10
 uWSGI==2.0.19.1
+websocket-client==0.57.0
 Wikipedia-API==0.5.4

@@ -1,5 +1,5 @@
 """Core bot logic."""
-from .clients import logger
+from broiestbot.logging import LOGGER
 from .ch import RoomManager
 from .commands import (
     basic_message,
@@ -65,7 +65,7 @@ class Bot(RoomManager):
 
     def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""
-        logger.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
+        LOGGER.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
         chat_message = message.body.lower()
         if chat_message[0] == "!":
             self.parse_command(chat_message, room, user)  # Trigger if command

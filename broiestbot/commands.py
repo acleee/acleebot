@@ -26,7 +26,7 @@ from config import (
     REDDIT_PASSWORD
 )
 from broiestbot.clients import gcs, sch, cch
-from broiestbot.clients.logging import logger
+from broiestbot.logging import LOGGER
 from broiestbot.afterdark import is_after_dark
 
 
@@ -56,7 +56,7 @@ def get_crypto(symbol):
     return chart
 
 
-@logger.catch
+@LOGGER.catch
 def fetch_image_from_gcs(message):
     """Get a random image from Google Cloud Storage bucket."""
     images = gcs.bucket.list_blobs(prefix=message)
@@ -66,8 +66,8 @@ def fetch_image_from_gcs(message):
     return image
 
 
-@logger.catch
-def giphy_image_search(search_term):
+@LOGGER.catch
+def giphy_image_search(search_term) -> Optional[str]:
     """Giphy image search."""
     rand = randint(0, 20)
     params = {
@@ -85,33 +85,33 @@ def giphy_image_search(search_term):
             return image
         return 'image not found :('
     except HTTPError as e:
-        logger.error(f'Giphy failed to fetch `{search_term}`: {e.response.content}')
+        LOGGER.error(f'Giphy failed to fetch `{search_term}`: {e.response.content}')
     return None
 
 
-@logger.catch
-def random_image(message):
+@LOGGER.catch
+def random_image(message) -> Optional[str]:
     """Select a random image from response."""
     image_list = message.replace(' ', '').split(';')
     random_pic = image_list[randint(0, len(image_list) - 1)]
     return random_pic
 
 
-@logger.catch
-def subreddit_image(subreddit: str):
+@LOGGER.catch
+def subreddit_image(subreddit: str) -> Optional[str]:
     """Fetch a random image from latest posts in a subreddit."""
     images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
-    logger.info(images)
+    LOGGER.info(images)
 
 
-@logger.catch
+@LOGGER.catch
 def nba_team_score(message):
     """Get score of an NBA game."""
     team_id = teams.find_teams_by_full_name(message)[0].get('id')
     season = datetime.now().year
     season_type = 'Regular Season'
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
-    logger.info(game)
+    LOGGER.info(game)
 
 
 def get_stock(symbol):
@@ -120,7 +120,7 @@ def get_stock(symbol):
     return chart
 
 
-@logger.catch
+@LOGGER.catch
 def get_urban_definition(word) -> Optional[str]:
     """Fetch UrbanDictionary word definition."""
     params = {'term': word}
@@ -139,12 +139,12 @@ def get_urban_definition(word) -> Optional[str]:
             word = word.upper()
             return f"{word}: {definition}. EXAMPLE: {example}."
     except HTTPError as e:
-        logger.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
+        LOGGER.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
     return None
 
 
-@logger.catch
-def weather_by_city(city, weather):
+@LOGGER.catch
+def weather_by_city(city, weather) -> Optional[str]:
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
     params = {
@@ -166,11 +166,11 @@ def weather_by_city(city, weather):
                          {data["current"]["precip"]}% precipitation.'
         return response
     except HTTPError as e:
-        logger.error(f'Failed to get weather for `{city}`: {e.response.content}')
+        LOGGER.error(f'Failed to get weather for `{city}`: {e.response.content}')
     return None
 
 
-@logger.catch
+@LOGGER.catch
 def wiki_summary(msg):
     """Fetch Wikipedia summary for a given query."""
     wiki = wikipediaapi.Wikipedia('en')
@@ -178,8 +178,8 @@ def wiki_summary(msg):
     return page.summary
 
 
-@logger.catch
-def find_imdb_movie(movie_title):
+@LOGGER.catch
+def find_imdb_movie(movie_title) -> Optional[str]:
     """Get movie information from IMDB."""
     ia = IMDb()
     movie_id = None
@@ -187,7 +187,7 @@ def find_imdb_movie(movie_title):
         movies = ia.search_movie(movie_title)
         movie_id = movies[0].getID()
     except IMDbError as e:
-        logger.error(f'IMDB failed to find `{movie_title}`: {e}')
+        LOGGER.error(f'IMDB failed to find `{movie_title}`: {e}')
     if movie_id:
         movie = ia.get_movie(movie_id)
         cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
@@ -204,14 +204,14 @@ def find_imdb_movie(movie_title):
                 synopsis = synopsis[0]
                 synopsis = ' '.join(synopsis[0].split('. ')[:2])
             except KeyError as e:
-                logger.error(f'IMDB movie `{title}` does not have a synopsis: {e}')
+                LOGGER.error(f'IMDB movie `{title}` does not have a synopsis: {e}')
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
     return None
 
 
-@logger.catch
-def get_boxoffice_data(movie):
+@LOGGER.catch
+def get_boxoffice_data(movie) -> Optional[str]:
     """Get IMDB box office performance for a given film."""
     response = []
     if movie.data.get('box office', None):
@@ -228,8 +228,8 @@ def get_boxoffice_data(movie):
     return None
 
 
-@logger.catch
-def get_redgifs_gif(query, after_dark_only=False):
+@LOGGER.catch
+def get_redgifs_gif(query, after_dark_only=False) -> str:
     """Fetch specific kind of gif."""
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
@@ -253,12 +253,12 @@ def get_redgifs_gif(query, after_dark_only=False):
                 return image
             return f'Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@'
         except HTTPError as e:
-            logger.error(f'Failed to get nsfw image for `{query}`: {e.response.content}')
+            LOGGER.error(f'Failed to get nsfw image for `{query}`: {e.response.content}')
     return 'https://i.imgur.com/oGMHkqT.jpg'
 
 
-@logger.catch
-def gfycat_auth_token():
+@LOGGER.catch
+def gfycat_auth_token() -> Optional[str]:
     """Get auth token."""
     endpoint = 'https://api.gfycat.com/v1/oauth/token'
     body = {
@@ -272,12 +272,12 @@ def gfycat_auth_token():
         if req.status_code == 200:
             return req.json().get('access_token')
     except HTTPError as e:
-        logger.error(f'Failed to get gfycat auth token: {e.response.content}')
+        LOGGER.error(f'Failed to get gfycat auth token: {e.response.content}')
     return None
 
 
-@logger.catch
-def redgifs_auth_token():
+@LOGGER.catch
+def redgifs_auth_token() -> Optional[str]:
     """Get redgifs auth via webtoken method."""
     endpoint = 'https://weblogin.redgifs.com/oauth/webtoken'
     body = {"access_key": REDGIFS_ACCESS_KEY}
@@ -287,5 +287,5 @@ def redgifs_auth_token():
         if req.status_code == 200:
             return req.json()['access_token']
     except HTTPError as e:
-        logger.error(f'Failed to get redgifs auth token: {e.response.content}')
+        LOGGER.error(f'Failed to get redgifs auth token: {e.response.content}')
     return None

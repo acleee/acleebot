@@ -84,3 +84,6 @@ def create_logger():
             format=formatter,
         )
     return logger
+
+
+LOGGER = create_logger()

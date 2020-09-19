@@ -12,7 +12,7 @@ from config import (
 )
 from .database import Database
 from .gcs import GCS
-from .logging import create_logger
+from broiestbot.logging import create_logger
 from .crypto import CryptoChartHandler
 from .stock import StockChartHandler
 

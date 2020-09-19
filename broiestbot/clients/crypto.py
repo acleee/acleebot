@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
-from .logging import logger
+from broiestbot.logging import LOGGER
 from requests.exceptions import HTTPError
 
 
@@ -39,7 +39,7 @@ class CryptoChartHandler:
                            f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
                            f'(change of {percentage:.2f}%).'
         except HTTPError as e:
-            logger.error(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
+            LOGGER.error(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
         return None
 
     def _get_chart_data(self, symbol: str) -> Optional[pd.DataFrame]:
@@ -54,23 +54,24 @@ class CryptoChartHandler:
             req = requests.get(self.chart_endpoint, params=params)
             data = req.json()
             df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:60]
-            if df.empty is False:
+            if bool(df):
                 return df
         except HTTPError as e:
-            logger.error(f'Failed to feth crypto data for `{symbol}`: {e.response.content}')
+            LOGGER.error(f'Failed to feth crypto data for `{symbol}`: {e.response.content}')
         return None
 
+    @LOGGER.catch
     def _create_chart(self, symbol: str) -> Optional[str]:
         """Create Plotly chart for given crypto symbol."""
-        df = self._get_chart_data(symbol)
-        df = df.apply(pd.to_numeric)
+        chart_df = self._get_chart_data(symbol)
+        chart_df = chart_df.apply(pd.to_numeric)
         fig = go.Figure(data=[
             go.Candlestick(
-                x=df.index,
-                open=df['1a. open (USD)'],
-                high=df['2a. high (USD)'],
-                low=df['3a. low (USD)'],
-                close=df['4a. close (USD)'],
+                x=chart_df.index,
+                open=chart_df['1a. open (USD)'],
+                high=chart_df['2a. high (USD)'],
+                low=chart_df['3a. low (USD)'],
+                close=chart_df['4a. close (USD)'],
                 decreasing={
                     "line": {
                         "color": "rgb(240, 99, 90)"

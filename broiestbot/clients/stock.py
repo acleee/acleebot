@@ -4,7 +4,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
-from .logging import logger
+from broiestbot.logging import LOGGER
 from requests.exceptions import HTTPError
 
 
@@ -39,7 +39,7 @@ class StockChartHandler:
                         message = f"{company_name}: Current price of ${price:.2f}, change of {change:.2f}%"
                     return message
         except HTTPError as e:
-            logger.error(f'Failed to fetch stock price for `{symbol}`: {e.response.content}')
+            LOGGER.error(f'Failed to fetch stock price for `{symbol}`: {e.response.content}')
         return None
 
     def _get_chart_data(self, symbol: str) -> Optional[pd.DataFrame]:
@@ -55,13 +55,14 @@ class StockChartHandler:
                     stock_df.set_index(keys=stock_df['date'], inplace=True)
                     return stock_df
         except HTTPError as e:
-            logger.error(f'Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}')
+            LOGGER.error(f'Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}')
         return None
 
+    @LOGGER.catch
     def _create_chart(self, symbol: str) -> Optional[str]:
         """Create Plotly chart."""
         stock_df = self._get_chart_data(symbol)
-        if stock_df.empty is False:
+        if bool(stock_df):
             fig = go.Figure(data=[
                 go.Candlestick(
                     x=stock_df.index,
