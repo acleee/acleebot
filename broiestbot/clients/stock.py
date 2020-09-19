@@ -62,71 +62,69 @@ class StockChartHandler:
     def _create_chart(self, symbol: str) -> Optional[str]:
         """Create Plotly chart."""
         stock_df = self._get_chart_data(symbol)
-        if bool(stock_df):
-            fig = go.Figure(data=[
-                go.Candlestick(
-                    x=stock_df.index,
-                    open=stock_df['open'],
-                    high=stock_df['high'],
-                    low=stock_df['low'],
-                    close=stock_df['close'],
-                    decreasing={
-                        "line": {
-                            "color": "rgb(240, 99, 90)"
-                        },
-                        "fillcolor": "rgba(142, 53, 47, 0.5)"
+        fig = go.Figure(data=[
+            go.Candlestick(
+                x=stock_df.index,
+                open=stock_df['open'],
+                high=stock_df['high'],
+                low=stock_df['low'],
+                close=stock_df['close'],
+                decreasing={
+                    "line": {
+                        "color": "rgb(240, 99, 90)"
                     },
-                    increasing={
-                        "line": {
-                            "color": "rgb(48, 190, 161)"
-                        },
-                        "fillcolor": "rgba(22, 155, 124, 0.6)"
+                    "fillcolor": "rgba(142, 53, 47, 0.5)"
+                },
+                increasing={
+                    "line": {
+                        "color": "rgb(48, 190, 161)"
                     },
-                    whiskerwidth=1,
-                )],
-                layout=go.Layout(
-                    font={
-                        "size": 15,
-                        "family": "Open Sans",
-                        "color": "#fff"
+                    "fillcolor": "rgba(22, 155, 124, 0.6)"
+                },
+                whiskerwidth=1,
+            )],
+            layout=go.Layout(
+                font={
+                    "size": 15,
+                    "family": "Open Sans",
+                    "color": "#fff"
+                },
+                title={
+                    "x": 0.5,
+                    "font": {"size": 23},
+                    "text": f'30-day performance of {symbol.upper()}'
+                },
+                xaxis={
+                    'type': 'date',
+                    'rangeslider': {
+                        'visible': False
                     },
-                    title={
-                        "x": 0.5,
-                        "font": {"size": 23},
-                        "text": f'30-day performance of {symbol.upper()}'
-                    },
-                    xaxis={
-                        'type': 'date',
-                        'rangeslider': {
-                            'visible': False
-                        },
-                        "ticks": "",
-                        "gridcolor": "#283442",
-                        "linecolor": "#506784",
-                        "automargin": True,
-                        "zerolinecolor": "#283442",
-                        "zerolinewidth": 2
-                    },
-                    yaxis={
-                        "ticks": "",
-                        "gridcolor": "#283442",
-                        "linecolor": "#506784",
-                        "automargin": True,
-                        "zerolinecolor": "#283442",
-                        "zerolinewidth": 2
-                    },
-                    autosize=True,
-                    plot_bgcolor="rgb(23, 27, 31)",
-                    paper_bgcolor="rgb(23, 27, 31)",
-                )
+                    "ticks": "",
+                    "gridcolor": "#283442",
+                    "linecolor": "#506784",
+                    "automargin": True,
+                    "zerolinecolor": "#283442",
+                    "zerolinewidth": 2
+                },
+                yaxis={
+                    "ticks": "",
+                    "gridcolor": "#283442",
+                    "linecolor": "#506784",
+                    "automargin": True,
+                    "zerolinecolor": "#283442",
+                    "zerolinewidth": 2
+                },
+                autosize=True,
+                plot_bgcolor="rgb(23, 27, 31)",
+                paper_bgcolor="rgb(23, 27, 31)",
             )
-            chart = py.plot(
-                fig,
-                filename=symbol,
-                auto_open=False,
-                fileopt='overwrite',
-                sharing='public'
-            )
-            chart_image = chart[:-1] + '.png'
-            return chart_image
-        return None
+        )
+        chart = py.plot(
+            fig,
+            filename=symbol,
+            auto_open=False,
+            fileopt='overwrite',
+            sharing='public'
+        )
+        chart_image = chart[:-1] + '.png'
+        return chart_image

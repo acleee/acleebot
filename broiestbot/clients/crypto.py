@@ -54,8 +54,7 @@ class CryptoChartHandler:
             req = requests.get(self.chart_endpoint, params=params)
             data = req.json()
             df = pd.DataFrame.from_dict(data['Time Series (Digital Currency Daily)'], orient='index')[:60]
-            if bool(df):
-                return df
+            return df
         except HTTPError as e:
             LOGGER.error(f'Failed to feth crypto data for `{symbol}`: {e.response.content}')
         return None
