@@ -107,7 +107,7 @@ class CryptoChartHandler:
                     title={
                         "x": 0.5,
                         "font": {"size": 23},
-                        "text": f'30-day performance of {symbol.upper()}'
+                        "text": f'60-day performance of {symbol.upper()}'
                     },
                     xaxis={
                         'type': 'date',
