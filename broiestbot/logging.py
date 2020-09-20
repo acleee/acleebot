@@ -17,16 +17,19 @@ def serialize(record):
     """Construct JSON log record."""
     chat_data = re.findall(r'\[(\S+)\]', record["message"])
     if bool(chat_data):
-        room = [0]
-        user = chat_data[1]
-        ip = chat_data[2]
         subset = {
             "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
             "message": record["message"].split(': ', 1)[1],
-            "room": room,
-            "user": user,
-            "ip": ip
         }
+        if len(chat_data) == 3:
+            room = [0]
+            user = chat_data[1]
+            ip = chat_data[2]
+            subset = subset.update({
+                "room": room,
+                "user": user,
+                "ip": ip
+            })
         return json.dumps(subset)
     return json.dumps(record)
 
