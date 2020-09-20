@@ -1,7 +1,7 @@
 # broiestbot
 
 ![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![Pandas](https://img.shields.io/badge/pandas-1.0.3-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
+![Pandas](https://img.shields.io/badge/pandas-^1.1.1-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-1.3.16-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![PyMySQL](https://img.shields.io/badge/PyMySQL-v0.9.3-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)

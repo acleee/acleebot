@@ -14,7 +14,7 @@ from config import (
 )
 
 
-def start_bot(room):
+def join_room(room):
     """Initialize bot instance for a single room."""
     print(f'Joining {room}...')
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
@@ -29,16 +29,16 @@ def start_bot(room):
     chat_bot.create_message('basic', 'Beep boop I\'m dead inside 🤖')
 
 
-def spawn_bot_processes():
+def start_bot():
     """Dedicate a single process per bot."""
     patch_all()
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
-        start_bot(CHATANGO_TEST_ROOM)
+        join_room(CHATANGO_TEST_ROOM)
     else:
         processes = []
         for room in CHATANGO_ROOMS:
-            p = Process(target=start_bot, args=(room,))
+            p = Process(target=join_room, args=(room,))
             processes.append(p)
             p.start()
         for process in processes:

@@ -22,7 +22,7 @@ iniconfig==1.0.1
 intervaltree==3.1.0
 jmespath==0.10.0
 jsonschema==3.2.0
-loguru==0.5.2
+loguru==0.5.3
 lxml==4.5.2
 more-itertools==8.5.0
 nba-api==1.1.9

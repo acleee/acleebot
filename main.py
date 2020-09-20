@@ -1,7 +1,7 @@
 """Script entry point."""
-from broiestbot import spawn_bot_processes
+from broiestbot import start_bot
 
-make_bots = spawn_bot_processes()
+make_bots = start_bot()
 
 if __name__ == '__main__':
-    spawn_bot_processes()
+    start_bot()

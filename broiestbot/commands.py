@@ -281,7 +281,7 @@ def gfycat_auth_token() -> Optional[str]:
     LOGGER.warning(f'No auth token received for gfycat request.')
     return None
 
-
+1
 @LOGGER.catch
 def redgifs_auth_token() -> Optional[str]:
     """Get redgifs auth via webtoken method."""

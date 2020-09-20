@@ -1,4 +1,4 @@
-"""Core bot logic."""
+"""Chatango bot."""
 from broiestbot.logging import LOGGER
 from .ch import RoomManager
 from .commands import (
@@ -18,7 +18,7 @@ from .commands import (
 
 
 class Bot(RoomManager):
-    """Chatango bot object."""
+    """Chatango bot."""
 
     def on_init(self):
         """Initialize bot."""
