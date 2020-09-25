@@ -1,6 +1,6 @@
 attrs==20.2.0
 boto==2.49.0
-botocore==1.18.5
+botocore==1.18.6
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
@@ -17,7 +17,7 @@ google-crc32c==1.0.0
 google-resumable-media==1.0.0
 googleapis-common-protos==1.52.0
 idna==2.10
-IMDbPY==6.8
+IMDbPY==2020.9.25
 iniconfig==1.0.1
 intervaltree==3.1.0
 jmespath==0.10.0
