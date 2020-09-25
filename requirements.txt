@@ -1,6 +1,6 @@
 attrs==20.2.0
 boto==2.49.0
-botocore==1.18.1
+botocore==1.18.5
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
@@ -10,9 +10,9 @@ click==7.1.2
 ddtrace==0.42.0
 emoji==0.6.0
 google-api-core==1.22.2
-google-auth==1.21.2
+google-auth==1.21.3
 google-cloud-core==1.4.1
-google-cloud-storage==1.31.0
+google-cloud-storage==1.31.2
 google-crc32c==1.0.0
 google-resumable-media==1.0.0
 googleapis-common-protos==1.52.0
