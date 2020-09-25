@@ -32,7 +32,7 @@ def serialize(record):
             })
             return json.dumps(subset)
         except KeyError as e:
-            logger.error(e)
+            print(e)
     return json.dumps(record)
 
 
