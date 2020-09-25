@@ -21,19 +21,18 @@ def serialize(record):
             "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
             "message": record["message"].split(': ', 1)[1],
         }
-        if bool(chat_data):
-            try:
-                room = chat_data[0]
-                user = chat_data[1]
-                ip = chat_data[2]
-                subset = subset.update({
-                    "room": room,
-                    "user": user,
-                    "ip": ip
-                })
-                return json.dumps(subset)
-            except KeyError as e:
-                logger.error(e)
+        try:
+            room = chat_data[0]
+            user = chat_data[1]
+            ip = chat_data[2]
+            subset = subset.update({
+                "room": room,
+                "user": user,
+                "ip": ip
+            })
+            return json.dumps(subset)
+        except KeyError as e:
+            logger.error(e)
     return json.dumps(record)
 
 
