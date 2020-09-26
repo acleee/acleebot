@@ -11,6 +11,9 @@ from imdb import IMDb, IMDbError
 import praw
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
+from broiestbot.clients import gcs, sch, cch
+from broiestbot.logging import LOGGER
+from broiestbot.afterdark import is_after_dark
 from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
@@ -25,9 +28,6 @@ from config import (
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD
 )
-from broiestbot.clients import gcs, sch, cch
-from broiestbot.logging import LOGGER
-from broiestbot.afterdark import is_after_dark
 
 
 reddit = praw.Reddit(
@@ -178,7 +178,7 @@ def wiki_summary(msg):
     """Fetch Wikipedia summary for a given query."""
     wiki = wikipediaapi.Wikipedia('en')
     page = wiki.page(msg)
-    return page.summary
+    return f"{page.title.upper()}: {page.summary[:3000]}"
 
 
 @LOGGER.catch
@@ -281,7 +281,7 @@ def gfycat_auth_token() -> Optional[str]:
     LOGGER.warning(f'No auth token received for gfycat request.')
     return None
 
-1
+
 @LOGGER.catch
 def redgifs_auth_token() -> Optional[str]:
     """Get redgifs auth via webtoken method."""
