@@ -39,7 +39,7 @@ deploy:
 	service $(ENTRYPOINT) stop
 	git stash
 	git pull origin master
-	$(shell . dependencies.sh)
+	$(shell source ./dependencies.sh)
 	service $(ENTRYPOINT) start
 	service $(ENTRYPOINT) status
 
@@ -48,7 +48,7 @@ deploy:
 update:
 	poetry update
 	poetry shell
-	$(shell . dependencies.sh)
+	$(shell source ./dependencies.sh)
 
 
 .PHONY: clean
