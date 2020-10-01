@@ -9,7 +9,6 @@ cffi==1.14.3
 chardet==3.0.4
 chart-studio==1.1.0
 click==7.1.2
-ddtrace==0.42.0
 emoji==0.6.0
 google-api-core==1.22.2
 google-auth==1.22.0

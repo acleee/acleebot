@@ -2,7 +2,6 @@
 from multiprocessing import Process
 from broiestbot.bot import Bot
 from broiestbot.clients import db
-from ddtrace import patch_all
 from config import (
     CHATANGO_USERNAME,
     CHATANGO_PASSWORD,
