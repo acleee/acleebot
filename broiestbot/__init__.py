@@ -30,7 +30,6 @@ def join_room(room):
 
 def start_bot():
     """Dedicate a single process per bot."""
-    patch_all()
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
         join_room(CHATANGO_TEST_ROOM)
