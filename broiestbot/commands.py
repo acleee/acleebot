@@ -8,6 +8,7 @@ import chart_studio
 import emoji
 import wikipediaapi
 from imdb import IMDb, IMDbError
+import pytz
 import praw
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
@@ -296,3 +297,25 @@ def redgifs_auth_token() -> Optional[str]:
         LOGGER.error(f'Failed to get redgifs auth token: {e.response.content}')
     LOGGER.warning(f'No auth token received for redgifs request.')
     return None
+
+
+@LOGGER.catch
+def blaze_time_remaining():
+    """Get remaining time until target time."""
+    now = datetime.now(tz=pytz.timezone('America/New_York'))
+    am_time = now.replace(hour=4, minute=20, second=0)
+    pm_time = now.replace(hour=16, minute=20, second=0)
+    if am_time > now:
+        remaining = f'{am_time - now}'
+    elif am_time < now < pm_time:
+        remaining = f'{pm_time - now}'
+    else:
+        tomorrow_am_time = now.replace(
+            day=now.day + 1,
+            hour=4,
+            minute=20,
+            second=0
+        )
+        remaining = f'{tomorrow_am_time - now}'
+    remaining = remaining.split(':')
+    return f'{remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20'

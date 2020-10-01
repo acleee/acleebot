@@ -13,7 +13,8 @@ from .commands import (
     wiki_summary,
     find_imdb_movie,
     get_redgifs_gif,
-    get_urban_definition
+    get_urban_definition,
+    blaze_time_remaining
 )
 
 
@@ -37,7 +38,7 @@ class Bot(RoomManager):
         response = None
         if cmd_type == 'basic':
             response = basic_message(content)
-        elif cmd_type == 'crypto':
+        elif cmd_type == 'crypto' and not args:
             response = get_crypto(command)
         elif cmd_type == 'random':
             response = random_image(content)
@@ -61,8 +62,8 @@ class Bot(RoomManager):
             response = get_redgifs_gif(args, after_dark_only=True)
         elif cmd_type == 'urban' and args:
             response = get_urban_definition(args)
-        # elif cmd_type == 'nba' and args:
-            # response = nba_team_score(args)
+        elif cmd_type == '420' and args is None:
+            response = blaze_time_remaining()
         if response:
             return response
         LOGGER.debug(f'No response for command {command} with args {args}')

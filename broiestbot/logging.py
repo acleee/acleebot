@@ -1,4 +1,4 @@
-"""Create logger to catch errors, SMS on failure, and trace via Datadog."""
+"""Custom logger and notifications."""
 import sys
 import re
 import simplejson as json

@@ -1,4 +1,4 @@
-"""Script entry point."""
+"""Bot application entry point."""
 from broiestbot import start_bot
 
 init_bot = start_bot()
