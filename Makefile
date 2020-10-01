@@ -39,6 +39,7 @@ deploy:
 	service $(ENTRYPOINT) stop
 	git stash
 	git pull origin master
+	$(shell . dependencies.sh)
 	service $(ENTRYPOINT) start
 	service $(ENTRYPOINT) status
 
@@ -47,7 +48,7 @@ deploy:
 update:
 	poetry update
 	poetry shell
-	$(shell pip3 freeze > requirements.txt && exit)
+	$(shell . dependencies.sh)
 
 
 .PHONY: clean
