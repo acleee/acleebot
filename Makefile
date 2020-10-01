@@ -39,7 +39,6 @@ deploy:
 	service $(ENTRYPOINT) stop
 	git stash
 	git pull origin master
-	# $(shell if [ -d "broenv" ] then; source broenv/bin/activate && python3 -m pip install -r requirements.txt && exit fi)
 	service $(ENTRYPOINT) start
 	service $(ENTRYPOINT) status
 
@@ -49,7 +48,6 @@ update:
 	poetry update
 	poetry shell
 	$(shell pip3 freeze > requirements.txt && exit)
-	# $(shell if [ -d "broenv" ]; then source broenv/bin/activate && python3 -m pip install -r requirements.txt && exit fi)
 
 
 .PHONY: clean
