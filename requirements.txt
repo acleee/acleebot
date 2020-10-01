@@ -1,6 +1,8 @@
+aiohttp==3.6.2
+async-timeout==3.0.1
 attrs==20.2.0
 boto==2.49.0
-botocore==1.18.6
+botocore==1.18.9
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
@@ -10,7 +12,7 @@ click==7.1.2
 ddtrace==0.42.0
 emoji==0.6.0
 google-api-core==1.22.2
-google-auth==1.21.3
+google-auth==1.22.0
 google-cloud-core==1.4.1
 google-cloud-storage==1.31.2
 google-crc32c==1.0.0
@@ -20,11 +22,13 @@ idna==2.10
 IMDbPY==2020.9.25
 iniconfig==1.0.1
 intervaltree==3.1.0
+ipaddress==1.0.23
+ipdata==3.2
 jmespath==0.10.0
 jsonschema==3.2.0
 loguru==0.5.3
 lxml==4.5.2
-more-itertools==8.5.0
+multidict==4.7.6
 nba-api==1.1.9
 notifiers==1.2.1
 numpy==1.19.2
@@ -43,7 +47,7 @@ pycparser==2.20
 PyMySQL==0.10.1
 pyparsing==2.4.7
 pyrsistent==0.17.3
-pytest==6.0.2
+pytest==6.1.0
 python-dateutil==2.8.1
 python-dotenv==0.14.0
 pytz==2020.1
@@ -62,3 +66,4 @@ urllib3==1.25.10
 uWSGI==2.0.19.1
 websocket-client==0.57.0
 Wikipedia-API==0.5.4
+yarl==1.6.0

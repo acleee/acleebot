@@ -72,6 +72,11 @@ def create_logger():
             format=error_formatter,
             level="ERROR"
         )
+        logger.add(
+            'logs/errors.json',
+            format=error_formatter,
+            level="WARNING"
+        )
         # SMS
         logger.add(
             handler,
