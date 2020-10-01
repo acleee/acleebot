@@ -13,39 +13,39 @@ from config import (
 )
 
 
-def serialize_info(record):
-    """Construct JSON info log record."""
-    chat_data = re.findall(r'\[(\S+)\]', record["message"])
-    room = chat_data[0]
-    user = chat_data[1]
-    ip = chat_data[2]
-    subset = {
-        "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-        "message": record["message"].split(': ', 1)[1],
-        "room": room,
-        "user": user,
-        "ip": ip
-    }
-    return json.dumps(subset)
-
-
-def serialize_error(record):
-    """Construct JSON error log record."""
-    subset = {
-        "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-        "message": record["message"],
-    }
-    return json.dumps(subset)
-
-
 def info_formatter(record):
     """Format info message logs."""
+
+    def serialize_info(log):
+        """Construct JSON info log record."""
+        chat_data = re.findall(r'\[(\S+)\]', log["message"])
+        room = chat_data[0]
+        user = chat_data[1]
+        ip = chat_data[2]
+        subset = {
+            "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+            "message": record["message"].split(': ', 1)[1],
+            "room": room,
+            "user": user,
+            "ip": ip
+        }
+        return json.dumps(subset)
+
     record["extra"]["serialized"] = serialize_info(record)
     return "{extra[serialized]},\n"
 
 
 def error_formatter(record):
     """Format error message logs."""
+
+    def serialize_error(log):
+        """Construct JSON error log record."""
+        subset = {
+            "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+            "message": log["message"],
+        }
+        return json.dumps(subset)
+
     record["extra"]["serialized"] = serialize_error(record)
     return "{extra[serialized]},\n"
 

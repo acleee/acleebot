@@ -1,40 +1,3 @@
-################################################################
-# File: ch.py
-# Title: Chatango Library
-# Original Author: Lumirayz/Lumz <lumirayz@gmail.com>
-# Current Maintainers and Contributors:
-#    Nullspeaker <import codecs;codecs.encode('aunzzbaq129@tznvy.pbz','rot_13')>
-#    asl97 <asl97@outlook.com>
-#    pystub
-#    dani87
-#    domzy
-#    kamijoutouma
-#    piks
-# Version: 1.3.8
-# Description:
-#    An event-based library for connecting to one or multiple Chatango rooms, has
-#    support for several things including: messaging, message font,
-#    name color, deleting, banning, recent history, 2 userlist modes,
-#    flagging, avoiding flood bans, detecting flags.
-# Contact Info:
-#    Any question, comment, or suggestion should be directed to the current
-#    maintainers and contributors, located at:
-#     https://github.com/Nullspeaker/ch.py
-#    Where a more satisfactory response to all bug reports (which can be made on the
-#    issues page) and other statements can be garnered. For things not specific or
-#    in direct reference to this library, 'ch.py', a direct response can be filed
-#    to the individual persons listed above as 'Current Maintainers and Contributors.'
-################################################################
-
-################################################################
-# License
-################################################################
-# Copyright 2011 Lumirayz
-# This program is distributed under the terms of the GNU GPL.
-
-################################################################
-# Imports
-################################################################
 import socket
 import threading
 import time
@@ -44,9 +7,6 @@ import sys
 import select
 from broiestbot.logging import LOGGER
 
-################################################################
-# Debug stuff
-################################################################
 debug = False
 
 
@@ -1754,14 +1714,7 @@ class RoomManager:
         :param room: Chatango room where the event occurred
         :type room: Room
         """
-
-        def check_connection():
-            connections = self.getConnections()
-            if not bool(connections):
-                LOGGER.error('RECONNECTING...')
-                self.joinRoom(room.name)
-
-        self.setInterval(15, check_connection)
+        pass
 
     def onReconnect(self, room):
         """
@@ -1779,7 +1732,8 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f'Failed to connect to {room}. Retying...')
+        self.joinRoom(room.name)
 
     def on_disconnect(self, room):
         """
@@ -1788,7 +1742,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        # LOGGER.error(f'Disconnected from {room}. Retying...')
+        LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
         self.joinRoom(room.name)
 
     def onLoginFail(self, room):
@@ -1798,8 +1752,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
-        # LOGGER.error(f'Failed to join room.')
+        LOGGER.warn(f'Failed to join {room}.')
 
 
     def onFloodBan(self, room):
@@ -1809,7 +1762,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.warn(f'Bot was spambanned from {room}.')
 
     def onFloodBanRepeat(self, room):
         """
@@ -1827,7 +1780,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.warn(f'Bot is about to be floodbanned for spamming {room}.')
 
     def on_messageDelete(self, room, user, message):
         """
@@ -1840,7 +1793,7 @@ class RoomManager:
         @type message: Message
         @param message: message that got deleted
         """
-        pass
+        LOGGER.warn(f'{user} had message deleted from {room}: {message}')
 
     def onModChange(self, room):
         """
@@ -1858,7 +1811,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.warn(f'{user} was modded in {room}.')
 
     def onModRemove(self, room, user):
         """
@@ -1867,7 +1820,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        pass
+        LOGGER.warn(f'{user} was demodded in {room}.')
 
     def on_message(self, room, user, message):
         """
@@ -1906,7 +1859,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        pass
+        LOGGER.warn(f'{user} joined {room}.')
 
     def onLeave(self, room, user, puid):
         """
@@ -1919,7 +1872,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        pass
+        LOGGER.warn(f'{user} left {room}.')
 
     def onRaw(self, room, raw):
         """
@@ -1961,7 +1914,7 @@ class RoomManager:
         @type target: User
         @param target: user that got banned
         """
-        pass
+        LOGGER.warn(f'{target} was banned from {room} by {user}.')
 
     def onUnban(self, room, user, target):
         """
@@ -1974,7 +1927,7 @@ class RoomManager:
         @type target: User
         @param target: user that got unbanned
         """
-        pass
+        LOGGER.warn(f'{target} was unbanned from {room} by {user}.')
 
     def onBanlistUpdate(self, room):
         """
