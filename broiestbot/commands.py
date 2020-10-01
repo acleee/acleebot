@@ -30,7 +30,6 @@ from config import (
     REDDIT_PASSWORD
 )
 
-
 reddit = praw.Reddit(
     client_id=REDDIT_CLIENT_ID,
     client_secret=REDDIT_CLIENT_SECRET,
@@ -38,7 +37,6 @@ reddit = praw.Reddit(
     password=REDDIT_PASSWORD,
     user_agent="bot"
 )
-
 
 chart_studio.tools.set_credentials_file(
     username=PLOTLY_USERNAME,
@@ -229,7 +227,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
             response.append(f"OPENING WEEK {opening_week}.")
         if gross:
             response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
-        return ' ' .join(response)
+        return ' '.join(response)
     LOGGER.warning(f'No IMDB box office info found for `{movie}`.')
     return None
 
@@ -271,7 +269,7 @@ def gfycat_auth_token() -> Optional[str]:
         "grant_type": "client_credentials",
         "client_id": GFYCAT_CLIENT_ID,
         "client_secret": GFYCAT_CLIENT_SECRET
-        }
+    }
     headers = {'Content-Type': 'application/json'}
     try:
         req = requests.post(endpoint, json=body, headers=headers)

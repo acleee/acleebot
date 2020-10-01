@@ -19,17 +19,22 @@ def info_formatter(record):
     def serialize_info(log):
         """Construct JSON info log record."""
         chat_data = re.findall(r'\[(\S+)\]', log["message"])
-        room = chat_data[0]
-        user = chat_data[1]
-        ip = chat_data[2]
-        subset = {
-            "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-            "message": record["message"].split(': ', 1)[1],
-            "room": room,
-            "user": user,
-            "ip": ip
+        if bool(chat_data):
+            room = chat_data[0]
+            user = chat_data[1]
+            ip = chat_data[2]
+            subset = {
+                "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "message": record["message"].split(': ', 1)[1],
+                "room": room,
+                "user": user,
+                "ip": ip
+            }
+            return json.dumps(subset)
+        return {
+            "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+            "message": log["message"],
         }
-        return json.dumps(subset)
 
     record["extra"]["serialized"] = serialize_info(record)
     return "{extra[serialized]},\n"
