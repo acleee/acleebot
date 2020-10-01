@@ -103,7 +103,7 @@ def random_image(message) -> Optional[str]:
 def subreddit_image(subreddit: str) -> Optional[str]:
     """Fetch a random image from latest posts in a subreddit."""
     images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
-    LOGGER.info(images)
+    return images[0]
 
 
 @LOGGER.catch
@@ -113,7 +113,7 @@ def nba_team_score(message):
     season = datetime.now().year
     season_type = 'Regular Season'
     game = teamgamelog.TeamGameLog(team_id, season, season_type)
-    LOGGER.info(game)
+    print(game)
 
 
 def get_stock(symbol):
