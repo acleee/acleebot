@@ -13,7 +13,7 @@ from config import (
 )
 
 
-def info_formatter(record):
+def formatter(record):
     """Format info message logs."""
 
     def serialize_info(log):
@@ -31,17 +31,6 @@ def info_formatter(record):
                 "ip": ip
             }
             return json.dumps(subset)
-        return {
-            "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-            "message": log["message"],
-        }
-
-    record["extra"]["serialized"] = serialize_info(record)
-    return "{extra[serialized]},\n"
-
-
-def error_formatter(record):
-    """Format error message logs."""
 
     def serialize_error(log):
         """Construct JSON error log record."""
@@ -50,6 +39,10 @@ def error_formatter(record):
             "message": log["message"],
         }
         return json.dumps(subset)
+
+    if record["level"].name =="INFO":
+        record["extra"]["serialized"] = serialize_info(record)
+        return "{extra[serialized]},\n"
 
     record["extra"]["serialized"] = serialize_error(record)
     return "{extra[serialized]},\n"
@@ -69,17 +62,17 @@ def create_logger():
         # Datadog
         logger.add(
             'logs/info.json',
-            format=info_formatter,
+            format=formatter,
             level="INFO"
         )
         logger.add(
             'logs/errors.json',
-            format=error_formatter,
+            format=formatter,
             level="ERROR"
         )
         logger.add(
             'logs/errors.json',
-            format=error_formatter,
+            format=formatter,
             level="WARNING"
         )
         # SMS
@@ -114,6 +107,21 @@ def create_logger():
                    + " <light-white>{message}</light-white>",
             catch=True,
             level="ERROR"
+        )
+        logger.add(
+            'logs/info.json',
+            format=formatter,
+            level="INFO"
+        )
+        logger.add(
+            'logs/errors.json',
+            format=formatter,
+            level="ERROR"
+        )
+        logger.add(
+            'logs/events.json',
+            format=formatter,
+            level="WARNING"
         )
     return logger
 
