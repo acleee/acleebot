@@ -23,25 +23,25 @@ all help:
 
 .PHONY: run
 run:
-	service $(ENTRYPOINT) start
+	service $(PROJECTNAME) start
 
 
 .PHONY: restart
 restart:
-	service $(ENTRYPOINT) stop
+	service $(PROJECTNAME) stop
 	make clean
-	service $(ENTRYPOINT) start
-	service $(ENTRYPOINT) status
+	service $(PROJECTNAME) start
+	service $(PROJECTNAME) status
 
 
 .PHONY: deploy
 deploy:
-	service $(ENTRYPOINT) stop
+	service $(PROJECTNAME) stop
 	git stash
 	git pull origin master
 	$(shell source ./dependencies.sh)
-	service $(ENTRYPOINT) start
-	service $(ENTRYPOINT) status
+	service $(PROJECTNAME) start
+	service $(PROJECTNAME) status
 
 
 .PHONY: update
