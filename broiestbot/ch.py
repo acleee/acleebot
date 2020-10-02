@@ -1820,7 +1820,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'{user.name} was demodded in {room.}.')
+        LOGGER.warning(f'{user.name} was demodded in {room.name}.')
 
     def on_message(self, room, user, message):
         """
