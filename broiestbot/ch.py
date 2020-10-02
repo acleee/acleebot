@@ -1820,7 +1820,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'{user.name} was demodded in {room}.')
+        LOGGER.warning(f'{user.name} was demodded in {room.}.')
 
     def on_message(self, room, user, message):
         """
@@ -1859,7 +1859,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user.name} joined {room}.')
+        LOGGER.warning(f'{user.name} joined {room.name}.')
 
     def onLeave(self, room, user, puid):
         """
@@ -1872,7 +1872,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user.name} left {room}.')
+        LOGGER.warning(f'{user.name} left {room.name}.')
 
     def onRaw(self, room, raw):
         """
