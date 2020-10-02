@@ -194,7 +194,7 @@ def find_imdb_movie(movie_title) -> Optional[str]:
         movie = ia.get_movie(movie_id)
         cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
         art = movie.data.get('cover url', None)
-        movie.data.get('director')
+        director = movie.data.get('director')
         if director:
             director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
         year = movie.data.get('year')
