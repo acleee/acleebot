@@ -1732,7 +1732,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.error(f'Failed to connect to {room}. Retying...')
+        LOGGER.error(f'Failed to connect to {room.name}. Retying...')
         self.joinRoom(room.name)
 
     def on_disconnect(self, room):
@@ -1742,7 +1742,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
+        LOGGER.error(f'Disconnected from {room.name}. Attempting to rejoin...')
         self.joinRoom(room.name)
 
     def onLoginFail(self, room):
@@ -1752,7 +1752,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'Failed to join {room}.')
+        LOGGER.warning(f'Failed to join {room.name}.')
 
 
     def onFloodBan(self, room):
@@ -1762,7 +1762,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'Bot was spambanned from {room}.')
+        LOGGER.warning(f'Bot was spambanned from {room.name}.')
 
     def onFloodBanRepeat(self, room):
         """
@@ -1780,7 +1780,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'Bot is about to be floodbanned for spamming {room}.')
+        LOGGER.warning(f'Bot is about to be floodbanned for spamming {room.name}.')
 
     def on_messageDelete(self, room, user, message):
         """
@@ -1793,7 +1793,7 @@ class RoomManager:
         @type message: Message
         @param message: message that got deleted
         """
-        LOGGER.warning(f'{user} had message deleted from {room}: {message}')
+        LOGGER.warning(f'{user.name} had message deleted from {room.name}: {message.body}')
 
     def onModChange(self, room):
         """
@@ -1811,7 +1811,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'{user} was modded in {room}.')
+        LOGGER.warning(f'{user.name} was modded in {room.name}.')
 
     def onModRemove(self, room, user):
         """
@@ -1820,7 +1820,7 @@ class RoomManager:
         @type room: Room
         @param room: room where the event occurred
         """
-        LOGGER.warning(f'{user} was demodded in {room}.')
+        LOGGER.warning(f'{user.name} was demodded in {room.name}.')
 
     def on_message(self, room, user, message):
         """
@@ -1859,7 +1859,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user} joined {room}.')
+        LOGGER.warning(f'{user.name} joined {room.name}.')
 
     def onLeave(self, room, user, puid):
         """
@@ -1872,7 +1872,7 @@ class RoomManager:
         @type puid: str
         @param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user} left {room}.')
+        LOGGER.warning(f'{user.name} left {room.name}.')
 
     def onRaw(self, room, raw):
         """
@@ -1914,7 +1914,7 @@ class RoomManager:
         @type target: User
         @param target: user that got banned
         """
-        LOGGER.warning(f'{target} was banned from {room} by {user}.')
+        LOGGER.warning(f'{target} was banned from {room.name} by {user.name}.')
 
     def onUnban(self, room, user, target):
         """
@@ -1927,7 +1927,7 @@ class RoomManager:
         @type target: User
         @param target: user that got unbanned
         """
-        LOGGER.warning(f'{target} was unbanned from {room} by {user}.')
+        LOGGER.warning(f'{target} was unbanned from {room.name} by {user.name}.')
 
     def onBanlistUpdate(self, room):
         """
