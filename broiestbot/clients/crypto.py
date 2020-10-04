@@ -5,7 +5,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
-from broiestbot.logging import LOGGER
+from logger import LOGGER
 from requests.exceptions import HTTPError
 
 

@@ -1,6 +1,6 @@
 """Chatango bot."""
-from broiestbot.logging import LOGGER
-from .ch import RoomManager
+from logger import LOGGER
+from chatango.ch import RoomManager
 from .commands import (
     basic_message,
     get_crypto,

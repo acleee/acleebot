@@ -15,7 +15,6 @@ from config import (
 
 def join_room(room):
     """Initialize bot instance for a single room."""
-    print(f'Joining {room}...')
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
     chat_bot = Bot.easy_start(

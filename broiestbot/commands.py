@@ -13,7 +13,7 @@ import praw
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
 from broiestbot.clients import gcs, sch, cch
-from broiestbot.logging import LOGGER
+from logger import LOGGER
 from broiestbot.afterdark import is_after_dark
 from config import (
     GOOGLE_BUCKET_NAME,
