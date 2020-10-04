@@ -59,8 +59,8 @@ def getServer(group):
     """
     Get the server host for a certain room.
 
-    @type group: str
-    @param group: room name
+    :type group: str
+    :param group: room name
 
     @rtype: str
     @return: the server's hostname
@@ -108,8 +108,8 @@ def _clean_message(msg):
     """
     Clean a message and return the message, n tag and f tag.
 
-    @type msg: str
-    @param msg: the message
+    :type msg: str
+    :param msg: the message
 
     @rtype: str, str, str
     @returns: cleaned message, n tag contents, f tag contents
@@ -237,8 +237,8 @@ class _ANON_PM_OBJECT:
         """
         Feed data to the connection.
 
-        @type data: bytes
-        @param data: data to be fed
+        :type data: bytes
+        :param data: data to be fed
         """
         self._rbuf += data
         while self._rbuf.find(b"\x00") != -1:
@@ -251,10 +251,12 @@ class _ANON_PM_OBJECT:
         """
         Process a command string.
 
-        @type data: str
-        @param data: the command string
+        :type data: str
+        :param data: the command string
         """
         self._callEvent("onRaw", data)
+        if not data:
+            return
         data = data.split(":")
         cmd, args = data[0], data[1:]
         func = "_rcmd_" + cmd
@@ -262,7 +264,7 @@ class _ANON_PM_OBJECT:
             getattr(self, func)(args)
         else:
             if debug:
-                print("unknown data: " + str(data))
+                LOGGER.debug(f"Unknown data in ch.py: {data}")
 
     def _getManager(self): return self._mgr
 
@@ -309,8 +311,8 @@ class _ANON_PM_OBJECT:
         """
         Send a command.
 
-        @type args: [str, str, ...]
-        @param args: command and list of arguments
+        :type args: [str, str, ...]
+        :param args: command and list of arguments
         """
         if self._firstCommand:
             terminator = b"\x00"
@@ -404,10 +406,10 @@ class PM:
         """
         Request an auid using name and password.
 
-        @type name: str
-        @param name: name
-        @type password: str
-        @param password: password
+        :type name: str
+        :param name: name
+        :type password: str
+        :param password: password
 
         @rtype: str
         @return: auid
@@ -461,8 +463,8 @@ class PM:
         """
         Feed data to the connection.
 
-        @type data: bytes
-        @param data: data to be fed
+        :type data: bytes
+        :param data: data to be fed
         """
         self._rbuf += data
         while self._rbuf.find(b"\x00") != -1:
@@ -475,10 +477,12 @@ class PM:
         """
         Process a command string.
 
-        @type data: str
-        @param data: the command string
+        :type data: str
+        :param data: the command string
         """
         self._callEvent("onRaw", data)
+        if not data:
+            return
         data = data.split(":")
         cmd, args = data[0], data[1:]
         func = "_rcmd_" + cmd
@@ -486,7 +490,7 @@ class PM:
             getattr(self, func)(args)
         else:
             if debug:
-                print("unknown data: " + str(data))
+                LOGGER.debug(f"Unknown data in ch.py: {data}")
 
     ####
     # Properties
@@ -683,8 +687,8 @@ class PM:
         """
         Send a command.
 
-        @type args: [str, str, ...]
-        @param args: command and list of arguments
+        :type args: [str, str, ...]
+        :param args: command and list of arguments
         """
         if self._firstCommand:
             terminator = b"\x00"
@@ -891,8 +895,8 @@ class Room:
         """
         Feed data to the connection.
 
-        @type data: bytes
-        @param data: data to be fed
+        :type data: bytes
+        :param data: data to be fed
         """
         self._rbuf += data
         while self._rbuf.find(b"\x00") != -1:
@@ -905,8 +909,8 @@ class Room:
         """
         Process a command string.
 
-        @type data: str
-        @param data: the command string
+        :type data: str
+        :param data: the command string
         """
         self._callEvent("onRaw", data)
         data = data.split(":")
@@ -916,7 +920,7 @@ class Room:
             getattr(self, func)(args)
         else:
             if debug:
-                print("unknown data: " + str(data))
+                LOGGER.debug(f"Unknown data in ch.py: {data}")
 
     ####
     # Received Commands
@@ -1029,6 +1033,7 @@ class Room:
             room=self
         )
         self._mqueue[i] = msg
+        self._callEvent("on_message", msg.user, msg)
 
     def _rcmd_u(self, args):
         temp = Struct(**self._mqueue)
@@ -1042,7 +1047,6 @@ class Room:
             del self._mqueue[args[0]]
             msg.attach(self, args[1])
             self._addHistory(msg)
-            self._callEvent("on_message", msg.user, msg)
 
     def _rcmd_i(self, args):
         mtime = float(args[0])
@@ -1238,8 +1242,8 @@ class Room:
         """
         Send a message without n and f tags.
 
-        @type msg: str
-        @param msg: message
+        :type msg: str
+        :param msg: message
         """
         if not self._silent:
             self._sendCommand("bmsg:tl2r", msg)
@@ -1248,8 +1252,8 @@ class Room:
         """
         Send a message. (Use "\n" for new line)
 
-        @type msg: str
-        @param msg: message
+        :type msg: str
+        :param msg: message
         """
         if msg is None:
             return
@@ -1287,8 +1291,8 @@ class Room:
         """
         Add a moderator.
 
-        @type user: User
-        @param user: User to mod.
+        :type user: User
+        :param user: User to mod.
         """
         if self.getLevel(User(self.currentname)) == 2:
             self._sendCommand("addmod", user.name)
@@ -1297,8 +1301,8 @@ class Room:
         """
         Remove a moderator.
 
-        @type user: User
-        @param user: User to demod.
+        :type user: User
+        :param user: User to demod.
         """
         if self.getLevel(User(self.currentname)) == 2:
             self._sendCommand("removemod", user.name)
@@ -1307,8 +1311,8 @@ class Room:
         """
         Flag a message.
 
-        @type message: Message
-        @param message: message to flag
+        :type message: Message
+        :param message: message to flag
         """
         self._sendCommand("g_flag", message.msgid)
 
@@ -1316,8 +1320,8 @@ class Room:
         """
         Flag a user.
 
-        @type user: User
-        @param user: user to flag
+        :type user: User
+        :param user: user to flag
 
         @rtype: bool
         @return: whether a message to flag was found
@@ -1332,8 +1336,8 @@ class Room:
         """
         Delete a message. (Moderator only)
 
-        @type message: Message
-        @param message: message to delete
+        :type message: Message
+        :param message: message to delete
         """
         if self.getLevel(self.user) > 0:
             self._sendCommand("delmsg", message.msgid)
@@ -1342,8 +1346,8 @@ class Room:
         """
         Delete a message. (Moderator only)
 
-        @type message: User
-        @param message: delete user's last message
+        :type message: User
+        :param message: delete user's last message
         """
         if self.getLevel(self.user) > 0:
             msg = self.getLastMessage(user)
@@ -1366,8 +1370,8 @@ class Room:
         """
         Clear all of a user's messages. (Moderator only)
 
-        @type user: User
-        @param user: user to delete messages of
+        :type user: User
+        :param user: user to delete messages of
 
         @rtype: bool
         @return: whether a message to delete was found
@@ -1392,12 +1396,12 @@ class Room:
         Execute the block command using specified arguments.
         (For advanced usage)
 
-        @type name: str
-        @param name: name
-        @type ip: str
-        @param ip: ip address
-        @type unid: str
-        @param unid: unid
+        :type name: str
+        :param name: name
+        :type ip: str
+        :param ip: ip address
+        :type unid: str
+        :param unid: unid
         """
         self._sendCommand("block", unid, ip, name)
 
@@ -1405,8 +1409,8 @@ class Room:
         """
         Ban a message's sender. (Moderator only)
 
-        @type message: Message
-        @param message: message to ban sender of
+        :type message: Message
+        :param message: message to ban sender of
         """
         if self.getLevel(self.user) > 0:
             self.rawBan(msg.user.name, msg.ip, msg.unid)
@@ -1415,8 +1419,8 @@ class Room:
         """
         Ban a user. (Moderator only)
 
-        @type user: User
-        @param user: user to ban
+        :type user: User
+        :param user: user to ban
 
         @rtype: bool
         @return: whether a message to ban the user was found
@@ -1440,12 +1444,12 @@ class Room:
         Execute the unblock command using specified arguments.
         (For advanced usage)
 
-        @type name: str
-        @param name: name
-        @type ip: str
-        @param ip: ip address
-        @type unid: str
-        @param unid: unid
+        :type name: str
+        :param name: name
+        :type ip: str
+        :param ip: ip address
+        :type unid: str
+        :param unid: unid
         """
         self._sendCommand("removeblock", unid, ip, name)
 
@@ -1453,8 +1457,8 @@ class Room:
         """
         Unban a user. (Moderator only)
 
-        @type user: User
-        @param user: user to unban
+        :type user: User
+        :param user: user to unban
 
         @rtype: bool
         @return: whether it succeeded
@@ -1494,8 +1498,8 @@ class Room:
         """
         Send a command.
 
-        @type args: [str, str, ...]
-        @param args: command and list of arguments
+        :type args: [str, str, ...]
+        :param args: command and list of arguments
         """
         if self._firstCommand:
             terminator = b"\x00"
@@ -1556,8 +1560,8 @@ class Room:
         """
         Add a message to history.
 
-        @type msg: Message
-        @param msg: message
+        :type msg: Message
+        :param msg: message
         """
         self._history.append(msg)
         if len(self._history) > self.mgr._maxHistoryLength:
@@ -1627,8 +1631,8 @@ class RoomManager:
         """
         Join a room or return None if already joined.
 
-        @type room: str
-        @param room: room to join
+        :type room: str
+        :param room: room to join
 
         @rtype: Room or None
         @return: True or nothing
@@ -1644,8 +1648,8 @@ class RoomManager:
         """
         Leave a room.
 
-        @type room: str
-        @param room: room to leave
+        :type room: str
+        :param room: room to leave
         """
         room = room.lower()
         if room in self._rooms:
@@ -1657,8 +1661,8 @@ class RoomManager:
         """
         Get room with a name, or None if not connected to this room.
 
-        @type room: str
-        @param room: room
+        :type room: str
+        :param room: room
 
         @rtype: Room
         @return: the room
@@ -1720,8 +1724,8 @@ class RoomManager:
         """
         Called when reconnected to the room.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1729,8 +1733,8 @@ class RoomManager:
         """
         Called when the connection failed.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.error(f'Failed to connect to {room}. Retying...')
         self.joinRoom(room.name)
@@ -1739,8 +1743,8 @@ class RoomManager:
         """
         Called when the client gets disconnected.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
         self.joinRoom(room.name)
@@ -1749,8 +1753,8 @@ class RoomManager:
         """
         Called on login failure, disconnects after.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.warning(f'Failed to join {room}.')
 
@@ -1759,8 +1763,8 @@ class RoomManager:
         """
         Called when either flood banned or flagged.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.warning(f'Bot was spambanned from {room}.')
 
@@ -1768,8 +1772,8 @@ class RoomManager:
         """
         Called when trying to send something when floodbanned.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1777,8 +1781,8 @@ class RoomManager:
         """
         Called when an overflow warning gets received.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.warning(f'Bot is about to be floodbanned for spamming {room}.')
 
@@ -1786,12 +1790,12 @@ class RoomManager:
         """
         Called when a message gets deleted.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: owner of deleted message
-        @type message: Message
-        @param message: message that got deleted
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: owner of deleted message
+        :type message: Message
+        :param message: message that got deleted
         """
         LOGGER.warning(f'{user.name} had message deleted from {room}: {message.body}')
 
@@ -1799,8 +1803,8 @@ class RoomManager:
         """
         Called when the moderator list changes.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1808,8 +1812,8 @@ class RoomManager:
         """
         Called when a moderator gets added.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.warning(f'{user.name} was modded in {room}.')
 
@@ -1817,8 +1821,8 @@ class RoomManager:
         """
         Called when a moderator gets removed.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         LOGGER.warning(f'{user.name} was demodded in {room.name}.')
 
@@ -1826,12 +1830,12 @@ class RoomManager:
         """
         Called when a message gets received.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: owner of message
-        @type message: Message
-        @param message: received message
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: owner of message
+        :type message: Message
+        :param message: received message
         """
         pass
 
@@ -1839,12 +1843,12 @@ class RoomManager:
         """
         Called when a message gets received from history.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: owner of message
-        @type message: Message
-        @param message: the message that got added
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: owner of message
+        :type message: Message
+        :param message: the message that got added
         """
         pass
 
@@ -1852,12 +1856,12 @@ class RoomManager:
         """
         Called when a user joins. Anonymous users get ignored here.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: the user that has joined
-        @type puid: str
-        @param puid: the personal unique id for the user
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: the user that has joined
+        :type puid: str
+        :param puid: the personal unique id for the user
         """
         LOGGER.warning(f'{user.name} joined {room.name}.')
 
@@ -1865,12 +1869,12 @@ class RoomManager:
         """
         Called when a user leaves. Anonymous users get ignored here.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: the user that has left
-        @type puid: str
-        @param puid: the personal unique id for the user
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: the user that has left
+        :type puid: str
+        :param puid: the personal unique id for the user
         """
         LOGGER.warning(f'{user.name} left {room.name}.')
 
@@ -1878,10 +1882,10 @@ class RoomManager:
         """
         Called before any command parsing occurs.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type raw: str
-        @param raw: raw command data
+        :type room: Room
+        :param room: room where the event occurred
+        :type raw: str
+        :param raw: raw command data
         """
         pass
 
@@ -1889,8 +1893,8 @@ class RoomManager:
         """
         Called when a ping gets sent.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1898,8 +1902,8 @@ class RoomManager:
         """
         Called when the user count changes.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1907,12 +1911,12 @@ class RoomManager:
         """
         Called when a user gets banned.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: user that banned someone
-        @type target: User
-        @param target: user that got banned
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: user that banned someone
+        :type target: User
+        :param target: user that got banned
         """
         LOGGER.warning(f'{target} was banned from {room} by {user.name}.')
 
@@ -1920,12 +1924,12 @@ class RoomManager:
         """
         Called when a user gets unbanned.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type user: User
-        @param user: user that unbanned someone
-        @type target: User
-        @param target: user that got unbanned
+        :type room: Room
+        :param room: room where the event occurred
+        :type user: User
+        :param user: user that unbanned someone
+        :type target: User
+        :param target: user that got unbanned
         """
         LOGGER.warning(f'{target} was unbanned from {room} by {user.name}.')
 
@@ -1933,8 +1937,8 @@ class RoomManager:
         """
         Called when a banlist gets updated.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1942,8 +1946,8 @@ class RoomManager:
         """
         Called when a unbanlist gets updated.
 
-        @type room: Room
-        @param room: room where the event occurred
+        :type room: Room
+        :param room: room where the event occurred
         """
         pass
 
@@ -1951,8 +1955,8 @@ class RoomManager:
         """
         Called when connected to the pm
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -1960,8 +1964,8 @@ class RoomManager:
         """
         Called when disconnected from the pm
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -1969,8 +1973,8 @@ class RoomManager:
         """
         Called when disconnected from the pm
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -1978,8 +1982,8 @@ class RoomManager:
         """
         Called when sending a ping to the pm
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -1987,12 +1991,12 @@ class RoomManager:
         """
         Called when a message is received
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: owner of message
-        @type message: Message
-        @param message: received message
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: owner of message
+        :type message: Message
+        :param message: received message
         """
         pass
 
@@ -2000,12 +2004,12 @@ class RoomManager:
         """
         Called when connected if a message is received while offline
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: owner of message
-        @type message: Message
-        @param message: received message
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: owner of message
+        :type message: Message
+        :param message: received message
         """
         pass
 
@@ -2013,8 +2017,8 @@ class RoomManager:
         """
         Called when the contact list is received
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -2022,8 +2026,8 @@ class RoomManager:
         """
         Called when the block list is received
 
-        @type pm: PM
-        @param pm: the pm
+        :type pm: PM
+        :param pm: the pm
         """
         pass
 
@@ -2031,10 +2035,10 @@ class RoomManager:
         """
         Called when the contact added message is received
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that gotten added
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that gotten added
         """
         pass
 
@@ -2042,10 +2046,10 @@ class RoomManager:
         """
         Called when the contact remove message is received
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that gotten remove
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that gotten remove
         """
         pass
 
@@ -2053,10 +2057,10 @@ class RoomManager:
         """
         Called when successfully block a user
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that gotten block
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that gotten block
         """
         pass
 
@@ -2064,10 +2068,10 @@ class RoomManager:
         """
         Called when successfully unblock a user
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that gotten unblock
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that gotten unblock
         """
         pass
 
@@ -2075,10 +2079,10 @@ class RoomManager:
         """
         Called when a user from the contact come online
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that came online
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that came online
         """
         pass
 
@@ -2086,10 +2090,10 @@ class RoomManager:
         """
         Called when a user from the contact go offline
 
-        @type pm: PM
-        @param pm: the pm
-        @type user: User
-        @param user: the user that went offline
+        :type pm: PM
+        :param pm: the pm
+        :type user: User
+        :param user: the user that went offline
         """
         pass
 
@@ -2097,10 +2101,10 @@ class RoomManager:
         """
         Called on every room-based event.
 
-        @type room: Room
-        @param room: room where the event occurred
-        @type evt: str
-        @param evt: the event
+        :type room: Room
+        :param room: room where the event occurred
+        :type evt: str
+        :param evt: the event
         """
         pass
 
@@ -2111,12 +2115,12 @@ class RoomManager:
         """
         Defer a function to a thread and callback the return value.
 
-        @type callback: function
-        @param callback: function to call on completion
-        @type cbargs: tuple or list
-        @param cbargs: arguments to get supplied to the callback
-        @type func: function
-        @param func: function to call
+        :type callback: function
+        :param callback: function to call on completion
+        :type cbargs: tuple or list
+        :param cbargs: arguments to get supplied to the callback
+        :type func: function
+        :param func: function to call
         """
         def f(func, callback, *args, **kw):
             ret = func(*args, **kw)
@@ -2145,10 +2149,10 @@ class RoomManager:
         """
         Call a function after at least timeout seconds with specified arguments.
 
-        @type timeout: int
-        @param timeout: timeout
-        @type func: function
-        @param func: function to call
+        :type timeout: int
+        :param timeout: timeout
+        :type func: function
+        :param func: function to call
 
         @rtype: _Task
         @return: object representing the task
@@ -2168,10 +2172,10 @@ class RoomManager:
         """
         Call a function at least every timeout seconds with specified arguments.
 
-        @type timeout: int
-        @param timeout: timeout
-        @type func: function
-        @param func: function to call
+        :type timeout: int
+        :param timeout: timeout
+        :type func: function
+        :param func: function to call
 
         @rtype: _Task
         @return: object representing the task
@@ -2191,8 +2195,8 @@ class RoomManager:
         """
         Cancel a task.
 
-        @type task: _Task
-        @param task: task to cancel
+        :type task: _Task
+        :param task: task to cancel
         """
         self._tasks.remove(task)
 
@@ -2314,8 +2318,8 @@ class RoomManager:
         """
         Set name color.
 
-        @type color3x: str
-        @param color3x: a 3-char RGB hex code for the color
+        :type color3x: str
+        :param color3x: a 3-char RGB hex code for the color
         """
         self.user._nameColor = color3x
 
@@ -2323,8 +2327,8 @@ class RoomManager:
         """
         Set font color.
 
-        @type color3x: str
-        @param color3x: a 3-char RGB hex code for the color
+        :type color3x: str
+        :param color3x: a 3-char RGB hex code for the color
         """
         self.user._fontColor = color3x
 
@@ -2332,8 +2336,8 @@ class RoomManager:
         """
         Set font face/family.
 
-        @type face: str
-        @param face: the font face
+        :type face: str
+        :param face: the font face
         """
         self.user._fontFace = face
 
@@ -2341,8 +2345,8 @@ class RoomManager:
         """
         Set font size.
 
-        @type size: int
-        @param size: the font size (limited: 9 to 22)
+        :type size: int
+        :param size: the font size (limited: 9 to 22)
         """
         if size < 9:
             size = 9
@@ -2475,8 +2479,8 @@ class Message:
         """
         Attach the Message to a message id.
 
-        @type msgid: str
-        @param msgid: message id
+        :type msgid: str
+        :param msgid: message id
         """
         if self._msgid is None:
             self._room = room
