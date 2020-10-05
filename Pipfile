@@ -22,6 +22,7 @@ ipdata = "*"
 boto = "*"
 praw = "*"
 botocore = "*"
+ddtrace = "*"
 uWSGI = "*"
 python-dotenv = "*"
 

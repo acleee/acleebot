@@ -142,6 +142,22 @@ version = "0.4.3"
 
 [[package]]
 category = "main"
+description = "Datadog tracing code"
+name = "ddtrace"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
+version = "0.42.0"
+
+[package.dependencies]
+intervaltree = "*"
+protobuf = ">=3"
+tenacity = ">=5"
+
+[package.extras]
+opentracing = ["opentracing (>=2.0.0)"]
+
+[[package]]
+category = "main"
 description = "Emoji for Python"
 name = "emoji"
 optional = false
@@ -302,6 +318,17 @@ name = "iniconfig"
 optional = false
 python-versions = "*"
 version = "1.0.1"
+
+[[package]]
+category = "main"
+description = "Editable interval tree data structure for Python 2 and 3"
+name = "intervaltree"
+optional = false
+python-versions = "*"
+version = "3.1.0"
+
+[package.dependencies]
+sortedcontainers = ">=2.0,<3.0"
 
 [[package]]
 category = "main"
@@ -705,6 +732,14 @@ version = "1.15.0"
 
 [[package]]
 category = "main"
+description = "Sorted Containers -- Sorted List, Sorted Dict, Sorted Set"
+name = "sortedcontainers"
+optional = false
+python-versions = "*"
+version = "2.2.2"
+
+[[package]]
+category = "main"
 description = "Database Abstraction Library"
 name = "sqlalchemy"
 optional = false
@@ -722,6 +757,20 @@ postgresql_pg8000 = ["pg8000"]
 postgresql_psycopg2binary = ["psycopg2-binary"]
 postgresql_psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
+
+[[package]]
+category = "main"
+description = "Retry code until it succeeds"
+name = "tenacity"
+optional = false
+python-versions = "*"
+version = "6.2.0"
+
+[package.dependencies]
+six = ">=1.9.0"
+
+[package.extras]
+doc = ["reno", "sphinx", "tornado (>=4.5)"]
 
 [[package]]
 category = "dev"
@@ -816,7 +865,7 @@ idna = ">=2.0"
 multidict = ">=4.0"
 
 [metadata]
-content-hash = "b58ec45a664556a689b1c25ec44fa1f0d0e0d196fe8662361eb9344a985423e0"
+content-hash = "14367f796ae55c55118c1ba46e52efa3ab7accac387e0843d542fcfb4c50a15f"
 python-versions = "^3.8"
 
 [metadata.files]
@@ -916,6 +965,34 @@ colorama = [
     {file = "colorama-0.4.3-py2.py3-none-any.whl", hash = "sha256:7d73d2a99753107a36ac6b455ee49046802e59d9d076ef8e47b61499fa29afff"},
     {file = "colorama-0.4.3.tar.gz", hash = "sha256:e96da0d330793e2cb9485e9ddfd918d456036c7149416295932478192f4436a1"},
 ]
+ddtrace = [
+    {file = "ddtrace-0.42.0-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:0b3edf3d0ae25624b35c57cba815e1a45a787ab11753d5b1353715caf8b2a27c"},
+    {file = "ddtrace-0.42.0-cp27-cp27m-manylinux2010_i686.whl", hash = "sha256:28d38ddded2993374edfbc39b4be29cc91d2efc47ef6f578cc0942b4a0f55b0a"},
+    {file = "ddtrace-0.42.0-cp27-cp27m-manylinux2010_x86_64.whl", hash = "sha256:15e62c3aa50c58b8a681343076e897096bdcf89cdb14620e5ed990773ea79401"},
+    {file = "ddtrace-0.42.0-cp27-cp27mu-manylinux2010_i686.whl", hash = "sha256:49304d6db92dedc5c0f08b4776e2216e33435fb146860e0ac4b3e08138fad795"},
+    {file = "ddtrace-0.42.0-cp27-cp27mu-manylinux2010_x86_64.whl", hash = "sha256:2ab6f7a5056d17d30a4c7442b5f6122cf1352356d0b4ebcf72023992b0fd8054"},
+    {file = "ddtrace-0.42.0-cp35-cp35m-macosx_10_9_x86_64.whl", hash = "sha256:d4e0d1ceb37930fed162c2b9d93cd55500d539cd2d2e7158356fe5a0bd9a4d11"},
+    {file = "ddtrace-0.42.0-cp35-cp35m-manylinux2010_i686.whl", hash = "sha256:32f2abad11730c194a4467a036aea6fe67bc3330006174fe1f6518d94b4d350b"},
+    {file = "ddtrace-0.42.0-cp35-cp35m-manylinux2010_x86_64.whl", hash = "sha256:99c0dc10923bc7590b4d3189c0e447a4eafa8b0e43b8eb2279295f18a6d89722"},
+    {file = "ddtrace-0.42.0-cp35-cp35m-win32.whl", hash = "sha256:d9187ba296499471fd9eff8e591f3e72464a924f545ec7a9c64761e95bb3c89d"},
+    {file = "ddtrace-0.42.0-cp35-cp35m-win_amd64.whl", hash = "sha256:931a82d2a8712dc45dbd20a672f6dce47ac0128ff2e713f2af69bbe09b0e80d6"},
+    {file = "ddtrace-0.42.0-cp36-cp36m-macosx_10_9_x86_64.whl", hash = "sha256:f60e03b79b5594a9fa146277b1cf3594a3ba6483a237bcdf90b9b329d6e24a5a"},
+    {file = "ddtrace-0.42.0-cp36-cp36m-manylinux2010_i686.whl", hash = "sha256:371be6b4490acad476c4b15ca4680a28912f845f67a90d0d64d12e7a68078ed2"},
+    {file = "ddtrace-0.42.0-cp36-cp36m-manylinux2010_x86_64.whl", hash = "sha256:d184881b71c130d2654bf8f268861c53f428230fdc0ae55c98f2eb33720ccc66"},
+    {file = "ddtrace-0.42.0-cp36-cp36m-win32.whl", hash = "sha256:78d75b2eb051cc7b581a2ae4eb601da98e5237e3aedefe3f4a06dc4e20927b7b"},
+    {file = "ddtrace-0.42.0-cp36-cp36m-win_amd64.whl", hash = "sha256:bebea29509ee500099b548033362d2ffe3b5775c71c4babc12838b32c408e179"},
+    {file = "ddtrace-0.42.0-cp37-cp37m-macosx_10_9_x86_64.whl", hash = "sha256:aeaa1e2e640c9766d8bb6caacca1537c51bf189830464c896c4a324990b155fd"},
+    {file = "ddtrace-0.42.0-cp37-cp37m-manylinux2010_i686.whl", hash = "sha256:935a70ce5299653b2aca3d1125f56592516a3ff6fa79cd545262103ac44b09da"},
+    {file = "ddtrace-0.42.0-cp37-cp37m-manylinux2010_x86_64.whl", hash = "sha256:a97e3943c0de4a32af81b6fbd43e1ee5c29735f8ed764d2c1e5798b71f95353e"},
+    {file = "ddtrace-0.42.0-cp37-cp37m-win32.whl", hash = "sha256:de53bdde305d21121e84064985ff527762d1eb22cb3d5880cb4cfabddd825d40"},
+    {file = "ddtrace-0.42.0-cp37-cp37m-win_amd64.whl", hash = "sha256:732d08cb9ed36860bfda993a1cf7d39360753c5c4455d1efce2c19908a678154"},
+    {file = "ddtrace-0.42.0-cp38-cp38-macosx_10_9_x86_64.whl", hash = "sha256:49488c1b09c1555c5ef5bf1ac3fb880e3b67352705a8fc70ec43f5c2aa8d9f0e"},
+    {file = "ddtrace-0.42.0-cp38-cp38-manylinux2010_i686.whl", hash = "sha256:98c6eb05392e0fa9701abb310200bde0e21152add4d9d4942699a6c56d1092c2"},
+    {file = "ddtrace-0.42.0-cp38-cp38-manylinux2010_x86_64.whl", hash = "sha256:bc51b02cda6b1f38721aaf04853358111df8f412aaa8fea32f56edc54206419a"},
+    {file = "ddtrace-0.42.0-cp38-cp38-win32.whl", hash = "sha256:56808796b72ec74585dc508235999321e493652054b7095dce453cdb1c8e1c9c"},
+    {file = "ddtrace-0.42.0-cp38-cp38-win_amd64.whl", hash = "sha256:6157aaa202092c1aeaa5d8068a4d3fe2ef169655def320b9460d058a40d29048"},
+    {file = "ddtrace-0.42.0.tar.gz", hash = "sha256:dba66c7013a4352dfa20ed31e989001250056c89811d1cb5ee10e23dc98bac0a"},
+]
 emoji = [
     {file = "emoji-0.6.0.tar.gz", hash = "sha256:e42da4f8d648f8ef10691bc246f682a1ec6b18373abfd9be10ec0b398823bd11"},
 ]
@@ -974,6 +1051,9 @@ imdbpy = [
 iniconfig = [
     {file = "iniconfig-1.0.1-py3-none-any.whl", hash = "sha256:80cf40c597eb564e86346103f609d74efce0f6b4d4f30ec8ce9e2c26411ba437"},
     {file = "iniconfig-1.0.1.tar.gz", hash = "sha256:e5f92f89355a67de0595932a6c6c02ab4afddc6fcdc0bfc5becd0d60884d3f69"},
+]
+intervaltree = [
+    {file = "intervaltree-3.1.0.tar.gz", hash = "sha256:902b1b88936918f9b2a19e0e5eb7ccb430ae45cde4f39ea4b36932920d33952d"},
 ]
 ipaddress = [
     {file = "ipaddress-1.0.23-py2.py3-none-any.whl", hash = "sha256:6e0f4a39e66cb5bb9a137b00276a2eff74f93b71dcbdad6f10ff7df9d3557fcc"},
@@ -1270,6 +1350,10 @@ six = [
     {file = "six-1.15.0-py2.py3-none-any.whl", hash = "sha256:8b74bedcbbbaca38ff6d7491d76f2b06b3592611af620f8426e82dddb04a5ced"},
     {file = "six-1.15.0.tar.gz", hash = "sha256:30639c035cdb23534cd4aa2dd52c3bf48f06e5f4a941509c8bafd8ce11080259"},
 ]
+sortedcontainers = [
+    {file = "sortedcontainers-2.2.2-py2.py3-none-any.whl", hash = "sha256:c633ebde8580f241f274c1f8994a665c0e54a17724fecd0cae2f079e09c36d3f"},
+    {file = "sortedcontainers-2.2.2.tar.gz", hash = "sha256:4e73a757831fc3ca4de2859c422564239a31d8213d09a2a666e375807034d2ba"},
+]
 sqlalchemy = [
     {file = "SQLAlchemy-1.3.19-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:f2e8a9c0c8813a468aa659a01af6592f71cd30237ec27c4cc0683f089f90dcfc"},
     {file = "SQLAlchemy-1.3.19-cp27-cp27m-manylinux1_x86_64.whl", hash = "sha256:33d29ae8f1dc7c75b191bb6833f55a19c932514b9b5ce8c3ab9bc3047da5db36"},
@@ -1303,6 +1387,10 @@ sqlalchemy = [
     {file = "SQLAlchemy-1.3.19-cp38-cp38-win32.whl", hash = "sha256:b70bad2f1a5bd3460746c3fb3ab69e4e0eb5f59d977a23f9b66e5bdc74d97b86"},
     {file = "SQLAlchemy-1.3.19-cp38-cp38-win_amd64.whl", hash = "sha256:83469ad15262402b0e0974e612546bc0b05f379b5aa9072ebf66d0f8fef16bea"},
     {file = "SQLAlchemy-1.3.19.tar.gz", hash = "sha256:3bba2e9fbedb0511769780fe1d63007081008c5c2d7d715e91858c94dbaa260e"},
+]
+tenacity = [
+    {file = "tenacity-6.2.0-py2.py3-none-any.whl", hash = "sha256:5a5d3dcd46381abe8b4f82b5736b8726fd3160c6c7161f53f8af7f1eb9b82173"},
+    {file = "tenacity-6.2.0.tar.gz", hash = "sha256:29ae90e7faf488a8628432154bb34ace1cca58244c6ea399fd33f066ac71339a"},
 ]
 toml = [
     {file = "toml-0.10.1-py2.py3-none-any.whl", hash = "sha256:bda89d5935c2eac546d648028b9901107a595863cb36bae0c73ac804a9b4ce88"},
