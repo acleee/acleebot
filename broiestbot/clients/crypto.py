@@ -62,7 +62,7 @@ class CryptoChartHandler:
 
     @staticmethod
     def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:
-        """Parse JSON response into Pandas DataFrame"""
+        """Parse JSON response into Pandas DataFrame."""
         df = pd.DataFrame.from_dict(
             data['Time Series (Digital Currency Daily)'],
             orient='index'

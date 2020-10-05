@@ -5,7 +5,7 @@ from datetime import datetime
 import pytz
 import requests
 from requests.exceptions import HTTPError
-import emoji
+from emoji import emojize
 from imdb import IMDb, IMDbError
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
@@ -84,7 +84,7 @@ def subreddit_image(subreddit: str) -> Optional[str]:
             return images[0]
     except RedditAPIException as e:
         LOGGER.warning(f'Reddit image search failed for subreddit `{subreddit}`: {e}')
-        return f'❗️ i broke bc im a shitty bot'
+        return f':warning: i broke bc im a shitty bot :warning:'
 
 
 @LOGGER.catch
@@ -123,7 +123,7 @@ def get_urban_definition(word: str) -> Optional[str]:
             return f"{word}: {definition}. EXAMPLE: {example}."
     except HTTPError as e:
         LOGGER.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
-    return '❗️ idk wtf ur trying to search for tbh'
+    return ':warning: idk wtf ur trying to search for tbh :warning:'
 
 
 @LOGGER.catch
@@ -138,28 +138,33 @@ def weather_by_city(location: str, weather) -> Optional[str]:
     try:
         req = requests.get(endpoint, params=params)
         data = req.json()
+        print(data)
+        if data.get("success") and data["success"] is False:
+            LOGGER.error(f'Failed to get weather for `{location}`: {data["error"]["info"]}')
+            return emojize(f':warning:️️ wtf even is `{location}`? smh idk where that is :warning:')
         code = data["current"]["weather_code"]
         weather_emoji = weather.find_row(code).get('icon')
         if weather_emoji:
-            weather_emoji = emoji.emojize(weather_emoji, use_aliases=True)
+            weather_emoji = emojize(weather_emoji, use_aliases=True)
         response = f'{data["request"]["query"]}: \
-                         {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                         {data["current"]["temperature"]}°f \
-                         (feels like {data["current"]["feelslike"]}°f). \
-                         {data["current"]["precip"]}% precipitation.'
+                        {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
+                        {data["current"]["temperature"]}°f \
+                        (feels like {data["current"]["feelslike"]}°f). \
+                        {data["current"]["precip"]}% precipitation.'
         return response
     except HTTPError as e:
         LOGGER.error(f'Failed to get weather for `{location}`: {e.response.content}')
-    return f'❗️ wtf even is {location} smh idk where that is'
+        return emojize(f':warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:')
 
 
 @LOGGER.catch
 def wiki_summary(query):
     """Fetch Wikipedia summary for a given query."""
     wiki_page = wiki.page(query)
-    if wiki_page:
+    if wiki_page.exists():
+        print(wiki_page)
         return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
-    return f"❗️ bruh i couldnt find shit for `{query}`"
+    return f":warning: bruh i couldnt find shit for `{query}` :warning:"
 
 
 @LOGGER.catch
@@ -194,7 +199,7 @@ def find_imdb_movie(movie_title) -> Optional[str]:
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
     LOGGER.warning(f'No IMDB info found for `{movie_title}`.')
-    return f'❗️ wtf kind of movie is {movie}'
+    return f':warning: wtf kind of movie is {movie} :warning:'
 
 
 @LOGGER.catch

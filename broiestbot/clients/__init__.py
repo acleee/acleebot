@@ -1,6 +1,7 @@
 """External clients."""
 import wikipediaapi
 import praw
+import chart_studio
 from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
@@ -13,7 +14,9 @@ from config import (
     ALPHA_VANTAGE_API_KEY,
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
-    REDDIT_PASSWORD
+    REDDIT_PASSWORD,
+    PLOTLY_USERNAME,
+    PLOTLY_API_KEY,
 )
 from .database import Database
 from .gcs import GCS
@@ -21,22 +24,31 @@ from .crypto import CryptoChartHandler
 from .stock import StockChartHandler
 
 
-# Create handlers
+# Bot Database
 db = Database(
     DATABASE_URI,
     DATABASE_ARGS
 )
 
+# Google Cloud Storage
 gcs = GCS(
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL
 )
 
+# Plotly
+chart_studio.tools.set_credentials_file(
+    username=PLOTLY_USERNAME,
+    api_key=PLOTLY_API_KEY
+)
+
+# IEX Charts
 sch = StockChartHandler(
     token=IEX_API_TOKEN,
     endpoint=IEX_API_BASE_URL
 )
 
+# Crypto Charts
 cch = CryptoChartHandler(
     token=ALPHA_VANTAGE_API_KEY,
     price_endpoint=ALPHA_VANTAGE_PRICE_BASE_URL,
