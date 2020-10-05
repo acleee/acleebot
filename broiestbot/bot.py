@@ -78,11 +78,13 @@ class Bot(RoomManager):
         elif chat_message.endswith('only on aclee'):
             self._chat(room, '™')
         elif chat_message.lower() == 'tm':
-            self.replace_word(room, message)
+            self.trademark(room, message)
+        elif chat_message == 'https://lmao.love/truth':
+            self.ban_word(room, message, user, silent=True)
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
            # self.banned_word(room, message, user)
 
-    def parse_command(self, user_msg, room, user):
+    def parse_command(self, user_msg, room):
         """Respond to command."""
         user_msg = user_msg[1::].lower()
         args = None
@@ -125,7 +127,7 @@ class Bot(RoomManager):
             room.message(f'DO NOT SAY THAT WORD @{user.name.upper()} :@')
 
     @staticmethod
-    def replace_word(room, message):
-        """Remove banned words."""
+    def trademark(room, message):
+        """Trademark symbol helper."""
         message.delete()
         room.message("™")
