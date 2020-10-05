@@ -142,16 +142,17 @@ def weather_by_city(location: str, weather) -> Optional[str]:
         if data.get("success") and data["success"] is False:
             LOGGER.error(f'Failed to get weather for `{location}`: {data["error"]["info"]}')
             return emojize(f':warning:️️ wtf even is `{location}`? smh idk where that is :warning:')
-        code = data["current"]["weather_code"]
-        weather_emoji = weather.find_row(code).get('icon')
-        if weather_emoji:
-            weather_emoji = emojize(weather_emoji, use_aliases=True)
-        response = f'{data["request"]["query"]}: \
-                        {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                        {data["current"]["temperature"]}°f \
-                        (feels like {data["current"]["feelslike"]}°f). \
-                        {data["current"]["precip"]}% precipitation.'
-        return response
+        if req.status_code == 200 and data.get('current'):
+            weather_code = data["current"]["weather_code"]
+            weather_emoji = weather.find_row(weather_code).get('icon')
+            if weather_emoji:
+                weather_emoji = emojize(weather_emoji, use_aliases=True)
+            response = f'{data["request"]["query"]}: \
+                            {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
+                            {data["current"]["temperature"]}°f \
+                            (feels like {data["current"]["feelslike"]}°f). \
+                            {data["current"]["precip"]}% precipitation.'
+            return response
     except HTTPError as e:
         LOGGER.error(f'Failed to get weather for `{location}`: {e.response.content}')
         return emojize(f':warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:')
