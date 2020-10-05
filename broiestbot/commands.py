@@ -126,7 +126,6 @@ def get_urban_definition(word: str) -> Optional[str]:
     return ':warning: idk wtf ur trying to search for tbh :warning:'
 
 
-@LOGGER.catch
 def weather_by_city(location: str, weather) -> Optional[str]:
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
