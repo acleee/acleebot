@@ -1,4 +1,6 @@
 """External clients."""
+import wikipediaapi
+import praw
 from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
@@ -8,7 +10,10 @@ from config import (
     IEX_API_TOKEN,
     ALPHA_VANTAGE_PRICE_BASE_URL,
     ALPHA_VANTAGE_CHART_BASE_URL,
-    ALPHA_VANTAGE_API_KEY
+    ALPHA_VANTAGE_API_KEY,
+    REDDIT_CLIENT_ID,
+    REDDIT_CLIENT_SECRET,
+    REDDIT_PASSWORD
 )
 from .database import Database
 from .gcs import GCS
@@ -37,3 +42,16 @@ cch = CryptoChartHandler(
     price_endpoint=ALPHA_VANTAGE_PRICE_BASE_URL,
     chart_endpoint=ALPHA_VANTAGE_CHART_BASE_URL
 )
+
+# Wikipedia API Python SDK
+wiki = wikipediaapi.Wikipedia('en')
+
+# Reddit API Python SDK
+reddit = praw.Reddit(
+    client_id=REDDIT_CLIENT_ID,
+    client_secret=REDDIT_CLIENT_SECRET,
+    username='broiestbro',
+    password=REDDIT_PASSWORD,
+    user_agent="bot"
+)
+

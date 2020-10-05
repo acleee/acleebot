@@ -1963,7 +1963,7 @@ class RoomManager:
         :type message: Message
         :param message: received message
         """
-        pass
+        LOGGER.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """

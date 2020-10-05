@@ -1,46 +1,26 @@
-"""Bot commands."""
+"""Construct responses from third-party APIs."""
 from typing import Optional
 from random import randint
 from datetime import datetime
+import pytz
 import requests
 from requests.exceptions import HTTPError
-import chart_studio
 import emoji
-import wikipediaapi
 from imdb import IMDb, IMDbError
-import pytz
-import praw
 from nba_api.stats.static import teams
 from nba_api.stats.endpoints import teamgamelog
-from broiestbot.clients import gcs, sch, cch
+from praw.exceptions import RedditAPIException
+from broiestbot.clients import gcs, sch, cch, wiki, reddit
 from logger import LOGGER
 from broiestbot.afterdark import is_after_dark
 from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
-    PLOTLY_USERNAME,
-    PLOTLY_API_KEY,
     GIPHY_API_KEY,
     WEATHERSTACK_API_KEY,
     GFYCAT_CLIENT_ID,
     GFYCAT_CLIENT_SECRET,
     REDGIFS_ACCESS_KEY,
-    REDDIT_CLIENT_ID,
-    REDDIT_CLIENT_SECRET,
-    REDDIT_PASSWORD
-)
-
-reddit = praw.Reddit(
-    client_id=REDDIT_CLIENT_ID,
-    client_secret=REDDIT_CLIENT_SECRET,
-    username='broiestbro',
-    password=REDDIT_PASSWORD,
-    user_agent="bot"
-)
-
-chart_studio.tools.set_credentials_file(
-    username=PLOTLY_USERNAME,
-    api_key=PLOTLY_API_KEY
 )
 
 
@@ -89,7 +69,6 @@ def giphy_image_search(search_term) -> Optional[str]:
     return None
 
 
-@LOGGER.catch
 def random_image(message) -> Optional[str]:
     """Select a random image from response."""
     image_list = message.replace(' ', '').split(';')
@@ -97,11 +76,15 @@ def random_image(message) -> Optional[str]:
     return random_pic
 
 
-@LOGGER.catch
 def subreddit_image(subreddit: str) -> Optional[str]:
-    """Fetch a random image from latest posts in a subreddit."""
-    images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
-    return images[0]
+    """Fetch a recently posted image from a subreddit."""
+    try:
+        images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
+        if images:
+            return images[0]
+    except RedditAPIException as e:
+        LOGGER.warning(f'Reddit image search failed for subreddit `{subreddit}`: {e}')
+        return f'❗️ i broke bc im a shitty bot'
 
 
 @LOGGER.catch
@@ -114,15 +97,15 @@ def nba_team_score(message):
     print(game)
 
 
-def get_stock(symbol):
+def get_stock(symbol: str):
     """Fetch stock price and generate 30-day performance chart."""
     chart = sch.get_chart(symbol)
     return chart
 
 
 @LOGGER.catch
-def get_urban_definition(word) -> Optional[str]:
-    """Fetch UrbanDictionary word definition."""
+def get_urban_definition(word: str) -> Optional[str]:
+    """Fetch Urban Dictionary definition."""
     params = {'term': word}
     headers = {'Content-Type': 'application/json'}
     try:
@@ -140,17 +123,16 @@ def get_urban_definition(word) -> Optional[str]:
             return f"{word}: {definition}. EXAMPLE: {example}."
     except HTTPError as e:
         LOGGER.error(f'Failed to get Urban definition for `{word}`: {e.response.content}')
-    LOGGER.warning(f'No definitions found for `{word}`.')
-    return None
+    return '❗️ idk wtf ur trying to search for tbh'
 
 
 @LOGGER.catch
-def weather_by_city(city, weather) -> Optional[str]:
+def weather_by_city(location: str, weather) -> Optional[str]:
     """Return temperature and weather per city/state/zip."""
     endpoint = 'http://api.weatherstack.com/current'
     params = {
         'access_key': WEATHERSTACK_API_KEY,
-        'query': city,
+        'query': location,
         'units': 'f'
     }
     try:
@@ -167,31 +149,31 @@ def weather_by_city(city, weather) -> Optional[str]:
                          {data["current"]["precip"]}% precipitation.'
         return response
     except HTTPError as e:
-        LOGGER.error(f'Failed to get weather for `{city}`: {e.response.content}')
-    LOGGER.warning(f'No weather found for `{city}`.')
-    return None
+        LOGGER.error(f'Failed to get weather for `{location}`: {e.response.content}')
+    return f'❗️ wtf even is {location} smh idk where that is'
 
 
 @LOGGER.catch
-def wiki_summary(msg):
+def wiki_summary(query):
     """Fetch Wikipedia summary for a given query."""
-    wiki = wikipediaapi.Wikipedia('en')
-    page = wiki.page(msg)
-    return f"{page.title.upper()}: {page.summary[:3000]}"
+    wiki_page = wiki.page(query)
+    if wiki_page:
+        return f"{page.title.upper()}: {page.summary[:3000]}"
+    return f"❗️ bruh i couldnt find shit for `{query}`"
 
 
 @LOGGER.catch
 def find_imdb_movie(movie_title) -> Optional[str]:
     """Get movie information from IMDB."""
     ia = IMDb()
-    movie_id = None
+    movie = None
     try:
         movies = ia.search_movie(movie_title)
         movie_id = movies[0].getID()
+        movie = ia.get_movie(movie_id)
     except IMDbError as e:
         LOGGER.error(f'IMDB failed to find `{movie_title}`: {e}')
-    if movie_id:
-        movie = ia.get_movie(movie_id)
+    if movie:
         cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
         art = movie.data.get('cover url', None)
         director = movie.data.get('director')
@@ -212,7 +194,7 @@ def find_imdb_movie(movie_title) -> Optional[str]:
         response = ' '.join(filter(None, [title, rating, genres, cast, director, synopsis, boxoffice, art]))
         return response
     LOGGER.warning(f'No IMDB info found for `{movie_title}`.')
-    return None
+    return f'❗️ wtf kind of movie is {movie}'
 
 
 @LOGGER.catch
@@ -235,7 +217,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
 
 
 @LOGGER.catch
-def get_redgifs_gif(query, after_dark_only=False) -> str:
+def get_redgifs_gif(query: str, after_dark_only=False) -> str:
     """Fetch specific kind of gif."""
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:

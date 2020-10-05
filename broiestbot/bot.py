@@ -66,11 +66,10 @@ class Bot(RoomManager):
             response = blaze_time_remaining()
         if response:
             return response
-        LOGGER.debug(f'No response for command {command} with args {args}')
+        LOGGER.debug(f'No response for command `{command}` {args}')
 
     def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""
-        LOGGER.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
         chat_message = message.body.lower()
         if chat_message[0] == "!":
             self.parse_command(chat_message, room, user)  # Trigger if command
@@ -119,10 +118,11 @@ class Bot(RoomManager):
             room.message(response)
 
     @staticmethod
-    def banned_word(room, message, user):
+    def ban_word(room, message, user, silent=False):
         """Remove banned words."""
         message.delete()
-        room.message(f'DO NOT SAY THAT WORD @{user.name.upper()} :@')
+        if silent is False:
+            room.message(f'DO NOT SAY THAT WORD @{user.name.upper()} :@')
 
     @staticmethod
     def replace_word(room, message):
