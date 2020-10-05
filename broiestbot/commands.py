@@ -158,7 +158,7 @@ def wiki_summary(query):
     """Fetch Wikipedia summary for a given query."""
     wiki_page = wiki.page(query)
     if wiki_page:
-        return f"{page.title.upper()}: {page.summary[:3000]}"
+        return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
     return f"❗️ bruh i couldnt find shit for `{query}`"
 
 
