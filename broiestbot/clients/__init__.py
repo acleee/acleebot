@@ -1,7 +1,6 @@
 """External clients."""
 import wikipediaapi
 import praw
-import chart_studio
 from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
@@ -15,8 +14,6 @@ from config import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
-    PLOTLY_USERNAME,
-    PLOTLY_API_KEY,
 )
 from .database import Database
 from .gcs import GCS
@@ -34,12 +31,6 @@ db = Database(
 gcs = GCS(
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL
-)
-
-# Plotly
-chart_studio.tools.set_credentials_file(
-    username=PLOTLY_USERNAME,
-    api_key=PLOTLY_API_KEY
 )
 
 # IEX Charts

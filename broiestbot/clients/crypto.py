@@ -4,14 +4,25 @@ from datetime import datetime
 import requests
 import pandas as pd
 from emoji import emojize
+import chart_studio
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 from logger import LOGGER
 from requests.exceptions import HTTPError
+from config import (
+    PLOTLY_USERNAME,
+    PLOTLY_API_KEY,
+)
 
 
 class CryptoChartHandler:
     """Create chart from crypto price data."""
+
+    # Plotly
+    chart_studio.tools.set_credentials_file(
+        username=PLOTLY_USERNAME,
+        api_key=PLOTLY_API_KEY
+    )
 
     def __init__(self, token: str, price_endpoint: str, chart_endpoint: str):
         self.token = token
