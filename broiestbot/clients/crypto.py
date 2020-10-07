@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import datetime
 import requests
 import pandas as pd
+from emoji import emojize
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 from logger import LOGGER
@@ -21,9 +22,9 @@ class CryptoChartHandler:
         """Get crypto data and generate Plotly chart."""
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
-        if message and chart:
+        if message or chart:
             return f'{message} {chart}'
-        return 'dats nought a stock symbol u RETART :@'
+        return emojize('⚠️ dats nought a COIN u RETART :@ ⚠️')
 
     def _get_price(self, symbol) -> Optional[str]:
         """Get crypto price for provided ticker label."""

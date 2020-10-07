@@ -4,6 +4,7 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
+from emoji import emojize
 from logger import LOGGER
 from requests.exceptions import HTTPError
 
@@ -19,9 +20,9 @@ class StockChartHandler:
         """Create chart of a company's 30-day stock performance."""
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
-        if message and chart:
+        if message or chart:
             return f'{message} {chart}'
-        return 'dats nought a stock symbol u RETART :@'
+        return emojize('⚠️ dats nought a stock symbol u RETART :@ ⚠️')
 
     def _get_price(self, symbol: str) -> Optional[str]:
         """Get daily price summary."""
