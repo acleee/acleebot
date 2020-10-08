@@ -4,25 +4,14 @@ from datetime import datetime
 import requests
 import pandas as pd
 from emoji import emojize
-import chart_studio
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 from logger import LOGGER
 from requests.exceptions import HTTPError
-from config import (
-    PLOTLY_USERNAME,
-    PLOTLY_API_KEY,
-)
 
 
 class CryptoChartHandler:
     """Create chart from crypto price data."""
-
-    # Plotly
-    chart_studio.tools.set_credentials_file(
-        username=PLOTLY_USERNAME,
-        api_key=PLOTLY_API_KEY
-    )
 
     def __init__(self, token: str, price_endpoint: str, chart_endpoint: str):
         self.token = token
@@ -53,8 +42,7 @@ class CryptoChartHandler:
                        f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
                        f'(change of {percentage:.2f}%).'
         except HTTPError as e:
-            LOGGER.error(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
-        return None
+            raise HTTPError(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
 
     def _get_chart_data(self, symbol: str) -> Optional[dict]:
         """Fetch 60-day crypto prices."""
@@ -69,8 +57,7 @@ class CryptoChartHandler:
             if req.status_code == 200 and req.json():
                 return req.json()
         except HTTPError as e:
-            LOGGER.error(f'Failed to fetch crypto data for `{symbol}`: {e.response.content}')
-        return None
+            raise HTTPError(f'Failed to fetch crypto data for `{symbol}`: {e.response.content}')
 
     @staticmethod
     def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:

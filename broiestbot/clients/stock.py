@@ -2,26 +2,14 @@
 from typing import Optional
 import requests
 import pandas as pd
-import chart_studio
 import plotly.graph_objects as go
 import chart_studio.plotly as py
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
-from config import (
-    PLOTLY_USERNAME,
-    PLOTLY_API_KEY,
-)
 
 
 class StockChartHandler:
     """Create chart from stock price data."""
-
-    # Plotly
-    chart_studio.tools.set_credentials_file(
-        username=PLOTLY_USERNAME,
-        api_key=PLOTLY_API_KEY
-    )
 
     def __init__(self, token: str, endpoint: str):
         self.token = token
@@ -53,7 +41,7 @@ class StockChartHandler:
                         message = f"{company_name}: Current price of ${price:.2f}, change of {change:.2f}%"
                     return message
         except HTTPError as e:
-            LOGGER.error(f'Failed to fetch stock price for `{symbol}`: {e.response.content}')
+            raise HTTPError(f'Failed to fetch stock price for `{symbol}`: {e.response.content}')
         return None
 
     def _get_chart_data(self, symbol: str) -> Optional[bytes]:
@@ -65,7 +53,7 @@ class StockChartHandler:
             if req.status_code == 200 and req.content:
                 return req.content
         except HTTPError as e:
-            LOGGER.error(f'Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}')
+            raise HTTPError(f'Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}')
         return None
 
     @staticmethod
@@ -76,7 +64,6 @@ class StockChartHandler:
         stock_df.set_index(keys=stock_df['date'], inplace=True)
         return stock_df
 
-    @LOGGER.catch
     def _create_chart(self, symbol: str) -> Optional[str]:
         """Create Plotly chart."""
         data = self._get_chart_data(symbol)
@@ -147,5 +134,6 @@ class StockChartHandler:
                 sharing='public'
             )
             chart_image = chart[:-1] + '.png'
+            print(chart_image)
             return chart_image
         return None

@@ -12,6 +12,7 @@ from nba_api.stats.endpoints import teamgamelog
 from praw.exceptions import RedditAPIException
 from broiestbot.clients import gcs, sch, cch, wiki, reddit
 from logger import LOGGER
+import chart_studio
 from broiestbot.afterdark import is_after_dark
 from config import (
     GOOGLE_BUCKET_NAME,
@@ -22,6 +23,16 @@ from config import (
     GFYCAT_CLIENT_SECRET,
     REDGIFS_ACCESS_KEY,
 )
+from config import (
+    PLOTLY_USERNAME,
+    PLOTLY_API_KEY,
+    IEX_API_TOKEN
+)
+
+# Plotly
+chart_studio.tools.set_credentials_file(
+        username=PLOTLY_USERNAME,
+        api_key=PLOTLY_API_KEY)
 
 
 def basic_message(message):
