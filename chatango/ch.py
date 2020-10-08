@@ -1846,7 +1846,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.info(f'Successfully connected to {room.name}')
+        LOGGER.info(f'Successfully connected to {room}')
 
     def on_reconnect(self, room):
         """
@@ -1910,7 +1910,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.warning(f'Bot is about to be banned for spamming {room}.')
+        pass
 
     def on_message_delete(self, room, user, message):
         """
@@ -1941,7 +1941,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.warning(f'{user.name} was modded in {room}.')
+        pass
 
     def on_mod_remove(self, room, user):
         """
@@ -1950,7 +1950,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.warning(f'{user.name} was demodded in {room.name}.')
+        pass
 
     def on_message(self, room, user, message):
         """
@@ -1963,7 +1963,7 @@ class RoomManager:
         :type message: Message
         :param message: received message
         """
-        LOGGER.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
+        pass
 
     def on_history_message(self, room, user, message):
         """
@@ -1989,7 +1989,7 @@ class RoomManager:
         :type puid: str
         :param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user.name} joined {room.name}.')
+        pass
 
     def on_leave(self, room, user, puid):
         """
@@ -2002,7 +2002,7 @@ class RoomManager:
         :type puid: str
         :param puid: the personal unique id for the user
         """
-        LOGGER.warning(f'{user.name} left {room.name}.')
+        pass
 
     def on_raw(self, room, raw):
         """

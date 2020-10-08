@@ -135,12 +135,12 @@ class CryptoChartHandler:
             )
             chart = py.plot(
                 fig,
-                filename=f'{symbol}_{datetime.now().strftime("%Y-%m-%dT%H:%M:%S.%f")}',
+                filename=symbol,
                 auto_open=False,
                 fileopt='overwrite',
                 sharing='public'
             )
-            chart_image = chart[:-1] + '.png'
-            return chart_image
+            chart_url = chart.replace('plotly.com', 'chart-studio.plotly.com')
+            return chart_url[:-1] + '.png'
         return None
 
