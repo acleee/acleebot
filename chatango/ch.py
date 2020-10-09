@@ -5,7 +5,6 @@ import random
 import re
 import sys
 import select
-from logger import LOGGER
 try:
     from . import _ws
 except BaseException as e:
@@ -313,8 +312,6 @@ class _ANON_PM_OBJECT:
         func = "_rcmd_" + cmd
         if hasattr(self, func):
             getattr(self, func)(args)
-        elif debug:
-                LOGGER.debug(f"Unknown data in ch.py: {data}")
 
     def _getManager(self): return self._mgr
 
@@ -536,8 +533,6 @@ class PM:
         func = "_rcmd_" + cmd
         if hasattr(self, func):
             getattr(self, func)(args)
-        elif debug:
-                LOGGER.debug(f"Unknown data in ch.py: {data}")
 
     ####
     # Properties
@@ -990,7 +985,7 @@ class Room:
                     elif info.opcode == _ws.TEXT:
                         self._process(payload)
                     elif debug:
-                        LOGGER.debug(
+                        print(
                             "unhandled frame: " + repr(info) +
                             " with payload " + repr(payload)
                         )
@@ -1015,8 +1010,6 @@ class Room:
         func = "_rcmd_" + cmd
         if hasattr(self, func):
             getattr(self, func)(args)
-        elif debug:
-            LOGGER.debug("unknown data: " + str(data))
 
     ####
     # Received Commands
@@ -1846,7 +1839,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.info(f'Successfully connected to {room}')
+        pass
 
     def on_reconnect(self, room):
         """
@@ -1864,7 +1857,6 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.error(f'Failed to connect to {room}. Retying...')
         pass
 
     def on_disconnect(self, room):
@@ -1874,7 +1866,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
+        pass
 
     def on_login_fail(self, room):
         """
@@ -1883,7 +1875,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.warning(f'Failed to join {room}.')
+        pass
 
     def on_flood_ban(self, room):
         """
@@ -1892,7 +1884,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        LOGGER.warning(f'Bot was spam banned from {room}.')
+        pass
 
     def on_flood_ban_repeat(self, room):
         """
@@ -1923,7 +1915,7 @@ class RoomManager:
         :type message: Message
         :param message: message that got deleted
         """
-        LOGGER.warning(f'{user.name} had message deleted from {room}: {message.body}')
+        pass
 
     def on_mod_change(self, room):
         """
@@ -2044,7 +2036,7 @@ class RoomManager:
         :type target: User
         :param target: user that got banned
         """
-        LOGGER.warning(f'{target} was banned from {room} by {user.name}.')
+        pass
 
     def on_unban(self, room, user, target):
         """
@@ -2057,7 +2049,7 @@ class RoomManager:
         :type target: User
         :param target: user that got unbanned
         """
-        LOGGER.warning(f'{target} was unbanned from {room} by {user.name}.')
+        pass
 
     def on_banlist_update(self, room):
         """

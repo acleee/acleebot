@@ -2,14 +2,14 @@ appnope==0.1.0
 attrs==20.2.0
 backcall==0.2.0
 boto==2.49.0
-botocore==1.18.14
+botocore==1.18.15
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
 chardet==3.0.4
 chart-studio==1.1.0
 click==7.1.2
-ddtrace==0.42.0
+ddtrace==0.43.0
 decorator==4.4.2
 deprecation==2.1.0
 emoji==0.6.0

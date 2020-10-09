@@ -134,6 +134,8 @@ class StockChartHandler:
                 fileopt='overwrite',
                 sharing='public'
             )
+            # chart_url = py.image.get(fig, format="png", width=400, height=300)
             chart_url = chart.replace('plotly.com', 'chart-studio.plotly.com')
             return chart_url[:-1] + '.png'
+            return chart_url
         return None
