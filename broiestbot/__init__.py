@@ -3,8 +3,8 @@ from multiprocessing import Process
 from broiestbot.bot import Bot
 from broiestbot.clients import db
 from config import (
-    CHATANGO_USERNAME,
-    CHATANGO_PASSWORD,
+    CHATANGO_BRO_USERNAME,
+    CHATANGO_BRO_PASSWORD,
     DATABASE_COMMANDS_TABLE,
     DATABASE_WEATHER_TABLE,
     CHATANGO_ROOMS,
@@ -19,8 +19,8 @@ def join_room(room):
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
     chat_bot = Bot.easy_start(
         rooms=[room],
-        name=CHATANGO_USERNAME,
-        password=CHATANGO_PASSWORD,
+        name=CHATANGO_BRO_USERNAME,
+        password=CHATANGO_BRO_PASSWORD,
         commands=commands,
         weather=weather
     )

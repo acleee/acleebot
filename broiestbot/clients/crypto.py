@@ -1,6 +1,5 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
 from typing import Optional
-from datetime import datetime
 import requests
 import pandas as pd
 from emoji import emojize

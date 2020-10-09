@@ -4,7 +4,6 @@ import requests
 import pandas as pd
 import plotly.graph_objects as go
 import chart_studio.plotly as py
-from chart_studio.plotly import image
 from emoji import emojize
 from requests.exceptions import HTTPError
 
@@ -137,5 +136,4 @@ class StockChartHandler:
             # chart_url = py.image.get(fig, format="png", width=400, height=300)
             chart_url = chart.replace('plotly.com', 'chart-studio.plotly.com')
             return chart_url[:-1] + '.png'
-            return chart_url
         return None
