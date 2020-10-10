@@ -1,5 +1,5 @@
 """Custom logger and notifications."""
-from sys import stdout, stderr
+from sys import stdout
 import re
 import simplejson as json
 from loguru import logger
