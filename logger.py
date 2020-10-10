@@ -70,6 +70,31 @@ def formatter(record):
 def create_logger():
     """Customer logger creation."""
     logger.remove()
+    logger.add(
+        stdout,
+        format=formatter,
+        level="INFO"
+    )
+    logger.add(
+        stderr,
+        format=formatter,
+        level="ERROR"
+    )
+    logger.add(
+        stderr,
+        format=formatter,
+        level="WARNING"
+    )
+    logger.add(
+        stdout,
+        format=formatter,
+        level="SUCCESS"
+    )
+    logger.add(
+        stdout,
+        format=formatter,
+        level="TRACE"
+    )
     if ENVIRONMENT == 'production':
         params = {
             'from': TWILIO_SENDER_PHONE,
@@ -137,31 +162,7 @@ def create_logger():
             catch=True,
             level="ERROR"
         )'''
-        logger.add(
-            stdout,
-            format=formatter,
-            level="INFO"
-        )
-        logger.add(
-            stderr,
-            format=formatter,
-            level="ERROR"
-        )
-        logger.add(
-            stderr,
-            format=formatter,
-            level="WARNING"
-        )
-        logger.add(
-            stdout,
-            format=formatter,
-            level="SUCCESS"
-        )
-        logger.add(
-            stdout,
-            format=formatter,
-            level="TRACE"
-        )
+
     return logger
 
 

@@ -1,4 +1,5 @@
 """Initialize bot."""
+import os
 from multiprocessing import Process
 from broiestbot.bot import Bot
 from broiestbot.clients import db
@@ -13,12 +14,12 @@ from config import (
 )
 
 
-def join_room(room):
+def join_room(rooms):
     """Initialize bot instance for a single room."""
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
     chat_bot = Bot.easy_start(
-        rooms=[room],
+        rooms=rooms,
         name=CHATANGO_BRO_USERNAME,
         password=CHATANGO_BRO_PASSWORD,
         commands=commands,
@@ -31,15 +32,10 @@ def start_bot():
     """Dedicate a single process per bot."""
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
-        join_room(CHATANGO_TEST_ROOM)
+        join_room([CHATANGO_TEST_ROOM])
     else:
-        processes = []
-        for room in CHATANGO_ROOMS:
-            p = Process(target=join_room, args=(room,))
-            processes.append(p)
-            p.start()
-        for process in processes:
-            process.join()
+        print(f'Joining {CHATANGO_ROOMS}')
+        join_room(CHATANGO_ROOMS)
 
     return len(f'Joined {len(CHATANGO_ROOMS)} rooms.')
 
