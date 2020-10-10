@@ -94,7 +94,7 @@ def subreddit_image(subreddit: str) -> Optional[str]:
         if images:
             return images[0]
     except RedditAPIException as e:
-        LOGGER.warning(f'Reddit image search failed for subreddit `{subreddit}`: {e}')
+        LOGGER.error(f'Reddit image search failed for subreddit `{subreddit}`: {e}')
         return emojize(f':warning: i broke bc im a shitty bot :warning:', use_aliases=True)
 
 
@@ -275,8 +275,7 @@ def gfycat_auth_token() -> Optional[str]:
             return req.json().get('access_token')
     except HTTPError as e:
         LOGGER.error(f'Failed to get gfycat auth token: {e.response.content}')
-    LOGGER.warning(f'No auth token received for gfycat request.')
-    return None
+        return None
 
 
 @LOGGER.catch
@@ -291,8 +290,7 @@ def redgifs_auth_token() -> Optional[str]:
             return req.json()['access_token']
     except HTTPError as e:
         LOGGER.error(f'Failed to get redgifs auth token: {e.response.content}')
-    LOGGER.warning(f'No auth token received for redgifs request.')
-    return None
+        return None
 
 
 @LOGGER.catch

@@ -1,5 +1,5 @@
 """Custom logger and notifications."""
-import sys
+from sys import stdout, stderr
 import re
 import simplejson as json
 from loguru import logger
@@ -32,6 +32,20 @@ def formatter(record):
             }
             return json.dumps(subset)
 
+    def serialize_trace(log):
+        """Construct JSON trace log record."""
+        chat_data = re.findall(r'\[(\S+)\]', log["message"])
+        if bool(chat_data):
+            room = chat_data[0]
+            user = chat_data[1]
+            subset = {
+                "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "message": record["message"].split(': ', 1)[1],
+                "room": room,
+                "user": user,
+            }
+            return json.dumps(subset)
+
     def serialize_error(log):
         """Construct JSON error log record."""
         subset = {
@@ -40,12 +54,17 @@ def formatter(record):
         }
         return json.dumps(subset)
 
-    if record["level"].name =="INFO":
+    if record["level"].name == "INFO":
         record["extra"]["serialized"] = serialize_info(record)
         return "{extra[serialized]},\n"
 
-    record["extra"]["serialized"] = serialize_error(record)
-    return "{extra[serialized]},\n"
+    elif record["level"].name == "TRACE":
+        record["extra"]["serialized"] = serialize_trace(record)
+        return "{extra[serialized]},\n"
+
+    else:
+        record["extra"]["serialized"] = serialize_error(record)
+        return "{extra[serialized]},\n"
 
 
 def create_logger():
@@ -66,12 +85,22 @@ def create_logger():
             level="INFO"
         )
         logger.add(
-            'logs/errors.json',
+            'logs/info.json',
+            format=formatter,
+            level="SUCCESS"
+        )
+        logger.add(
+            'logs/info.json',
+            format=formatter,
+            level="TRACE"
+        )
+        logger.add(
+            'logs/info.json',
             format=formatter,
             level="ERROR"
         )
         logger.add(
-            'logs/errors.json',
+            'logs/info.json',
             format=formatter,
             level="WARNING"
         )
@@ -82,8 +111,8 @@ def create_logger():
             level="ERROR"
         )
     else:
-        logger.add(
-            sys.stdout,
+        '''logger.add(
+            stdout,
             colorize=True,
             format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
                    + " | <light-green>{level}</light-green>: "
@@ -91,7 +120,7 @@ def create_logger():
             level="INFO"
         )
         logger.add(
-            sys.stderr,
+            stderr,
             colorize=True,
             format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
                    + " | <light-red>{level}</light-red>: "
@@ -100,28 +129,38 @@ def create_logger():
             level="WARNING"
         )
         logger.add(
-            sys.stderr,
+            stderr,
             colorize=True,
             format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
                    + " | <light-red>{level}</light-red>: "
                    + " <light-white>{message}</light-white>",
             catch=True,
             level="ERROR"
-        )
+        )'''
         logger.add(
-            'logs/info.json',
+            stdout,
             format=formatter,
             level="INFO"
         )
         logger.add(
-            'logs/errors.json',
+            stderr,
             format=formatter,
             level="ERROR"
         )
         logger.add(
-            'logs/events.json',
+            stderr,
             format=formatter,
             level="WARNING"
+        )
+        logger.add(
+            stdout,
+            format=formatter,
+            level="SUCCESS"
+        )
+        logger.add(
+            stdout,
+            format=formatter,
+            level="TRACE"
         )
     return logger
 
