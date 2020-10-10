@@ -135,15 +135,15 @@ class Bot(RoomManager):
 
     def on_message_delete(self, room, user, message):
         """Log message deletions"""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {user.name} had message deleted from {room.name}: {message.body}')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {user.name} had message deleted from {room.name}: {message.body}')
 
     def on_mod_add(self, room, user):
         """Called when a moderator gets added."""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {user.name} was modded in {room.name}.')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {user.name} was modded in {room.name}.')
 
     def on_mod_remove(self, room, user):
         """Called when a moderator gets removed."""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {user.name} was demodded in {room.name}.')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {user.name} was demodded in {room.name}.')
 
     def on_join(self, room, user, puid):
         """Log user join events."""
@@ -151,7 +151,7 @@ class Bot(RoomManager):
 
     def on_leave(self, room, user, puid):
         """Log user leave events."""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {user.name} left {room.name}.')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {user.name} left {room.name}.')
 
     def on_flood_warning(self, room):
         """Called when an overflow warning gets received."""
@@ -179,8 +179,8 @@ class Bot(RoomManager):
 
     def on_ban(self, room, user, target):
         """Called when a user gets banned."""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {target} was banned from {room.name} by {user.name}.')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {target} was banned from {room.name} by {user.name}.')
 
     def on_unban(self, room, user, target):
         """Called when a user gets unbanned."""
-        LOGGER.trace(f'[{room.name}] [{user.name.title()}]: {target} was unbanned from {room.name} by {user.name}.')
+        LOGGER.warning(f'[{room.name}] [{user.name.title()}]: {target} was unbanned from {room.name} by {user.name}.')

@@ -32,8 +32,8 @@ def formatter(record):
             }
             return json.dumps(subset)
 
-    def serialize_trace(log):
-        """Construct JSON trace log record."""
+    def serialize_warning(log):
+        """Construct JSON warning log record."""
         chat_data = re.findall(r'\[(\S+)\]', log["message"])
         if bool(chat_data):
             room = chat_data[0]
@@ -54,8 +54,8 @@ def formatter(record):
         }
         return json.dumps(subset)
 
-    if record["level"].name == "TRACE":
-        record["extra"]["serialized"] = serialize_trace(record)
+    if record["level"].name == "WARNING":
+        record["extra"]["serialized"] = serialize_warning(record)
         return "{extra[serialized]},\n"
 
     elif record["level"].name == "INFO":
