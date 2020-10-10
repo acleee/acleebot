@@ -54,12 +54,12 @@ def formatter(record):
         }
         return json.dumps(subset)
 
-    if record["level"].name == "INFO":
-        record["extra"]["serialized"] = serialize_info(record)
+    if record["level"].name == "TRACE":
+        record["extra"]["serialized"] = serialize_trace(record)
         return "{extra[serialized]},\n"
 
-    elif record["level"].name == "TRACE":
-        record["extra"]["serialized"] = serialize_trace(record)
+    elif record["level"].name == "INFO":
+        record["extra"]["serialized"] = serialize_info(record)
         return "{extra[serialized]},\n"
 
     else:
@@ -73,27 +73,6 @@ def create_logger():
     logger.add(
         stdout,
         format=formatter,
-        level="INFO"
-    )
-    logger.add(
-        stderr,
-        format=formatter,
-        level="ERROR"
-    )
-    logger.add(
-        stderr,
-        format=formatter,
-        level="WARNING"
-    )
-    logger.add(
-        stdout,
-        format=formatter,
-        level="SUCCESS"
-    )
-    logger.add(
-        stdout,
-        format=formatter,
-        level="TRACE"
     )
     if ENVIRONMENT == 'production':
         params = {
@@ -107,27 +86,6 @@ def create_logger():
         logger.add(
             'logs/info.json',
             format=formatter,
-            level="INFO"
-        )
-        logger.add(
-            'logs/info.json',
-            format=formatter,
-            level="SUCCESS"
-        )
-        logger.add(
-            'logs/info.json',
-            format=formatter,
-            level="TRACE"
-        )
-        logger.add(
-            'logs/info.json',
-            format=formatter,
-            level="ERROR"
-        )
-        logger.add(
-            'logs/info.json',
-            format=formatter,
-            level="WARNING"
         )
         # SMS
         logger.add(
@@ -135,33 +93,6 @@ def create_logger():
             catch=True,
             level="ERROR"
         )
-    else:
-        '''logger.add(
-            stdout,
-            colorize=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-green>{level}</light-green>: "
-                   + " <light-white>{message}</light-white>",
-            level="INFO"
-        )
-        logger.add(
-            stderr,
-            colorize=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-red>{level}</light-red>: "
-                   + " <light-white>{message}</light-white>",
-            catch=True,
-            level="WARNING"
-        )
-        logger.add(
-            stderr,
-            colorize=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan>"
-                   + " | <light-red>{level}</light-red>: "
-                   + " <light-white>{message}</light-white>",
-            catch=True,
-            level="ERROR"
-        )'''
 
     return logger
 

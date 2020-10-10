@@ -1,6 +1,4 @@
 """Initialize bot."""
-import os
-from multiprocessing import Process
 from broiestbot.bot import Bot
 from broiestbot.clients import db
 from config import (
@@ -15,7 +13,7 @@ from config import (
 
 
 def join_room(rooms):
-    """Initialize bot instance for a single room."""
+    """Create bot instance for single Chatango room."""
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'command')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
     chat_bot = Bot.easy_start(
@@ -29,12 +27,12 @@ def join_room(rooms):
 
 
 def start_bot():
-    """Dedicate a single process per bot."""
+    """Initialize bot depending on environment."""
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
         join_room([CHATANGO_TEST_ROOM])
     else:
-        print(f'Joining {CHATANGO_ROOMS}')
+        print(f'Joining {", ".join(CHATANGO_ROOMS)})')
         join_room(CHATANGO_ROOMS)
 
     return len(f'Joined {len(CHATANGO_ROOMS)} rooms.')
