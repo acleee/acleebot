@@ -183,8 +183,9 @@ def find_imdb_movie(movie_title) -> Optional[str]:
     movie = None
     try:
         movies = ia.search_movie(movie_title)
-        movie_id = movies[0].getID()
-        movie = ia.get_movie(movie_id)
+        if bool(movies):
+            movie_id = movies[0].getID()
+            movie = ia.get_movie(movie_id)
     except IMDbError as e:
         LOGGER.error(f'IMDB failed to find `{movie_title}`: {e}')
     if movie:

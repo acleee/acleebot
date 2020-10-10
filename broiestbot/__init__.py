@@ -32,7 +32,7 @@ def start_bot():
         print('Starting in dev mode...')
         join_room([CHATANGO_TEST_ROOM])
     else:
-        print(f'Joining {", ".join(CHATANGO_ROOMS)})')
+        print(f'Joining {", ".join(CHATANGO_ROOMS)}')
         join_room(CHATANGO_ROOMS)
 
     return len(f'Joined {len(CHATANGO_ROOMS)} rooms.')

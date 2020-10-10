@@ -86,6 +86,8 @@ def create_logger():
         logger.add(
             'logs/info.json',
             format=formatter,
+            rotation="500 MB",
+            compression="zip"
         )
         # SMS
         logger.add(
