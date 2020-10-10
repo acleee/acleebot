@@ -155,19 +155,19 @@ class Bot(RoomManager):
 
     def on_flood_warning(self, room):
         """Called when an overflow warning gets received."""
-        LOGGER.error(f'[{room.name}]: Bot is about to be banned for spamming {room.name}.')
+        LOGGER.error(f'Bot is about to be banned for spamming {room.name}.')
 
     def on_disconnect(self, room):
         """Called when the client gets disconnected."""
-        LOGGER.error(f'[{room.name}]: Disconnected from {room}. Attempting to rejoin...')
+        LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
 
     def on_login_fail(self, room):
         """Called on login failure, disconnects after."""
-        LOGGER.error(f'[{room.name}]: Failed to join {room}.')
+        LOGGER.error(f'Failed to join {room}.')
 
     def on_flood_ban(self, room):
         """Called when either flood banned or flagged. """
-        LOGGER.error(f'[{room.name}]: Bot was spam banned from {room.name}.')
+        LOGGER.error(f'Bot was spam banned from {room.name}.')
 
     def on_connect(self, room):
         """Called when connected to the room."""
@@ -175,7 +175,7 @@ class Bot(RoomManager):
 
     def on_connect_fail(self, room):
         """Called when the connection failed. """
-        LOGGER.error(f'[{room.name}]: Failed to connect to {room}. Retying...')
+        LOGGER.error(f'Failed to connect to {room}. Retying...')
 
     def on_ban(self, room, user, target):
         """Called when a user gets banned."""
