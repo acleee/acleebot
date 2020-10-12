@@ -21,8 +21,10 @@ class CryptoChartHandler:
         """Get crypto data and generate Plotly chart."""
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
-        if message or chart:
+        if message and chart:
             return f'{message} {chart}'
+        elif message:
+            return message
         return emojize('⚠️ dats nought a COIN u RETART :@ ⚠️')
 
     def _get_price(self, symbol) -> Optional[str]:

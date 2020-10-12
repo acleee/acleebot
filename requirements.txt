@@ -1,8 +1,10 @@
 appnope==0.1.0
 attrs==20.2.0
 backcall==0.2.0
+beautifulsoup4==4.9.3
 boto==2.49.0
 botocore==1.18.16
+bs4==0.0.1
 cachetools==4.1.1
 certifi==2020.6.20
 cffi==1.14.3
@@ -10,7 +12,6 @@ chardet==3.0.4
 chart-studio==1.1.0
 click==7.1.2
 ddtrace==0.43.0
-decorator==4.4.2
 deprecation==2.1.0
 emoji==0.6.0
 frozendict==1.2
@@ -34,7 +35,6 @@ jmespath==0.10.0
 jsonschema==3.2.0
 loguru==0.5.3
 lxml==4.5.2
-nba-api==1.1.9
 notifiers==1.2.1
 numpy==1.19.2
 packaging==20.4
@@ -72,13 +72,13 @@ simplejson==3.17.2
 six==1.15.0
 socketIO-client-nexus==0.7.6
 sortedcontainers==2.2.2
+soupsieve==2.0.1
 SQLAlchemy==1.3.19
 sseclient==0.0.27
 temporal-cache==0.1.1
 tenacity==6.2.0
 toml==0.10.1
 traitlets==5.0.4
-tzlocal==2.1
 update-checker==0.18.0
 urllib3==1.25.10
 uWSGI==2.0.19.1
