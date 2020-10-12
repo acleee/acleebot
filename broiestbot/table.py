@@ -9,8 +9,8 @@ class Table:
 
     def find_row(self, lookup):
         """Read list of rows from DataFrame."""
-        row = self.df.loc[self.df["command"] == lookup].iloc[0]
+        row = self.df.loc[self.df["command"] == lookup]
         if len(row):
-            return row.to_dict()
+            return row.iloc[0].to_dict()
         return None
 
