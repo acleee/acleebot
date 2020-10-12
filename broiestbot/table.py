@@ -9,10 +9,8 @@ class Table:
 
     def find_row(self, lookup):
         """Read list of rows from DataFrame."""
-        response = None
-        try:
-            row = self.df.loc[lookup]
-            response = row.to_dict()
-        except KeyError:
-            pass
-        return response
+        row = self.df.loc[self.df["command"] == lookup].iloc[0]
+        if len(row):
+            return row.to_dict()
+        return None
+
