@@ -4,11 +4,10 @@ from random import randint
 from datetime import datetime
 import pytz
 import requests
+from bs4 import BeautifulSoup
 from requests.exceptions import HTTPError
 from emoji import emojize
 from imdb import IMDb, IMDbError
-from nba_api.stats.static import teams
-from nba_api.stats.endpoints import teamgamelog
 from praw.exceptions import RedditAPIException
 from broiestbot.clients import gcs, sch, cch, wiki, reddit
 from logger import LOGGER
@@ -22,6 +21,8 @@ from config import (
     GFYCAT_CLIENT_ID,
     GFYCAT_CLIENT_SECRET,
     REDGIFS_ACCESS_KEY,
+    INSTAGRAM_APP_ID,
+    INSTAGRAM_APP_SECRET
 )
 from config import (
     PLOTLY_USERNAME,
@@ -96,16 +97,6 @@ def subreddit_image(subreddit: str) -> Optional[str]:
     except RedditAPIException as e:
         LOGGER.error(f'Reddit image search failed for subreddit `{subreddit}`: {e}')
         return emojize(f':warning: i broke bc im a shitty bot :warning:', use_aliases=True)
-
-
-@LOGGER.catch
-def nba_team_score(message):
-    """Get score of an NBA game."""
-    team_id = teams.find_teams_by_full_name(message)[0].get('id')
-    season = datetime.now().year
-    season_type = 'Regular Season'
-    game = teamgamelog.TeamGameLog(team_id, season, season_type)
-    print(game)
 
 
 def get_stock(symbol: str):
@@ -313,4 +304,29 @@ def blaze_time_remaining():
         )
         remaining = f'{tomorrow_am_time - now}'
     remaining = remaining.split(':')
-    return emojize(f':herb: :fire: {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 :smoking: :kissing_closed_eyes: :dash:', use_aliases=True)
+    return emojize(
+        f':herb: :fire: {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 :smoking: :kissing_closed_eyes: :dash:',
+        use_aliases=True)
+
+
+def get_instagram_token():
+    """Generate Instagram OAuth token."""
+    try:
+        params = {
+            'client_id': INSTAGRAM_APP_ID,
+        }
+        return requests.post(f'https://www.facebook.com/x/oauth/status', params=params)
+    except HTTPError as e:
+        LOGGER.error(f'Failed to get Instagran token: {e.response.content}')
+        return None
+
+
+def create_instagram_preview(url):
+    """Generate link preview for Instagram links."""
+    try:
+        req = requests.get(url)
+        html = BeautifulSoup(req.content, 'html.parser')
+        img = html.find("meta", property="og_image")
+        return img
+    except HTTPError as e:
+        LOGGER.error(f'Instagram URL {url} threw status code : {e.response.content}')

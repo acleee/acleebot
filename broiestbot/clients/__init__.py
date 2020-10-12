@@ -13,13 +13,12 @@ from config import (
     ALPHA_VANTAGE_API_KEY,
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
-    REDDIT_PASSWORD,
+    REDDIT_PASSWORD
 )
 from .database import Database
 from .gcs import GCS
 from .crypto import CryptoChartHandler
 from .stock import StockChartHandler
-
 
 # Bot Database
 db = Database(
@@ -57,4 +56,3 @@ reddit = praw.Reddit(
     password=REDDIT_PASSWORD,
     user_agent="bot"
 )
-

@@ -1,5 +1,6 @@
 """Chatango bot."""
 from logger import LOGGER
+import re
 from chatango.ch import RoomManager
 from .commands import (
     basic_message,
@@ -14,7 +15,8 @@ from .commands import (
     find_imdb_movie,
     get_redgifs_gif,
     get_urban_definition,
-    blaze_time_remaining
+    blaze_time_remaining,
+    create_instagram_preview
 )
 
 
@@ -81,6 +83,8 @@ class Bot(RoomManager):
             self.trademark(room, message)
         elif chat_message == 'https://lmao.love/truth':
             self.ban_word(room, message, user, silent=True)
+        elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", chat_message):
+            self.link_preview(room, chat_message)
         LOGGER.info(f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}")
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
            # self.banned_word(room, message, user)
@@ -106,6 +110,11 @@ class Bot(RoomManager):
                 self._chat(room, message)
         else:
             self.giphy_fallback(user_msg, room)
+
+    @staticmethod
+    def link_preview(room, message):
+        preview = create_instagram_preview(message)
+        room.message(preview)
 
     @staticmethod
     def bot_status_check(room):
