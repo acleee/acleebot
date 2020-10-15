@@ -24,8 +24,9 @@ def formatter(record):
             user = chat_data[1]
             ip = chat_data[2]
             subset = {
-                "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                "message": record["message"].split(': ', 1)[1],
+                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "message": log["message"].split(': ', 1)[1],
+                "level": log["level"].name,
                 "room": room,
                 "user": user,
                 "ip": ip
@@ -39,8 +40,9 @@ def formatter(record):
             room = chat_data[0]
             user = chat_data[1]
             subset = {
-                "time": record["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                "message": record["message"].split(': ', 1)[1],
+                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "message": log["message"].split(': ', 1)[1],
+                "level": log["level"].name,
                 "room": room,
                 "user": user,
             }
@@ -50,6 +52,7 @@ def formatter(record):
         """Construct JSON error log record."""
         subset = {
             "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+            "level": log["level"].name,
             "message": log["message"],
         }
         return json.dumps(subset)

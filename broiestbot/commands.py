@@ -305,7 +305,9 @@ def blaze_time_remaining():
         remaining = f'{tomorrow_am_time - now}'
     remaining = remaining.split(':')
     return emojize(
-        f':herb: :fire: {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 :smoking: :kissing_closed_eyes: :dash:',
+        f':herb: :fire: \
+            {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 \
+            :smoking: :kissing_closed_eyes: :dash:',
         use_aliases=True)
 
 
