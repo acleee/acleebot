@@ -180,7 +180,7 @@ class Bot(RoomManager):
 
     def on_connect(self, room):
         """Called when connected to the room."""
-        LOGGER.success(f'Successfully connected to {room.name}')
+        LOGGER.success(f'[{room.name}] [{self._name}]: Successfully connected to {room.name}')
 
     def on_connect_fail(self, room):
         """Called when the connection failed. """

@@ -16,7 +16,7 @@ from config import (
 def formatter(record):
     """Format info message logs."""
 
-    def serialize_info(log):
+    def serialize_as_admin(log):
         """Construct JSON info log record."""
         chat_data = re.findall(r'\[(\S+)\]', log["message"])
         if bool(chat_data):
@@ -33,7 +33,7 @@ def formatter(record):
             }
             return json.dumps(subset)
 
-    def serialize_warning(log):
+    def serialize_event(log):
         """Construct JSON warning log record."""
         chat_data = re.findall(r'\[(\S+)\]', log["message"])
         if bool(chat_data):
@@ -57,12 +57,12 @@ def formatter(record):
         }
         return json.dumps(subset)
 
-    if record["level"].name == "WARNING":
-        record["extra"]["serialized"] = serialize_warning(record)
+    if record["level"].name in ("WARNING", "SUCCESS"):
+        record["extra"]["serialized"] = serialize_event(record)
         return "{extra[serialized]},\n"
 
     elif record["level"].name == "INFO":
-        record["extra"]["serialized"] = serialize_info(record)
+        record["extra"]["serialized"] = serialize_as_admin(record)
         return "{extra[serialized]},\n"
 
     else:

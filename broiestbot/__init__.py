@@ -12,7 +12,7 @@ from config import (
 )
 
 
-def join_room(rooms):
+def join_rooms(rooms):
     """Create bot instance for single Chatango room."""
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'id')
     weather = db.get_table(DATABASE_WEATHER_TABLE, 'id')
@@ -30,10 +30,10 @@ def start_bot():
     """Initialize bot depending on environment."""
     if ENVIRONMENT == 'development':
         print('Starting in dev mode...')
-        join_room([CHATANGO_TEST_ROOM])
+        join_rooms([CHATANGO_TEST_ROOM])
     else:
         print(f'Joining {", ".join(CHATANGO_ROOMS)}')
-        join_room(CHATANGO_ROOMS)
+        join_rooms(CHATANGO_ROOMS)
 
     return len(f'Joined {len(CHATANGO_ROOMS)} rooms.')
 
