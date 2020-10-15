@@ -15,7 +15,7 @@ from config import (
 def join_room(rooms):
     """Create bot instance for single Chatango room."""
     commands = db.get_table(DATABASE_COMMANDS_TABLE, 'id')
-    weather = db.get_table(DATABASE_WEATHER_TABLE, 'code')
+    weather = db.get_table(DATABASE_WEATHER_TABLE, 'id')
     chat_bot = Bot.easy_start(
         rooms=rooms,
         name=CHATANGO_BRO_USERNAME,

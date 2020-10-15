@@ -1,4 +1,4 @@
-"""Load commands via database."""
+"""Load SQL database tables into memory for commands & functionality."""
 import pandas as pd
 from sqlalchemy import create_engine
 from broiestbot.table import Table

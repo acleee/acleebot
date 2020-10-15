@@ -144,7 +144,7 @@ def weather_by_city(location: str, weather) -> Optional[str]:
             return emojize(f':warning:️️ wtf even is `{location}` :warning:', use_aliases=True)
         if req.status_code == 200 and data.get('current'):
             weather_code = data["current"]["weather_code"]
-            weather_emoji = weather.find_row(weather_code).get('icon')
+            weather_emoji = weather.find_row('code', weather_code).get('icon')
             if weather_emoji:
                 weather_emoji = emojize(weather_emoji, use_aliases=True)
             response = f'{data["request"]["query"]}: \

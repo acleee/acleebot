@@ -98,7 +98,7 @@ class Bot(RoomManager):
         else:
             cmd = user_msg.split(' ', 1)[0]
             args = user_msg.split(' ', 1)[1]
-        command = self.commands.find_row(cmd)
+        command = self.commands.find_row('command', cmd)
         if command is not None:
             message = self.create_message(
                 command['type'],
