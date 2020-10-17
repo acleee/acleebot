@@ -319,16 +319,24 @@ def get_instagram_token():
         }
         return requests.post(f'https://www.facebook.com/x/oauth/status', params=params)
     except HTTPError as e:
-        LOGGER.error(f'Failed to get Instagran token: {e.response.content}')
+        LOGGER.error(f'Failed to get Instagram token: {e.response.content}')
         return None
 
 
 def create_instagram_preview(url):
     """Generate link preview for Instagram links."""
     try:
-        req = requests.get(url)
+        headers = {
+            'Access-Control-Allow-Origin': '*',
+            'Access-Control-Allow-Methods': 'GET',
+            'Access-Control-Allow-Headers': 'Content-Type',
+            'Access-Control-Max-Age': '3600',
+            'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0'
+        }
+        req = requests.get(url, headers=headers)
         html = BeautifulSoup(req.content, 'html.parser')
-        img = html.find("meta", property="og_image")
-        return img
+        img = html.find("meta", property="og:image").get('content')
+        description = html.find("title").get_text()
+        return f'{img} {description}'
     except HTTPError as e:
         LOGGER.error(f'Instagram URL {url} threw status code : {e.response.content}')
