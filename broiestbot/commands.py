@@ -323,7 +323,7 @@ def get_instagram_token():
         return None
 
 
-def create_instagram_preview(url):
+def create_instagram_preview(url) -> Optional[str]:
     """Generate link preview for Instagram links."""
     try:
         headers = {
@@ -335,8 +335,11 @@ def create_instagram_preview(url):
         }
         req = requests.get(url, headers=headers)
         html = BeautifulSoup(req.content, 'html.parser')
-        img = html.find("meta", property="og:image").get('content')
-        description = html.find("title").get_text()
-        return f'{img} {description}'
+        img_tag = html.find("meta", property="og:image")
+        if img_tag is not None:
+            img = img_tag.get('content')
+            description = html.find("title").get_text()
+            return f'{img} {description}'
+        return None
     except HTTPError as e:
         LOGGER.error(f'Instagram URL {url} threw status code : {e.response.content}')
