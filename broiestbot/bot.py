@@ -77,6 +77,10 @@ class Bot(RoomManager):
             self.parse_command(chat_message, room)  # Trigger if command
         elif chat_message == 'bro?':
             self.bot_status_check(room)
+        elif 'petition' in chat_message and user.name.title() != 'Broiestbro':
+            self._chat(room, 'SIGN THE PETITION: \
+                                https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
+                                https://penguintruth.org/static/img/penguin-share@2x.jpg')
         elif chat_message.endswith('only on aclee'):
             self._chat(room, '™')
         elif chat_message.lower() == 'tm':
