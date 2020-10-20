@@ -173,6 +173,8 @@ class Bot(RoomManager):
     def on_disconnect(self, room):
         """Called when the client gets disconnected."""
         LOGGER.error(f'Disconnected from {room}. Attempting to rejoin...')
+        self.setTimeout(100, self.stop)
+        self.joinRoom(room)
 
     def on_login_fail(self, room):
         """Called on login failure, disconnects after."""

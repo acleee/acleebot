@@ -772,6 +772,7 @@ class Room:
         self._owner = None
         self._mods = set()
         self._mqueue = dict()
+        self._uqueue = dict()
         self._history = list()
         self._userlist = list()
         self._firstCommand = True
@@ -1030,7 +1031,7 @@ class Room:
             self._sendCommand("blogin", self.mgr.name)
             self._currentname = self.mgr.name
         # if got password but fail to login
-        elif args[2] != "M":  # unsuccesful login
+        elif args[2] != "M":  # unsuccessful login
             self._callEvent("on_login_fail")
             self.disconnect()
         self._owner = User(args[0])
@@ -1141,6 +1142,8 @@ class Room:
             msg.attach(self, args[1])
             self._addHistory(msg)
             self._callEvent("on_message", msg.user, msg)
+        else:
+            self._uqueue[args[0]] = args[1]
 
     def _rcmd_i(self, args):
         mtime = float(args[0])
@@ -1181,7 +1184,22 @@ class Room:
             puid=puid,
             room=self
         )
-        self._i_log.append(msg)
+
+        # check if the msgid was already received
+        temp = Struct(**self._uqueue)
+        if hasattr(temp, i):
+            msgid = getattr(temp, i)
+            if msg.user != self.user:
+                msg.user._fontColor = msg.fontColor
+                msg.user._fontFace = msg.fontFace
+                msg.user._fontSize = msg.fontSize
+                msg.user._nameColor = msg.nameColor
+            del self._uqueue[i]
+            msg.attach(self, msgid)
+            self._addHistory(msg)
+            self._callEvent("onMessage", msg.user, msg)
+        else:
+            self._mqueue[i] = msg
 
     def _rcmd_g_participants(self, args):
         args = ":".join(args)
