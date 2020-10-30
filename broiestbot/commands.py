@@ -162,7 +162,7 @@ def weather_by_city(location: str, weather) -> Optional[str]:
 def wiki_summary(query):
     """Fetch Wikipedia summary for a given query."""
     wiki_page = wiki.page(query)
-    if wiki_page.exists():
+    if wiki_page.exists() and wiki_page.title and wiki_page.summary:
         return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
     return emojize(f":warning: bruh i couldnt find shit for `{query}` :warning:", use_aliases=True)
 
