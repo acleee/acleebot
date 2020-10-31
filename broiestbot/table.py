@@ -14,4 +14,3 @@ class Table:
         if len(row):
             return row.iloc[0].to_dict()
         return None
-

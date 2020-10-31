@@ -1,12 +1,14 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
 from typing import Optional
-import requests
-import pandas as pd
-from emoji import emojize
-import plotly.graph_objects as go
+
 import chart_studio.plotly as py
-from logger import LOGGER
+import pandas as pd
+import plotly.graph_objects as go
+import requests
+from emoji import emojize
 from requests.exceptions import HTTPError
+
+from logger import LOGGER
 
 
 class CryptoChartHandler:
@@ -22,50 +24,57 @@ class CryptoChartHandler:
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
         if message and chart:
-            return f'{message} {chart}'
+            return f"{message} {chart}"
         elif message:
             return message
-        return emojize('⚠️ dats nought a COIN u RETART :@ ⚠️')
+        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
     def _get_price(self, symbol) -> Optional[str]:
         """Get crypto price for provided ticker label."""
-        endpoint = f'{self.price_endpoint}{symbol.lower()}usd/summary'
+        endpoint = f"{self.price_endpoint}{symbol.lower()}usd/summary"
         try:
             req = requests.get(url=endpoint)
             prices = req.json()["result"]["price"]
-            percentage = prices["change"]['percentage'] * 100
+            percentage = prices["change"]["percentage"] * 100
             if prices["last"] > 1:
-                return f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. ' \
-                       f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} ' \
-                       f'(change of {percentage:.2f}%).'
+                return (
+                    f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. '
+                    f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} '
+                    f"(change of {percentage:.2f}%)."
+                )
             else:
-                return f'{symbol.upper()}: Currently at ${prices["last"]}. ' \
-                       f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} ' \
-                       f'(change of {percentage:.2f}%).'
+                return (
+                    f'{symbol.upper()}: Currently at ${prices["last"]}. '
+                    f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} '
+                    f"(change of {percentage:.2f}%)."
+                )
         except HTTPError as e:
-            raise HTTPError(f'Failed to fetch crypto price for `{symbol}`: {e.response.content}')
+            raise HTTPError(
+                f"Failed to fetch crypto price for `{symbol}`: {e.response.content}"
+            )
 
     def _get_chart_data(self, symbol: str) -> Optional[dict]:
         """Fetch 60-day crypto prices."""
         params = {
-            'function': 'DIGITAL_CURRENCY_DAILY',
-            'symbol': symbol,
-            'market': 'USD',
-            'apikey': self.token
+            "function": "DIGITAL_CURRENCY_DAILY",
+            "symbol": symbol,
+            "market": "USD",
+            "apikey": self.token,
         }
         try:
             req = requests.get(self.chart_endpoint, params=params)
             if req.status_code == 200 and req.json():
                 return req.json()
         except HTTPError as e:
-            raise HTTPError(f'Failed to fetch crypto data for `{symbol}`: {e.response.content}')
+            raise HTTPError(
+                f"Failed to fetch crypto data for `{symbol}`: {e.response.content}"
+            )
 
     @staticmethod
     def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:
         """Parse JSON response into Pandas DataFrame."""
         df = pd.DataFrame.from_dict(
-            data['Time Series (Digital Currency Daily)'],
-            orient='index'
+            data["Time Series (Digital Currency Daily)"], orient="index"
         )[:60]
         return df
 
@@ -76,50 +85,41 @@ class CryptoChartHandler:
         if bool(data):
             crypto_df = self._parse_chart_data(data)
             crypto_df = crypto_df.apply(pd.to_numeric)
-            fig = go.Figure(data=[
-                go.Candlestick(
-                    x=crypto_df.index,
-                    open=crypto_df['1a. open (USD)'],
-                    high=crypto_df['2a. high (USD)'],
-                    low=crypto_df['3a. low (USD)'],
-                    close=crypto_df['4a. close (USD)'],
-                    decreasing={
-                        "line": {
-                            "color": "rgb(240, 99, 90)"
+            fig = go.Figure(
+                data=[
+                    go.Candlestick(
+                        x=crypto_df.index,
+                        open=crypto_df["1a. open (USD)"],
+                        high=crypto_df["2a. high (USD)"],
+                        low=crypto_df["3a. low (USD)"],
+                        close=crypto_df["4a. close (USD)"],
+                        decreasing={
+                            "line": {"color": "rgb(240, 99, 90)"},
+                            "fillcolor": "rgba(142, 53, 47, 0.5)",
                         },
-                        "fillcolor": "rgba(142, 53, 47, 0.5)"
-                    },
-                    increasing={
-                        "line": {
-                            "color": "rgb(48, 190, 161)"
+                        increasing={
+                            "line": {"color": "rgb(48, 190, 161)"},
+                            "fillcolor": "rgba(22, 155, 124, 0.6)",
                         },
-                        "fillcolor": "rgba(22, 155, 124, 0.6)"
-                    },
-                    whiskerwidth=1,
-                )
-            ],
+                        whiskerwidth=1,
+                    )
+                ],
                 layout=go.Layout(
-                    font={
-                        "size": 15,
-                        "family": "Open Sans",
-                        "color": "#fff"
-                    },
+                    font={"size": 15, "family": "Open Sans", "color": "#fff"},
                     title={
                         "x": 0.5,
                         "font": {"size": 23},
-                        "text": f'60-day performance of {symbol.upper()}'
+                        "text": f"60-day performance of {symbol.upper()}",
                     },
                     xaxis={
-                        'type': 'date',
-                        'rangeslider': {
-                            'visible': False
-                        },
+                        "type": "date",
+                        "rangeslider": {"visible": False},
                         "ticks": "",
                         "gridcolor": "#283442",
                         "linecolor": "#506784",
                         "automargin": True,
                         "zerolinecolor": "#283442",
-                        "zerolinewidth": 2
+                        "zerolinewidth": 2,
                     },
                     yaxis={
                         "ticks": "",
@@ -127,21 +127,20 @@ class CryptoChartHandler:
                         "linecolor": "#506784",
                         "automargin": True,
                         "zerolinecolor": "#283442",
-                        "zerolinewidth": 2
+                        "zerolinewidth": 2,
                     },
                     autosize=True,
                     plot_bgcolor="rgb(23, 27, 31)",
                     paper_bgcolor="rgb(23, 27, 31)",
-                )
+                ),
             )
             chart = py.plot(
                 fig,
                 filename=symbol,
                 auto_open=False,
-                fileopt='overwrite',
-                sharing='public'
+                fileopt="overwrite",
+                sharing="public",
             )
-            chart_url = chart.replace('plotly.com', 'chart-studio.plotly.com')
-            return chart_url[:-1] + '.png'
+            chart_url = chart.replace("plotly.com", "chart-studio.plotly.com")
+            return chart_url[:-1] + ".png"
         return None
-

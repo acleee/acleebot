@@ -1,9 +1,7 @@
 import collections
 import os
-import hashlib
-import base64
-import sys
 import struct
+import sys
 
 CONTINUATION = 0
 TEXT = 1
@@ -15,8 +13,7 @@ PONG = 10
 GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
 FrameInfo = collections.namedtuple(
-    "FrameInfo",
-    ["fin", "opcode", "masked", "payload_length"]
+    "FrameInfo", ["fin", "opcode", "masked", "payload_length"]
 )
 
 
@@ -71,10 +68,7 @@ def frame_info(buff):
         payload_length += struct.unpack_from(">Q", buff, 2)[0]
 
     return FrameInfo(
-        bool(buff[0] & 128),
-        buff[0] & 15,
-        bool(buff[1] & 128),
-        payload_length
+        bool(buff[0] & 128), buff[0] & 15, bool(buff[1] & 128), payload_length
     )
 
 
@@ -138,9 +132,7 @@ def encode_frame(fin=True, opcode=TEXT, mask=False, payload=None):
     if payload is None:
         payload = b""
     elif not isinstance(payload, (bytes, bytearray)):
-        raise ValueError(
-            "payload must be None, a str object or a bytes like object"
-        )
+        raise ValueError("payload must be None, a str object or a bytes like object")
 
     frame = bytearray()
     if fin:
@@ -196,17 +188,17 @@ def get_payload(buff):
 
     if info.masked:
         payload = unmask_buff(
-            buff[start_payload:info.payload_length + start_payload + 4]
+            buff[start_payload : info.payload_length + start_payload + 4]
         )
     else:
-        payload = buff[start_payload:info.payload_length + start_payload]
+        payload = buff[start_payload : info.payload_length + start_payload]
 
     if info.opcode == TEXT and info.fin:
         return payload.decode("utf-8", "replace")
     elif info.opcode == CLOSE:
         return (
             struct.unpack_from(">H", buff)[0],
-            payload[2:].decode("utf-8", "replace")
+            payload[2:].decode("utf-8", "replace"),
         )
 
     return payload
@@ -231,9 +223,7 @@ def check_headers(headers):
         if ": " not in headers[0]:
             version, _ = headers[0].split(" ", 1)
             headers = headers[1:]
-        headers = {
-            y.lower(): z for y, z in map(lambda x: x.split(": ", 1), headers)
-        }
+        headers = {y.lower(): z for y, z in map(lambda x: x.split(": ", 1), headers)}
 
     if version:
         version = version.split("/")[1]

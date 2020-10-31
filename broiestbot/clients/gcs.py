@@ -25,4 +25,4 @@ class GCS:
         blob = Blob(remote_file, self.bucket)
         with open(local_file, "rb") as image:
             blob.upload_from_file(image)
-        return self.bucket_url + self.bucket_name + '/' + blob.name
+        return self.bucket_url + self.bucket_name + "/" + blob.name

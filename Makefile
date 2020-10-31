@@ -7,6 +7,7 @@ Manage $(PROJECTNAME). Usage:
 
 make run        - Run $(PROJECTNAME).
 make restart    - Purge cache & reinstall modules.
+make install    - Install application for the first time
 make deploy     - Pull latest build and deploy to production.
 make update     - Update pip deploy in both poetry and pipenv environments.
 make clean      - Remove cached files and lock files.
@@ -14,7 +15,7 @@ endef
 export HELP
 
 
-.PHONY: run restart deploy update clean help
+.PHONY: run restart install deploy update clean help
 
 
 requirements: .requirements.txt
@@ -44,6 +45,11 @@ restart: env
 	make clean
 	service $(PROJECTNAME) start
 	service $(PROJECTNAME) status
+
+
+.PHONY: install
+install:
+	$(shell . ./deploy.sh)
 
 
 .PHONY: deploy
