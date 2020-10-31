@@ -68,16 +68,21 @@ def giphy_image_search(search_term) -> Optional[str]:
         "rating": "R",
         "lang": "en",
     }
+    images = None
     try:
-        res = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if len(res.json()["data"]):
-            image = res.json()["data"][0]["images"]["original"]["url"]
-            return image
-        return "image not found :("
+        images = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
-    LOGGER.warning(f"No results found for `{search_term}`.")
-    return None
+    try:
+        if len(images.json()["data"]):
+            image = images.json()["data"][0]["images"]["original"]["url"]
+            return image
+        return "image not found :("
+    except KeyError as e:
+        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e}")
+        return emojize(
+            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
 
 
 def random_image(message) -> Optional[str]:
