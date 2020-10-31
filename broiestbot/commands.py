@@ -68,14 +68,16 @@ def giphy_image_search(search_term) -> Optional[str]:
         "rating": "R",
         "lang": "en",
     }
-    images = None
+    req = None
     try:
-        images = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
+        req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
+        if req.status_code != 200:
+            return "image not found :("
     try:
-        if len(images.json()["data"]):
-            image = images.json()["data"][0]["images"]["original"]["url"]
+        if len(req.json()["data"]):
+            image = req.json()["data"][0]["images"]["original"]["url"]
             return image
         return "image not found :("
     except KeyError as e:
