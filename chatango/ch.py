@@ -355,7 +355,7 @@ class _ANON_PM_OBJECT:
     def ping(self):
         """send a ping"""
         self._sendCommand("")
-        self._callEvent("onPMPing")
+        self._callEvent("on_pm_ping")
 
     def message(self, user, msg):
         """send a pm to a user"""
@@ -414,14 +414,14 @@ class _ANON_PM_OBJECT:
     def _rcmd_msg(self, args):
         user = User(args[0])
         body = _strip_html(":".join(args[5:]))
-        self._callEvent("onPMMessage", user, body)
+        self._callEvent("on_pm_message", user, body)
 
     ####
     # Util
     ####
     def _callEvent(self, evt, *args, **kw):
         getattr(self.mgr, evt)(self, *args, **kw)
-        self.mgr.onEventCalled(self, evt, *args, **kw)
+        self.mgr.on_event_called(self, evt, *args, **kw)
 
     def _write(self, data):
         if self._wlock:
@@ -475,7 +475,7 @@ class ANON_PM:
         self._persons[name]._sock = sock
         if not self._persons[name]._auth():
             return
-        self._persons[name]._pingTask = self._mgr.setInterval(
+        self._persons[name]._pingTask = self._mgr.set_internal(
             self._mgr._pingDelay, self._persons[name].ping
         )
         self._persons[name]._connected = True
@@ -526,7 +526,7 @@ class PM:
         self._firstCommand = True
         if not self._auth():
             return
-        self._pingTask = self.mgr.setInterval(self._mgr._pingDelay, self.ping)
+        self._pingTask = self.mgr.set_internal(self._mgr._pingDelay, self.ping)
         self._connected = True
 
     def _getAuth(self, name, password):
@@ -578,7 +578,7 @@ class PM:
     def disconnect(self):
         """Disconnect the bot from PM"""
         self._disconnect()
-        self._callEvent("onPMDisconnect")
+        self._callEvent("on_pm_disconnect")
 
     def _disconnect(self):
         self._connected = False
@@ -655,7 +655,7 @@ class PM:
             else:
                 self._status[user] = [int(last_on), True, time.time() - int(idle) * 60]
             self._contacts.add(user)
-        self._callEvent("onPMContactlistReceive")
+        self._callEvent("on_pm_contactlist_receive")
 
     def _rcmd_block_list(self, args):
         self._blocklist = set()
@@ -695,24 +695,24 @@ class PM:
     def _rcmd_msg(self, args):
         user = User(args[0])
         body = _strip_html(":".join(args[5:]))
-        self._callEvent("onPMMessage", user, body)
+        self._callEvent("on_pm_message", user, body)
 
     def _rcmd_msgoff(self, args):
         user = User(args[0])
         body = _strip_html(":".join(args[5:]))
-        self._callEvent("onPMOfflineMessage", user, body)
+        self._callEvent("on_pm_offline_message", user, body)
 
     def _rcmd_wlonline(self, args):
         user = User(args[0])
         last_on = float(args[1])
         self._status[user] = [last_on, True, last_on]
-        self._callEvent("onPMContactOnline", user)
+        self._callEvent("on_pm_contact_online", user)
 
     def _rcmd_wloffline(self, args):
         user = User(args[0])
         last_on = float(args[1])
         self._status[user] = [last_on, False, 0]
-        self._callEvent("onPMContactOffline", user)
+        self._callEvent("on_pm_contact_offline", user)
 
     def _rcmd_kickingoff(self, args):
         self.disconnect()
@@ -724,7 +724,7 @@ class PM:
         """call when successfully unblocked"""
         if user in self._blocklist:
             self._blocklist.remove(user)
-            self._callEvent("onPMUnblock", user)
+            self._callEvent("on_pm_unblock", user)
 
     ####
     # Commands
@@ -732,7 +732,7 @@ class PM:
     def ping(self):
         """send a ping"""
         self._sendCommand("")
-        self._callEvent("onPMPing")
+        self._callEvent("on_pm_ping")
 
     def message(self, user, msg):
         """send a pm to a user"""
@@ -744,21 +744,21 @@ class PM:
         if user not in self._contacts:
             self._sendCommand("wladd", user.name)
             self._contacts.add(user)
-            self._callEvent("onPMContactAdd", user)
+            self._callEvent("on_pm_contact_add", user)
 
     def removeContact(self, user):
         """remove contact"""
         if user in self._contacts:
             self._sendCommand("wldelete", user.name)
             self._contacts.remove(user)
-            self._callEvent("onPMContactRemove", user)
+            self._callEvent("on_pm_contact_remove", user)
 
     def block(self, user):
         """block a person"""
         if user not in self._blocklist:
             self._sendCommand("block", user.name, user.name, "S")
             self._blocklist.add(user)
-            self._callEvent("onPMBlock", user)
+            self._callEvent("on_pm_block", user)
 
     def unblock(self, user):
         """unblock a person"""
@@ -795,7 +795,7 @@ class PM:
     ####
     def _callEvent(self, evt, *args, **kw):
         getattr(self.mgr, evt)(self, *args, **kw)
-        self.mgr.onEventCalled(self, evt, *args, **kw)
+        self.mgr.on_event_called(self, evt, *args, **kw)
 
     def _write(self, data):
         if self._wlock:
@@ -887,7 +887,7 @@ class Room:
         self._sock.connect((self._server, self._port))
         self._sock.setblocking(False)
         self._firstCommand = True
-        self._pingTask = self.mgr.setInterval(self.mgr._pingDelay, self.ping)
+        self._pingTask = self.mgr.set_internal(self.mgr._pingDelay, self.ping)
         if not self._reconnecting:
             self.connected = True
         self._headers_parsed = False
@@ -1699,7 +1699,7 @@ class Room:
 
     def _callEvent(self, evt, *args, **kw):
         getattr(self.mgr, evt)(self, *args, **kw)
-        self.mgr.onEventCalled(self, evt, *args, **kw)
+        self.mgr.on_event_called(self, evt, *args, **kw)
 
     def _write(self, data):
         if self._wlock:
@@ -1843,7 +1843,7 @@ class RoomManager:
         else:
             self._pm = None
 
-    def _joinThread(self):
+    def _join_thread(self):
         while True:
             room = self._rooms_queue.get()
             with self._rooms_lock:
@@ -1853,7 +1853,7 @@ class RoomManager:
     ####
     # Join/leave
     ####
-    def joinRoom(self, room):
+    def join_room(self, room):
         """
         Join a room or return None if already joined.
 
@@ -1870,7 +1870,7 @@ class RoomManager:
         else:
             return None
 
-    def leaveRoom(self, room):
+    def leave_room(self, room):
         """
         Leave a room.
 
@@ -1883,7 +1883,7 @@ class RoomManager:
                 con = self._rooms[room]
                 con.disconnect()
 
-    def getRoom(self, room):
+    def get_room(self, room):
         """
         Get room with a name, or None if not connected to this room.
 
@@ -1902,30 +1902,30 @@ class RoomManager:
     ####
     # Properties
     ####
-    def _getUser(self):
+    def _get_user(self):
         return User(self._name)
 
-    def _getName(self):
+    def _get_name(self):
         return self._name
 
-    def _getPassword(self):
+    def _get_password(self):
         return self._password
 
-    def _getRooms(self):
+    def _get_rooms(self):
         return set(self._rooms.values())
 
-    def _getRoomNames(self):
+    def _get_room_names(self):
         return set(self._rooms.keys())
 
-    def _getPM(self):
+    def _get_pm(self):
         return self._pm
 
-    user = property(_getUser)
-    name = property(_getName)
-    password = property(_getPassword)
-    rooms = property(_getRooms)
-    roomnames = property(_getRoomNames)
-    pm = property(_getPM)
+    user = property(_get_user)
+    name = property(_get_name)
+    password = property(_get_password)
+    rooms = property(_get_rooms)
+    roomnames = property(_get_room_names)
+    pm = property(_get_pm)
 
     ####
     # Virtual methods
@@ -1977,7 +1977,8 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        self.set_timeout(100, self.stop)
+        self.join_room(room)
 
     def on_login_fail(self, room):
         """
@@ -2198,7 +2199,7 @@ class RoomManager:
         """
         pass
 
-    def onPMDisconnect(self, pm):
+    def on_pm_disconnect(self, pm):
         """
         Called when disconnected from the pm
 
@@ -2207,7 +2208,7 @@ class RoomManager:
         """
         pass
 
-    def onPMPing(self, pm):
+    def on_pm_ping(self, pm):
         """
         Called when sending a ping to the pm
 
@@ -2216,7 +2217,7 @@ class RoomManager:
         """
         pass
 
-    def onPMMessage(self, pm, user, body):
+    def on_pm_message(self, pm, user, body):
         """
         Called when a message is received
 
@@ -2229,7 +2230,7 @@ class RoomManager:
         """
         pass
 
-    def onPMOfflineMessage(self, pm, user, body):
+    def on_pm_offline_message(self, pm, user, body):
         """
         Called when connected if a message is received while offline
 
@@ -2242,7 +2243,7 @@ class RoomManager:
         """
         pass
 
-    def onPMContactlistReceive(self, pm):
+    def on_pm_contactlist_receive(self, pm):
         """
         Called when the contact list is received
 
@@ -2251,7 +2252,7 @@ class RoomManager:
         """
         pass
 
-    def onPMBlocklistReceive(self, pm):
+    def on_pm_blocklist_receive(self, pm):
         """
         Called when the block list is received
 
@@ -2260,7 +2261,7 @@ class RoomManager:
         """
         pass
 
-    def onPMContactAdd(self, pm, user):
+    def on_pm_contact_add(self, pm, user):
         """
         Called when the contact added message is received
 
@@ -2271,7 +2272,7 @@ class RoomManager:
         """
         pass
 
-    def onPMContactRemove(self, pm, user):
+    def on_pm_contact_remove(self, pm, user):
         """
         Called when the contact remove message is received
 
@@ -2282,7 +2283,7 @@ class RoomManager:
         """
         pass
 
-    def onPMBlock(self, pm, user):
+    def on_pm_block(self, pm, user):
         """
         Called when successfully block a user
 
@@ -2293,7 +2294,7 @@ class RoomManager:
         """
         pass
 
-    def onPMUnblock(self, pm, user):
+    def on_pm_unblock(self, pm, user):
         """
         Called when successfully unblock a user
 
@@ -2304,7 +2305,7 @@ class RoomManager:
         """
         pass
 
-    def onPMContactOnline(self, pm, user):
+    def on_pm_contact_online(self, pm, user):
         """
         Called when a user from the contact come online
 
@@ -2315,7 +2316,7 @@ class RoomManager:
         """
         pass
 
-    def onPMContactOffline(self, pm, user):
+    def on_pm_contact_offline(self, pm, user):
         """
         Called when a user from the contact go offline
 
@@ -2326,7 +2327,7 @@ class RoomManager:
         """
         pass
 
-    def onEventCalled(self, room, evt, *args, **kw):
+    def on_event_called(self, room, evt, *args, **kw):
         """
         Called on every room-based event.
 
@@ -2340,7 +2341,7 @@ class RoomManager:
     ####
     # Deferring
     ####
-    def deferToThread(self, callback, func, *args, **kw):
+    def defer_to_thread(self, callback, func, *args, **kw):
         """
         Defer a function to a thread and callback the return value.
 
@@ -2354,7 +2355,7 @@ class RoomManager:
 
         def f(func, callback, *args, **kw):
             ret = func(*args, **kw)
-            self.setTimeout(0, callback, ret)
+            self.set_timeout(0, callback, ret)
 
         threading._start_new_thread(f, (func, callback) + args, kw)
 
@@ -2363,8 +2364,8 @@ class RoomManager:
     ####
     class _Task:
         def cancel(self):
-            """Sugar for removeTask."""
-            self.mgr.removeTask(self)
+            """Sugar for remove_task."""
+            self.mgr.remove_task(self)
 
     def _tick(self):
         now = time.time()
@@ -2376,7 +2377,7 @@ class RoomManager:
                 else:
                     self._tasks.remove(task)
 
-    def setTimeout(self, timeout, func, *args, **kw):
+    def set_timeout(self, timeout, func, *args, **kw):
         """
         Call a function after at least timeout seconds with specified
         arguments.
@@ -2400,7 +2401,7 @@ class RoomManager:
         self._tasks.add(task)
         return task
 
-    def setInterval(self, timeout, func, *args, **kw):
+    def set_internal(self, timeout, func, *args, **kw):
         """
         Call a function at least every timeout seconds with specified
         arguments.
@@ -2424,7 +2425,7 @@ class RoomManager:
         self._tasks.add(task)
         return task
 
-    def removeTask(self, task):
+    def remove_task(self, task):
         """
         Cancel a task.
 
@@ -2452,7 +2453,7 @@ class RoomManager:
         self.on_init()
         self._running = True
         for l in range(0, Number_of_Threads):
-            t = threading.Thread(target=self._joinThread)
+            t = threading.Thread(target=self._join_thread)
             t.daemon = True
             t.start()
         while self._running:
@@ -2513,7 +2514,7 @@ class RoomManager:
             password = None
         self = cl(name=name, password=password, commands=commands, weather=weather)
         for room in rooms:
-            self.joinRoom(room)
+            self.join_room(room)
         self.main()
 
     def stop(self):
@@ -2524,31 +2525,31 @@ class RoomManager:
     ####
     # Commands
     ####
-    def enableBg(self):
+    def enable_bg(self):
         """Enable background if available."""
         self.user._mbg = True
         for room in self.rooms:
             room.setBgMode(1)
 
-    def disableBg(self):
+    def disable_bg(self):
         """Disable background."""
         self.user._mbg = False
         for room in self.rooms:
             room.setBgMode(0)
 
-    def enableRecording(self):
+    def enable_recording(self):
         """Enable recording if available."""
         self.user._mrec = True
         for room in self.rooms:
             room.setRecordingMode(1)
 
-    def disableRecording(self):
+    def disable_recording(self):
         """Disable recording."""
         self.user._mrec = False
         for room in self.rooms:
             room.setRecordingMode(0)
 
-    def setNameColor(self, color3x):
+    def set_name_color(self, color3x):
         """
         Set name color.
 
@@ -2557,7 +2558,7 @@ class RoomManager:
         """
         self.user._nameColor = color3x
 
-    def setFontColor(self, color3x):
+    def set_font_color(self, color3x):
         """
         Set font color.
 
@@ -2566,7 +2567,7 @@ class RoomManager:
         """
         self.user._fontColor = color3x
 
-    def setFontFace(self, face):
+    def set_font_face(self, face):
         """
         Set font face/family.
 
@@ -2575,7 +2576,7 @@ class RoomManager:
         """
         self.user._fontFace = face
 
-    def setFontSize(self, size):
+    def set_font_size(self, size):
         """
         Set font size.
 
@@ -2789,7 +2790,7 @@ class Message:
     def _getNameColor(self):
         return self._nameColor
 
-    def _getRoom(self):
+    def _get_room(self):
         return self._room
 
     def _getRaw(self):
@@ -2808,7 +2809,7 @@ class Message:
     time = property(_getTime)
     user = property(_getUser)
     body = property(_getBody)
-    room = property(_getRoom)
+    room = property(_get_room)
     ip = property(_getIP)
     fontColor = property(_getFontColor)
     fontFace = property(_getFontFace)

@@ -27,10 +27,10 @@ class Bot(RoomManager):
 
     def on_init(self):
         """Initialize bot."""
-        self.setNameColor("000000")
-        self.setFontColor("000000")
-        self.setFontFace("Arial")
-        self.setFontSize(11)
+        self.set_name_color("000000")
+        self.set_font_color("000000")
+        self.set_font_face("Arial")
+        self.set_font_size(11)
 
     @staticmethod
     def _chat(room, message):
@@ -84,7 +84,7 @@ class Bot(RoomManager):
                 room,
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
-                                https://penguintruth.org/static/img/penguin-share@2x.jpg",
+                                https://github.com/toddbirchard/penguintruth/blob/master/.github/penguinshare@2x.jpg",
             )
         elif chat_message.endswith("only on aclee"):
             self._chat(room, "™")
@@ -187,8 +187,6 @@ class Bot(RoomManager):
     def on_disconnect(self, room):
         """Called when the client gets disconnected."""
         LOGGER.error(f"Disconnected from {room}. Attempting to rejoin...")
-        self.setTimeout(100, self.stop)
-        self.joinRoom(room)
 
     def on_login_fail(self, room):
         """Called on login failure, disconnects after."""
