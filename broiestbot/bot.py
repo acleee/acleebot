@@ -84,7 +84,7 @@ class Bot(RoomManager):
                 room,
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
-                                https://penguintruth.org/static/img/penguin-share@2x.jpg",
+                                https://github.com/toddbirchard/penguintruth/blob/master/.github/penguinshare@2x.jpg",
             )
         elif chat_message.endswith("only on aclee"):
             self._chat(room, "™")
