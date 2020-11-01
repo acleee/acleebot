@@ -165,7 +165,7 @@ def weather_by_city(location: str, weather) -> Optional[str]:
                             {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
                             {data["current"]["temperature"]}°f \
                             (feels like {data["current"]["feelslike"]}°f). \
-                            {data["current"]["precip"]}% precipitation.'
+                            {data["current"]["precip"] * 100}% precipitation.'
             return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
