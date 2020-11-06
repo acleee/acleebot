@@ -32,26 +32,14 @@ Chat commands have 3 properties:
 
 ### Installation
 
-With [Pipenv](https://pipenv.kennethreitz.org/en/latest/):
+Get up and running with `make deploy`:
 
-```
+```shell
 $ git clone https://github.com/toddbirchard/broiestbot.git
 $ cd broiestbot
-$ pipenv shell
-$ pipenv update
-$ python3 main.py
-```
+$ make deploy
+``` 
 
-With **requirements.txt**:
-
-```
-$ git clone https://github.com/toddbirchard/broiestbot.git
-$ cd broiestbot
-$ python3 -m venv myenv
-$ source myenv/bin/activate
-$ pip install -r requirements.txt
-$ python3 main.py
-```
 
 ### Configuration
 
@@ -73,6 +61,20 @@ These variables are optional to enable different services, such as pulling image
 GOOGLE_broiestbot_CREDENTIALS=/path/to/credentials.json
 GOOGLE_BUCKET_NAME=nameOfStorageBucket
 GOOGLE_BUCKET_URL=http://storage.googleapis.com/
+
 GIPHY_API_KEY=yourGiphyAPIKey
+
 IEX_API_TOKEN=yourIEXStockAPIToken
+
+PLOTLY_API_KEY=yourPlotlyApiKey
+PLOTLY_USERNAME=yourPlotlyUsername
+
+REDDIT_CLIENT_ID=yourClientId
+REDDT_CLIENT_SECRET=yourClientSecret
+REDDIT_PASSWORD=yourRedditPassword
+
+TWILIO_SENDER_PHONE=123456789
+TWILIO_RECIPIENT_PHONE=123456789
+TWILIO_AUTH_TOKEN=yourKey
+TWILIO_ACCOUNT_SID=yourSid
 ```

@@ -71,7 +71,7 @@ update: env
 
 .PHONY: format
 format: env
-	$(shell . .venv/bin/activate && isort -rc ./)
+	$(shell . .venv/bin/activate && isort ./)
 	$(shell . .venv/bin/activate && black ./)
 
 
@@ -81,3 +81,4 @@ clean:
 	find . -name '__pycache__' -delete
 	find . -name 'poetry.lock' -delete
 	find . -name 'Pipefile.lock' -delete
+	find . -name '.pytest_cache' -delete

@@ -4,7 +4,7 @@ from sys import stdout
 
 import simplejson as json
 from loguru import logger
-from notifiers.logging import NotificationHandler
+from twilio.rest import Client
 
 from config import (
     ENVIRONMENT,
@@ -69,7 +69,17 @@ def formatter(record):
 
     else:
         record["extra"]["serialized"] = serialize_error(record)
+        error_handler(record)
         return "{extra[serialized]},\n"
+
+
+def error_handler(record):
+    sms = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+    sms.messages.create(
+        body=f'BROBOT ERROR: {record["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {record["message"]}',
+        from_=TWILIO_SENDER_PHONE,
+        to=TWILIO_RECIPIENT_PHONE,
+    )
 
 
 def create_logger():
@@ -80,20 +90,21 @@ def create_logger():
         format=formatter,
     )
     if ENVIRONMENT == "production":
-        params = {
-            "from": TWILIO_SENDER_PHONE,
-            "to": TWILIO_RECIPIENT_PHONE,
-            "account_sid": TWILIO_ACCOUNT_SID,
-            "auth_token": TWILIO_AUTH_TOKEN,
-        }
-        handler = NotificationHandler("twilio", defaults=params)
         # Datadog
         logger.add(
-            "logs/info.json", format=formatter, rotation="500 MB", compression="zip"
+            "logs/info.json",
+            format=formatter,
+            rotation="500 MB",
+            compression="zip",
+            catch=True,
         )
-        # SMS
-        logger.add(handler, catch=True, level="ERROR")
-
+        logger.add(
+            "errors.log",
+            level="ERROR",
+            rotation="500 MB",
+            compression="zip",
+            catch=True,
+        )
     return logger
 
 
