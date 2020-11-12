@@ -88,10 +88,21 @@ def giphy_image_search(search_term) -> Optional[str]:
 
 
 def random_image(message) -> Optional[str]:
-    """Select a random image from response."""
-    image_list = message.replace(" ", "").split(";")
-    random_pic = image_list[randint(0, len(image_list) - 1)]
-    return random_pic
+    """
+    Select a random image from response.
+
+    :param message: Query matching a command to set a random image from a set.
+    :type message: str
+
+     :returns: Optional[str]
+    """
+    try:
+        image_list = message.replace(" ", "").split(";")
+        random_pic = image_list[randint(0, len(image_list) - 1)]
+        return random_pic
+    except KeyError as e:
+        LOGGER.warning(f'Error when fetching random image: {e}')
+        return None
 
 
 def subreddit_image(subreddit: str) -> Optional[str]:
@@ -168,7 +179,13 @@ def weather_by_city(location: str, weather) -> Optional[str]:
                             {data["current"]["precip"] * 100}% precipitation.'
             return response
     except HTTPError as e:
-        LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
+        LOGGER.warning(f"Failed to get weather for `{location}`: {e.response.content}")
+        return emojize(
+            f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
+            use_aliases=True,
+        )
+    except Exception as e:
+        LOGGER.warning(f"Failed to get weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
             use_aliases=True,
@@ -178,12 +195,18 @@ def weather_by_city(location: str, weather) -> Optional[str]:
 @LOGGER.catch
 def wiki_summary(query):
     """Fetch Wikipedia summary for a given query."""
-    wiki_page = wiki.page(query)
-    if wiki_page.exists() and wiki_page.title and wiki_page.summary:
-        return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
-    return emojize(
-        f":warning: bruh i couldnt find shit for `{query}` :warning:", use_aliases=True
-    )
+    try:
+        wiki_page = wiki.page(query)
+        if wiki_page.exists() and wiki_page.title and wiki_page.summary:
+            return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
+        return emojize(
+            f":warning: bruh i couldnt find shit for `{query}` :warning:", use_aliases=True
+        )
+    except Exception as e:
+        LOGGER.warning(f"Failed to fetch wiki summary for `{query}`: {e}")
+        return emojize(
+            f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:", use_aliases=True
+        )
 
 
 @LOGGER.catch
