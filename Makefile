@@ -55,8 +55,6 @@ install:
 .PHONY: deploy
 deploy:
 	service $(PROJECTNAME) stop
-	git stash
-	git pull origin master
 	$(shell . ./deploy.sh)
 	service $(PROJECTNAME) start
 	service $(PROJECTNAME) status
