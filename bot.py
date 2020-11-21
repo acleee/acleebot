@@ -106,6 +106,8 @@ class bot(ch.RoomManager):
       room.message("https://i.imgur.com/gJJhOWh.jpg")
     if cmd.lower() == "pogchamp" and prfx:
       room.message("http://i.imgur.com/7bGsxZC.png")
+    if cmd.lower() == "panduh" and prfx:
+      room.message("https://giphy.com/gifs/jeTfBOYP940AU")
     if cmd.lower() == "fap" and prfx:
       room.message("http://i.imgur.com/UZA7oDD.png")
     if cmd.lower() == "gay" and prfx:
