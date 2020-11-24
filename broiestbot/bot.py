@@ -95,7 +95,7 @@ class Bot(RoomManager):
         elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
             self.link_preview(room, message.body)
         LOGGER.info(
-            f"[{room.name}] [{user.name.title()}] [{message.ip}]: {message.body}"
+            f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}"
         )
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
         # self.banned_word(room, message, user)
@@ -149,71 +149,3 @@ class Bot(RoomManager):
         """Trademark symbol helper."""
         message.delete()
         room.message("™")
-
-    def on_message_delete(self, room, user, message):
-        """Log message deletions"""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {user.name} had message deleted from {room.name}: {message.body}"
-        )
-
-    def on_mod_add(self, room, user):
-        """Called when a moderator gets added."""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {user.name} was modded in {room.name}."
-        )
-
-    def on_mod_remove(self, room, user):
-        """Called when a moderator gets removed."""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {user.name} was demodded in {room.name}."
-        )
-
-    def on_join(self, room, user, puid):
-        """Log user join events."""
-        LOGGER.success(
-            f"[{room.name}] [{user.name.title()}]: {user.name} joined {room.name}."
-        )
-
-    def on_leave(self, room, user, puid):
-        """Log user leave events."""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {user.name} left {room.name}."
-        )
-
-    def on_flood_warning(self, room):
-        """Called when an overflow warning gets received."""
-        LOGGER.error(f"Bot is about to be banned for spamming {room.name}.")
-
-    def on_disconnect(self, room):
-        """Called when the client gets disconnected."""
-        LOGGER.error(f"Disconnected from {room}. Attempting to rejoin...")
-
-    def on_login_fail(self, room):
-        """Called on login failure, disconnects after."""
-        LOGGER.error(f"Failed to join {room}.")
-
-    def on_flood_ban(self, room):
-        """Called when either flood banned or flagged. """
-        LOGGER.error(f"Bot was spam banned from {room.name}.")
-
-    def on_connect(self, room):
-        """Called when connected to the room."""
-        LOGGER.success(
-            f"[{room.name}] [{self._name}]: Successfully connected to {room.name}"
-        )
-
-    def on_connect_fail(self, room):
-        """Called when the connection failed. """
-        LOGGER.error(f"Failed to connect to {room}. Retying...")
-
-    def on_ban(self, room, user, target):
-        """Called when a user gets banned."""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {target} was banned from {room.name} by {user.name}."
-        )
-
-    def on_unban(self, room, user, target):
-        """Called when a user gets unbanned."""
-        LOGGER.warning(
-            f"[{room.name}] [{user.name.title()}]: {target} was unbanned from {room.name} by {user.name}."
-        )

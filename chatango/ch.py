@@ -6,6 +6,8 @@ import sys
 import threading
 import time
 
+from logger import LOGGER
+
 try:
     from . import _ws
 except BaseException as e:
@@ -1950,7 +1952,9 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.success(
+            f"[{room.name}] [{self.user.name}]: Successfully connected to {room.name}"
+        )
 
     def on_reconnect(self, room):
         """
@@ -1968,7 +1972,11 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f"Failed to connect to {room.name}. Retying...")
+        time.sleep(1000)
+        join_success = self.join_room(room)
+        if join_success is not True:
+            self.on_connect_fail(room)
 
     def on_disconnect(self, room):
         """
@@ -1977,8 +1985,11 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        self.set_timeout(100, self.stop)
-        self.join_room(room)
+        LOGGER.error(f"Disconnected from {room.name}. Attempting to rejoin...")
+        time.sleep(200)
+        join_success = self.join_room(room)
+        if join_success is not True:
+            self.on_connect_fail(room)
 
     def on_login_fail(self, room):
         """
@@ -1987,7 +1998,8 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f"Failed to join {room.name}. Attempting to rejoin...")
+        self.on_connect_fail(room)
 
     def on_flood_ban(self, room):
         """
@@ -1996,7 +2008,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f"Bot was spam banned from {room.name}.")
 
     def on_flood_ban_repeat(self, room):
         """
@@ -2014,7 +2026,7 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.error(f"Bot is about to be banned for spamming {room.name}.")
 
     def on_message_delete(self, room, user, message):
         """
@@ -2027,7 +2039,9 @@ class RoomManager:
         :type message: Message
         :param message: message that got deleted
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {user.name} had message deleted from {room.name}: {message.body}"
+        )
 
     def on_mod_change(self, room):
         """
@@ -2045,7 +2059,9 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {user.name} was modded in {room.name}."
+        )
 
     def on_mod_remove(self, room, user):
         """
@@ -2054,7 +2070,9 @@ class RoomManager:
         :type room: Room
         :param room: room where the event occurred
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {user.name} was demodded in {room.name}."
+        )
 
     def on_message(self, room, user, message):
         """
@@ -2067,7 +2085,12 @@ class RoomManager:
         :type message: Message
         :param message: received message
         """
-        pass
+        print(room)
+        print(user)
+        print(message)
+        LOGGER.info(
+            f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}"
+        )
 
     def on_history_message(self, room, user, message):
         """
@@ -2093,7 +2116,9 @@ class RoomManager:
         :type puid: str
         :param puid: the personal unique id for the user
         """
-        pass
+        LOGGER.success(
+            f"[{room.name}] [{user.name.title()}]: {user.name} joined {room.name}."
+        )
 
     def on_leave(self, room, user, puid):
         """
@@ -2106,7 +2131,9 @@ class RoomManager:
         :type puid: str
         :param puid: the personal unique id for the user
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {user.name} left {room.name}."
+        )
 
     def on_raw(self, room, raw):
         """
@@ -2148,7 +2175,9 @@ class RoomManager:
         :type target: User
         :param target: user that got banned
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {target.user} was banned from {room.name} by {user.name}."
+        )
 
     def on_unban(self, room, user, target):
         """
@@ -2161,7 +2190,9 @@ class RoomManager:
         :type target: User
         :param target: user that got unbanned
         """
-        pass
+        LOGGER.warning(
+            f"[{room.name}] [{user.name.title()}]: {target.name} was unbanned from {room.name} by {user.name}."
+        )
 
     def on_banlist_update(self, room):
         """

@@ -101,7 +101,7 @@ def random_image(message) -> Optional[str]:
         random_pic = image_list[randint(0, len(image_list) - 1)]
         return random_pic
     except KeyError as e:
-        LOGGER.warning(f'Error when fetching random image: {e}')
+        LOGGER.warning(f"Error when fetching random image: {e}")
         return None
 
 
@@ -200,12 +200,14 @@ def wiki_summary(query):
         if wiki_page.exists() and wiki_page.title and wiki_page.summary:
             return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
         return emojize(
-            f":warning: bruh i couldnt find shit for `{query}` :warning:", use_aliases=True
+            f":warning: bruh i couldnt find shit for `{query}` :warning:",
+            use_aliases=True,
         )
     except Exception as e:
         LOGGER.warning(f"Failed to fetch wiki summary for `{query}`: {e}")
         return emojize(
-            f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:", use_aliases=True
+            f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:",
+            use_aliases=True,
         )
 
 
@@ -287,7 +289,7 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> str:
                 results = req.json()["gfycats"]
                 rand = randint(0, len(results) - 1)
                 image_json = results[rand]
-                image = image_json.get("max5mbGif")
+                image = image_json.get("max2mbGif")
                 return image
             return f"Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@"
         except HTTPError as e:
@@ -314,6 +316,9 @@ def gfycat_auth_token() -> Optional[str]:
     except HTTPError as e:
         LOGGER.error(f"Failed to get gfycat auth token: {e.response.content}")
         return None
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching gfycat auth token: {e}")
+        return None
 
 
 @LOGGER.catch
@@ -328,6 +333,9 @@ def redgifs_auth_token() -> Optional[str]:
             return req.json()["access_token"]
     except HTTPError as e:
         LOGGER.error(f"Failed to get redgifs auth token: {e.response.content}")
+        return None
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching redgifs auth token: {e}")
         return None
 
 

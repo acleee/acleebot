@@ -88,6 +88,7 @@ def create_logger():
     logger.add(
         stdout,
         format=formatter,
+        catch=True,
     )
     if ENVIRONMENT == "production":
         # Datadog
