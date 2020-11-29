@@ -85,6 +85,11 @@ def giphy_image_search(search_term) -> Optional[str]:
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while fetching Giphy image `{search_term}`: {e}")
+        return emojize(
+            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
 
 
 def random_image(message) -> Optional[str]:
@@ -103,6 +108,9 @@ def random_image(message) -> Optional[str]:
     except KeyError as e:
         LOGGER.warning(f"Error when fetching random image: {e}")
         return None
+    except Exception as e:
+        LOGGER.warning(f"Unexpected error when fetching random image: {e}")
+        return None
 
 
 def subreddit_image(subreddit: str) -> Optional[str]:
@@ -113,6 +121,11 @@ def subreddit_image(subreddit: str) -> Optional[str]:
             return images[0]
     except RedditAPIException as e:
         LOGGER.error(f"Reddit image search failed for subreddit `{subreddit}`: {e}")
+        return emojize(
+            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when Reddit searching for `{subreddit}`: {e}")
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
@@ -143,6 +156,10 @@ def get_urban_definition(word: str) -> Optional[str]:
     except HTTPError as e:
         LOGGER.error(
             f"Failed to get Urban definition for `{word}`: {e.response.content}"
+        )
+    except Exception as e:
+        LOGGER.error(
+            f"Unexpected error when fetching Urban definition for `{word}`: {e}"
         )
     return emojize(
         ":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True
@@ -223,6 +240,8 @@ def find_imdb_movie(movie_title) -> Optional[str]:
             movie = ia.get_movie(movie_id)
     except IMDbError as e:
         LOGGER.error(f"IMDB failed to find `{movie_title}`: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
     if movie:
         cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
         art = movie.data.get("cover url", None)
@@ -276,7 +295,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
 
 @LOGGER.catch
 def get_redgifs_gif(query: str, after_dark_only=False) -> str:
-    """Fetch specific kind of gif."""
+    """Fetch specific kind of gif ;)."""
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
@@ -296,12 +315,20 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> str:
             LOGGER.error(
                 f"Failed to get nsfw image for `{query}`: {e.response.content}"
             )
+        except KeyError as e:
+            LOGGER.error(
+                f"Experienced KeyError while fetching nsfw image for `{query}`: {e}"
+            )
+        except Exception as e:
+            LOGGER.error(
+                f"Unexcepted error while fetching nsfw image for `{query}`: {e}"
+            )
     return "https://i.imgur.com/oGMHkqT.jpg"
 
 
 @LOGGER.catch
 def gfycat_auth_token() -> Optional[str]:
-    """Get auth token."""
+    """Get auth token for gfycat."""
     endpoint = "https://api.gfycat.com/v1/oauth/token"
     body = {
         "grant_type": "client_credentials",
@@ -371,6 +398,9 @@ def get_instagram_token():
     except HTTPError as e:
         LOGGER.error(f"Failed to get Instagram token: {e.response.content}")
         return None
+    except Exception as e:
+        LOGGER.error(f"Failed to get Instagram token: {e}")
+        return None
 
 
 def create_instagram_preview(url) -> Optional[str]:
@@ -393,3 +423,6 @@ def create_instagram_preview(url) -> Optional[str]:
         return None
     except HTTPError as e:
         LOGGER.error(f"Instagram URL {url} threw status code : {e.response.content}")
+    except Exception as e:
+        LOGGER.error(f"Failed to get Instagram url: {e}")
+        return None
