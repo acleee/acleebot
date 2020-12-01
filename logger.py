@@ -1,4 +1,4 @@
-"""Custom logger and notifications."""
+"""Custom logger and error notifications."""
 import re
 from sys import stdout
 
@@ -95,14 +95,14 @@ def create_logger():
         logger.add(
             "logs/info.json",
             format=formatter,
-            rotation="500 MB",
+            rotation="200 MB",
             compression="zip",
             catch=True,
         )
         logger.add(
-            "errors.log",
+            "logs/errors.log",
             level="ERROR",
-            rotation="500 MB",
+            rotation="200 MB",
             compression="zip",
             catch=True,
         )
