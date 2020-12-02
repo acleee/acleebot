@@ -94,9 +94,7 @@ class Bot(RoomManager):
             self.ban_word(room, message, user, silent=True)
         elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
             self.link_preview(room, message.body)
-        LOGGER.info(
-            f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}"
-        )
+        LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
         # self.banned_word(room, message, user)
 

@@ -1,5 +1,7 @@
 """Activate bot Night Mode"""
-from datetime import datetime, timedelta, timezone
+from datetime import datetime
+
+import pytz
 
 
 def is_after_dark() -> bool:
@@ -7,8 +9,8 @@ def is_after_dark() -> bool:
     Determine if current time is in threshold for `Night Mode`.
     :return: Bool
     """
-    tz = timezone(timedelta(hours=-4), name="EDT")
-    now = datetime.now(tz=tz)
+    tz = pytz.timezone("America/New_York")
+    now = datetime.now(tz=pytz.timezone("America/New_York"))
     start_time = datetime(
         year=now.year, month=now.month, day=now.day, hour=0, tzinfo=tz
     )

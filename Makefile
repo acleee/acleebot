@@ -49,13 +49,13 @@ restart: env
 
 .PHONY: install
 install:
-	$(shell . ./deploy.sh)
+	$(shell . deploy.sh)
 
 
 .PHONY: deploy
 deploy:
 	service $(PROJECTNAME) stop
-	$(shell . ./deploy.sh)
+	$(shell . deploy.sh)
 	service $(PROJECTNAME) start
 	service $(PROJECTNAME) status
 
@@ -79,4 +79,6 @@ clean:
 	find . -name '__pycache__' -delete
 	find . -name 'poetry.lock' -delete
 	find . -name 'Pipefile.lock' -delete
+	find . -name '.pytest_cache' -delete
+	find . -name './logs/*.log' -delete
 	find . -name '.pytest_cache' -delete

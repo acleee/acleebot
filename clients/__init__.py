@@ -1,6 +1,8 @@
 """External clients."""
 import praw
 import wikipediaapi
+from imdb import IMDb
+from twilio.rest import Client
 
 from config import (
     ALPHA_VANTAGE_API_KEY,
@@ -15,6 +17,8 @@ from config import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
+    TWILIO_ACCOUNT_SID,
+    TWILIO_AUTH_TOKEN,
 )
 
 from .crypto import CryptoChartHandler
@@ -40,6 +44,12 @@ cch = CryptoChartHandler(
 
 # Wikipedia API Python SDK
 wiki = wikipediaapi.Wikipedia("en")
+
+# Twilio SMS Client
+sms = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
+
+# IMDB Client
+ia = IMDb()
 
 # Reddit API Python SDK
 reddit = praw.Reddit(

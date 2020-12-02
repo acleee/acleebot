@@ -1,4 +1,5 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
+from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
@@ -21,7 +22,7 @@ class StockChartHandler:
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
         if message and chart:
-            return f"{message} {chart}"
+            return f"{message} \n {chart}"
         elif message:
             return message
         return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")
@@ -44,6 +45,10 @@ class StockChartHandler:
             raise HTTPError(
                 f"Failed to fetch stock price for `{symbol}`: {e.response.content}"
             )
+        except Exception as e:
+            raise Exception(
+                f"Unexpected error while fetching stock price for `{symbol}`: {e}"
+            )
         return None
 
     def _get_chart_data(self, symbol: str) -> Optional[bytes]:
@@ -57,6 +62,10 @@ class StockChartHandler:
         except HTTPError as e:
             raise HTTPError(
                 f"Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}"
+            )
+        except Exception as e:
+            raise Exception(
+                f"Unexpected error while fetching stock timeseries data for `{symbol}`: {e}"
             )
         return None
 
@@ -124,11 +133,14 @@ class StockChartHandler:
             )
             chart = py.plot(
                 fig,
-                filename=symbol,
-                auto_open=False,
-                fileopt="overwrite",
+                filename=f"{symbol}_{datetime.now()}",
                 sharing="public",
+                auto_open=False,
             )
-            chart_url = chart.replace("plotly.com", "chart-studio.plotly.com")
-            return chart_url[:-1] + ".jpeg"
+            return (
+                chart.replace(
+                    "https://plotly.com/", "https://chart-studio.plotly.com/"
+                )[:-1]
+                + ".png"
+            )
         return None

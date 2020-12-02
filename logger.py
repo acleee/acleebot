@@ -4,15 +4,9 @@ from sys import stdout
 
 import simplejson as json
 from loguru import logger
-from twilio.rest import Client
 
-from config import (
-    ENVIRONMENT,
-    TWILIO_ACCOUNT_SID,
-    TWILIO_AUTH_TOKEN,
-    TWILIO_RECIPIENT_PHONE,
-    TWILIO_SENDER_PHONE,
-)
+from clients import sms
+from config import BASE_DIR, ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
 
 
 def formatter(record):
@@ -74,7 +68,6 @@ def formatter(record):
 
 
 def error_handler(record):
-    sms = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
     sms.messages.create(
         body=f'BROBOT ERROR: {record["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {record["message"]}',
         from_=TWILIO_SENDER_PHONE,
@@ -82,7 +75,7 @@ def error_handler(record):
     )
 
 
-def create_logger():
+def create_logger() -> logger:
     """Customer logger creation."""
     logger.remove()
     logger.add(
@@ -90,18 +83,18 @@ def create_logger():
         format=formatter,
         catch=True,
     )
+    logger.add(
+        f"{BASE_DIR}/logs/errors.log",
+        level="ERROR",
+        rotation="200 MB",
+        compression="zip",
+        catch=True,
+    )
     if ENVIRONMENT == "production":
         # Datadog
         logger.add(
-            "logs/info.json",
+            f"{BASE_DIR}/logs/info.json",
             format=formatter,
-            rotation="200 MB",
-            compression="zip",
-            catch=True,
-        )
-        logger.add(
-            "logs/errors.log",
-            level="ERROR",
             rotation="200 MB",
             compression="zip",
             catch=True,

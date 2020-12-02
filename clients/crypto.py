@@ -1,4 +1,5 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
+from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
@@ -7,8 +8,6 @@ import plotly.graph_objects as go
 import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
-
-from logger import LOGGER
 
 
 class CryptoChartHandler:
@@ -24,7 +23,7 @@ class CryptoChartHandler:
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
         if message and chart:
-            return f"{message} {chart}"
+            return f"{message} \n {chart}"
         elif message:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
@@ -52,6 +51,8 @@ class CryptoChartHandler:
             raise HTTPError(
                 f"Failed to fetch crypto price for `{symbol}`: {e.response.content}"
             )
+        except Exception as e:
+            raise Exception(f"Unexpected error while crypto price for `{symbol}`: {e}")
 
     def _get_chart_data(self, symbol: str) -> Optional[dict]:
         """Fetch 60-day crypto prices."""
@@ -69,6 +70,8 @@ class CryptoChartHandler:
             raise HTTPError(
                 f"Failed to fetch crypto data for `{symbol}`: {e.response.content}"
             )
+        except Exception as e:
+            raise Exception(f"Unexpected error while crypto data for `{symbol}`: {e}")
 
     @staticmethod
     def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:
@@ -78,7 +81,6 @@ class CryptoChartHandler:
         )[:60]
         return df
 
-    @LOGGER.catch
     def _create_chart(self, symbol: str) -> Optional[str]:
         """Create Plotly chart for given crypto symbol."""
         data = self._get_chart_data(symbol)
@@ -136,11 +138,14 @@ class CryptoChartHandler:
             )
             chart = py.plot(
                 fig,
-                filename=symbol,
-                auto_open=False,
-                fileopt="overwrite",
+                filename=f"{symbol}_{datetime.now()}",
                 sharing="public",
+                auto_open=False,
             )
-            chart_url = chart.replace("plotly.com", "chart-studio.plotly.com")
-            return chart_url[:-1] + ".png"
+            return (
+                chart.replace(
+                    "https://plotly.com/", "https://chart-studio.plotly.com/"
+                )[:-1]
+                + ".png"
+            )
         return None

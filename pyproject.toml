@@ -13,8 +13,8 @@ keywords = [
     "Chatbot",
     "Chat",
     "Chatango",
+    "Bot",
     "Python",
-    "Bot"
 ]
 
 [tool.poetry.dependencies]

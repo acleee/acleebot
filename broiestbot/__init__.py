@@ -1,6 +1,6 @@
 """Initialize bot."""
 from broiestbot.bot import Bot
-from broiestbot.clients import db
+from clients import db
 from config import (
     CHATANGO_BRO_PASSWORD,
     CHATANGO_BRO_USERNAME,

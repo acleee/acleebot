@@ -8,12 +8,13 @@ import pytz
 import requests
 from bs4 import BeautifulSoup
 from emoji import emojize
-from imdb import IMDb, IMDbError
+from imdb import IMDbError
 from praw.exceptions import RedditAPIException
+from requests import Response
 from requests.exceptions import HTTPError
 
 from broiestbot.afterdark import is_after_dark
-from broiestbot.clients import cch, gcs, reddit, sch, wiki
+from clients import cch, gcs, ia, reddit, sch, wiki
 from config import (
     GFYCAT_CLIENT_ID,
     GFYCAT_CLIENT_SECRET,
@@ -21,7 +22,6 @@ from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
     INSTAGRAM_APP_ID,
-    INSTAGRAM_APP_SECRET,
     PLOTLY_API_KEY,
     PLOTLY_USERNAME,
     REDGIFS_ACCESS_KEY,
@@ -40,14 +40,20 @@ def basic_message(message):
     return message
 
 
-def get_crypto(symbol):
+def get_crypto(symbol) -> Optional[str]:
     """Fetch crypto price and generate 60-day performance chart."""
-    chart = cch.get_chart(symbol)
-    return chart
+    try:
+        chart = cch.get_chart(symbol)
+        return chart
+    except HTTPError as e:
+        LOGGER.error(e)
+    except Exception as e:
+        LOGGER.error(e)
+    return None
 
 
 @LOGGER.catch
-def fetch_image_from_gcs(message):
+def fetch_image_from_gcs(message) -> str:
     """Get a random image from Google Cloud Storage bucket."""
     images = gcs.bucket.list_blobs(prefix=message)
     image_list = [image.name for image in images if "." in image.name]
@@ -68,25 +74,26 @@ def giphy_image_search(search_term) -> Optional[str]:
         "rating": "R",
         "lang": "en",
     }
-    req = None
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-    except HTTPError as e:
-        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
         if req.status_code != 200:
             return "image not found :("
-    try:
-        if len(req.json()["data"]):
-            image = req.json()["data"][0]["images"]["original"]["url"]
-            return image
-        return "image not found :("
+        image = req.json()["data"][0]["images"]["original"]["url"]
+        return image
+    except HTTPError as e:
+        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
+        return emojize(
+            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
     except KeyError as e:
         LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e}")
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except Exception as e:
-        LOGGER.error(f"Unexpected error while fetching Giphy image `{search_term}`: {e}")
+        LOGGER.error(
+            f"Unexpected error while fetching Giphy image `{search_term}`: {e}"
+        )
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
@@ -131,10 +138,17 @@ def subreddit_image(subreddit: str) -> Optional[str]:
         )
 
 
-def get_stock(symbol: str):
+def get_stock(symbol: str) -> Optional[str]:
     """Fetch stock price and generate 30-day performance chart."""
-    chart = sch.get_chart(symbol)
-    return chart
+    try:
+        chart = sch.get_chart(symbol)
+        return chart
+    except HTTPError as e:
+        LOGGER.error(e)
+        return None
+    except Exception as e:
+        LOGGER.error(e)
+        return None
 
 
 @LOGGER.catch
@@ -157,10 +171,12 @@ def get_urban_definition(word: str) -> Optional[str]:
         LOGGER.error(
             f"Failed to get Urban definition for `{word}`: {e.response.content}"
         )
+        return None
     except Exception as e:
         LOGGER.error(
             f"Unexpected error when fetching Urban definition for `{word}`: {e}"
         )
+        return None
     return emojize(
         ":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True
     )
@@ -196,13 +212,19 @@ def weather_by_city(location: str, weather) -> Optional[str]:
                             {data["current"]["precip"] * 100}% precipitation.'
             return response
     except HTTPError as e:
-        LOGGER.warning(f"Failed to get weather for `{location}`: {e.response.content}")
+        LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
+        return emojize(
+            f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
+            use_aliases=True,
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
             use_aliases=True,
         )
     except Exception as e:
-        LOGGER.warning(f"Failed to get weather for `{location}`: {e}")
+        LOGGER.error(f"Failed to get weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
             use_aliases=True,
@@ -210,7 +232,7 @@ def weather_by_city(location: str, weather) -> Optional[str]:
 
 
 @LOGGER.catch
-def wiki_summary(query):
+def wiki_summary(query) -> str:
     """Fetch Wikipedia summary for a given query."""
     try:
         wiki_page = wiki.page(query)
@@ -221,7 +243,7 @@ def wiki_summary(query):
             use_aliases=True,
         )
     except Exception as e:
-        LOGGER.warning(f"Failed to fetch wiki summary for `{query}`: {e}")
+        LOGGER.error(f"Unexpected error while fetching wiki summary for `{query}`: {e}")
         return emojize(
             f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:",
             use_aliases=True,
@@ -231,45 +253,59 @@ def wiki_summary(query):
 @LOGGER.catch
 def find_imdb_movie(movie_title) -> Optional[str]:
     """Get movie information from IMDB."""
-    ia = IMDb()
-    movie = None
     try:
         movies = ia.search_movie(movie_title)
         if bool(movies):
             movie_id = movies[0].getID()
             movie = ia.get_movie(movie_id)
+            if movie:
+                cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
+                art = movie.data.get("cover url", None)
+                director = movie.data.get("director")
+                if director:
+                    director = (
+                        f"DIRECTED by {movie.data.get('director')[0].get('name')}."
+                    )
+                year = movie.data.get("year")
+                genres = f"({', '.join(movie.data.get('genres'))}, {year})."
+                title = f"{movie.data.get('title').upper()},"
+                rating = f"{movie.data.get('rating')}/10"
+                boxoffice = get_boxoffice_data(movie)
+                synopsis = movie.data.get("synopsis")
+                if synopsis:
+                    try:
+                        synopsis = synopsis[0]
+                        synopsis = " ".join(synopsis[0].split(". ")[:2])
+                    except KeyError as e:
+                        LOGGER.error(
+                            f"IMDB movie `{title}` does not have a synopsis: {e}"
+                        )
+                response = " ".join(
+                    filter(
+                        None,
+                        [
+                            title,
+                            rating,
+                            genres,
+                            cast,
+                            director,
+                            synopsis,
+                            boxoffice,
+                            art,
+                        ],
+                    )
+                )
+                return response
+            LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
+            return emojize(
+                f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
+            )
     except IMDbError as e:
         LOGGER.error(f"IMDB failed to find `{movie_title}`: {e}")
+        return None
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
-    if movie:
-        cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
-        art = movie.data.get("cover url", None)
-        director = movie.data.get("director")
-        if director:
-            director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
-        year = movie.data.get("year")
-        genres = f"({', '.join(movie.data.get('genres'))}, {year})."
-        title = f"{movie.data.get('title').upper()},"
-        rating = f"{movie.data.get('rating')}/10"
-        boxoffice = get_boxoffice_data(movie)
-        synopsis = movie.data.get("synopsis")
-        if synopsis:
-            try:
-                synopsis = synopsis[0]
-                synopsis = " ".join(synopsis[0].split(". ")[:2])
-            except KeyError as e:
-                LOGGER.error(f"IMDB movie `{title}` does not have a synopsis: {e}")
-        response = " ".join(
-            filter(
-                None, [title, rating, genres, cast, director, synopsis, boxoffice, art]
-            )
-        )
-        return response
-    LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
-    return emojize(
-        f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
-    )
+        return None
 
 
 @LOGGER.catch
@@ -294,7 +330,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
 
 
 @LOGGER.catch
-def get_redgifs_gif(query: str, after_dark_only=False) -> str:
+def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
     """Fetch specific kind of gif ;)."""
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
@@ -315,14 +351,17 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> str:
             LOGGER.error(
                 f"Failed to get nsfw image for `{query}`: {e.response.content}"
             )
+            return None
         except KeyError as e:
             LOGGER.error(
                 f"Experienced KeyError while fetching nsfw image for `{query}`: {e}"
             )
+            return None
         except Exception as e:
             LOGGER.error(
-                f"Unexcepted error while fetching nsfw image for `{query}`: {e}"
+                f"Unexpected error while fetching nsfw image for `{query}`: {e}"
             )
+            return None
     return "https://i.imgur.com/oGMHkqT.jpg"
 
 
@@ -367,7 +406,7 @@ def redgifs_auth_token() -> Optional[str]:
 
 
 @LOGGER.catch
-def blaze_time_remaining():
+def blaze_time_remaining() -> str:
     """Get remaining time until target time."""
     now = datetime.now(tz=pytz.timezone("America/New_York"))
     am_time = now.replace(hour=4, minute=20, second=0)
@@ -388,7 +427,7 @@ def blaze_time_remaining():
     )
 
 
-def get_instagram_token():
+def get_instagram_token() -> Optional[Response]:
     """Generate Instagram OAuth token."""
     try:
         params = {

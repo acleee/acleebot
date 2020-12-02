@@ -2088,9 +2088,7 @@ class RoomManager:
         print(room)
         print(user)
         print(message)
-        LOGGER.info(
-            f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}"
-        )
+        LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """
