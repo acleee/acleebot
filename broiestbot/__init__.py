@@ -1,4 +1,5 @@
 """Initialize bot."""
+from datadog import initialize, statsd
 from broiestbot.bot import Bot
 from clients import db
 from config import (
@@ -32,6 +33,11 @@ def start_bot():
         print("Starting in dev mode...")
         join_rooms([CHATANGO_TEST_ROOM])
     else:
+        options = {
+            'statsd_host': '127.0.0.1',
+            'statsd_port': 8125
+        }
+        initialize(**options)
         print(f'Joining {", ".join(CHATANGO_ROOMS)}')
         join_rooms(CHATANGO_ROOMS)
 
