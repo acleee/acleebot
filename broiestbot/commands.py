@@ -76,7 +76,7 @@ def giphy_image_search(search_term: str) -> Optional[str]:
     }
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if req.status_code != 200 or bool(req.json()[0]["images"]) is False:
+        if req.status_code != 200:
             return "image not found :("
         image = req.json()["data"][0]["images"]["original"]["url"]
         return image
