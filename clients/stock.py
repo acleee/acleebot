@@ -20,6 +20,13 @@ class StockChartHandler:
     def get_chart(self, symbol: str) -> str:
         """Create chart of a company's 30-day stock performance."""
         message = self._get_price(symbol)
+        if message:
+            return message
+        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")
+
+    def get_chart_old(self, symbol: str) -> str:
+        """Create chart of a company's 30-day stock performance."""
+        message = self._get_price(symbol)
         chart = self._create_chart(symbol)
         if message and chart:
             return f"{message} \n {chart}"
@@ -39,7 +46,7 @@ class StockChartHandler:
                 if price and company_name:
                     message = f"{company_name}: Current price of ${price:.2f}."
                     if change:
-                        message = f"{company_name}: Current price of ${price:.2f}, change of {change:.2f}%"
+                        message = f"{company_name}: Current price of ${price:.2f} (24-hour change of {change:.2f}%)"
                     return message
         except HTTPError as e:
             raise HTTPError(

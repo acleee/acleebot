@@ -21,6 +21,13 @@ class CryptoChartHandler:
     def get_chart(self, symbol: str) -> str:
         """Get crypto data and generate Plotly chart."""
         message = self._get_price(symbol)
+        if message:
+            return message
+        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
+
+    def get_chart_old(self, symbol: str) -> str:
+        """Get crypto data and generate Plotly chart."""
+        message = self._get_price(symbol)
         chart = self._create_chart(symbol)
         if message and chart:
             return f"{message} \n {chart}"
@@ -39,7 +46,7 @@ class CryptoChartHandler:
                 return (
                     f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. '
                     f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} '
-                    f"(change of {percentage:.2f}%)."
+                    f"(24-hour change of {percentage:.2f}%)."
                 )
             else:
                 return (

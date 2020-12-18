@@ -10,12 +10,13 @@ make restart    - Purge cache & reinstall modules.
 make install    - Install application for the first time
 make deploy     - Pull latest build and deploy to production.
 make update     - Update pip deploy in both poetry and pipenv environments.
+make lint       - Check code formatting with flake8
 make clean      - Remove cached files and lock files.
 endef
 export HELP
 
 
-.PHONY: run restart install deploy update clean help
+.PHONY: run restart install deploy update clean lint help
 
 
 requirements: .requirements.txt
@@ -54,10 +55,7 @@ install:
 
 .PHONY: deploy
 deploy:
-	service $(PROJECTNAME) stop
 	$(shell . deploy.sh)
-	service $(PROJECTNAME) start
-	service $(PROJECTNAME) status
 
 
 .PHONY: update
@@ -73,6 +71,11 @@ format: env
 	$(shell . .venv/bin/activate && black ./)
 
 
+.PHONY: lint
+lint:
+	flake8 ./app --count --select=E9,F63,F7,F82 --show-source --statistics
+
+
 .PHONY: clean
 clean:
 	find . -name '*.pyc' -delete
@@ -82,3 +85,5 @@ clean:
 	find . -name '.pytest_cache' -delete
 	find . -name './logs/*.log' -delete
 	find . -name '.pytest_cache' -delete
+	find . -name '*.log' -delete
+	find . -name 'logs/*.json' -delete
