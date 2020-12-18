@@ -63,7 +63,7 @@ def fetch_image_from_gcs(message) -> str:
 
 
 @LOGGER.catch
-def giphy_image_search(search_term) -> Optional[str]:
+def giphy_image_search(search_term: str) -> Optional[str]:
     """Giphy image search."""
     rand = randint(0, 20)
     params = {
@@ -76,7 +76,7 @@ def giphy_image_search(search_term) -> Optional[str]:
     }
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if req.status_code != 200:
+        if req.status_code != 200 or bool(req.json()[0]["images"]) is False:
             return "image not found :("
         image = req.json()["data"][0]["images"]["original"]["url"]
         return image
@@ -86,27 +86,27 @@ def giphy_image_search(search_term) -> Optional[str]:
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except KeyError as e:
-        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e}")
+        LOGGER.error(f"Giphy KeyError for `{search_term}`: {e}")
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except Exception as e:
         LOGGER.error(
-            f"Unexpected error while fetching Giphy image `{search_term}`: {e}"
+            f"Giphy unexpected error for `{search_term}`: {e}"
         )
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
 
 
-def random_image(message) -> Optional[str]:
+def random_image(message: str) -> Optional[str]:
     """
-    Select a random image from response.
+    Randomly select a response from a given set.
 
     :param message: Query matching a command to set a random image from a set.
     :type message: str
 
-     :returns: Optional[str]
+    :returns: Optional[str]
     """
     try:
         image_list = message.replace(" ", "").split(";")
@@ -232,12 +232,12 @@ def weather_by_city(location: str, weather) -> Optional[str]:
 
 
 @LOGGER.catch
-def wiki_summary(query) -> str:
+def wiki_summary(query: str) -> str:
     """Fetch Wikipedia summary for a given query."""
     try:
         wiki_page = wiki.page(query)
         if wiki_page.exists() and wiki_page.title and wiki_page.summary:
-            return f"{wiki_page.title.upper()}: {wiki_page.summary[:3000]}"
+            return f"{wiki_page.title.upper()}: {wiki_page.summary}"
         return emojize(
             f":warning: bruh i couldnt find shit for `{query}` :warning:",
             use_aliases=True,
