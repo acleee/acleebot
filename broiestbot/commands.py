@@ -91,9 +91,7 @@ def giphy_image_search(search_term: str) -> Optional[str]:
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except Exception as e:
-        LOGGER.error(
-            f"Giphy unexpected error for `{search_term}`: {e}"
-        )
+        LOGGER.error(f"Giphy unexpected error for `{search_term}`: {e}")
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
@@ -163,10 +161,10 @@ def get_urban_definition(word: str) -> Optional[str]:
         results = req.json().get("list")
         if results:
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
-            definition = str(results[0].get("definition"))
-            example = str(results[0].get("example"))
+            definition = str(results[0].get("definition"))[0:1500].replace("[", "").replace("]", "")
+            example = str(results[0].get("example")).replace("[", "").replace("]", "")
             word = word.upper()
-            return f"{word}: {definition}. EXAMPLE: {example}."
+            return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}."
     except HTTPError as e:
         LOGGER.error(
             f"Failed to get Urban definition for `{word}`: {e.response.content}"
@@ -233,11 +231,18 @@ def weather_by_city(location: str, weather) -> Optional[str]:
 
 @LOGGER.catch
 def wiki_summary(query: str) -> str:
-    """Fetch Wikipedia summary for a given query."""
+    """
+    Fetch Wikipedia summary for a given query.
+
+    :param query: Query to fetch corresponding Wikipedia page.
+    :type query: str
+
+    :returns: str
+    """
     try:
         wiki_page = wiki.page(query)
-        if wiki_page.exists() and wiki_page.title and wiki_page.summary:
-            return f"{wiki_page.title.upper()}: {wiki_page.summary}"
+        if wiki_page.exists():
+            return f"{wiki_page.title.upper()}: {wiki_page.summary[0:1500]}"
         return emojize(
             f":warning: bruh i couldnt find shit for `{query}` :warning:",
             use_aliases=True,
@@ -251,7 +256,7 @@ def wiki_summary(query: str) -> str:
 
 
 @LOGGER.catch
-def find_imdb_movie(movie_title) -> Optional[str]:
+def find_imdb_movie(movie_title: str) -> Optional[str]:
     """Get movie information from IMDB."""
     try:
         movies = ia.search_movie(movie_title)

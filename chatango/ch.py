@@ -1234,6 +1234,7 @@ class Room:
             msg.attach(self, args[1])
             self._addHistory(msg)
             self._callEvent("on_message", msg.user, msg)
+        # possible this came first (out of order)
         else:
             self._uqueue[args[0]] = args[1]
 
@@ -1289,7 +1290,7 @@ class Room:
             del self._uqueue[i]
             msg.attach(self, msgid)
             self._addHistory(msg)
-            self._callEvent("onMessage", msg.user, msg)
+            self._callEvent("on_message", msg.user, msg)
         else:
             self._mqueue[i] = msg
 
@@ -1821,7 +1822,7 @@ class RoomManager:
     _userlistMemory = 50
     _userlistEventUnique = False
     _tooBigMessage = BigMessage_Multiple
-    _maxLength = 1800
+    _maxLength = 2500
     _maxHistoryLength = 150
 
     ####
