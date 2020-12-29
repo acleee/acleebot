@@ -62,7 +62,6 @@ def fetch_image_from_gcs(message) -> str:
     return image
 
 
-@LOGGER.catch
 def giphy_image_search(search_term: str) -> Optional[str]:
     """Giphy image search."""
     rand = randint(0, 20)
@@ -86,15 +85,9 @@ def giphy_image_search(search_term: str) -> Optional[str]:
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except KeyError as e:
-        LOGGER.error(f"Giphy KeyError for `{search_term}`: {e}")
-        return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
-        )
+        LOGGER.warn(f"Giphy KeyError for `{search_term}`: {e}")
     except Exception as e:
-        LOGGER.error(f"Giphy unexpected error for `{search_term}`: {e}")
-        return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
-        )
+        LOGGER.warn(f"Giphy unexpected error for `{search_term}`: {e}")
 
 
 def random_image(message: str) -> Optional[str]:
