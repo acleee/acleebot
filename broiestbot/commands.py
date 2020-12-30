@@ -86,8 +86,10 @@ def giphy_image_search(search_term: str) -> Optional[str]:
         )
     except KeyError as e:
         LOGGER.warn(f"Giphy KeyError for `{search_term}`: {e}")
+        return None
     except Exception as e:
         LOGGER.warn(f"Giphy unexpected error for `{search_term}`: {e}")
+        return None
 
 
 def random_image(message: str) -> Optional[str]:
@@ -154,7 +156,11 @@ def get_urban_definition(word: str) -> Optional[str]:
         results = req.json().get("list")
         if results:
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
-            definition = str(results[0].get("definition"))[0:1500].replace("[", "").replace("]", "")
+            definition = (
+                str(results[0].get("definition"))[0:1500]
+                .replace("[", "")
+                .replace("]", "")
+            )
             example = str(results[0].get("example")).replace("[", "").replace("]", "")
             word = word.upper()
             return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}."

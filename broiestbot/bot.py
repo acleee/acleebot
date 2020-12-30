@@ -128,12 +128,13 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def giphy_fallback(cmd, room):
+    def giphy_fallback(cmd: str, room):
         """Default to Giphy for non-existent commands."""
         cmd = cmd.replace("!", "")
         if len(cmd) > 1:
             response = giphy_image_search(cmd)
-            room.message(response)
+            if response:
+                room.message(response)
 
     @staticmethod
     def ban_word(room, message, user, silent=False):
