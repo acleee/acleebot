@@ -85,10 +85,10 @@ def giphy_image_search(search_term: str) -> Optional[str]:
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
         )
     except KeyError as e:
-        LOGGER.warn(f"Giphy KeyError for `{search_term}`: {e}")
+        LOGGER.warning(f"Giphy KeyError for `{search_term}`: {e}")
         return None
     except Exception as e:
-        LOGGER.warn(f"Giphy unexpected error for `{search_term}`: {e}")
+        LOGGER.warning(f"Giphy unexpected error for `{search_term}`: {e}")
         return None
 
 
@@ -106,10 +106,10 @@ def random_image(message: str) -> Optional[str]:
         random_pic = image_list[randint(0, len(image_list) - 1)]
         return random_pic
     except KeyError as e:
-        LOGGER.warning(f"Error when fetching random image: {e}")
+        LOGGER.warninging(f"Error when fetching random image: {e}")
         return None
     except Exception as e:
-        LOGGER.warning(f"Unexpected error when fetching random image: {e}")
+        LOGGER.warninging(f"Unexpected error when fetching random image: {e}")
         return None
 
 
@@ -300,7 +300,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                     )
                 )
                 return response
-            LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
+            LOGGER.warninging(f"No IMDB info found for `{movie_title}`.")
             return emojize(
                 f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
             )
@@ -329,7 +329,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
         if gross:
             response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
         return " ".join(response)
-    LOGGER.warning(f"No IMDB box office info found for `{movie}`.")
+    LOGGER.warninging(f"No IMDB box office info found for `{movie}`.")
     return None
 
 
