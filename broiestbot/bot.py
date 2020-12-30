@@ -70,7 +70,7 @@ class Bot(RoomManager):
             response = blaze_time_remaining()
         if response:
             return response
-        LOGGER.warninging(f"No response for command `{command}` {args}")
+        LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room, user, message):
         """Boilerplate function trigger on message."""

@@ -47,9 +47,14 @@ def get_crypto(symbol) -> Optional[str]:
         return chart
     except HTTPError as e:
         LOGGER.error(e)
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+        )
     except Exception as e:
         LOGGER.error(e)
-    return None
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+        )
 
 
 @LOGGER.catch
@@ -82,14 +87,23 @@ def giphy_image_search(search_term: str) -> Optional[str]:
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
         return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+            f":warning: omfg you broke giphy wtf :warning:", use_aliases=True
         )
     except KeyError as e:
         LOGGER.warning(f"Giphy KeyError for `{search_term}`: {e}")
-        return None
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+        )
+    except IndexError as e:
+        LOGGER.warning(f"Giphy IndexError for `{search_term}`: {e}")
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+        )
     except Exception as e:
-        LOGGER.warning(f"Giphy unexpected error for `{search_term}`: {e}")
-        return None
+        LOGGER.error(f"Giphy unexpected error for `{search_term}`: {e}")
+        return emojize(
+            f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", use_aliases=True
+        )
 
 
 def random_image(message: str) -> Optional[str]:
@@ -106,11 +120,13 @@ def random_image(message: str) -> Optional[str]:
         random_pic = image_list[randint(0, len(image_list) - 1)]
         return random_pic
     except KeyError as e:
-        LOGGER.warninging(f"Error when fetching random image: {e}")
-        return None
+        LOGGER.warning(f"Error when fetching random image: {e}")
     except Exception as e:
-        LOGGER.warninging(f"Unexpected error when fetching random image: {e}")
-        return None
+        LOGGER.warning(f"Unexpected error when fetching random image: {e}")
+    finally:
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+        )
 
 
 def subreddit_image(subreddit: str) -> Optional[str]:
@@ -300,7 +316,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                     )
                 )
                 return response
-            LOGGER.warninging(f"No IMDB info found for `{movie_title}`.")
+            LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
             return emojize(
                 f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
             )
@@ -329,7 +345,7 @@ def get_boxoffice_data(movie) -> Optional[str]:
         if gross:
             response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
         return " ".join(response)
-    LOGGER.warninging(f"No IMDB box office info found for `{movie}`.")
+    LOGGER.warning(f"No IMDB box office info found for `{movie}`.")
     return None
 
 
@@ -349,23 +365,33 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
                 rand = randint(0, len(results) - 1)
                 image_json = results[rand]
                 image = image_json.get("max2mbGif")
-                return image
-            return f"Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@"
+                if image is not None:
+                    return image
+                return f"Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@"
         except HTTPError as e:
             LOGGER.error(
                 f"Failed to get nsfw image for `{query}`: {e.response.content}"
             )
-            return None
+            return emojize(
+                f":warning: yea nah idk wtf ur searching for :warning:",
+                use_aliases=True,
+            )
         except KeyError as e:
             LOGGER.error(
                 f"Experienced KeyError while fetching nsfw image for `{query}`: {e}"
             )
-            return None
+            return emojize(
+                f":warning: yea nah idk wtf ur searching for :warning:",
+                use_aliases=True,
+            )
         except Exception as e:
             LOGGER.error(
                 f"Unexpected error while fetching nsfw image for `{query}`: {e}"
             )
-            return None
+            return emojize(
+                f":warning: yea nah idk wtf ur searching for :warning:",
+                use_aliases=True,
+            )
     return "https://i.imgur.com/oGMHkqT.jpg"
 
 
