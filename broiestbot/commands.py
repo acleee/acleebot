@@ -367,7 +367,6 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
                 image = image_json.get("max2mbGif")
                 if image is not None:
                     return image
-                return f"Sorry bruh I couldnt find any images for ur dumb ass query LEARN2SEARCH :@"
         except HTTPError as e:
             LOGGER.error(
                 f"Failed to get nsfw image for `{query}`: {e.response.content}"
