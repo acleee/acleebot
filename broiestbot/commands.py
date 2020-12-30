@@ -360,11 +360,11 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
         headers = {"Authorization": f"Bearer {token}"}
         try:
             req = requests.get(endpoint, params=params, headers=headers)
-            if bool(req.json()):
-                results = req.json()["gfycats"]
+            if req.status_code == 200:
+                results = req.json().get("gfycats")
                 rand = randint(0, len(results) - 1)
                 image_json = results[rand]
-                image = image_json.get("max2mbGif")
+                image = image_json.get("max1mbGif")
                 if image is not None:
                     return image
         except HTTPError as e:
