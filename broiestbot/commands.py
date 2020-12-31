@@ -120,12 +120,14 @@ def random_image(message: str) -> Optional[str]:
         random_pic = image_list[randint(0, len(image_list) - 1)]
         return random_pic
     except KeyError as e:
-        LOGGER.warning(f"Error when fetching random image: {e}")
+        LOGGER.warning(f"KeyError when fetching random image: {e}")
+        return emojize(
+            f":warning: o shit i broke im a trash bot :warning:", use_aliases=True
+        )
     except Exception as e:
         LOGGER.warning(f"Unexpected error when fetching random image: {e}")
-    finally:
         return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+            f":warning: o shit i broke im a trash bot :warning:", use_aliases=True
         )
 
 
