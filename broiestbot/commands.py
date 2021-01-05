@@ -9,6 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 from emoji import emojize
 from imdb import IMDbError
+from pandas import DataFrame
 from praw.exceptions import RedditAPIException
 from requests import Response
 from requests.exceptions import HTTPError
@@ -40,15 +41,22 @@ def basic_message(message):
     return message
 
 
-def get_crypto(symbol) -> Optional[str]:
-    """Fetch crypto price and generate 60-day performance chart."""
+def get_crypto(symbol: str) -> str:
+    """
+    Fetch crypto price and generate 60-day performance chart.
+
+    :param symbol: Crypto symbol to fetch prices for.
+    :type symbol: str
+
+    :returns: str
+    """
     try:
         chart = cch.get_chart(symbol)
         return chart
     except HTTPError as e:
         LOGGER.error(e)
         return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+            f":warning: omg the internet died AAAAA :warning:", use_aliases=True
         )
     except Exception as e:
         LOGGER.error(e)
@@ -67,12 +75,19 @@ def fetch_image_from_gcs(message) -> str:
     return image
 
 
-def giphy_image_search(search_term: str) -> Optional[str]:
-    """Giphy image search."""
+def giphy_image_search(query: str) -> str:
+    """
+    Giphy image search.
+
+    :param query: Query used to find gif.
+    :type query: str
+
+    :returns: str
+    """
     rand = randint(0, 20)
     params = {
         "api_key": GIPHY_API_KEY,
-        "q": search_term,
+        "q": query,
         "limit": 1,
         "offset": rand,
         "rating": "R",
@@ -85,35 +100,35 @@ def giphy_image_search(search_term: str) -> Optional[str]:
         image = req.json()["data"][0]["images"]["downsized"]["url"]
         return image
     except HTTPError as e:
-        LOGGER.error(f"Giphy failed to fetch `{search_term}`: {e.response.content}")
+        LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
         return emojize(
             f":warning: omfg you broke giphy wtf :warning:", use_aliases=True
         )
     except KeyError as e:
-        LOGGER.warning(f"Giphy KeyError for `{search_term}`: {e}")
+        LOGGER.warning(f"Giphy KeyError for `{query}`: {e}")
         return emojize(
             f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
         )
     except IndexError as e:
-        LOGGER.warning(f"Giphy IndexError for `{search_term}`: {e}")
+        LOGGER.warning(f"Giphy IndexError for `{query}`: {e}")
         return emojize(
             f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
         )
     except Exception as e:
-        LOGGER.error(f"Giphy unexpected error for `{search_term}`: {e}")
+        LOGGER.error(f"Giphy unexpected error for `{query}`: {e}")
         return emojize(
             f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", use_aliases=True
         )
 
 
-def random_image(message: str) -> Optional[str]:
+def random_image(message: str) -> str:
     """
     Randomly select a response from a given set.
 
     :param message: Query matching a command to set a random image from a set.
     :type message: str
 
-    :returns: Optional[str]
+    :returns: str
     """
     try:
         image_list = message.replace(" ", "").split(";")
@@ -149,23 +164,41 @@ def subreddit_image(subreddit: str) -> Optional[str]:
         )
 
 
-def get_stock(symbol: str) -> Optional[str]:
-    """Fetch stock price and generate 30-day performance chart."""
+def get_stock(symbol: str) -> str:
+    """
+    Fetch stock price and generate 30-day performance chart.
+
+    :param symbol: Stock symbol to fetch prices for.
+    :type symbol: str
+
+    :returns: str
+    """
     try:
         chart = sch.get_chart(symbol)
         return chart
     except HTTPError as e:
         LOGGER.error(e)
-        return None
+        return emojize(
+            f":warning: ough nough da site i get stocks from died :warning:",
+            use_aliases=True,
+        )
     except Exception as e:
         LOGGER.error(e)
-        return None
+        return emojize(
+            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
 
 
-@LOGGER.catch
-def get_urban_definition(word: str) -> Optional[str]:
-    """Fetch Urban Dictionary definition."""
-    params = {"term": word}
+def get_urban_definition(term: str) -> str:
+    """
+    Fetch Urban Dictionary definition for a given phrase or word.
+
+    :param term: Word or phrase to fetch UD definition for.
+    :type term: str
+
+    :returns: str
+    """
+    params = {"term": term}
     headers = {"Content-Type": "application/json"}
     try:
         req = requests.get(
@@ -180,25 +213,36 @@ def get_urban_definition(word: str) -> Optional[str]:
                 .replace("]", "")
             )
             example = str(results[0].get("example")).replace("[", "").replace("]", "")
-            word = word.upper()
+            word = term.upper()
             return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}."
+        return emojize(
+            ":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True
+        )
     except HTTPError as e:
         LOGGER.error(
             f"Failed to get Urban definition for `{word}`: {e.response.content}"
         )
-        return None
+        return emojize(
+            f":warning: wtf urban dictionary is down :warning:", use_aliases=True
+        )
     except Exception as e:
         LOGGER.error(
             f"Unexpected error when fetching Urban definition for `{word}`: {e}"
         )
-        return None
-    return emojize(
-        ":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True
-    )
+        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
 
 
-def weather_by_city(location: str, weather) -> Optional[str]:
-    """Return temperature and weather per city/state/zip."""
+def weather_by_city(location: str, weather: DataFrame) -> str:
+    """
+    Return temperature and weather per city/state/zip.
+
+    :param location: City or location to fetch weather for.
+    :type location: str
+    :param weather: Table matching types of weather to emojis.
+    :type weather: DataFrame
+
+    :returns: str
+    """
     endpoint = "http://api.weatherstack.com/current"
     params = {
         "access_key": WEATHERSTACK_API_KEY,
@@ -229,7 +273,7 @@ def weather_by_city(location: str, weather) -> Optional[str]:
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
         return emojize(
-            f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
+            f":warning:️️ fk me the weather API is down :warning:",
             use_aliases=True,
         )
     except KeyError as e:
@@ -246,7 +290,6 @@ def weather_by_city(location: str, weather) -> Optional[str]:
         )
 
 
-@LOGGER.catch
 def wiki_summary(query: str) -> str:
     """
     Fetch Wikipedia summary for a given query.
@@ -272,9 +315,15 @@ def wiki_summary(query: str) -> str:
         )
 
 
-@LOGGER.catch
 def find_imdb_movie(movie_title: str) -> Optional[str]:
-    """Get movie information from IMDB."""
+    """
+    Get movie information from IMDB.
+
+    :param movie_title: Movie to fetch information and box office info for.
+    :type movie_title: str
+
+    :returns: str
+    """
     try:
         movies = ia.search_movie(movie_title)
         if bool(movies):
@@ -324,36 +373,51 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
             )
     except IMDbError as e:
         LOGGER.error(f"IMDB failed to find `{movie_title}`: {e}")
-        return None
+        return emojize(
+            f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
+        )
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
-        return None
+        return emojize(
+            f":warning: omfg u broke me with ur shit movie :warning:", use_aliases=True
+        )
 
 
-@LOGGER.catch
 def get_boxoffice_data(movie) -> Optional[str]:
     """Get IMDB box office performance for a given film."""
-    response = []
-    if movie.data.get("box office", None):
-        budget = movie.data["box office"].get("Budget", None)
-        opening_week = movie.data["box office"].get(
-            "Opening Weekend United States", None
-        )
-        gross = movie.data["box office"].get("Cumulative Worldwide Gross", None)
-        if budget:
-            response.append(f"BUDGET {budget}.")
-        if opening_week:
-            response.append(f"OPENING WEEK {opening_week}.")
-        if gross:
-            response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
-        return " ".join(response)
-    LOGGER.warning(f"No IMDB box office info found for `{movie}`.")
-    return None
+    try:
+        response = []
+        if movie.data.get("box office", None):
+            budget = movie.data["box office"].get("Budget", None)
+            opening_week = movie.data["box office"].get(
+                "Opening Weekend United States", None
+            )
+            gross = movie.data["box office"].get("Cumulative Worldwide Gross", None)
+            if budget:
+                response.append(f"BUDGET {budget}.")
+            if opening_week:
+                response.append(f"OPENING WEEK {opening_week}.")
+            if gross:
+                response.append(f"CUMULATIVE WORLDWIDE GROSS {gross}.")
+            return " ".join(response)
+        LOGGER.warning(f"No IMDB box office info found for `{movie}`.")
+    except KeyError as e:
+        LOGGER.warning(f"No IMDB box office info found for `{movie}`: {e}")
+    except Exception as e:
+        LOGGER.warning(f"No IMDB box office info found for `{movie}`: {e}")
 
 
-@LOGGER.catch
 def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
-    """Fetch specific kind of gif ;)."""
+    """
+    Fetch specific kind of gif ;).
+
+    :param query: Query used to find gif.
+    :type query: str
+    :param after_dark_only: Whether results should be limited to the `after dark` timeframe.
+    :type after_dark_only: bool
+
+    :returns: Optional[str]
+    """
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
@@ -418,9 +482,12 @@ def gfycat_auth_token() -> Optional[str]:
         return None
 
 
-@LOGGER.catch
 def redgifs_auth_token() -> Optional[str]:
-    """Get redgifs auth via webtoken method."""
+    """
+    Authenticate with redgifs to receive access token.
+
+    :returns: Optional[str]
+    """
     endpoint = "https://weblogin.redgifs.com/oauth/webtoken"
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {"Content-Type": "application/json"}
@@ -436,9 +503,12 @@ def redgifs_auth_token() -> Optional[str]:
         return None
 
 
-@LOGGER.catch
 def blaze_time_remaining() -> str:
-    """Get remaining time until target time."""
+    """
+    Get remaining time until target time.
+
+    :returns: str
+    """
     now = datetime.now(tz=pytz.timezone("America/New_York"))
     am_time = now.replace(hour=4, minute=20, second=0)
     pm_time = now.replace(hour=16, minute=20, second=0)
@@ -459,7 +529,11 @@ def blaze_time_remaining() -> str:
 
 
 def get_instagram_token() -> Optional[Response]:
-    """Generate Instagram OAuth token."""
+    """
+    Generate Instagram OAuth token.
+
+    :returns: Optional[Response]
+    """
     try:
         params = {
             "client_id": INSTAGRAM_APP_ID,
@@ -473,8 +547,15 @@ def get_instagram_token() -> Optional[Response]:
         return None
 
 
-def create_instagram_preview(url) -> Optional[str]:
-    """Generate link preview for Instagram links."""
+def create_instagram_preview(url: str) -> Optional[str]:
+    """
+    Generate link preview for Instagram links.
+
+    :param url: Instagram post URL
+    :type url: str
+
+    :returns: Optional[str]
+    """
     try:
         headers = {
             "Access-Control-Allow-Origin": "*",
@@ -495,4 +576,3 @@ def create_instagram_preview(url) -> Optional[str]:
         LOGGER.error(f"Instagram URL {url} threw status code : {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Failed to get Instagram url: {e}")
-        return None
