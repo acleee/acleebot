@@ -220,14 +220,14 @@ def get_urban_definition(term: str) -> str:
         )
     except HTTPError as e:
         LOGGER.error(
-            f"Failed to get Urban definition for `{word}`: {e.response.content}"
+            f"Failed to get Urban definition for `{term}`: {e.response.content}"
         )
         return emojize(
             f":warning: wtf urban dictionary is down :warning:", use_aliases=True
         )
     except Exception as e:
         LOGGER.error(
-            f"Unexpected error when fetching Urban definition for `{word}`: {e}"
+            f"Unexpected error when fetching Urban definition for `{term}`: {e}"
         )
         return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
 
@@ -374,7 +374,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
     except IMDbError as e:
         LOGGER.error(f"IMDB failed to find `{movie_title}`: {e}")
         return emojize(
-            f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
+            f":warning: wtf kind of movie is {movie_title} :warning:", use_aliases=True
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
