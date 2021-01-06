@@ -56,7 +56,7 @@ class Bot(RoomManager):
         elif cmd_type == "reddit":
             response = subreddit_image(content)
         elif cmd_type == "weather" and args:
-            response = weather_by_city(args, self.weather)
+            response = weather_by_city(args, self.weather, self.room.name)
         elif cmd_type == "wiki" and args:
             response = wiki_summary(args)
         elif cmd_type == "imdb" and args:

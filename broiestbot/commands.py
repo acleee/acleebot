@@ -240,7 +240,7 @@ def get_urban_definition(term: str) -> str:
         return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
 
 
-def weather_by_city(location: str, weather: DataFrame) -> str:
+def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
     """
     Return temperature and weather per city/state/zip.
 
@@ -248,6 +248,10 @@ def weather_by_city(location: str, weather: DataFrame) -> str:
     :type location: str
     :param weather: Table matching types of weather to emojis.
     :type weather: DataFrame
+    :param location: City or location to fetch weather for.
+    :type location: str
+    :param room: Name of Chatango room.
+    :type room: str
 
     :returns: str
     """
@@ -257,6 +261,8 @@ def weather_by_city(location: str, weather: DataFrame) -> str:
         "query": location.replace(";", ""),
         "units": "f",
     }
+    if room == "goatfibres69":
+        params["units"] = "m"
     try:
         req = requests.get(endpoint, params=params)
         data = req.json()
