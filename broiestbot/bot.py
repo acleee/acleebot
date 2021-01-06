@@ -38,7 +38,7 @@ class Bot(RoomManager):
         """Construct a response to a valid command."""
         room.message(message)
 
-    def create_message(self, cmd_type, content, command=None, args=None):
+    def create_message(self, cmd_type, content, command=None, args=None, room=None):
         """Router to resolve bot response."""
         response = None
         if cmd_type == "basic":
@@ -56,7 +56,7 @@ class Bot(RoomManager):
         elif cmd_type == "reddit":
             response = subreddit_image(content)
         elif cmd_type == "weather" and args:
-            response = weather_by_city(args, self.weather, self.room.name)
+            response = weather_by_city(args, self.weather, room.name)
         elif cmd_type == "wiki" and args:
             response = wiki_summary(args)
         elif cmd_type == "imdb" and args:
@@ -118,7 +118,7 @@ class Bot(RoomManager):
         command = self.commands.find_row("command", cmd)
         if command is not None:
             message = self.create_message(
-                command["type"], command["response"], command=cmd, args=args
+                command["type"], command["response"], command=cmd, args=args, room=room
             )
             if message:
                 self._chat(room, message)
