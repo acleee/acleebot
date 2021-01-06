@@ -65,7 +65,6 @@ def get_crypto(symbol: str) -> str:
         )
 
 
-@LOGGER.catch
 def fetch_image_from_gcs(message) -> str:
     """Get a random image from Google Cloud Storage bucket."""
     images = gcs.bucket.list_blobs(prefix=message)
@@ -206,25 +205,36 @@ def get_urban_definition(term: str) -> str:
         )
         results = req.json().get("list")
         if results:
+            word = term.upper()
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
             definition = (
                 str(results[0].get("definition"))[0:1500]
                 .replace("[", "")
                 .replace("]", "")
             )
-            example = str(results[0].get("example")).replace("[", "").replace("]", "")
-            word = term.upper()
-            return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}."
+            example = results[0].get("example")
+            if example:
+                example = str(example).replace("[", "").replace("]", "")
+                return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}"
+            return f"{word}:\n\n {definition}"
         return emojize(
             ":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True
         )
     except HTTPError as e:
         LOGGER.error(
-            f"Failed to get Urban definition for `{term}`: {e.response.content}"
+            f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}"
         )
         return emojize(
             f":warning: wtf urban dictionary is down :warning:", use_aliases=True
         )
+    except KeyError as e:
+        LOGGER.error(f"KeyError error when fetching Urban definition for `{term}`: {e}")
+        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
+    except IndexError as e:
+        LOGGER.error(
+            f"IndexError error when fetching Urban definition for `{term}`: {e}"
+        )
+        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.error(
             f"Unexpected error when fetching Urban definition for `{term}`: {e}"
