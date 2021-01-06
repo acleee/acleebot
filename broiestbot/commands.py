@@ -208,9 +208,7 @@ def get_urban_definition(term: str) -> str:
             word = term.upper()
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
             definition = (
-                str(results[0].get("definition"))
-                .replace("[", "")
-                .replace("]", "")
+                str(results[0].get("definition")).replace("[", "").replace("]", "")
             )[0:1500]
             example = results[0].get("example")
             if example:

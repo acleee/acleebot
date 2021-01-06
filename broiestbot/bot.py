@@ -1,7 +1,8 @@
 """Chatango bot."""
 import re
+from typing import Optional, Tuple
 
-from chatango.ch import RoomManager
+from chatango.ch import Room, RoomManager, Message
 from logger import LOGGER
 
 from .commands import (
@@ -72,11 +73,14 @@ class Bot(RoomManager):
             return response
         LOGGER.warning(f"No response for command `{command}` {args}")
 
-    def on_message(self, room, user, message):
+    def on_message(self, room: Room, user, message: Message):
         """Boilerplate function trigger on message."""
         chat_message = message.body.lower()
         if chat_message[0] == "!":
-            self.parse_command(chat_message, room)  # Trigger if command
+            cmd, args = self.parse_command(chat_message)
+            sent = self.send_message(cmd, args, room)
+            if sent is False:
+                self.giphy_fallback(chat_message, room)
         elif chat_message == "bro?":
             self.bot_status_check(room)
         elif "petition" in chat_message and user.name.title() != "Broiestbro":
@@ -98,15 +102,19 @@ class Bot(RoomManager):
         # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
         # self.banned_word(room, message, user)
 
-    def parse_command(self, user_msg, room):
+    @staticmethod
+    def parse_command(user_msg) -> Tuple[str, Optional[str]]:
         """Respond to command."""
         user_msg = user_msg[1::].lower()
+        cmd = user_msg
         args = None
-        if " " not in user_msg:
-            cmd = user_msg
-        else:
+        if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
+        return cmd, args
+
+    def send_message(self, cmd: str, args: Optional[str], room: Room):
+        """Send response to chat."""
         command = self.commands.find_row("command", cmd)
         if command is not None:
             message = self.create_message(
@@ -114,37 +122,37 @@ class Bot(RoomManager):
             )
             if message:
                 self._chat(room, message)
-        else:
-            self.giphy_fallback(user_msg, room)
+                return True
+        return False
 
     @staticmethod
-    def link_preview(room, message):
+    def link_preview(room: Room, message):
         preview = create_instagram_preview(message)
         room.message(preview)
 
     @staticmethod
-    def bot_status_check(room):
+    def bot_status_check(room: Room):
         """Check bot status."""
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def giphy_fallback(cmd: str, room):
+    def giphy_fallback(cmd: str, room: Room):
         """Default to Giphy for non-existent commands."""
-        cmd = cmd.replace("!", "")
+        cmd = cmd.replace("!", "").lower()
         if len(cmd) > 1:
             response = giphy_image_search(cmd)
             if response is not None:
                 room.message(response)
 
     @staticmethod
-    def ban_word(room, message, user, silent=False):
+    def ban_word(room: Room, message, user, silent=False):
         """Remove banned words."""
         message.delete()
         if silent is False:
             room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
 
     @staticmethod
-    def trademark(room, message):
+    def trademark(room: Room, message):
         """Trademark symbol helper."""
         message.delete()
         room.message("™")
