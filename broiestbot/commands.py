@@ -255,6 +255,7 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
 
     :returns: str
     """
+    units = "f"
     endpoint = "http://api.weatherstack.com/current"
     params = {
         "access_key": WEATHERSTACK_API_KEY,
@@ -263,6 +264,7 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
     }
     if room == "goatfibres69":
         params["units"] = "m"
+        units = "c"
     try:
         req = requests.get(endpoint, params=params)
         data = req.json()
@@ -281,7 +283,7 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
             response = f'{data["request"]["query"]}: \
                             {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
                             {data["current"]["temperature"]}°f \
-                            (feels like {data["current"]["feelslike"]}°f). \
+                            (feels like {data["current"]["feelslike"]}°{units}). \
                             {data["current"]["precip"] * 100}% precipitation.'
             return response
     except HTTPError as e:
