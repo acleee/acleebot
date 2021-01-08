@@ -2,7 +2,7 @@
 import re
 from typing import Optional, Tuple
 
-from chatango.ch import Room, RoomManager, Message
+from chatango.ch import Message, Room, RoomManager
 from logger import LOGGER
 
 from .commands import (
@@ -17,6 +17,7 @@ from .commands import (
     get_urban_definition,
     giphy_image_search,
     random_image,
+    send_text_message,
     subreddit_image,
     weather_by_city,
     wiki_summary,
@@ -38,39 +39,40 @@ class Bot(RoomManager):
         """Construct a response to a valid command."""
         room.message(message)
 
-    def create_message(self, cmd_type, content, command=None, args=None, room=None):
+    def create_message(
+        self, cmd_type, content, command=None, args=None, room=None, user=None
+    ):
         """Router to resolve bot response."""
-        response = None
         if cmd_type == "basic":
-            response = basic_message(content)
+            return basic_message(content)
         elif cmd_type == "crypto" and not args:
-            response = get_crypto(command)
+            return get_crypto(command)
         elif cmd_type == "random":
-            response = random_image(content)
+            return random_image(content)
         elif cmd_type == "stock" and args:
-            response = get_stock(args)
+            return get_stock(args)
         elif cmd_type == "storage":
-            response = fetch_image_from_gcs(content)
+            return fetch_image_from_gcs(content)
         elif cmd_type == "giphy":
-            response = giphy_image_search(content)
+            return giphy_image_search(content)
         elif cmd_type == "reddit":
-            response = subreddit_image(content)
+            return subreddit_image(content)
         elif cmd_type == "weather" and args:
-            response = weather_by_city(args, self.weather, room.name)
+            return weather_by_city(args, self.weather, room.name)
         elif cmd_type == "wiki" and args:
-            response = wiki_summary(args)
+            return wiki_summary(args)
         elif cmd_type == "imdb" and args:
-            response = find_imdb_movie(args)
+            return find_imdb_movie(args)
         elif cmd_type == "nsfw" and args is None:
-            response = get_redgifs_gif("lesbians", after_dark_only=False)
+            return get_redgifs_gif("lesbians", after_dark_only=False)
         elif cmd_type == "nsfw" and args:
-            response = get_redgifs_gif(args, after_dark_only=True)
+            return get_redgifs_gif(args, after_dark_only=True)
         elif cmd_type == "urban" and args:
-            response = get_urban_definition(args)
+            return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
-            response = blaze_time_remaining()
-        if response:
-            return response
+            return blaze_time_remaining()
+        elif cmd_type == "sms" and args and user:
+            return send_text_message(args, user.name.title())
         LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room: Room, user, message: Message):
@@ -78,7 +80,7 @@ class Bot(RoomManager):
         chat_message = message.body.lower()
         if chat_message[0] == "!":
             cmd, args = self.parse_command(chat_message)
-            sent = self.send_message(cmd, args, room)
+            sent = self.send_message(cmd, args, room, user=user)
             if sent is False:
                 self.giphy_fallback(chat_message, room)
         elif chat_message == "bro?":
@@ -113,12 +115,17 @@ class Bot(RoomManager):
             args = user_msg.split(" ", 1)[1]
         return cmd, args
 
-    def send_message(self, cmd: str, args: Optional[str], room: Room):
+    def send_message(self, cmd: str, args: Optional[str], room: Room, user=None):
         """Send response to chat."""
         command = self.commands.find_row("command", cmd)
         if command is not None:
             message = self.create_message(
-                command["type"], command["response"], command=cmd, args=args, room=room
+                command["type"],
+                command["response"],
+                command=cmd,
+                args=args,
+                room=room,
+                user=user,
             )
             if message:
                 self._chat(room, message)

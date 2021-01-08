@@ -15,8 +15,9 @@ from requests import Response
 from requests.exceptions import HTTPError
 
 from broiestbot.afterdark import is_after_dark
-from clients import cch, gcs, ia, reddit, sch, wiki
+from clients import cch, gcs, ia, reddit, sch, sms, wiki
 from config import (
+    CHATANGO_SPECIAL_USERS,
     GFYCAT_CLIENT_ID,
     GFYCAT_CLIENT_SECRET,
     GIPHY_API_KEY,
@@ -27,6 +28,8 @@ from config import (
     PLOTLY_USERNAME,
     REDGIFS_ACCESS_KEY,
     WEATHERSTACK_API_KEY,
+    TWILIO_SENDER_PHONE,
+    TWILIO_RECIPIENT_PHONE
 )
 from logger import LOGGER
 
@@ -542,6 +545,33 @@ def blaze_time_remaining() -> str:
             :smoking: :kissing_closed_eyes: :dash:",
         use_aliases=True,
     )
+
+
+def send_text_message(message: str, user: str) -> Optional[str]:
+    """
+    Send SMS to Bro via Twilio.
+
+    :param message: Text message to send via SMS
+    :type message: str
+    :param user: User attempting to send SMS
+    :type user: str
+
+    :returns: Optional[str]
+    """
+    try:
+        if user.lower() in CHATANGO_SPECIAL_USERS:
+            sms.messages.create(
+                body=f"{user.upper()}: {message}",
+                from_=TWILIO_SENDER_PHONE,
+                to=TWILIO_RECIPIENT_PHONE,
+            )
+            return f"ty @{user} I just texted brough: {message}"
+        return emojize(
+            f":warning: lmao fuck off, only pizza can text brough :warning:",
+            use_aliases=True,
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
 
 def get_instagram_token() -> Optional[Response]:
