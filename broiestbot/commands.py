@@ -6,6 +6,7 @@ from typing import Optional
 import chart_studio
 import pytz
 import requests
+import simplejson as json
 from bs4 import BeautifulSoup
 from emoji import emojize
 from imdb import IMDbError
@@ -26,6 +27,7 @@ from config import (
     INSTAGRAM_APP_ID,
     PLOTLY_API_KEY,
     PLOTLY_USERNAME,
+    RAPID_API_KEY,
     REDGIFS_ACCESS_KEY,
     TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
@@ -593,6 +595,61 @@ def get_instagram_token() -> Optional[Response]:
     except Exception as e:
         LOGGER.error(f"Failed to get Instagram token: {e}")
         return None
+
+
+def epl_standings():
+    """Get current EPL team standings."""
+    try:
+        standings_table = "\n\n"
+        url = "https://api-football-v1.p.rapidapi.com/v2/leagueTable/524"
+        headers = {
+            "content-type": "application/json",
+            "server": "RapidAPI-1.1.0",
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+            "x-rapidapi-region": "AWS - eu-central-1",
+            "x-rapidapi-version": "1.1.0",
+        }
+        req = requests.get(url, headers=headers)
+        req = json.loads(req.text)
+        standings = req["api"]["standings"][0]
+        for standing in standings:
+            rank = standing["rank"]
+            team = standing["teamName"]
+            points = standing["points"]
+            wins = standing["all"]["win"]
+            draws = standing["all"]["draw"]
+            losses = standing["all"]["lose"]
+            standings_table = (
+                standings_table
+                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
+        return standings_table
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching EPL standings: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching EPL standings: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
+
+
+def upcoming_epl_fixtures():
+    """Fetch next 10 upcoming EPL fixtures"""
+    try:
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/524/next/10"
+        params = {"timezone": "America/New_York"}
+        headers = {
+            "content-type": "application/json",
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+        }
+        response = requests.request("GET", url, headers=headers, params=params)
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching EPL fixtures: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching EPL fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching EPL fixtures: {e}")
 
 
 def create_instagram_preview(url: str) -> Optional[str]:

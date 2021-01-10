@@ -9,6 +9,7 @@ from .commands import (
     basic_message,
     blaze_time_remaining,
     create_instagram_preview,
+    epl_standings,
     fetch_image_from_gcs,
     find_imdb_movie,
     get_crypto,
@@ -73,6 +74,8 @@ class Bot(RoomManager):
             return blaze_time_remaining()
         elif cmd_type == "sms" and args and user:
             return send_text_message(args, user.name.title())
+        elif cmd_type == "epltable":
+            return epl_standings()
         LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room: Room, user, message: Message):
