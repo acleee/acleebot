@@ -637,7 +637,7 @@ def upcoming_epl_fixtures():
     """Fetch next 10 upcoming EPL fixtures"""
     try:
         upcoming_fixtures = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/15"
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/10"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
