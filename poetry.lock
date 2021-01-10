@@ -608,11 +608,11 @@ tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
 
 [[package]]
 name = "pymysql"
-version = "1.0.0"
+version = "1.0.2"
 description = "Pure Python MySQL Driver"
 category = "main"
 optional = false
-python-versions = "*"
+python-versions = ">=3.6"
 
 [package.extras]
 ed25519 = ["PyNaCl (>=1.4.0)"]
@@ -801,7 +801,7 @@ python-versions = ">=2.6, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "tqdm"
-version = "4.55.1"
+version = "4.55.2"
 description = "Fast, Extensible Progress Meter"
 category = "main"
 optional = false
@@ -1316,8 +1316,8 @@ pyjwt = [
     {file = "PyJWT-2.0.0.tar.gz", hash = "sha256:7a2b271c6dac2fda9e0c33d176c4253faba2c6c6b3a99c7f28a32c3c97522779"},
 ]
 pymysql = [
-    {file = "PyMySQL-1.0.0-py3-none-any.whl", hash = "sha256:1ebdce36061c61fe32d3156825768236ac19b62b23180e1667032b2c690921c7"},
-    {file = "PyMySQL-1.0.0.tar.gz", hash = "sha256:b2508a7dc6b626210e52f711d2c2361d102d8d9b8b144e63b2512e748de1a49b"},
+    {file = "PyMySQL-1.0.2-py3-none-any.whl", hash = "sha256:41fc3a0c5013d5f039639442321185532e3e2c8924687abe6537de157d403641"},
+    {file = "PyMySQL-1.0.2.tar.gz", hash = "sha256:816927a350f38d56072aeca5dfb10221fe1dc653745853d30a216637f5d7ad36"},
 ]
 pyparsing = [
     {file = "pyparsing-2.4.7-py2.py3-none-any.whl", hash = "sha256:ef9d7589ef3c200abe66653d3f1ab1033c3c419ae9b9bdb1240a85b024efc88b"},
@@ -1501,8 +1501,8 @@ toml = [
     {file = "toml-0.10.2.tar.gz", hash = "sha256:b3bda1d108d5dd99f4a20d24d9c348e91c4db7ab1b749200bded2f839ccbe68f"},
 ]
 tqdm = [
-    {file = "tqdm-4.55.1-py2.py3-none-any.whl", hash = "sha256:b8b46036fd00176d0870307123ef06bb851096964fa7fc578d789f90ce82c3e4"},
-    {file = "tqdm-4.55.1.tar.gz", hash = "sha256:556c55b081bd9aa746d34125d024b73f0e2a0e62d5927ff0e400e20ee0a03b9a"},
+    {file = "tqdm-4.55.2-py2.py3-none-any.whl", hash = "sha256:54985cecd51071f3faa2a07a862c24be1426f925353d82b3dde03f7609d63248"},
+    {file = "tqdm-4.55.2.tar.gz", hash = "sha256:86ca00c4942c3b3dc7ed31bae44cd2db38ef85ca05a7920f6a6c52ad7fcac904"},
 ]
 twilio = [
     {file = "twilio-6.50.1.tar.gz", hash = "sha256:dd8371c9b4ea422d6de7526b63b587da82e8488f2b3f6b1258d2cad6e4006a65"},

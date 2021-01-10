@@ -27,9 +27,9 @@ from config import (
     PLOTLY_API_KEY,
     PLOTLY_USERNAME,
     REDGIFS_ACCESS_KEY,
-    WEATHERSTACK_API_KEY,
+    TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
-    TWILIO_RECIPIENT_PHONE
+    WEATHERSTACK_API_KEY,
 )
 from logger import LOGGER
 
@@ -288,6 +288,8 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
                             {data["current"]["temperature"]}°f \
                             (feels like {data["current"]["feelslike"]}°{units}). \
                             {data["current"]["precip"] * 100}% precipitation.'
+            if room == "goatfibres69":
+                response.replace("°f", "°c")
             return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
