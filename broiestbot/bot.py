@@ -22,6 +22,7 @@ from .commands import (
     subreddit_image,
     weather_by_city,
     wiki_summary,
+    upcoming_epl_fixtures,
 )
 
 
@@ -76,6 +77,8 @@ class Bot(RoomManager):
             return send_text_message(args, user.name.title())
         elif cmd_type == "epltable":
             return epl_standings()
+        elif cmd_type == "fixtures":
+            return upcoming_epl_fixtures()
         LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room: Room, user, message: Message):
