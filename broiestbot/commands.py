@@ -636,14 +636,23 @@ def epl_standings():
 def upcoming_epl_fixtures():
     """Fetch next 10 upcoming EPL fixtures"""
     try:
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/10"
+        upcoming_fixtures = "\n\n"
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/15"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        response = requests.request("GET", url, headers=headers, params=params)
+        req = requests.request("GET", url, headers=headers, params=params)
+        req = json.loads(req.text)
+        fixtures = req["api"]["fixtures"]
+        for fixture in fixtures:
+            home_team = fixture["homeTeam"]["team_name"]
+            away_team = fixture["awayTeam"]["team_name"]
+            date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime('%b %d %H:%M')
+            upcoming_fixtures = upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
+        return upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EPL fixtures: {e.response.content}")
     except KeyError as e:
