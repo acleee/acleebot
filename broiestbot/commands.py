@@ -601,7 +601,7 @@ def epl_standings():
     """Get current EPL team standings."""
     try:
         standings_table = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/leagueTable/524"
+        url = "https://api-football-v1.p.rapidapi.com/v2/leagueTable/2790"
         headers = {
             "content-type": "application/json",
             "server": "RapidAPI-1.1.0",
@@ -636,7 +636,7 @@ def epl_standings():
 def upcoming_epl_fixtures():
     """Fetch next 10 upcoming EPL fixtures"""
     try:
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/524/next/10"
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/10"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
