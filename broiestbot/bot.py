@@ -20,9 +20,9 @@ from .commands import (
     random_image,
     send_text_message,
     subreddit_image,
+    upcoming_epl_fixtures,
     weather_by_city,
     wiki_summary,
-    upcoming_epl_fixtures,
 )
 
 
@@ -60,7 +60,9 @@ class Bot(RoomManager):
         elif cmd_type == "reddit":
             return subreddit_image(content)
         elif cmd_type == "weather" and args:
-            return weather_by_city(args, self.weather, room.name)
+            return weather_by_city(
+                args, self.weather, room.name, user.name.title().lower()
+            )
         elif cmd_type == "wiki" and args:
             return wiki_summary(args)
         elif cmd_type == "imdb" and args:
