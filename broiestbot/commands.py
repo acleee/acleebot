@@ -288,11 +288,9 @@ def weather_by_city(location: str, weather: DataFrame, room: str, user: str) -> 
                 weather_emoji = emojize(weather_emoji, use_aliases=True)
             response = f'{data["request"]["query"]}: \
                             {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                            {data["current"]["temperature"]}°f \
+                            {data["current"]["temperature"]}°{units} \
                             (feels like {data["current"]["feelslike"]}°{units}). \
                             {data["current"]["precip"] * 100}% precipitation.'
-            if room == "goatfibres69" or user in METRIC_SYSTEM_USERS:
-                response.replace("°f", "°c")
             return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
