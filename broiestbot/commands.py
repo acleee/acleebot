@@ -25,6 +25,7 @@ from config import (
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
     INSTAGRAM_APP_ID,
+    METRIC_SYSTEM_USERS,
     PLOTLY_API_KEY,
     PLOTLY_USERNAME,
     RAPID_API_KEY,
@@ -245,7 +246,7 @@ def get_urban_definition(term: str) -> str:
         return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
 
 
-def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
+def weather_by_city(location: str, weather: DataFrame, room: str, user: str) -> str:
     """
     Return temperature and weather per city/state/zip.
 
@@ -267,7 +268,7 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
         "query": location.replace(";", ""),
         "units": "f",
     }
-    if room == "goatfibres69":
+    if room == "goatfibres69" or user in METRIC_SYSTEM_USERS:
         params["units"] = "m"
         units = "c"
     try:
@@ -290,7 +291,7 @@ def weather_by_city(location: str, weather: DataFrame, room: str) -> str:
                             {data["current"]["temperature"]}°f \
                             (feels like {data["current"]["feelslike"]}°{units}). \
                             {data["current"]["precip"] * 100}% precipitation.'
-            if room == "goatfibres69":
+            if room == "goatfibres69" or user in METRIC_SYSTEM_USERS:
                 response.replace("°f", "°c")
             return response
     except HTTPError as e:
@@ -637,7 +638,7 @@ def upcoming_epl_fixtures():
     """Fetch next 10 upcoming EPL fixtures"""
     try:
         upcoming_fixtures = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/15"
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/10"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
@@ -650,8 +651,12 @@ def upcoming_epl_fixtures():
         for fixture in fixtures:
             home_team = fixture["homeTeam"]["team_name"]
             away_team = fixture["awayTeam"]["team_name"]
-            date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime('%b %d %H:%M')
-            upcoming_fixtures = upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
+            date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
+                "%b %d %H:%M"
+            )
+            upcoming_fixtures = (
+                upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
+            )
         return upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EPL fixtures: {e.response.content}")
