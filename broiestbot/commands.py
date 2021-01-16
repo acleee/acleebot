@@ -664,6 +664,42 @@ def upcoming_epl_fixtures():
         LOGGER.error(f"Unexpected error when fetching EPL fixtures: {e}")
 
 
+def live_epl_fixtures():
+    """Fetch live EPL fixtures"""
+    try:
+        live_fixtures = "\n\n"
+        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/live"
+        params = {"timezone": "America/New_York"}
+        headers = {
+            "content-type": "application/json",
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+        }
+        req = requests.request("GET", url, headers=headers, params=params)
+        fixtures = json.loads(req.text)["api"]["fixtures"]
+        fixtures = [fixture for fixture in fixtures if fixture["league_id"] == 2790]
+        for fixture in fixtures:
+            home_team = fixture["homeTeam"]["team_name"]
+            away_team = fixture["awayTeam"]["team_name"]
+            home_score = fixture["goalsHomeTeam"]
+            away_score = fixture["goalsAwayTeam"]
+            elapsed = fixture["elapsed"]
+            venue = fixture["venue"]
+            live_fixtures = (
+                live_fixtures
+                + f"{home_team} {home_score} - {away_team} {away_score} (min {elapsed}, {venue})\n"
+            )
+        return live_fixtures
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError while fetching live EPL fixtures: {e.response.content}"
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching live EPL fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching live EPL fixtures: {e}")
+
+
 def create_instagram_preview(url: str) -> Optional[str]:
     """
     Generate link preview for Instagram links.

@@ -17,6 +17,7 @@ from .commands import (
     get_stock,
     get_urban_definition,
     giphy_image_search,
+    live_epl_fixtures,
     random_image,
     send_text_message,
     subreddit_image,
@@ -81,6 +82,8 @@ class Bot(RoomManager):
             return epl_standings()
         elif cmd_type == "fixtures":
             return upcoming_epl_fixtures()
+        elif cmd_type == "livefixtures":
+            return live_epl_fixtures()
         LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room: Room, user, message: Message):
