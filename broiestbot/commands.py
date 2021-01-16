@@ -685,11 +685,26 @@ def live_epl_fixtures():
             away_score = fixture["goalsAwayTeam"]
             elapsed = fixture["elapsed"]
             venue = fixture["venue"]
+            events = fixture.get("events")
             live_fixtures = (
                 live_fixtures
                 + f"{home_team} {home_score} - {away_team} {away_score} (min {elapsed}, {venue})\n"
             )
-        return live_fixtures
+            if events:
+                for event in events:
+                    if event["detail"] == "Yellow Card":
+                        live_fixtures = live_fixtures + emojize(
+                            f':yellow_square: {event["detail"]}, {event["player"]} {event["elapsed"]}"\n'
+                        )
+                    elif event["detail"] == "Red Card":
+                        live_fixtures = live_fixtures + emojize(
+                            f':red_square: {event["detail"]}, {event["player"]} {event["elapsed"]}"\n'
+                        )
+                    elif event["type"] == "Goal":
+                        live_fixtures = live_fixtures + emojize(
+                            f':soccer_ball: {event["type"]}, {event["player"]} {event["elapsed"]}"\n'
+                        )
+        return live_fixtures + "\n"
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError while fetching live EPL fixtures: {e.response.content}"
