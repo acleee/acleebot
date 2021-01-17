@@ -711,7 +711,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
             events = fixture.get("events")
             live_fixtures = (
                 live_fixtures
-                + f"{home_team} {home_score} - {away_team} {away_score} (min {elapsed}, {venue})\n"
+                + f"{home_team} {home_score} - {away_team} {away_score}\n(min {elapsed}, {venue})\n"
             )
             if events:
                 for event in events:
