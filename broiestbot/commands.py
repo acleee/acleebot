@@ -691,7 +691,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        live_fixtures = "\n\n"
+        live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
@@ -701,7 +701,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
         req = requests.get(endpoint, headers=headers, params=params)
         fixtures = json.loads(req.text)["api"]["fixtures"]
         fixtures = [fixture for fixture in fixtures if fixture["league_id"] == 2790]
-        for fixture in fixtures:
+        for i, fixture in enumerate(fixtures):
             home_team = fixture["homeTeam"]["team_name"]
             away_team = fixture["awayTeam"]["team_name"]
             home_score = fixture["goalsHomeTeam"]
@@ -727,7 +727,9 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
                         live_fixtures = live_fixtures + emojize(
                             f':soccer_ball: {event["type"]}, {event["player"]} {event["elapsed"]}"\n'
                         )
-        return live_fixtures + "\n"
+            if i > 0:
+                live_fixtures = live_fixtures + "\n\n"
+        return live_fixtures
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError while fetching live EPL fixtures: {e.response.content}"
