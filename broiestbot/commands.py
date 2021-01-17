@@ -711,7 +711,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
             events = fixture.get("events")
             live_fixtures = (
                 live_fixtures
-                + f"{home_team} {home_score} - {away_team} {away_score}\n(min {elapsed}, {venue})\n"
+                + f"{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}\"\n"
             )
             if events:
                 for event in events:
@@ -726,6 +726,10 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
                     elif event["type"] == "Goal":
                         live_fixtures = live_fixtures + emojize(
                             f':soccer_ball: {event["type"]}, {event["player"]} {event["elapsed"]}"\n'
+                        )
+                    elif event["type"] == "subst":
+                        live_fixtures = live_fixtures + emojize(
+                            f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]} {event["elapsed"]}"\n'
                         )
             if i > 0:
                 live_fixtures = live_fixtures + "\n\n"
