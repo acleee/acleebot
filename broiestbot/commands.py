@@ -596,11 +596,16 @@ def get_instagram_token() -> Optional[Response]:
         return None
 
 
-def epl_standings():
-    """Get current EPL team standings."""
+def epl_standings(endpoint: str) -> Optional[str]:
+    """
+    Get current EPL team standings.
+
+    :param endpoint: Premiere league standings API endpoint.
+    :type endpoint: str
+    :returns: Optional[str]
+    """
     try:
         standings_table = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/leagueTable/2790"
         headers = {
             "content-type": "application/json",
             "server": "RapidAPI-1.1.0",
@@ -609,7 +614,7 @@ def epl_standings():
             "x-rapidapi-region": "AWS - eu-central-1",
             "x-rapidapi-version": "1.1.0",
         }
-        req = requests.get(url, headers=headers)
+        req = requests.get(endpoint, headers=headers)
         req = json.loads(req.text)
         standings = req["api"]["standings"][0]
         for standing in standings:
@@ -632,26 +637,39 @@ def epl_standings():
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
 
 
-def upcoming_epl_fixtures():
-    """Fetch next 10 upcoming EPL fixtures"""
+def upcoming_epl_fixtures(endpoint: str, room: str) -> Optional[str]:
+    """
+    Fetch next 10 upcoming EPL fixtures.
+
+    :param endpoint: Upcoming Premiere league fixtures API endpoint.
+    :type endpoint: str
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :returns: Optional[str]
+    """
     try:
         upcoming_fixtures = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/league/2790/next/10"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        req = requests.request("GET", url, headers=headers, params=params)
+        if room == "goatfibres69":
+            params = {"timezone": "Europe/London"}
+        req = requests.get(endpoint, headers=headers, params=params)
         req = json.loads(req.text)
         fixtures = req["api"]["fixtures"]
         for fixture in fixtures:
             home_team = fixture["homeTeam"]["team_name"]
             away_team = fixture["awayTeam"]["team_name"]
             date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
-                "%b %d %H:%M"
+                "%b %d %l:%M%p"
             )
+            if room == "goatfibres69":
+                date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
+                    "%b %d %H:%M"
+                )
             upcoming_fixtures = (
                 upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
             )
@@ -664,18 +682,23 @@ def upcoming_epl_fixtures():
         LOGGER.error(f"Unexpected error when fetching EPL fixtures: {e}")
 
 
-def live_epl_fixtures():
-    """Fetch live EPL fixtures"""
+def live_epl_fixtures(endpoint: str) -> Optional[str]:
+    """
+    Fetch live EPL fixtures.
+
+    :param endpoint: Live Premiere league fixtures API endpoint.
+    :type endpoint: str
+    :returns: Optional[str]
+    """
     try:
         live_fixtures = "\n\n"
-        url = "https://api-football-v1.p.rapidapi.com/v2/fixtures/live"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        req = requests.request("GET", url, headers=headers, params=params)
+        req = requests.get(endpoint, headers=headers, params=params)
         fixtures = json.loads(req.text)["api"]["fixtures"]
         fixtures = [fixture for fixture in fixtures if fixture["league_id"] == 2790]
         for fixture in fixtures:

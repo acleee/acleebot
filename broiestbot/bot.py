@@ -79,11 +79,11 @@ class Bot(RoomManager):
         elif cmd_type == "sms" and args and user:
             return send_text_message(args, user.name.title())
         elif cmd_type == "epltable":
-            return epl_standings()
+            return epl_standings(content)
         elif cmd_type == "fixtures":
-            return upcoming_epl_fixtures()
+            return upcoming_epl_fixtures(content, room.name)
         elif cmd_type == "livefixtures":
-            return live_epl_fixtures()
+            return live_epl_fixtures(content)
         LOGGER.warning(f"No response for command `{command}` {args}")
 
     def on_message(self, room: Room, user, message: Message):
