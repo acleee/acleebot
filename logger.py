@@ -6,7 +6,7 @@ import simplejson as json
 from loguru import logger
 
 from clients import sms
-from config import BASE_DIR, ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
+from config import ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
 
 
 def formatter(record):
@@ -80,24 +80,29 @@ def create_logger() -> logger:
     logger.remove()
     logger.add(
         stdout,
-        format=formatter,
+        colorize=True,
         catch=True,
-    )
-    logger.add(
-        f"{BASE_DIR}/logs/errors.log",
-        level="ERROR",
-        rotation="200 MB",
-        compression="zip",
-        catch=True,
+        format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
+        + "<light-green>{level}</light-green>: "
+        + "<light-white>{message}</light-white>",
     )
     if ENVIRONMENT == "production":
-        # Datadog
         logger.add(
-            f"{BASE_DIR}/logs/info.json",
+            "/var/log/broiestbot/info.json",
             format=formatter,
             rotation="200 MB",
             compression="zip",
             catch=True,
+        )
+        logger.add(
+            "/var/log/broiestbot/info.log",
+            colorize=True,
+            catch=True,
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
+            + "<light-green>{level}</light-green>: "
+            + "<light-white>{message}</light-white>",
+            rotation="500 MB",
+            compression="zip",
         )
     return logger
 
