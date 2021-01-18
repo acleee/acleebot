@@ -104,6 +104,17 @@ def create_logger() -> logger:
             rotation="500 MB",
             compression="zip",
         )
+        logger.add(
+            "/var/log/broiestbot/error.log",
+            colorize=True,
+            catch=True,
+            level="ERROR",
+            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
+            + "<red>{level}</red>: "
+            + "<light-white>{message}</light-white>",
+            rotation="500 MB",
+            compression="zip",
+        )
     return logger
 
 

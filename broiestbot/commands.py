@@ -100,24 +100,26 @@ def giphy_image_search(query: str) -> str:
     }
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if req.status_code != 200:
+        if req.status_code != 200 or bool(req.json()["data"]) is False:
             return "image not found :("
         image = req.json()["data"][0]["images"]["downsized"]["url"]
         return image
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
         return emojize(
-            f":warning: omfg you broke giphy wtf :warning:", use_aliases=True
+            f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True
         )
     except KeyError as e:
-        LOGGER.warning(f"Giphy KeyError for `{query}`: {e}")
+        LOGGER.error(f"Giphy KeyError for `{query}`: {e}")
         return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+            f":warning: holy sht u broke the bot im telling bro :warning:",
+            use_aliases=True,
         )
     except IndexError as e:
-        LOGGER.warning(f"Giphy IndexError for `{query}`: {e}")
+        LOGGER.error(f"Giphy IndexError for `{query}`: {e}")
         return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+            f":warning: holy sht u broke the bot im telling bro :warning:",
+            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Giphy unexpected error for `{query}`: {e}")
@@ -142,7 +144,12 @@ def random_image(message: str) -> str:
     except KeyError as e:
         LOGGER.warning(f"KeyError when fetching random image: {e}")
         return emojize(
-            f":warning: o shit i broke im a trash bot :warning:", use_aliases=True
+            f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True
+        )
+    except IndexError as e:
+        LOGGER.warning(f"IndexError when fetching random image: {e}")
+        return emojize(
+            f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True
         )
     except Exception as e:
         LOGGER.warning(f"Unexpected error when fetching random image: {e}")
@@ -711,7 +718,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
             events = fixture.get("events")
             live_fixtures = (
                 live_fixtures
-                + f"{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}\"\n"
+                + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
             )
             if events:
                 for event in events:
