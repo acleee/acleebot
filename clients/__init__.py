@@ -14,6 +14,7 @@ from config import (
     GOOGLE_BUCKET_URL,
     IEX_API_BASE_URL,
     IEX_API_TOKEN,
+    IP_DATA_KEY,
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
@@ -24,6 +25,7 @@ from config import (
 from .crypto import CryptoChartHandler
 from .database import Database
 from .gcs import GCS
+from .geo import GeoIP
 from .stock import StockChartHandler
 
 # Bot Database
@@ -59,3 +61,6 @@ reddit = praw.Reddit(
     password=REDDIT_PASSWORD,
     user_agent="bot",
 )
+
+# IP Data Client
+geo = GeoIP(IP_DATA_KEY)
