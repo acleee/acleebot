@@ -2,10 +2,7 @@
 import re
 from typing import Optional, Tuple
 
-from chatango.ch import Message, Room, RoomManager
-from logger import LOGGER
-
-from .commands import (
+from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
     create_instagram_preview,
@@ -22,9 +19,11 @@ from .commands import (
     send_text_message,
     subreddit_image,
     upcoming_epl_fixtures,
-    weather_by_city,
+    weather_by_location,
     wiki_summary,
 )
+from chatango.ch import Message, Room, RoomManager
+from logger import LOGGER
 
 
 class Bot(RoomManager):
@@ -61,7 +60,7 @@ class Bot(RoomManager):
         elif cmd_type == "reddit":
             return subreddit_image(content)
         elif cmd_type == "weather" and args:
-            return weather_by_city(
+            return weather_by_location(
                 args, self.weather, room.name, user.name.title().lower()
             )
         elif cmd_type == "wiki" and args:
