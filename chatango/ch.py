@@ -1,3 +1,5 @@
+import html
+import queue
 import random
 import re
 import select
@@ -5,6 +7,8 @@ import socket
 import sys
 import threading
 import time
+import urllib.parse
+import urllib.request
 
 from logger import LOGGER
 
@@ -14,47 +18,8 @@ except BaseException as e:
     _ws = None
     _ws_exc_info = sys.exc_info()
 
-################################################################
-# Debug stuff
-################################################################
+
 debug = True
-
-################################################################
-# Python 2 compatibility
-################################################################
-if sys.version_info[0] < 3:
-
-    class urllib:
-        parse = __import__("urllib")
-        request = __import__("urllib2")
-
-    input = raw_input
-    import codecs
-
-    import Queue as queue
-else:
-    import queue
-    import urllib.parse
-    import urllib.request
-
-try:
-    import html
-except:
-
-    class html:
-        import cgi
-        import functools
-
-        from HTMLParser import HTMLParser
-
-        unescape = functools.partial(HTMLParser.unescape.__func__, HTMLParser)
-        escape = functools.partial(cgi.escape, quote=True)
-        del functools, cgi, HTMLParser  # don't want to polute the namespace
-
-
-################################################################
-# Constants
-################################################################
 Userlist_Recent = 0
 Userlist_All = 1
 
@@ -300,7 +265,7 @@ def _parseFont(f):
             col = None
         face = f.split('"', 2)[1]
         return col, face, size
-    except:
+    except Exception:
         return None, None, None
 
 
@@ -346,7 +311,7 @@ class _ANON_PM_OBJECT:
     def disconnect(self):
         """Disconnect the bot from PM"""
         self._disconnect()
-        self._callEvent("on_anon_pm_disconnect", User(self._name))
+        self._callEvent("on_anon_pm_disconnect", get_user(self._name))
 
     def _disconnect(self):
         self._connected = False
@@ -414,7 +379,7 @@ class _ANON_PM_OBJECT:
         self._setWriteLock(False)
 
     def _rcmd_msg(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         body = _strip_html(":".join(args[5:]))
         self._callEvent("on_pm_message", user, body)
 
@@ -488,7 +453,7 @@ class ANON_PM:
             self._connect(user.name)
         self._persons[user.name].message(user, msg)
 
-    def getConnections(self):
+    def get_connections(self):
         return list(x for x in self._persons.values() if x is not None)
 
 
@@ -531,7 +496,7 @@ class PM:
         self._pingTask = self.mgr.set_internal(self._mgr._pingDelay, self.ping)
         self._connected = True
 
-    def _getAuth(self, name, password):
+    def _get_auth(self, name, password):
         """
         Request an auid using name and password.
 
@@ -567,20 +532,20 @@ class PM:
         return None
 
     def _auth(self):
-        self._auid = self._getAuth(self._mgr.name, self._mgr.password)
+        self._auid = self._get_auth(self._mgr.name, self._mgr.password)
         if self._auid is None:
             self._sock.close()
-            self._callEvent("on_login_fail")
+            self._call_event("on_login_fail")
             self._sock = None
             return False
-        self._sendCommand("tlogin", self._auid, "2")
-        self._setWriteLock(True)
+        self._send_command("tlogin", self._auid, "2")
+        self._set_write_lock(True)
         return True
 
     def disconnect(self):
         """Disconnect the bot from PM"""
         self._disconnect()
-        self._callEvent("on_pm_disconnect")
+        self._call_event("on_pm_disconnect")
 
     def _disconnect(self):
         self._connected = False
@@ -611,7 +576,7 @@ class PM:
         :type data: str
         :param data: the command string
         """
-        self._callEvent("on_raw", data)
+        self._call_event("on_raw", data)
         data = data.split(":")
         cmd, args = data[0], data[1:]
         func = "_rcmd_" + cmd
@@ -621,33 +586,33 @@ class PM:
     ####
     # Properties
     ####
-    def _getManager(self):
+    def _get_manager(self):
         return self._mgr
 
-    def _getContacts(self):
+    def _get_contacts(self):
         return self._contacts
 
-    def _getBlocklist(self):
+    def _get_blocklist(self):
         return self._blocklist
 
-    mgr = property(_getManager)
-    contacts = property(_getContacts)
-    blocklist = property(_getBlocklist)
+    mgr = property(_get_manager)
+    contacts = property(_get_contacts)
+    blocklist = property(_get_blocklist)
 
     ####
     # Received Commands
     ####
     def _rcmd_OK(self, args):
-        self._setWriteLock(False)
-        self._sendCommand("wl")
-        self._sendCommand("getblock")
-        self._callEvent("on_pm_connect")
+        self._set_write_lock(False)
+        self._send_command("wl")
+        self._send_command("getblock")
+        self._call_event("on_pm_connect")
 
     def _rcmd_wl(self, args):
         self._contacts = set()
         for i in range(len(args) // 4):
             name, last_on, is_on, idle = args[i * 4 : i * 4 + 4]
-            user = User(name)
+            user = get_user(name)
             if last_on == "None":
                 pass  # in case chatango gives a "None" as data argument
             elif not is_on == "on":
@@ -657,17 +622,17 @@ class PM:
             else:
                 self._status[user] = [int(last_on), True, time.time() - int(idle) * 60]
             self._contacts.add(user)
-        self._callEvent("on_pm_contactlist_receive")
+        self._call_event("on_pm_contactlist_receive")
 
     def _rcmd_block_list(self, args):
         self._blocklist = set()
         for name in args:
             if name == "":
                 continue
-            self._blocklist.add(User(name))
+            self._blocklist.add(get_user(name))
 
     def _rcmd_idleupdate(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         last_on, is_on, idle = self._status.get(user, (0, True, 0))
         if args[1] == "1":
             self._status[user] = [last_on, is_on, 0]
@@ -675,7 +640,7 @@ class PM:
             self._status[user] = [last_on, is_on, time.time()]
 
     def _rcmd_track(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         if user in self._status:
             last_on = self._status[user][0]
         else:
@@ -692,29 +657,29 @@ class PM:
 
     def _rcmd_DENIED(self, args):
         self._disconnect()
-        self._callEvent("on_login_fail")
+        self._call_event("on_login_fail")
 
     def _rcmd_msg(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         body = _strip_html(":".join(args[5:]))
-        self._callEvent("on_pm_message", user, body)
+        self._call_event("on_pm_message", user, body)
 
     def _rcmd_msgoff(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         body = _strip_html(":".join(args[5:]))
-        self._callEvent("on_pm_offline_message", user, body)
+        self._call_event("on_pm_offline_message", user, body)
 
     def _rcmd_wlonline(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         last_on = float(args[1])
         self._status[user] = [last_on, True, last_on]
-        self._callEvent("on_pm_contact_online", user)
+        self._call_event("on_pm_contact_online", user)
 
     def _rcmd_wloffline(self, args):
-        user = User(args[0])
+        user = get_user(args[0])
         last_on = float(args[1])
         self._status[user] = [last_on, False, 0]
-        self._callEvent("on_pm_contact_offline", user)
+        self._call_event("on_pm_contact_offline", user)
 
     def _rcmd_kickingoff(self, args):
         self.disconnect()
@@ -726,59 +691,59 @@ class PM:
         """call when successfully unblocked"""
         if user in self._blocklist:
             self._blocklist.remove(user)
-            self._callEvent("on_pm_unblock", user)
+            self._call_event("on_pm_unblock", user)
 
     ####
     # Commands
     ####
     def ping(self):
         """send a ping"""
-        self._sendCommand("")
-        self._callEvent("on_pm_ping")
+        self._send_command("")
+        self._call_event("on_pm_ping")
 
     def message(self, user, msg):
         """send a pm to a user"""
         if msg is not None:
-            self._sendCommand("msg", user.name, '<n7/><m v="1">%s</m>' % msg)
+            self._send_command("msg", user.name, '<n7/><m v="1">%s</m>' % msg)
 
-    def addContact(self, user):
+    def add_contact(self, user):
         """add contact"""
         if user not in self._contacts:
-            self._sendCommand("wladd", user.name)
+            self._send_command("wladd", user.name)
             self._contacts.add(user)
-            self._callEvent("on_pm_contact_add", user)
+            self._call_event("on_pm_contact_add", user)
 
-    def removeContact(self, user):
+    def remove_contact(self, user):
         """remove contact"""
         if user in self._contacts:
-            self._sendCommand("wldelete", user.name)
+            self._send_command("wldelete", user.name)
             self._contacts.remove(user)
-            self._callEvent("on_pm_contact_remove", user)
+            self._call_event("on_pm_contact_remove", user)
 
     def block(self, user):
         """block a person"""
         if user not in self._blocklist:
-            self._sendCommand("block", user.name, user.name, "S")
+            self._send_command("block", user.name, user.name, "S")
             self._blocklist.add(user)
-            self._callEvent("on_pm_block", user)
+            self._call_event("on_pm_block", user)
 
     def unblock(self, user):
         """unblock a person"""
         if user in self._blocklist:
-            self._sendCommand("unblock", user.name)
+            self._send_command("unblock", user.name)
 
     def track(self, user):
         """get and store status of person for future use"""
-        self._sendCommand("track", user.name)
+        self._send_command("track", user.name)
 
-    def checkOnline(self, user):
+    def check_online(self, user):
         """return True if online, False if offline, None if unknown"""
         if user in self._status:
             return self._status[user][1]
         else:
             return None
 
-    def getIdle(self, user):
+    def get_idle(self, user):
         """
         return last active time, time.time() if isn't idle, 0 if offline,
         None if unknown
@@ -795,7 +760,7 @@ class PM:
     ####
     # Util
     ####
-    def _callEvent(self, evt, *args, **kw):
+    def _call_event(self, evt, *args, **kw):
         getattr(self.mgr, evt)(self, *args, **kw)
         self.mgr.on_event_called(self, evt, *args, **kw)
 
@@ -805,13 +770,13 @@ class PM:
         else:
             self.mgr._write(self, data)
 
-    def _setWriteLock(self, lock):
+    def _set_write_lock(self, lock):
         self._wlock = lock
         if not self._wlock:
             self._write(self._wlockbuf)
             self._wlockbuf = b""
 
-    def _sendCommand(self, *args):
+    def _send_command(self, *args):
         """
         Send a command.
 
@@ -825,7 +790,7 @@ class PM:
             terminator = b"\r\n\x00"
         self._write(":".join(args).encode() + terminator)
 
-    def getConnections(self):
+    def get_connections(self):
         return [self]
 
 
@@ -931,7 +896,7 @@ class Room:
         if not self._reconnecting:
             self.connected = False
         for user in self._userlist:
-            user.clearSessionIds(self)
+            user.clear_session_ids(self)
         self._userlist = list()
         self._pingTask.cancel()
         self._sock.close()
@@ -1128,10 +1093,10 @@ class Room:
         elif args[2] != "M":  # unsuccessful login
             self._callEvent("on_login_fail")
             self.disconnect()
-        self._owner = User(args[0])
+        self._owner = get_user(args[0])
         self._uid = args[1]
         self._aid = args[1][4:8]
-        self._mods = set(map(lambda x: User(x.split(",")[0]), args[6].split(";")))
+        self._mods = set(map(lambda x: get_user(x.split(",")[0]), args[6].split(";")))
         self._i_log = list()
 
     def _rcmd_denied(self, args):
@@ -1167,7 +1132,7 @@ class Room:
 
     def _rcmd_mods(self, args):
         modnames = args
-        mods = set(map(lambda x: User(x.split(",")[0]), modnames))
+        mods = set(map(lambda x: get_user(x.split(",")[0]), modnames))
         premods = self._mods
         for user in mods - premods:  # modded
             self._mods.add(user)
@@ -1198,7 +1163,7 @@ class Room:
                 nameColor = None
         i = args[5]
         unid = args[4]
-        user = User(name)
+        user = get_user(name)
         # Create an anonymous message and queue it because msgid is unknown.
         if f:
             fontColor, fontFace, fontSize = _parseFont(f)
@@ -1257,7 +1222,7 @@ class Room:
                 nameColor = None
         i = args[5]
         unid = args[4]
-        user = User(name)
+        user = get_user(name)
         # Create an anonymous message and queue it because msgid is unknown.
         if f:
             fontColor, fontFace, fontSize = _parseFont(f)
@@ -1302,24 +1267,24 @@ class Room:
             name = data[3].lower()
             if name == "none":
                 continue
-            user = User(name=name, room=self)
-            user.addSessionId(self, data[0])
+            user = get_user(name=name, room=self)
+            user.add_session_id(self, data[0])
             self._userlist.append(user)
 
     def _rcmd_participant(self, args):
         name = args[3].lower()
         if name == "none":
             return
-        user = User(name)
+        user = get_user(name)
         puid = args[2]
 
         if args[0] == "0":  # leave
-            user.removeSessionId(self, args[1])
+            user.remove_session_id(self, args[1])
             self._userlist.remove(user)
             if user not in self._userlist or not self.mgr._userlistEventUnique:
                 self._callEvent("on_leave", user, puid)
         else:  # join
-            user.addSessionId(self, args[1])
+            user.add_session_id(self, args[1])
             if user not in self._userlist:
                 doEvent = True
             else:
@@ -1362,13 +1327,13 @@ class Room:
                 continue
             if params[2] == "":
                 continue
-            user = User(params[2])
+            user = get_user(params[2])
             self._banlist[user] = {
                 "unid": params[0],
                 "ip": params[1],
                 "target": user,
                 "time": float(params[3]),
-                "src": User(params[4]),
+                "src": get_user(params[4]),
             }
         self._callEvent("on_banlist_update")
 
@@ -1381,21 +1346,21 @@ class Room:
                 continue
             if params[2] == "":
                 continue
-            user = User(params[2])
+            user = get_user(params[2])
             self._unbanlist[user] = {
                 "unid": params[0],
                 "ip": params[1],
                 "target": user,
                 "time": float(params[3]),
-                "src": User(params[4]),
+                "src": get_user(params[4]),
             }
         self._callEvent("on_unbanlist_update")
 
     def _rcmd_blocked(self, args):
         if args[2] == "":
             return
-        target = User(args[2])
-        user = User(args[3])
+        target = get_user(args[2])
+        user = get_user(args[3])
         self._banlist[target] = {
             "unid": args[0],
             "ip": args[1],
@@ -1408,8 +1373,8 @@ class Room:
     def _rcmd_unblocked(self, args):
         if args[2] == "":
             return
-        target = User(args[2])
-        user = User(args[3])
+        target = get_user(args[2])
+        user = get_user(args[3])
         del self._banlist[target]
         self._unbanlist[user] = {
             "unid": args[0],
@@ -1516,7 +1481,7 @@ class Room:
         :type user: User
         :param user: User to mod.
         """
-        if self.getLevel(User(self.currentname)) == 2:
+        if self.getLevel(get_user(self.currentname)) == 2:
             self._sendCommand("addmod", user.name)
 
     def removeMod(self, user):
@@ -1526,7 +1491,7 @@ class Room:
         :type user: User
         :param user: User to demod.
         """
-        if self.getLevel(User(self.currentname)) == 2:
+        if self.getLevel(get_user(self.currentname)) == 2:
             self._sendCommand("removemod", user.name)
 
     def flag(self, message):
@@ -1906,7 +1871,7 @@ class RoomManager:
     # Properties
     ####
     def _get_user(self):
-        return User(self._name)
+        return get_user(self._name)
 
     def _get_name(self):
         return self._name
@@ -1937,7 +1902,8 @@ class RoomManager:
         """Called on init."""
         pass
 
-    def safePrint(self, text):
+    @staticmethod
+    def safe_print(text):
         """Use this to safely print text with unicode"""
         while True:
             try:
@@ -2374,8 +2340,8 @@ class RoomManager:
 
         :type callback: function
         :param callback: function to call on completion
-        :type cbargs: tuple or list
-        :param cbargs: arguments to get supplied to the callback
+        :type args: tuple or list
+        :param args: arguments to get supplied to the callback
         :type func: function
         :param func: function to call
         """
@@ -2467,10 +2433,10 @@ class RoomManager:
     def _write(self, room, data):
         room._wbuf += data
 
-    def getConnections(self):
+    def get_connections(self):
         li = list(self._rooms.values())
         if self._pm:
-            li.extend(self._pm.getConnections())
+            li.extend(self._pm.get_connections())
         return [c for c in li if c._sock is not None]
 
     ####
@@ -2484,7 +2450,7 @@ class RoomManager:
             t.daemon = True
             t.start()
         while self._running:
-            conns = self.getConnections()
+            conns = self.get_connections()
             socks = [x._sock for x in conns]
             wsocks = [x._sock for x in conns if x._wbuf != b""]
             if not (socks or wsocks):
@@ -2514,19 +2480,21 @@ class RoomManager:
 
     @classmethod
     def easy_start(
-        cl, rooms=None, name=None, password=None, commands=None, weather=None
+        cls, rooms=None, name=None, password=None, commands=None, weather=None
     ):
         """
         Prompts the user for missing info, then starts.
 
+        :param rooms: rooms to join
         :type rooms: list
-        :param room: rooms to join
-        :type name: str
         :param name: name to join as ("" = None, None = unspecified)
-        :type password: str
+        :type name: str
         :param password: password to join with ("" = None, None = unspecified)
+        :type password: str
         :param commands: All available commands.
         :type commands: DataFrame
+        :param weather: Types of weather used by the `weather` command.
+        :type commands: Optional[DataFrame]
         """
         if not rooms:
             rooms = input("Room names separated by semicolons: ").split(";")
@@ -2539,7 +2507,7 @@ class RoomManager:
             password = input("User password: ")
         if password == "":
             password = None
-        self = cl(name=name, password=password, commands=commands, weather=weather)
+        self = cls(name=name, password=password, commands=commands, weather=weather)
         for room in rooms:
             self.join_room(room)
         self.main()
@@ -2618,28 +2586,25 @@ class RoomManager:
 
 
 ################################################################
-# User class (well, yeah, I lied, it's actually _User)
+# User class (well, yeah, I lied, it's actually User)
 ################################################################
 _users = dict()
 
 
-def User(name, *args, **kw):
+def get_user(name, *args, **kw):
     if name is None:
         name = ""
     name = name.lower()
     user = _users.get(name)
     if not user:
-        user = _User(name=name, *args, **kw)
+        user = User(name=name, *args, **kw)
         _users[name] = user
     return user
 
 
-class _User:
+class User:
     """Class that represents a user."""
 
-    ####
-    # Init
-    ####
     def __init__(self, name, **kw):
         self._name = name.lower()
         self._sids = dict()
@@ -2697,12 +2662,12 @@ class _User:
     ####
     # Util
     ####
-    def addSessionId(self, room, sid):
+    def add_session_id(self, room, sid):
         if room not in self._sids:
             self._sids[room] = set()
         self._sids[room].add(sid)
 
-    def removeSessionId(self, room, sid):
+    def remove_session_id(self, room, sid):
         try:
             self._sids[room].remove(sid)
             if len(self._sids[room]) == 0:
@@ -2710,13 +2675,13 @@ class _User:
         except KeyError:
             pass
 
-    def clearSessionIds(self, room):
+    def clear_session_ids(self, room):
         try:
             del self._sids[room]
         except KeyError:
             pass
 
-    def hasSessionId(self, room, sid):
+    def has_session_id(self, room, sid):
         try:
             if sid in self._sids[room]:
                 return True
@@ -2725,9 +2690,6 @@ class _User:
         except KeyError:
             return False
 
-    ####
-    # Repr
-    ####
     def __repr__(self):
         return "<User: %s>" % self.name
 

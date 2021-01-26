@@ -12,8 +12,14 @@ from config import ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
 def formatter(record):
     """Format info message logs."""
 
-    def serialize_as_admin(log):
-        """Construct JSON info log record."""
+    def serialize_as_admin(log: dict) -> str:
+        """
+        Construct JSON info log record where user is room admin.
+
+        :param log: Dictionary containing logged message with metadata.
+        :type log: dict
+        :returns: str
+        """
         chat_data = re.findall(r"\[(\S+)\]", log["message"])
         if bool(chat_data):
             room = chat_data[0]
@@ -29,8 +35,14 @@ def formatter(record):
             }
             return json.dumps(subset)
 
-    def serialize_event(log):
-        """Construct JSON warning log record."""
+    def serialize_event(log: dict) -> str:
+        """
+        Construct warning log.
+
+        :param log: Dictionary containing logged message with metadata.
+        :type log: dict
+        :returns: str
+        """
         chat_data = re.findall(r"\[(\S+)\]", log["message"])
         if bool(chat_data):
             room = chat_data[0]
@@ -44,8 +56,14 @@ def formatter(record):
             }
             return json.dumps(subset)
 
-    def serialize_error(log):
-        """Construct JSON error log record."""
+    def serialize_error(log: dict) -> str:
+        """
+        Construct error log record.
+
+        :param log: Dictionary containing logged message with metadata.
+        :type log: dict
+        :returns: str
+        """
         subset = {
             "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
             "level": log["level"].name,
@@ -67,9 +85,9 @@ def formatter(record):
         return "{extra[serialized]},\n"
 
 
-def error_handler(record):
+def error_handler(log: dict) -> None:
     sms.messages.create(
-        body=f'BROBOT ERROR: {record["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {record["message"]}',
+        body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
         from_=TWILIO_SENDER_PHONE,
         to=TWILIO_RECIPIENT_PHONE,
     )
