@@ -17,12 +17,11 @@ from broiestbot.commands import (
     live_epl_fixtures,
     random_image,
     send_text_message,
-    subreddit_image,
     upcoming_epl_fixtures,
     weather_by_location,
     wiki_summary,
 )
-from chatango.ch import Message, Room, RoomManager
+from chatango.ch import Message, Room, RoomManager, User
 from logger import LOGGER
 
 
@@ -44,7 +43,22 @@ class Bot(RoomManager):
     def create_message(
         self, cmd_type, content, command=None, args=None, room=None, user=None
     ):
-        """Router to resolve bot response."""
+        """
+        Construct a message response based on command type and arguments.
+
+        :param cmd_type: `Type` of command triggered by a user.
+        :type cmd_type: str
+        :param content: Content to be used in response.
+        :type content: str
+        :param command: `Type` of command triggered by a user.
+        :type command: Optional[str]
+        :param args: `Type` of command triggered by a user.
+        :type args: Optional[str]
+        :param room: `Type` of command triggered by a user.
+        :type room: Optional[Room]
+        :param user: `Type` of command triggered by a user.
+        :type user: Optional[User]
+        """
         if cmd_type == "basic":
             return basic_message(content)
         elif cmd_type == "crypto" and not args:
@@ -57,8 +71,8 @@ class Bot(RoomManager):
             return fetch_image_from_gcs(content)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
-        elif cmd_type == "reddit":
-            return subreddit_image(content)
+        # elif cmd_type == "reddit":
+        # return subreddit_image(content)
         elif cmd_type == "weather" and args:
             return weather_by_location(
                 args, self.weather, room.name, user.name.title().lower()
@@ -85,7 +99,7 @@ class Bot(RoomManager):
             return live_epl_fixtures(content)
         LOGGER.warning(f"No response for command `{command}` {args}")
 
-    def on_message(self, room: Room, user, message: Message):
+    def on_message(self, room: Room, user: User, message: Message):
         """Boilerplate function trigger on message."""
         chat_message = message.body.lower()
         if chat_message[0] == "!":
@@ -125,8 +139,12 @@ class Bot(RoomManager):
             args = user_msg.split(" ", 1)[1]
         return cmd, args
 
-    def send_message(self, cmd: str, args: Optional[str], room: Room, user=None):
+    def send_message(
+        self, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
+    ):
         """Send response to chat."""
+        if cmd == "tune":
+            return False
         command = self.commands.find_row("command", cmd)
         if command is not None:
             message = self.create_message(
@@ -143,7 +161,8 @@ class Bot(RoomManager):
         return False
 
     @staticmethod
-    def link_preview(room: Room, message):
+    def link_preview(room: Room, message: str):
+        """Generate link preview for instagram post URL."""
         preview = create_instagram_preview(message)
         room.message(preview)
 
@@ -162,8 +181,8 @@ class Bot(RoomManager):
                 room.message(response)
 
     @staticmethod
-    def ban_word(room: Room, message, user, silent=False):
-        """Remove banned words."""
+    def ban_word(room: Room, message, user: User, silent=False):
+        """Remove banned word and warn offending user."""
         message.delete()
         if silent is False:
             room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
