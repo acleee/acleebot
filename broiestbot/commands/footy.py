@@ -148,8 +148,8 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
                         live_fixtures = live_fixtures + emojize(
                             f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]} {event["elapsed"]}"\n'
                         )
-            if i > 0:
-                live_fixtures = live_fixtures + "\n\n"
+            if i < len(fixtures) - 1:
+                live_fixtures = live_fixtures + "-------------------------\n"
         return live_fixtures
     except HTTPError as e:
         LOGGER.error(
