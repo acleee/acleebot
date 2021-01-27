@@ -35,14 +35,15 @@ class Bot(RoomManager):
         self.set_font_face("Arial")
         self.set_font_size(11)
 
-    @staticmethod
-    def _chat(room, message):
-        """Construct a response to a valid command."""
-        room.message(message)
-
-    def create_message(
-        self, cmd_type, content, command=None, args=None, room=None, user=None
-    ):
+    def _create_message(
+        self,
+        cmd_type,
+        content,
+        command: Optional[str] = None,
+        args: Optional[str] = None,
+        room: Optional[Room] = None,
+        user: Optional[User] = None,
+    ) -> Optional[str]:
         """
         Construct a message response based on command type and arguments.
 
@@ -50,14 +51,15 @@ class Bot(RoomManager):
         :type cmd_type: str
         :param content: Content to be used in response.
         :type content: str
-        :param command: `Type` of command triggered by a user.
+        :param command: Name of command triggered by user.
         :type command: Optional[str]
-        :param args: `Type` of command triggered by a user.
+        :param args: Additional arguments passed with user command.
         :type args: Optional[str]
-        :param room: `Type` of command triggered by a user.
+        :param room: Chatango room.
         :type room: Optional[Room]
-        :param user: `Type` of command triggered by a user.
+        :param user: User responsible for triggering command.
         :type user: Optional[User]
+        :returns: Optional[str]
         """
         if cmd_type == "basic":
             return basic_message(content)
@@ -71,8 +73,6 @@ class Bot(RoomManager):
             return fetch_image_from_gcs(content)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
-        # elif cmd_type == "reddit":
-        # return subreddit_image(content)
         elif cmd_type == "weather" and args:
             return weather_by_location(
                 args, self.weather, room.name, user.name.title().lower()
@@ -98,39 +98,44 @@ class Bot(RoomManager):
         elif cmd_type == "livefixtures":
             return live_epl_fixtures(content)
         LOGGER.warning(f"No response for command `{command}` {args}")
+        return None
 
     def on_message(self, room: Room, user: User, message: Message):
         """Boilerplate function trigger on message."""
         chat_message = message.body.lower()
         if chat_message[0] == "!":
-            cmd, args = self.parse_command(chat_message)
-            sent = self.send_message(cmd, args, room, user=user)
-            if sent is False:
-                self.giphy_fallback(chat_message, room)
+            cmd, args = self._parse_command(chat_message)
+            response = self._get_response(cmd, args, room, user=user)
+            if response:
+                room.message(response)
+
         elif chat_message == "bro?":
-            self.bot_status_check(room)
+            self._bot_status_check(room)
         elif "petition" in chat_message and user.name.title() != "Broiestbro":
-            self._chat(
-                room,
+            room.message(
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
                                 https://i.imgur.com/nYQy0GR.jpg",
             )
         elif chat_message.endswith("only on aclee"):
-            self._chat(room, "™")
+            room.message("™")
         elif chat_message.lower() == "tm":
-            self.trademark(room, message)
+            self._trademark(room, message)
         elif chat_message == "https://lmao.love/truth":
-            self.ban_word(room, message, user, silent=True)
+            self._ban_word(room, message, user, silent=True)
         elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
-            self.link_preview(room, message.body)
+            self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
-        # elif re.search('bl(\S+)b', user_msg) and 'south' not in user_msg and 'http' not in user_msg and 'blow' not in user_msg:
-        # self.banned_word(room, message, user)
 
     @staticmethod
-    def parse_command(user_msg) -> Tuple[str, Optional[str]]:
-        """Respond to command."""
+    def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
+        """
+        Parse user message into command & arguments.
+
+        :param user_msg: Raw chat message submitted by a user.
+        :type user_msg: str
+        :returns: Tuple[str, Optional[str]]
+        """
         user_msg = user_msg[1::].lower()
         cmd = user_msg
         args = None
@@ -139,15 +144,27 @@ class Bot(RoomManager):
             args = user_msg.split(" ", 1)[1]
         return cmd, args
 
-    def send_message(
+    def _get_response(
         self, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
-    ):
-        """Send response to chat."""
+    ) -> Optional[str]:
+        """
+        Fetch response to send to chat.
+
+        :param cmd: Command triggered by a user.
+        :type cmd: str
+        :param args: Additional arguments passed with user command.
+        :type args: Optional[str]
+        :param room: Chatango room.
+        :type room: Optional[Room]
+        :param user: .
+        :type user: Optional[User]
+        :returns: Optional[str]
+        """
         if cmd == "tune":
-            return False
+            return None
         command = self.commands.find_row("command", cmd)
         if command is not None:
-            message = self.create_message(
+            return self._create_message(
                 command["type"],
                 command["response"],
                 command=cmd,
@@ -155,40 +172,65 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-            if message:
-                self._chat(room, message)
-                return True
-        return False
+        return self._giphy_fallback(cmd)
 
     @staticmethod
-    def link_preview(room: Room, message: str):
-        """Generate link preview for instagram post URL."""
-        preview = create_instagram_preview(message)
+    def _create_link_preview(room: Room, url: str) -> None:
+        """
+        Generate link preview for Instagram post URL.
+
+        :param room: Chatango room.
+        :type room: Room
+        :param url: URL of an Instagram post.
+        :type url: str
+        :returns: None
+        """
+        preview = create_instagram_preview(url)
         room.message(preview)
 
     @staticmethod
-    def bot_status_check(room: Room):
-        """Check bot status."""
+    def _bot_status_check(room: Room) -> None:
+        """
+        Check bot status.
+
+        :param room: Chatango room.
+        :type room: Room
+        :returns: None
+        """
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def giphy_fallback(cmd: str, room: Room):
-        """Default to Giphy for non-existent commands."""
+    def _giphy_fallback(cmd: str) -> Optional[str]:
+        """
+        Default to Giphy for non-existent commands.
+
+        :param cmd: Command triggered by a user.
+        :type cmd: str
+        :returns: Optional[str]
+        """
         cmd = cmd.replace("!", "").lower()
         if len(cmd) > 1:
             response = giphy_image_search(cmd)
             if response is not None:
-                room.message(response)
+                return response
 
     @staticmethod
-    def ban_word(room: Room, message, user: User, silent=False):
+    def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
         """Remove banned word and warn offending user."""
         message.delete()
         if silent is False:
             room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
 
     @staticmethod
-    def trademark(room: Room, message):
-        """Trademark symbol helper."""
+    def _trademark(room: Room, message: Message) -> None:
+        """
+        Trademark symbol helper.
+
+        :param room: Chatango room.
+        :type room: Room
+        :param message: User submitted `tm` to be replaced.
+        :type message: Message
+        :returns: None
+        """
         message.delete()
         room.message("™")
