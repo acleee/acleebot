@@ -25,7 +25,7 @@ def join_rooms(rooms):
         commands=commands,
         weather=weather,
     )
-    chat_bot.create_message("basic", "Beep boop I'm dead inside 🤖")
+    chat_bot._create_message("basic", "Beep boop I'm dead inside 🤖")
 
 
 def start_bot():

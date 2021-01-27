@@ -103,7 +103,7 @@ def check_msg(buff):
 def mask_buff(buff):
     """
     masks buff with a random mask
-    retunrs mask + masked buff
+    returns mask + masked buff
     """
     buff = bytearray(buff)
     mask = bytearray(os.urandom(4))

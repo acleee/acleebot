@@ -1,6 +1,6 @@
 beautifulsoup4==4.9.3
 boto==2.49.0
-botocore==1.19.59
+botocore==1.19.60
 bs4==0.0.1
 cachetools==4.2.1; python_version >= "3.5" and python_version < "4.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
 certifi==2020.12.5; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
@@ -54,7 +54,7 @@ tenacity==6.3.1; python_version >= "2.7" and python_full_version < "3.0.0" or py
 tqdm==4.56.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 twilio==6.51.0
 update-checker==0.18.0; python_full_version > "3.5.3"
-urllib3==1.26.2; python_version >= "2.7" and python_full_version < "3.0.0" and python_version != "3.4" or python_full_version >= "3.6.0" and python_version < "4" and python_version != "3.4"
+urllib3==1.26.3; python_version >= "2.7" and python_full_version < "3.0.0" and python_version != "3.4" or python_full_version >= "3.6.0" and python_version < "4" and python_version != "3.4"
 uwsgi==2.0.19.1
 websocket-client==0.57.0; python_full_version > "3.5.3"
 wikipedia-api==0.5.4
