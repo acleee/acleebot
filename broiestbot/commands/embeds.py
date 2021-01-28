@@ -1,4 +1,4 @@
-"""Generate link previews from raw URLs."""
+"""Generate link previews from URLs."""
 from typing import Optional
 
 import requests
@@ -35,9 +35,11 @@ def create_instagram_preview(url: str) -> Optional[str]:
             return f"{img} {description}"
         return None
     except HTTPError as e:
-        LOGGER.error(f"Instagram URL {url} threw status code : {e.response.content}")
+        LOGGER.error(
+            f"HTTPError while fetching Instagram URL `{url}`: {e.response.content}"
+        )
     except Exception as e:
-        LOGGER.error(f"Failed to get Instagram url: {e}")
+        LOGGER.error(f"Unexpected error while creating Instagram embed: {e}")
 
 
 def get_instagram_token() -> Optional[Response]:

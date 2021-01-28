@@ -1,4 +1,4 @@
-"""Commands available from 12am to 5am."""
+"""Commands only available from 12am to 5am EST."""
 from datetime import datetime
 from random import randint
 from typing import Optional
@@ -14,7 +14,7 @@ from logger import LOGGER
 
 def is_after_dark() -> bool:
     """
-    Determine if current time is in threshold for `Night Mode`.
+    Determine if current time is in threshold for `After Dark` mode.
     :return: Bool
     """
     tz = pytz.timezone("America/New_York")
@@ -28,9 +28,9 @@ def is_after_dark() -> bool:
     return False
 
 
-def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
+def get_redgifs_gif(query: str, after_dark_only: bool = False) -> Optional[str]:
     """
-    Fetch a special kind of gif iykwim.
+    Fetch a special kind of gif, if you know what I mean ;).
 
     :param query: Gif search query.
     :type query: str
@@ -48,11 +48,12 @@ def get_redgifs_gif(query: str, after_dark_only=False) -> Optional[str]:
             req = requests.get(endpoint, params=params, headers=headers)
             if req.status_code == 200:
                 results = req.json().get("gfycats")
-                rand = randint(0, len(results) - 1)
-                image_json = results[rand]
-                image = image_json.get("max1mbGif")
-                if image is not None:
-                    return image
+                if results:
+                    rand = randint(0, len(results) - 1)
+                    image_json = results[rand]
+                    image = image_json.get("max1mbGif")
+                    if image is not None:
+                        return image
         except HTTPError as e:
             LOGGER.warning(
                 f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"

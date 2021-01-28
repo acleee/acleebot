@@ -31,7 +31,7 @@ def giphy_image_search(query: str) -> str:
     """
     Perform a gif image and return a random top-20 result.
 
-    :param query: Query used to find gif.
+    :param query: Query passed to Giphy to find gif.
     :type query: str
     :returns: str
     """
@@ -104,13 +104,13 @@ def random_image(message: str) -> str:
         )
 
 
-def subreddit_image(subreddit: str) -> Optional[str]:
+def subreddit_image(subreddit: str) -> str:
     """
     Fetch most recent image posted to a subreddit.
 
-    :param subreddit: Name of subreddit matching URL (sans `/r`)
+    :param subreddit: Name of subreddit matching URL (sans `/r/`)
     :type subreddit: str
-    :returns: Optional[str]
+    :returns: str
     """
     try:
         images = [post for post in reddit.subreddit(subreddit).new(limit=10)]
