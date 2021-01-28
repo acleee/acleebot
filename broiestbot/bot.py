@@ -155,8 +155,8 @@ class Bot(RoomManager):
         :param args: Additional arguments passed with user command.
         :type args: Optional[str]
         :param room: Chatango room.
-        :type room: Optional[Room]
-        :param user: .
+        :type room: Room
+        :param user: User responsible for triggering command.
         :type user: Optional[User]
         :returns: Optional[str]
         """
@@ -216,7 +216,19 @@ class Bot(RoomManager):
 
     @staticmethod
     def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
-        """Remove banned word and warn offending user."""
+        """
+        Remove banned word and warn offending user.
+
+        :param room: Chatango room.
+        :type room: Room
+        :param message: Message sent by user.
+        :type message: Message
+        :param user: User responsible for triggering command.
+        :type user: Optional[User]
+        :param silent: Whether or not offending user should be warned.
+        :type silent: bool
+        :returns: None
+        """
         message.delete()
         if silent is False:
             room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
