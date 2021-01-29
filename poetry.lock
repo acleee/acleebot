@@ -75,7 +75,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.19.61"
+version = "1.19.62"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -941,8 +941,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.19.61-py2.py3-none-any.whl", hash = "sha256:59da7b91ebd57362b482d3963392f2944296d6dc79877bf716e1c2671a208a74"},
-    {file = "botocore-1.19.61.tar.gz", hash = "sha256:3245c9e996143bcfdea73d105145ca733fcd7d5afe744a8760612fc449c3f810"},
+    {file = "botocore-1.19.62-py2.py3-none-any.whl", hash = "sha256:1046c152e5865aabbe6b10b2d33e652b3dd072516f3976e96cacc6b7c4460d02"},
+    {file = "botocore-1.19.62.tar.gz", hash = "sha256:29b4b9be5b40f392a033926c08c004c01bd6471384ef6f12eaa49ee3870a010c"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},

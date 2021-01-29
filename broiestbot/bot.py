@@ -172,7 +172,7 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-        return self._giphy_fallback(cmd)
+        return self._giphy_fallback(f"{cmd.lower()} {args.lower()}")
 
     @staticmethod
     def _create_link_preview(room: Room, url: str) -> None:
@@ -200,19 +200,15 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def _giphy_fallback(cmd: str) -> Optional[str]:
+    def _giphy_fallback(cmd: str) -> str:
         """
         Default to Giphy for non-existent commands.
 
         :param cmd: Command triggered by a user.
         :type cmd: str
-        :returns: Optional[str]
+        :returns: str
         """
-        cmd = cmd.replace("!", "").lower()
-        if len(cmd) > 1:
-            response = giphy_image_search(cmd)
-            if response is not None:
-                return response
+        return giphy_image_search(cmd)
 
     @staticmethod
     def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
