@@ -105,7 +105,7 @@ class Bot(RoomManager):
         chat_message = message.body.lower()
         if chat_message[0] == "!":
             cmd, args = self._parse_command(chat_message)
-            response = self._get_response(cmd, args, room, user=user)
+            response = self._get_response(chat_message, cmd, args, room, user=user)
             if response:
                 room.message(response)
 
@@ -145,11 +145,13 @@ class Bot(RoomManager):
         return cmd, args
 
     def _get_response(
-        self, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
+        self, chat_message: str, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
     ) -> Optional[str]:
         """
         Fetch response to send to chat.
 
+        :param chat_message: Raw chat message.
+        :type chat_message: str
         :param cmd: Command triggered by a user.
         :type cmd: str
         :param args: Additional arguments passed with user command.
@@ -172,7 +174,7 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-        return self._giphy_fallback(f"{cmd.lower()} {args.lower()}")
+        return self._giphy_fallback(chat_message)
 
     @staticmethod
     def _create_link_preview(room: Room, url: str) -> None:
@@ -200,15 +202,16 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def _giphy_fallback(cmd: str) -> str:
+    def _giphy_fallback(message: str) -> str:
         """
         Default to Giphy for non-existent commands.
 
-        :param cmd: Command triggered by a user.
-        :type cmd: str
+        :param message: Command triggered by a user.
+        :type message: str
         :returns: str
         """
-        return giphy_image_search(cmd)
+        query = message[1::].lower().lstrip().rstrip()
+        return giphy_image_search(query)
 
     @staticmethod
     def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
