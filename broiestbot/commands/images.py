@@ -29,7 +29,7 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
 
 def giphy_image_search(query: str) -> str:
     """
-    Perform a gif image and return a random top-20 result.
+    Perform a gif image and return a random result from the top-20 images.
 
     :param query: Query passed to Giphy to find gif.
     :type query: str
@@ -46,7 +46,7 @@ def giphy_image_search(query: str) -> str:
     }
     try:
         req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if req.status_code != 200 or bool(req.json()["data"]) is False:
+        if len(req.json()["data"]) == 0:
             return "image not found :("
         image = req.json()["data"][0]["images"]["downsized"]["url"]
         return image
