@@ -76,6 +76,10 @@ def get_redgifs_gif(query: str, after_dark_only: bool = False) -> Optional[str]:
                 f":warning: dude u must b a freak cuz that just broke bot :warning:",
                 use_aliases=True,
             )
+        return emojize(
+            f":warning: yo u must b a freak tf r u even searching foughr jfc :warning:",
+            use_aliases=True,
+        )
     return "https://i.imgur.com/oGMHkqT.jpg"
 
 
