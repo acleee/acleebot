@@ -84,7 +84,7 @@ class Bot(RoomManager):
         elif cmd_type == "nsfw" and args is None:
             return get_redgifs_gif("lesbians", after_dark_only=False)
         elif cmd_type == "nsfw" and args:
-            return get_redgifs_gif(args, after_dark_only=True)
+            return get_redgifs_gif(args, after_dark_only=False)
         elif cmd_type == "urban" and args:
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
@@ -137,12 +137,11 @@ class Bot(RoomManager):
         :returns: Tuple[str, Optional[str]]
         """
         user_msg = user_msg[1::].lower()
-        cmd = user_msg
-        args = None
         if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
-        return cmd, args
+            return cmd, args
+        return user_msg, None
 
     def _get_response(
         self, chat_message: str, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
