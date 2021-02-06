@@ -84,7 +84,7 @@ class Bot(RoomManager):
         elif cmd_type == "nsfw" and args is None:
             return get_redgifs_gif("lesbians", after_dark_only=False)
         elif cmd_type == "nsfw" and args:
-            return get_redgifs_gif(args, after_dark_only=False)
+            return get_redgifs_gif(args, after_dark_only=True)
         elif cmd_type == "urban" and args:
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
