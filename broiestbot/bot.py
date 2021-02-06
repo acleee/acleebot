@@ -144,7 +144,12 @@ class Bot(RoomManager):
         return user_msg, None
 
     def _get_response(
-        self, chat_message: str, cmd: str, args: Optional[str], room: Room, user: Optional[User] = None
+        self,
+        chat_message: str,
+        cmd: str,
+        args: Optional[str],
+        room: Room,
+        user: Optional[User] = None,
     ) -> Optional[str]:
         """
         Fetch response to send to chat.
@@ -201,16 +206,17 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def _giphy_fallback(message: str) -> str:
+    def _giphy_fallback(message: str) -> Optional[str]:
         """
         Default to Giphy for non-existent commands.
 
         :param message: Command triggered by a user.
         :type message: str
-        :returns: str
+        :returns: Optional[str]
         """
         query = message[1::].lower().lstrip().rstrip()
-        return giphy_image_search(query)
+        if len(query) > 1:
+            return giphy_image_search(query)
 
     @staticmethod
     def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
