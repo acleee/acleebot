@@ -3,6 +3,7 @@ import re
 from typing import Optional, Tuple
 
 from broiestbot.commands import (
+    all_live_fixtures,
     basic_message,
     blaze_time_remaining,
     create_instagram_preview,
@@ -14,6 +15,7 @@ from broiestbot.commands import (
     get_stock,
     get_urban_definition,
     giphy_image_search,
+    golden_boot,
     live_epl_fixtures,
     random_image,
     send_text_message,
@@ -96,13 +98,16 @@ class Bot(RoomManager):
         elif cmd_type == "fixtures":
             return upcoming_epl_fixtures(content, room.name)
         elif cmd_type == "livefixtures":
-            return live_epl_fixtures(content)
+            return all_live_fixtures(content)
+        elif cmd_type == "goldenboot":
+            return golden_boot()
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
     def on_message(self, room: Room, user: User, message: Message):
         """Boilerplate function trigger on message."""
         chat_message = message.body.lower()
+        print(f"chat_message = {chat_message}")
         if chat_message[0] == "!":
             cmd, args = self._parse_command(chat_message)
             response = self._get_response(chat_message, cmd, args, room, user=user)
