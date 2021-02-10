@@ -2,7 +2,13 @@
 from .afterdark import get_redgifs_gif
 from .definitions import get_urban_definition, wiki_summary
 from .embeds import create_instagram_preview
-from .footy import epl_standings, live_epl_fixtures, upcoming_epl_fixtures
+from .footy import (
+    all_live_fixtures,
+    epl_standings,
+    golden_boot,
+    live_epl_fixtures,
+    upcoming_epl_fixtures,
+)
 from .images import (
     fetch_image_from_gcs,
     giphy_image_search,
