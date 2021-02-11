@@ -254,7 +254,7 @@ def golden_boot():
             assists = player["goals"]["assists"]
             shots_on = player["shots"]["on"]
             shots_total = player["shots"]["total"]
-            golden_boot_leaders += f"{name}, {team}. {goals} goals, {assists} assists, {shots_on}/{shots_total}\n"
+            golden_boot_leaders += f"{goals} - {name}, {team}. ({assists} assists, {shots_on}/{shots_total} SOG)\n"
             if i > 9:
                 break
         return golden_boot_leaders
