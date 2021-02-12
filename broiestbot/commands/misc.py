@@ -1,12 +1,18 @@
 """Miscellaneous utility/novelty commands."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pytz
+import requests
 from emoji import emojize
 
 from clients import sms
-from config import CHATANGO_SPECIAL_USERS, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
+from config import (
+    CHATANGO_SPECIAL_USERS,
+    RAPID_API_KEY,
+    TWILIO_RECIPIENT_PHONE,
+    TWILIO_SENDER_PHONE,
+)
 from logger import LOGGER
 
 
@@ -59,3 +65,25 @@ def send_text_message(message: str, user: str) -> Optional[str]:
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
+
+
+def covid_cases_usa():
+    covid_by_state = "\n\n\n"
+    url = "https://covid-19-data.p.rapidapi.com/country/code"
+    params = {
+        "code": "usa",
+        "format": "json",
+    }
+    headers = {
+        "x-rapidapi-key": RAPID_API_KEY,
+        "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+    }
+    res = requests.get(url, headers=headers, params=params).json()[0]
+    deaths = res["deaths"]
+    critical = res["critical"]
+    cases = res["confirmed"]
+    covid_summary = f"\n\n:flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n:chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n:face_with_medical_mask: {critical:,} critical"
+    return emojize(
+        covid_summary,
+        use_aliases=True,
+    )

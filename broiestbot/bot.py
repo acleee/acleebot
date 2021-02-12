@@ -6,6 +6,7 @@ from broiestbot.commands import (
     all_live_fixtures,
     basic_message,
     blaze_time_remaining,
+    covid_cases_usa,
     create_instagram_preview,
     epl_standings,
     fetch_image_from_gcs,
@@ -16,7 +17,6 @@ from broiestbot.commands import (
     get_urban_definition,
     giphy_image_search,
     golden_boot,
-    live_epl_fixtures,
     random_image,
     send_text_message,
     upcoming_epl_fixtures,
@@ -101,6 +101,8 @@ class Bot(RoomManager):
             return all_live_fixtures(content)
         elif cmd_type == "goldenboot":
             return golden_boot()
+        elif cmd_type == "covid":
+            return covid_cases_usa()
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
