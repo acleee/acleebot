@@ -4,6 +4,7 @@ from .definitions import get_urban_definition, wiki_summary
 from .embeds import create_instagram_preview
 from .footy import (
     all_live_fixtures,
+    epl_predicts_today,
     epl_standings,
     golden_boot,
     live_epl_fixtures,

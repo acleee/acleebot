@@ -8,6 +8,7 @@ from broiestbot.commands import (
     blaze_time_remaining,
     covid_cases_usa,
     create_instagram_preview,
+    epl_predicts_today,
     epl_standings,
     fetch_image_from_gcs,
     find_imdb_movie,
@@ -101,8 +102,11 @@ class Bot(RoomManager):
             return all_live_fixtures(content)
         elif cmd_type == "goldenboot":
             return golden_boot()
+        elif cmd_type == "eplpredicts":
+            return epl_predicts_today()
         elif cmd_type == "covid":
             return covid_cases_usa()
+
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
