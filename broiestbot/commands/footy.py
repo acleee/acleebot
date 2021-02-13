@@ -1,6 +1,6 @@
 """Footy standings, fixtures, & live games."""
 from datetime import datetime
-from typing import Optional
+from typing import List, Optional
 
 import requests
 import simplejson as json
@@ -107,7 +107,6 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
     """
     leagues = {"EPL": 2790, "UEFA": 2771, "FA": 2791}
     try:
-        live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
@@ -266,3 +265,65 @@ def golden_boot():
         LOGGER.error(f"KeyError while fetching golden boot leaders: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching golden boot leaders: {e}")
+
+
+def epl_predicts_today():
+    todays_predicts = "\n\n\n"
+    try:
+        fixture_ids = epl_fixtures_today()
+        if bool(fixture_ids) is False:
+            return "No EPL fixtures today :("
+        for fixture_id in fixture_ids:
+            url = f"https://api-football-v1.p.rapidapi.com/v2/predictions/{fixture_id}"
+            headers = {
+                "x-rapidapi-key": "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs",
+                "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+            }
+            res = requests.get(url, headers=headers)
+            predictions = res.json()["api"]["predictions"]
+            for prediction in predictions:
+                home_chance = prediction["winning_percent"]["home"]
+                away_chance = prediction["winning_percent"]["away"]
+                draw_chance = prediction["winning_percent"]["draws"]
+                home_name = prediction["teams"]["home"]["team_name"]
+                away_name = prediction["teams"]["away"]["team_name"]
+                todays_predicts = (
+                    todays_predicts
+                    + f"{away_name} {away_chance} @ {home_name} {home_chance} (draw {draw_chance})\n"
+                )
+        return todays_predicts
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError while fetching today's EPL predicts: {e.response.content}"
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching today's EPL predicts: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching today's EPL predicts: {e}")
+
+
+def epl_fixtures_today() -> List[int]:
+    try:
+        today = datetime.now().date()
+        url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"
+        querystring = {"timezone": "Europe/London"}
+        headers = {
+            "x-rapidapi-key": "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs",
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+        }
+        res = requests.get(url, headers=headers, params=querystring)
+        fixtures = res.json()["api"]["fixtures"]
+        if bool(fixtures):
+            return [
+                fixture["fixture_id"]
+                for fixture in fixtures
+                if fixture["league_id"] == 2790
+            ]
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError while fetching today's EPL fixtures: {e.response.content}"
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching today's EPL fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching today's EPL fixtures: {e}")
