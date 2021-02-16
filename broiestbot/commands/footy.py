@@ -107,6 +107,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
     """
     leagues = {"EPL": 2790, "UEFA": 2771, "FA": 2791}
     try:
+        live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
@@ -151,7 +152,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
                                 live_fixtures = live_fixtures + emojize(
                                     f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]} {event["elapsed"]}"\n'
                                 )
-                    if i < len(fixtures) - 1:
+                    if i <= len(fixtures):
                         live_fixtures = live_fixtures + "-------------------------\n"
                 return live_fixtures
             return "No live fixtures :("
@@ -221,8 +222,8 @@ def all_live_fixtures(endpoint: str) -> Optional[str]:
                             )
                 if i < len(fixtures) - 1:
                     live_fixtures = live_fixtures + "-------------------------\n"
-                return live_fixtures
-            return "No live fixtures :("
+            return live_fixtures
+        return "No live fixtures :("
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError while fetching live EPL fixtures: {e.response.content}"
