@@ -7,7 +7,7 @@ from .footy import (
     epl_predicts_today,
     epl_standings,
     golden_boot,
-    live_epl_fixtures,
+    live_footy_fixtures,
     upcoming_epl_fixtures,
 )
 from .images import (
