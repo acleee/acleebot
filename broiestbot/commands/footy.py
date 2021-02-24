@@ -174,7 +174,7 @@ def all_live_fixtures(endpoint: str) -> Optional[str]:
     :type endpoint: str
     :returns: Optional[str]
     """
-    leagues = {"EPL": 2790, "UEFA": 2771, "FA": 2791}
+    leagues = {"EPL": 2790, "UCL": 2771, "FA": 2791, "EUROPA": 2777}
     try:
         live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
@@ -184,7 +184,7 @@ def all_live_fixtures(endpoint: str) -> Optional[str]:
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues['EPL']}-{leagues['UEFA']}-{leagues['FA']}",
+            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues['EPL']}-{leagues['UCL']}-{leagues['FA']}-{leagues['EUROPA']}",
             headers=headers,
             params=params,
         )
