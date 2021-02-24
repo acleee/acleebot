@@ -7,7 +7,7 @@ import simplejson as json
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import CHATANGO_OBI_ROOM, RAPID_API_KEY
+from config import CHATANGO_OBI_ROOM, FOOTY_LEAGUE_IDS, RAPID_API_KEY
 from logger import LOGGER
 
 
@@ -52,12 +52,10 @@ def epl_standings(endpoint: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
 
 
-def upcoming_epl_fixtures(endpoint: str, room: str) -> Optional[str]:
+def upcoming_epl_fixtures(room: str) -> Optional[str]:
     """
     Fetch next 10 upcoming EPL fixtures.
 
-    :param endpoint: Upcoming Premiere league fixtures API endpoint.
-    :type endpoint: str
     :param room: Chatango room which triggered the command.
     :type room: str
     :returns: Optional[str]
@@ -72,7 +70,11 @@ def upcoming_epl_fixtures(endpoint: str, room: str) -> Optional[str]:
         }
         if room == CHATANGO_OBI_ROOM:
             params = {"timezone": "Europe/London"}
-        req = requests.get(endpoint, headers=headers, params=params)
+        req = requests.get(
+            f"https://api-football-v1.p.rapidapi.com/v2/leagueTable/{FOOTY_LEAGUE_IDS['EPL']}",
+            headers=headers,
+            params=params,
+        )
         req = json.loads(req.text)
         fixtures = req["api"]["fixtures"]
         for fixture in fixtures:
@@ -97,7 +99,7 @@ def upcoming_epl_fixtures(endpoint: str, room: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching EPL fixtures: {e}")
 
 
-def live_epl_fixtures(endpoint: str) -> Optional[str]:
+def live_footy_fixtures(endpoint: str) -> Optional[str]:
     """
     Fetch live EPL fixtures.
 
@@ -105,7 +107,6 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
     :type endpoint: str
     :returns: Optional[str]
     """
-    leagues = {"EPL": 2790, "UEFA": 2771, "FA": 2791}
     try:
         live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
@@ -116,7 +117,7 @@ def live_epl_fixtures(endpoint: str) -> Optional[str]:
         }
         req = requests.get(endpoint, headers=headers, params=params)
         fixtures = json.loads(req.text)["api"]["fixtures"]
-        leagues = [league for league in leagues.values()]
+        leagues = [league for league in FOOTY_LEAGUE_IDS.values()]
         for league in leagues:
             fixtures = [
                 fixture for fixture in fixtures if fixture["league_id"] == league
@@ -174,7 +175,6 @@ def all_live_fixtures(endpoint: str) -> Optional[str]:
     :type endpoint: str
     :returns: Optional[str]
     """
-    leagues = {"EPL": 2790, "UCL": 2771, "FA": 2791, "EUROPA": 2777}
     try:
         live_fixtures = "\n\n\n"
         params = {"timezone": "America/New_York"}
@@ -184,7 +184,7 @@ def all_live_fixtures(endpoint: str) -> Optional[str]:
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues['EPL']}-{leagues['UCL']}-{leagues['FA']}-{leagues['EUROPA']}",
+            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}",
             headers=headers,
             params=params,
         )
@@ -243,7 +243,7 @@ def golden_boot():
     }
     try:
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/topscorers/2790",
+            f"https://api-football-v1.p.rapidapi.com/v2/topscorers/2790{FOOTY_LEAGUE_IDS['EPL']}",
             headers=headers,
         )
         players = req.json()["api"]["topscorers"]
@@ -318,7 +318,7 @@ def epl_fixtures_today() -> List[int]:
             return [
                 fixture["fixture_id"]
                 for fixture in fixtures
-                if fixture["league_id"] == 2790
+                if fixture["league_id"] in FOOTY_LEAGUE_IDS.values()
             ]
     except HTTPError as e:
         LOGGER.error(

@@ -97,7 +97,7 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return upcoming_epl_fixtures(content, room.name)
+            return upcoming_epl_fixtures(room.name)
         elif cmd_type == "livefixtures":
             return all_live_fixtures(content)
         elif cmd_type == "goldenboot":
