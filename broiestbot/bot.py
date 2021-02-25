@@ -3,15 +3,15 @@ import re
 from typing import Optional, Tuple
 
 from broiestbot.commands import (
-    footy_live_fixtures,
     basic_message,
     blaze_time_remaining,
     covid_cases_usa,
     create_instagram_preview,
-    footy_predicts_today,
     epl_standings,
     fetch_image_from_gcs,
     find_imdb_movie,
+    footy_live_fixtures,
+    footy_predicts_today,
     get_crypto,
     get_redgifs_gif,
     get_stock,
@@ -99,11 +99,11 @@ class Bot(RoomManager):
         elif cmd_type == "fixtures":
             return upcoming_epl_fixtures(room.name)
         elif cmd_type == "livefixtures":
-            return all_live_fixtures(content)
+            return footy_live_fixtures()
         elif cmd_type == "goldenboot":
             return golden_boot()
         elif cmd_type == "eplpredicts":
-            return epl_predicts_today()
+            return footy_predicts_today()
         elif cmd_type == "covid":
             return covid_cases_usa()
 

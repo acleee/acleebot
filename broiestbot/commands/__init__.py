@@ -3,10 +3,10 @@ from .afterdark import get_redgifs_gif
 from .definitions import get_urban_definition, wiki_summary
 from .embeds import create_instagram_preview
 from .footy import (
-    footy_predicts_today,
     epl_standings,
-    golden_boot,
     footy_live_fixtures,
+    footy_predicts_today,
+    golden_boot,
     upcoming_epl_fixtures,
 )
 from .images import (
