@@ -13,7 +13,7 @@ from logger import LOGGER
 
 def epl_standings(endpoint: str) -> Optional[str]:
     """
-    Get current EPL team standings.
+    Get standings table for EPL.
 
     :param endpoint: Premiere league standings API endpoint.
     :type endpoint: str
@@ -52,7 +52,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
 
 
-def upcoming_epl_fixtures(room: str) -> Optional[str]:
+def footy_upcoming_epl_fixtures(room: str) -> Optional[str]:
     """
     Fetch next 10 upcoming EPL fixtures.
 
@@ -60,8 +60,19 @@ def upcoming_epl_fixtures(room: str) -> Optional[str]:
     :type room: str
     :returns: Optional[str]
     """
+    upcoming_fixtures = "\n\n"
+    for league_name, league_id in FOOTY_LEAGUE_IDS.items():
+        league_fixtures = footy_upcoming_fixtures_per_league(
+            league_name, league_id, room
+        )
+        if league_fixtures is not None:
+            upcoming_fixtures += league_fixtures + "\n"
+    return upcoming_fixtures
+
+
+def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str):
     try:
-        upcoming_fixtures = "\n\n"
+        upcoming_fixtures = ""
         params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
@@ -71,26 +82,28 @@ def upcoming_epl_fixtures(room: str) -> Optional[str]:
         if room == CHATANGO_OBI_ROOM:
             params = {"timezone": "Europe/London"}
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/leagueTable/{FOOTY_LEAGUE_IDS['EPL']}",
+            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{league_id}/next/5/",
             headers=headers,
             params=params,
         )
         req = json.loads(req.text)
         fixtures = req["api"]["fixtures"]
-        for fixture in fixtures:
-            home_team = fixture["homeTeam"]["team_name"]
-            away_team = fixture["awayTeam"]["team_name"]
-            date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
-                "%b %d %l:%M%p"
-            )
-            if room == CHATANGO_OBI_ROOM:
+        if bool(fixtures):
+            upcoming_fixtures += f"{league_name}:\n"
+            for fixture in fixtures:
+                home_team = fixture["homeTeam"]["team_name"]
+                away_team = fixture["awayTeam"]["team_name"]
                 date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
-                    "%b %d %H:%M"
+                    "%b %d %l:%M%p"
                 )
-            upcoming_fixtures = (
-                upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
-            )
-        return upcoming_fixtures
+                if room == CHATANGO_OBI_ROOM:
+                    date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
+                        "%b %d %H:%M"
+                    )
+                upcoming_fixtures = (
+                    upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
+                )
+            return upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EPL fixtures: {e.response.content}")
     except KeyError as e:
@@ -101,7 +114,7 @@ def upcoming_epl_fixtures(room: str) -> Optional[str]:
 
 def footy_live_fixtures() -> Optional[str]:
     """
-    Fetch live footy fixtures.
+    Fetch live footy fixtures across EPL, FA Cup UCL, and UEFA.
 
     :returns: Optional[str]
     """
@@ -203,7 +216,7 @@ def footy_predicts_today():
     try:
         fixture_ids = footy_fixtures_today()
         if bool(fixture_ids) is False:
-            return "No EPL fixtures today :("
+            return "No fixtures today :("
         for fixture_id in fixture_ids:
             url = f"https://api-football-v1.p.rapidapi.com/v2/predictions/{fixture_id}"
             headers = {

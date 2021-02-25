@@ -6,8 +6,8 @@ from .footy import (
     epl_standings,
     footy_live_fixtures,
     footy_predicts_today,
+    footy_upcoming_epl_fixtures,
     golden_boot,
-    upcoming_epl_fixtures,
 )
 from .images import (
     fetch_image_from_gcs,
