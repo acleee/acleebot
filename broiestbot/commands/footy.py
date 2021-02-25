@@ -268,7 +268,7 @@ def golden_boot():
         LOGGER.error(f"Unexpected error when fetching golden boot leaders: {e}")
 
 
-def epl_predicts_today():
+def footy_predicts_today():
     todays_predicts = "\n\n\n"
     try:
         fixture_ids = epl_fixtures_today()
@@ -303,7 +303,7 @@ def epl_predicts_today():
         LOGGER.error(f"Unexpected error when fetching today's EPL predicts: {e}")
 
 
-def epl_fixtures_today() -> List[int]:
+def footy_fixtures_today() -> List[int]:
     try:
         today = datetime.now().date()
         url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"

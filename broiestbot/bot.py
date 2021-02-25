@@ -3,12 +3,12 @@ import re
 from typing import Optional, Tuple
 
 from broiestbot.commands import (
-    all_live_fixtures,
+    footy_live_fixtures,
     basic_message,
     blaze_time_remaining,
     covid_cases_usa,
     create_instagram_preview,
-    epl_predicts_today,
+    footy_predicts_today,
     epl_standings,
     fetch_image_from_gcs,
     find_imdb_movie,

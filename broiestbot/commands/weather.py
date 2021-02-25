@@ -38,7 +38,7 @@ def weather_by_location(location: str, weather: DataFrame, room: str, user: str)
         req = requests.get(endpoint, params=params)
         data = req.json()
         if data.get("success") is False:
-            LOGGER.error(
+            LOGGER.warning(
                 f'Failed to get weather for `{location}`: {data["error"]["info"]}'
             )
             return emojize(
