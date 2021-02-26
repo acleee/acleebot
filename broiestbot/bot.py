@@ -12,7 +12,7 @@ from broiestbot.commands import (
     find_imdb_movie,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_upcoming_epl_fixtures,
+    footy_upcoming_fixtures,
     get_crypto,
     get_redgifs_gif,
     get_stock,
@@ -97,7 +97,7 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_epl_fixtures(room.name)
+            return footy_upcoming_fixtures(room.name)
         elif cmd_type == "livefixtures":
             return footy_live_fixtures()
         elif cmd_type == "goldenboot":
@@ -106,12 +106,21 @@ class Bot(RoomManager):
             return footy_predicts_today()
         elif cmd_type == "covid":
             return covid_cases_usa()
-
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
-    def on_message(self, room: Room, user: User, message: Message):
-        """Boilerplate function trigger on message."""
+    def on_message(self, room: Room, user: User, message: Message) -> None:
+        """
+        Boilerplate function trigger on message.
+
+        :param room: Chatango room.
+        :type room: Room
+        :param user: User responsible for triggering command.
+        :type user: Optional[User]
+        :param message: Raw chat message submitted by a user.
+        :type message: Message
+        :returns: None
+        """
         chat_message = message.body.lower()
         print(f"chat_message = {chat_message}")
         if chat_message[0] == "!":
@@ -119,7 +128,6 @@ class Bot(RoomManager):
             response = self._get_response(chat_message, cmd, args, room, user=user)
             if response:
                 room.message(response)
-
         elif chat_message == "bro?":
             self._bot_status_check(room)
         elif "petition" in chat_message and user.name.title() != "Broiestbro":
