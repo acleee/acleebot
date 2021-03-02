@@ -73,7 +73,11 @@ format: env
 
 .PHONY: lint
 lint:
-	flake8 ./app --count --select=E9,F63,F7,F82 --show-source --statistics
+	flake8 . --count \
+			--select=E9,F63,F7,F82 \
+			--exclude .git,.github,__pycache__,.pytest_cache,.venv,logs,creds \
+			--show-source \
+			--statistics
 
 
 .PHONY: clean
