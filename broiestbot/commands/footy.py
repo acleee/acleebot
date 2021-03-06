@@ -131,7 +131,7 @@ def footy_live_fixtures() -> Optional[str]:
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}"
+        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}"
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
             headers=headers,
