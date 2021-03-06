@@ -97,7 +97,7 @@ def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
                 display_date = date.strftime("%b %d %l:%M%p")
                 if datetime.fromtimestamp(
                     fixture["event_timestamp"]
-                ) - datetime.now() < timedelta(days=14):
+                ) - datetime.now() < timedelta(days=7):
                     if room == CHATANGO_OBI_ROOM:
                         display_date = date.strftime("%b %d %H:%M")
                     num_fixtures += 1
