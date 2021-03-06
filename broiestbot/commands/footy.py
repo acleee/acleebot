@@ -1,5 +1,5 @@
 """Footy standings, fixtures, & live games."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import List, Optional
 
 import requests
@@ -52,9 +52,9 @@ def epl_standings(endpoint: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
 
 
-def footy_upcoming_epl_fixtures(room: str) -> Optional[str]:
+def footy_upcoming_fixtures(room: str) -> Optional[str]:
     """
-    Fetch next 10 upcoming EPL fixtures.
+    Fetch upcoming fixtures with 2 weeks for EPL, UCL, UEFA, and FA.
 
     :param room: Chatango room which triggered the command.
     :type room: str
@@ -72,6 +72,7 @@ def footy_upcoming_epl_fixtures(room: str) -> Optional[str]:
 
 def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str):
     try:
+        num_fixtures = 0
         upcoming_fixtures = ""
         params = {"timezone": "America/New_York"}
         headers = {
@@ -89,27 +90,31 @@ def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
         req = json.loads(req.text)
         fixtures = req["api"]["fixtures"]
         if bool(fixtures):
-            upcoming_fixtures += f"{league_name}:\n"
-            for fixture in fixtures:
+            for i, fixture in enumerate(fixtures):
                 home_team = fixture["homeTeam"]["team_name"]
                 away_team = fixture["awayTeam"]["team_name"]
-                date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
-                    "%b %d %l:%M%p"
-                )
-                if room == CHATANGO_OBI_ROOM:
-                    date = datetime.fromtimestamp(fixture["event_timestamp"]).strftime(
-                        "%b %d %H:%M"
+                date = datetime.fromtimestamp(fixture["event_timestamp"])
+                display_date = date.strftime("%b %d %l:%M%p")
+                if datetime.fromtimestamp(
+                    fixture["event_timestamp"]
+                ) - datetime.now() < timedelta(days=7):
+                    if room == CHATANGO_OBI_ROOM:
+                        display_date = date.strftime("%b %d %H:%M")
+                    num_fixtures += 1
+                    if num_fixtures > 0:
+                        if num_fixtures == 1:
+                            upcoming_fixtures += f"{league_name}:\n"
+                    upcoming_fixtures = (
+                        upcoming_fixtures
+                        + f"{away_team} @ {home_team} - {display_date}\n"
                     )
-                upcoming_fixtures = (
-                    upcoming_fixtures + f"{away_team} @ {home_team} - {date}\n"
-                )
             return upcoming_fixtures
     except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching EPL fixtures: {e.response.content}")
+        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching EPL fixtures: {e}")
+        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching EPL fixtures: {e}")
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
 def footy_live_fixtures() -> Optional[str]:
@@ -126,8 +131,9 @@ def footy_live_fixtures() -> Optional[str]:
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
+        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}"
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}",
+            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
             headers=headers,
             params=params,
         )
@@ -178,6 +184,7 @@ def footy_live_fixtures() -> Optional[str]:
 
 
 def golden_boot():
+    """Get EPL top scorers."""
     golden_boot_leaders = "\n\n\n"
     headers = {
         "content-type": "application/json",
@@ -212,6 +219,7 @@ def golden_boot():
 
 
 def footy_predicts_today():
+    """Fetch odds for fixtures being played today."""
     todays_predicts = "\n\n\n"
     try:
         fixture_ids = footy_fixtures_today()
@@ -238,12 +246,12 @@ def footy_predicts_today():
         return todays_predicts
     except HTTPError as e:
         LOGGER.error(
-            f"HTTPError while fetching today's EPL predicts: {e.response.content}"
+            f"HTTPError while fetching today's footy predicts: {e.response.content}"
         )
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching today's EPL predicts: {e}")
+        LOGGER.error(f"KeyError while fetching today's footy predicts: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching today's EPL predicts: {e}")
+        LOGGER.error(f"Unexpected error when fetching today's footy predicts: {e}")
 
 
 def footy_fixtures_today() -> List[int]:
@@ -265,9 +273,9 @@ def footy_fixtures_today() -> List[int]:
             ]
     except HTTPError as e:
         LOGGER.error(
-            f"HTTPError while fetching today's EPL fixtures: {e.response.content}"
+            f"HTTPError while fetching today's footy fixtures: {e.response.content}"
         )
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching today's EPL fixtures: {e}")
+        LOGGER.error(f"KeyError while fetching today's footy fixtures: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching today's EPL fixtures: {e}")
+        LOGGER.error(f"Unexpected error when fetching today's footy fixtures: {e}")
