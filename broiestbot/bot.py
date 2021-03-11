@@ -155,7 +155,7 @@ class Bot(RoomManager):
         :type user_msg: str
         :returns: Tuple[str, Optional[str]]
         """
-        user_msg = user_msg[1::].lower()
+        user_msg = user_msg.replace("!", "").lower()
         if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
@@ -233,7 +233,7 @@ class Bot(RoomManager):
         :type message: str
         :returns: Optional[str]
         """
-        query = message[1::].lower().lstrip().rstrip()
+        query = message.replace("!", "").lower().lstrip().rstrip()
         if len(query) > 1:
             return giphy_image_search(query)
 
