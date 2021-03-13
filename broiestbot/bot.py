@@ -124,7 +124,7 @@ class Bot(RoomManager):
         chat_message = message.body.lower()
         if re.match(r"^![a-zA-Z0-9]+.+", chat_message):
             cmd, args = self._parse_command(chat_message)
-            response = self._get_response(cmd, args, room, user=user)
+            response = self._get_response(chat_message, cmd, args, room, user=user)
             if response:
                 room.message(response)
         elif re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
@@ -167,6 +167,7 @@ class Bot(RoomManager):
 
     def _get_response(
         self,
+        chat_message: str,
         cmd: str,
         args: Optional[str],
         room: Room,
@@ -175,6 +176,8 @@ class Bot(RoomManager):
         """
         Fetch response from database to send to chat.
 
+        :param chat_message: Raw message sent by user.
+        :type chat_message: str
         :param cmd: Command triggered by a user.
         :type cmd: str
         :param args: Additional arguments passed with user command.
@@ -197,6 +200,7 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
+        return self._giphy_fallback(chat_message)
 
     @staticmethod
     def _create_link_preview(room: Room, url: str) -> None:
