@@ -122,15 +122,20 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
-        print(f"chat_message = {chat_message}")
-        if chat_message[0] == "!":
+        if re.match(r"^![a-zA-Z0-9]+.+", chat_message):
             cmd, args = self._parse_command(chat_message)
-            response = self._get_response(chat_message, cmd, args, room, user=user)
+            response = self._get_response(cmd, args, room, user=user)
             if response:
                 room.message(response)
+        elif re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
+            return self._giphy_fallback(chat_message)
         elif chat_message == "bro?":
             self._bot_status_check(room)
-        elif "petition" in chat_message and user.name.title() != "Broiestbro":
+        elif (
+            "petition" in chat_message
+            and user.name.title() != "Broiestbro"
+            and "competition" not in chat_message
+        ):
             room.message(
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
@@ -140,8 +145,6 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-        elif chat_message == "https://lmao.love/truth":
-            self._ban_word(room, message, user, silent=True)
         elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
             self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
@@ -164,17 +167,14 @@ class Bot(RoomManager):
 
     def _get_response(
         self,
-        chat_message: str,
         cmd: str,
         args: Optional[str],
         room: Room,
         user: Optional[User] = None,
     ) -> Optional[str]:
         """
-        Fetch response to send to chat.
+        Fetch response from database to send to chat.
 
-        :param chat_message: Raw chat message.
-        :type chat_message: str
         :param cmd: Command triggered by a user.
         :type cmd: str
         :param args: Additional arguments passed with user command.
@@ -185,7 +185,7 @@ class Bot(RoomManager):
         :type user: Optional[User]
         :returns: Optional[str]
         """
-        if cmd == "tune":
+        if cmd == "tune":  # Avoid clashes with Acleebot
             return None
         command = self.commands.find_row("command", cmd)
         if command is not None:
@@ -197,7 +197,6 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-        return self._giphy_fallback(chat_message)
 
     @staticmethod
     def _create_link_preview(room: Room, url: str) -> None:
