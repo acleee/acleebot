@@ -122,13 +122,13 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
-        if re.match(r"^![a-zA-Z0-9]+.+", chat_message):
-            cmd, args = self._parse_command(chat_message[:1])
+        if re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
+            return self._giphy_fallback(chat_message[2::])
+        elif re.match(r"^![a-zA-Z0-9]+.+", chat_message):
+            cmd, args = self._parse_command(chat_message[1::])
             response = self._get_response(chat_message, cmd, args, room, user=user)
             if response:
                 room.message(response)
-        elif re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
-            return self._giphy_fallback(chat_message[:2])
         elif chat_message == "bro?":
             self._bot_status_check(room)
         elif (
@@ -158,7 +158,7 @@ class Bot(RoomManager):
         :type user_msg: str
         :returns: Tuple[str, Optional[str]]
         """
-        user_msg = user_msg.replace("!", "").lower()
+        user_msg = user_msg.lower().strip()
         if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
@@ -236,7 +236,7 @@ class Bot(RoomManager):
         :type message: str
         :returns: Optional[str]
         """
-        query = message.replace("!", "").lower().lstrip().rstrip()
+        query = message.replace("!", "").lower().strip()
         if len(query) > 1:
             return giphy_image_search(query)
 
