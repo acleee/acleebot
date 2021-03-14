@@ -123,12 +123,10 @@ class Bot(RoomManager):
         """
         chat_message = message.body.lower()
         if re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
-            return self._giphy_fallback(chat_message[2::])
+            return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^![a-zA-Z0-9]+.+", chat_message):
             cmd, args = self._parse_command(chat_message[1::])
-            response = self._get_response(chat_message, cmd, args, room, user=user)
-            if response:
-                room.message(response)
+            self._get_response(chat_message, cmd, args, room, user=user)
         elif chat_message == "bro?":
             self._bot_status_check(room)
         elif (
@@ -192,7 +190,7 @@ class Bot(RoomManager):
             return None
         command = self.commands.find_row("command", cmd)
         if command is not None:
-            return self._create_message(
+            response = self._create_message(
                 command["type"],
                 command["response"],
                 command=cmd,
@@ -200,7 +198,9 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-        return self._giphy_fallback(chat_message)
+            room.message(response)
+        else:
+            self._giphy_fallback(chat_message, room)
 
     @staticmethod
     def _create_link_preview(room: Room, url: str) -> None:
@@ -228,17 +228,20 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def _giphy_fallback(message: str) -> Optional[str]:
+    def _giphy_fallback(message: str, room: Room):
         """
         Default to Giphy for non-existent commands.
 
         :param message: Command triggered by a user.
         :type message: str
+        :param room: Chatango room.
+        :type room: Room
         :returns: Optional[str]
         """
         query = message.replace("!", "").lower().strip()
         if len(query) > 1:
-            return giphy_image_search(query)
+            response = giphy_image_search(query)
+            room.message(response)
 
     @staticmethod
     def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
