@@ -23,11 +23,8 @@ def epl_standings(endpoint: str) -> Optional[str]:
         standings_table = "\n\n"
         headers = {
             "content-type": "application/json",
-            "server": "RapidAPI-1.1.0",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-            "x-rapidapi-region": "AWS - eu-central-1",
-            "x-rapidapi-version": "1.1.0",
         }
         req = requests.get(endpoint, headers=headers)
         req = json.loads(req.text)
@@ -193,7 +190,7 @@ def golden_boot():
     }
     try:
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/topscorers/2790{FOOTY_LEAGUE_IDS['EPL']}",
+            f"https://api-football-v1.p.rapidapi.com/v2/topscorers/{FOOTY_LEAGUE_IDS['EPL']}",
             headers=headers,
         )
         players = req.json()["api"]["topscorers"]
