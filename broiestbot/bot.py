@@ -123,12 +123,12 @@ class Bot(RoomManager):
         """
         chat_message = message.body.lower()
         if re.match(r"^![a-zA-Z0-9]+.+", chat_message):
-            cmd, args = self._parse_command(chat_message)
+            cmd, args = self._parse_command(chat_message[:1])
             response = self._get_response(chat_message, cmd, args, room, user=user)
             if response:
                 room.message(response)
         elif re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
-            return self._giphy_fallback(chat_message)
+            return self._giphy_fallback(chat_message[:2])
         elif chat_message == "bro?":
             self._bot_status_check(room)
         elif (
