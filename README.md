@@ -1,10 +1,10 @@
-# broiestbot
+# BroiestBot
 
 ![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Pandas](https://img.shields.io/badge/pandas-^1.1.1-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
 ![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy->1.3.16-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
-![PyMySQL](https://img.shields.io/badge/PyMySQL->v0.10.0-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
+![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-^1.4.0-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
+![PyMySQL](https://img.shields.io/badge/PyMySQL-^v1.0.0-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/stargazers)
@@ -14,11 +14,6 @@ The baddest bot in the game right now. Uses the *ch.py* framework for joining [C
 
 
 ## Commands
-
-Each row in the COMMANDS is comprised of tree parts:
-1. **command**: User-submitted command via chat.
-2. **message**: Chat response to reply to original comment.
-3. **type**: Function logic to generate response given .
 
 If a user's chat is a command (starts with `!`), a function will be fired depending on the type of command. A directory of all commands can be found [here](http://broiestbro.com/table/commands).
 
