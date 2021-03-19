@@ -15,10 +15,10 @@ from logger import LOGGER
 def is_after_dark() -> bool:
     """
     Determine if current time is in threshold for `After Dark` mode.
-    :return: Bool
+    :return: Boolean
     """
     tz = pytz.timezone("America/New_York")
-    now = datetime.now(tz=pytz.timezone("America/New_York"))
+    now = datetime.now(tz=tz)
     start_time = datetime(
         year=now.year, month=now.month, day=now.day, hour=0, tzinfo=tz
     )
