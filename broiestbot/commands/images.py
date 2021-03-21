@@ -1,6 +1,5 @@
-"""Fetch memes via a variety of methods."""
+"""Fetch meme images."""
 from random import randint
-from typing import Optional
 
 import requests
 from emoji import emojize
@@ -14,7 +13,7 @@ from logger import LOGGER
 
 def fetch_image_from_gcs(subdirectory: str) -> str:
     """
-    Get a random image from Google Cloud Storage bucket.
+    Get image from Google Cloud Storage bucket.
 
     :param subdirectory: Directory on remote CDN from which to fetch random image.
     :type subdirectory: str
@@ -24,7 +23,7 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
     image_list = [image.name for image in images if "." in image.name]
     rand = randint(0, len(image_list) - 1)
     image = GOOGLE_BUCKET_URL + GOOGLE_BUCKET_NAME + "/" + image_list[rand]
-    return image
+    return image.lower()
 
 
 def giphy_image_search(query: str) -> str:
