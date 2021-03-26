@@ -1,6 +1,6 @@
 beautifulsoup4==4.9.3
 boto==2.49.0
-botocore==1.20.33; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+botocore==1.20.37; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 bs4==0.0.1
 cachetools==4.2.1; python_version >= "3.5" and python_version < "4.0" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
 certifi==2020.12.5; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
@@ -13,10 +13,10 @@ datadog==0.39.0
 ddtrace==0.47.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 decorator==4.4.2; python_version >= "2.6" and python_full_version < "3.0.0" or python_full_version >= "3.2.0"
 emoji==1.2.0
-google-api-core==1.26.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
+google-api-core==1.26.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 google-auth==1.28.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 google-cloud-core==1.6.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
-google-cloud-storage==1.36.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+google-cloud-storage==1.37.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 google-crc32c==1.1.2; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 google-resumable-media==1.2.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 googleapis-common-protos==1.53.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
@@ -28,7 +28,8 @@ ipaddress==1.0.23
 ipdata==3.4.3
 jmespath==0.10.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 loguru==0.5.3; python_version >= "3.5"
-lxml==4.6.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+lxml==4.6.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
+lyricsgenius==3.0.0
 numpy==1.20.1; python_version >= "3.7" and python_full_version >= "3.7.1"
 packaging==20.9; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 pandas==1.2.3; python_full_version >= "3.7.1"
@@ -52,10 +53,10 @@ simplejson==3.17.2; (python_version >= "2.5" and python_full_version < "3.0.0") 
 six==1.15.0; python_version >= "3.6" and python_version < "4.0" and python_full_version >= "3.7.1" and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0")
 sortedcontainers==2.3.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 soupsieve==2.2.1; python_version >= "3.6"
-sqlalchemy==1.4.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+sqlalchemy==1.4.3; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 tenacity==7.0.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 tqdm==4.59.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
-twilio==6.54.0
+twilio==6.55.0
 update-checker==0.18.0; python_version >= "3.6" and python_version < "4.0"
 urllib3==1.26.4; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version < "4"
 uwsgi==2.0.19.1

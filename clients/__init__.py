@@ -1,4 +1,5 @@
 """External clients."""
+import lyricsgenius
 import praw
 import wikipediaapi
 from imdb import IMDb
@@ -64,3 +65,7 @@ reddit = praw.Reddit(
 
 # IP Data Client
 geo = GeoIP(IP_DATA_KEY)
+
+# Rap Genius
+genius = lyricsgenius.Genius()
+genius.remove_section_headers = True
