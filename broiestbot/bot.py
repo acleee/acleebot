@@ -23,6 +23,7 @@ from broiestbot.commands import (
     send_text_message,
     weather_by_location,
     wiki_summary,
+    get_song_lyrics
 )
 from chatango.ch import Message, Room, RoomManager, User
 from logger import LOGGER
@@ -106,6 +107,8 @@ class Bot(RoomManager):
             return footy_predicts_today()
         elif cmd_type == "covid":
             return covid_cases_usa()
+        elif cmd_type == "lyrics" and args:
+            return get_song_lyrics(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 

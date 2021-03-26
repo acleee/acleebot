@@ -12,8 +12,8 @@ def get_song_lyrics(song_title_query: str) -> str:
     """
     try:
         song = genius.search_song(song_title_query)
-        if song is not None and song.lyrics() is not None:
-            lyrics = song.lyrics()[0:1800]
+        if song is not None and song.lyrics is not None:
+            lyrics = f"{song.full_title} \n\n {song.lyrics[0:1800]}"
             return lyrics
         return f"wtf kind of song is `{song_title_query}`"
     except Exception as e:
