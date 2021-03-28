@@ -2,6 +2,7 @@
 from datetime import datetime, timedelta
 from typing import Dict, List, Optional
 
+import pytz
 import requests
 import simplejson as json
 from emoji import emojize
@@ -110,11 +111,10 @@ def footy_upcoming_fixtures_per_league(
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["homeTeam"]["team_name"]
                 away_team = fixture["awayTeam"]["team_name"]
-                date = datetime.fromtimestamp(fixture["event_timestamp"])
+                date = datetime.strptime(fixture["event_date"], "%Y-%m-%dT%H:%M:%S%z")
                 display_date = get_preferred_time_format(date, room, username)
-                if datetime.fromtimestamp(
-                    fixture["event_timestamp"]
-                ) - datetime.now() < timedelta(days=7):
+                tz = get_preferred_timezone_object(room, username)
+                if date - datetime.now(tz=tz) < timedelta(days=7):
                     if room == CHATANGO_OBI_ROOM:
                         display_date = get_preferred_time_format(date, room, username)
                     num_fixtures += 1
@@ -347,3 +347,18 @@ def get_preferred_time_format(start_time: datetime, room: str, username: str):
     if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
         return start_time.strftime("%b %d, %H:%M")
     return start_time.strftime("%b %d, %l:%M%p").replace("AM", "am").replace("PM", "pm")
+
+
+def get_preferred_timezone_object(room: str, username: str):
+    """
+    Display fixture dates depending on preferred timezone of requesting user.
+
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
+     """
+    if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
+        return pytz.utc
+    return pytz.timezone("America/New_York")
