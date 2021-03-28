@@ -1,13 +1,18 @@
-"""Footy standings, fixtures, & live games."""
+"""Footy standings, fixtures, live games, scoring leaders, & predicts."""
 from datetime import datetime, timedelta
-from typing import List, Optional
+from typing import Dict, List, Optional
 
 import requests
 import simplejson as json
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import CHATANGO_OBI_ROOM, FOOTY_LEAGUE_IDS, RAPID_API_KEY
+from config import (
+    CHATANGO_OBI_ROOM,
+    FOOTY_LEAGUE_IDS,
+    METRIC_SYSTEM_USERS,
+    RAPID_API_KEY,
+)
 from logger import LOGGER
 
 
@@ -49,36 +54,51 @@ def epl_standings(endpoint: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
 
 
-def footy_upcoming_fixtures(room: str) -> Optional[str]:
+def footy_upcoming_fixtures(room: str, username: str) -> str:
     """
     Fetch upcoming fixtures with 2 weeks for EPL, UCL, UEFA, and FA.
 
-    :param room: Chatango room which triggered the command.
+    :param room: Chatango room where command was triggered.
     :type room: str
-    :returns: Optional[str]
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
     """
     upcoming_fixtures = "\n\n"
     for league_name, league_id in FOOTY_LEAGUE_IDS.items():
         league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room
+            league_name, league_id, room, username
         )
         if league_fixtures is not None:
             upcoming_fixtures += league_fixtures + "\n"
     return upcoming_fixtures
 
 
-def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str):
+def footy_upcoming_fixtures_per_league(
+    league_name: str, league_id: int, room: str, username: str
+) -> Optional[str]:
+    """
+    Get upcoming fixtures for a given league.
+
+    :param league_name: Name of footy league.
+    :type league_name: str
+    :param league_id: ID of footy league.
+    :type league_id: int
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: Optional[str]
+    """
     try:
         num_fixtures = 0
         upcoming_fixtures = ""
-        params = {"timezone": "America/New_York"}
+        params = get_preferred_timezone(room, username)
         headers = {
             "content-type": "application/json",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        if room == CHATANGO_OBI_ROOM:
-            params = {"timezone": "Europe/London"}
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{league_id}/next/5/",
             headers=headers,
@@ -91,19 +111,19 @@ def footy_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
                 home_team = fixture["homeTeam"]["team_name"]
                 away_team = fixture["awayTeam"]["team_name"]
                 date = datetime.fromtimestamp(fixture["event_timestamp"])
-                display_date = date.strftime("%b %d %l:%M%p")
+                display_date = get_preferred_time_format(date, room, username)
                 if datetime.fromtimestamp(
                     fixture["event_timestamp"]
-                ) - datetime.now() < timedelta(days=8):
+                ) - datetime.now() < timedelta(days=7):
                     if room == CHATANGO_OBI_ROOM:
-                        display_date = date.strftime("%b %d %H:%M")
+                        display_date = get_preferred_time_format(date, room, username)
                     num_fixtures += 1
                     if num_fixtures > 0:
                         if num_fixtures == 1:
                             upcoming_fixtures += f"{league_name}:\n"
                     upcoming_fixtures = (
                         upcoming_fixtures
-                        + f"{away_team} @ {home_team} - {display_date}\n"
+                        + f"{away_team} @ {home_team} — {display_date}\n"
                     )
             return upcoming_fixtures
     except HTTPError as e:
@@ -122,17 +142,15 @@ def footy_live_fixtures() -> Optional[str]:
     """
     try:
         live_fixtures = "\n\n\n"
-        params = {"timezone": "America/New_York"}
         headers = {
             "content-type": "application/json",
             "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}"
+        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}"
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
             headers=headers,
-            params=params,
         )
         fixtures = req.json()["api"]["fixtures"]
         if bool(fixtures):
@@ -180,8 +198,12 @@ def footy_live_fixtures() -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching live EPL fixtures: {e}")
 
 
-def golden_boot():
-    """Get EPL top scorers."""
+def epl_golden_boot() -> str:
+    """
+    Get EPL top scorers.
+
+    :return: str
+    """
     golden_boot_leaders = "\n\n\n"
     headers = {
         "content-type": "application/json",
@@ -215,11 +237,19 @@ def golden_boot():
         LOGGER.error(f"Unexpected error when fetching golden boot leaders: {e}")
 
 
-def footy_predicts_today():
-    """Fetch odds for fixtures being played today."""
+def footy_predicts_today(room: str, username: str) -> Optional[str]:
+    """
+    Fetch odds for fixtures being played today.
+
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: Optional[str]
+    """
     todays_predicts = "\n\n\n"
     try:
-        fixture_ids = footy_fixtures_today()
+        fixture_ids = footy_fixtures_today(room, username)
         if bool(fixture_ids) is False:
             return "No fixtures today :("
         for fixture_id in fixture_ids:
@@ -251,16 +281,25 @@ def footy_predicts_today():
         LOGGER.error(f"Unexpected error when fetching today's footy predicts: {e}")
 
 
-def footy_fixtures_today() -> List[int]:
+def footy_fixtures_today(room: str, username: str) -> List[int]:
+    """
+    Gets fixture IDs of fixtures being played today.
+
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: List[int]
+    """
     try:
         today = datetime.now().date()
         url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"
-        querystring = {"timezone": "Europe/London"}
+        params = get_preferred_timezone(room, username)
         headers = {
             "x-rapidapi-key": "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs",
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
-        res = requests.get(url, headers=headers, params=querystring)
+        res = requests.get(url, headers=headers, params=params)
         fixtures = res.json()["api"]["fixtures"]
         if bool(fixtures):
             return [
@@ -276,3 +315,35 @@ def footy_fixtures_today() -> List[int]:
         LOGGER.error(f"KeyError while fetching today's footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching today's footy fixtures: {e}")
+
+
+def get_preferred_timezone(room: str, username: str) -> Dict[str, str]:
+    """
+    Display fixture dates depending on preferred timezone of requesting user.
+
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
+    """
+    if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
+        return {"timezone": "Europe/London"}
+    return {"timezone": "America/New_York"}
+
+
+def get_preferred_time_format(start_time: datetime, room: str, username: str):
+    """
+    Display fixture times depending on preferred timezone of requesting user.
+
+    :param start_time: Unformatted fixture start time/date.
+    :type start_time: datetime
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
+    """
+    if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
+        return start_time.strftime("%b %d, %H:%M")
+    return start_time.strftime("%b %d, %l:%M%p").replace("AM", "am").replace("PM", "pm")

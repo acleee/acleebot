@@ -7,6 +7,7 @@ from broiestbot.commands import (
     blaze_time_remaining,
     covid_cases_usa,
     create_instagram_preview,
+    epl_golden_boot,
     epl_standings,
     fetch_image_from_gcs,
     find_imdb_movie,
@@ -15,15 +16,14 @@ from broiestbot.commands import (
     footy_upcoming_fixtures,
     get_crypto,
     get_redgifs_gif,
+    get_song_lyrics,
     get_stock,
     get_urban_definition,
     giphy_image_search,
-    golden_boot,
     random_image,
     send_text_message,
     weather_by_location,
     wiki_summary,
-    get_song_lyrics
 )
 from chatango.ch import Message, Room, RoomManager, User
 from logger import LOGGER
@@ -98,13 +98,13 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_fixtures(room.name)
+            return footy_upcoming_fixtures(room.name, user.name)
         elif cmd_type == "livefixtures":
             return footy_live_fixtures()
         elif cmd_type == "goldenboot":
-            return golden_boot()
+            return epl_golden_boot()
         elif cmd_type == "eplpredicts":
-            return footy_predicts_today()
+            return footy_predicts_today(room.name, user.name)
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:
