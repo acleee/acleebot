@@ -57,7 +57,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
 
 def footy_upcoming_fixtures(room: str, username: str) -> str:
     """
-    Fetch upcoming fixtures with 2 weeks for EPL, UCL, UEFA, and FA.
+    Fetch upcoming fixtures within 1 week for EPL, LIGA, BUND, FA, UCL, and EUROPA.
 
     :param room: Chatango room where command was triggered.
     :type room: str
@@ -136,7 +136,7 @@ def footy_upcoming_fixtures_per_league(
 
 def footy_live_fixtures() -> Optional[str]:
     """
-    Fetch live footy fixtures across EPL, FA Cup UCL, and UEFA.
+    Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, and EUROPA.
 
     :returns: Optional[str]
     """
