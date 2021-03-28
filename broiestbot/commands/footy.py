@@ -123,7 +123,7 @@ def footy_upcoming_fixtures_per_league(
                             upcoming_fixtures += f"{league_name}:\n"
                     upcoming_fixtures = (
                         upcoming_fixtures
-                        + f"{away_team} @ {home_team} — {display_date}\n"
+                        + f"{away_team} @ {home_team} - {display_date}\n"
                     )
             return upcoming_fixtures
     except HTTPError as e:
