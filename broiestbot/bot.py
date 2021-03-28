@@ -98,13 +98,13 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_fixtures(room.name, user.name)
+            return footy_upcoming_fixtures(room.name.lower(), user.name.title().lower())
         elif cmd_type == "livefixtures":
             return footy_live_fixtures()
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
-            return footy_predicts_today(room.name, user.name)
+            return footy_predicts_today(room.name.lower(), user.name.title().lower())
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:
