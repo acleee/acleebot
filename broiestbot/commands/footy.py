@@ -317,7 +317,7 @@ def footy_fixtures_today(room: str, username: str) -> List[int]:
         LOGGER.error(f"Unexpected error when fetching today's footy fixtures: {e}")
 
 
-def get_preferred_timezone(room: str, username: str) -> Dict[str, str]:
+def get_preferred_timezone(room: str, username: str) -> Dict:
     """
     Display fixture dates depending on preferred timezone of requesting user.
 
@@ -328,7 +328,7 @@ def get_preferred_timezone(room: str, username: str) -> Dict[str, str]:
     :returns: str
     """
     if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
-        return {"timezone": "Europe/London"}
+        return {}
     return {"timezone": "America/New_York"}
 
 
