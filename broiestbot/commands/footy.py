@@ -358,7 +358,7 @@ def get_preferred_timezone_object(room: str, username: str):
     :param username: Chatango user who triggered the command.
     :type username: str
     :returns: str
-     """
+    """
     if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
         return pytz.utc
     return pytz.timezone("America/New_York")

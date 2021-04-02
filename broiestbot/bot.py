@@ -125,17 +125,19 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
-        if re.match(r"^!![a-zA-Z0-9]+.+", chat_message):
+        if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
-        elif re.match(r"^![a-zA-Z0-9]+.+", chat_message):
+        elif re.match(r"^!.+", chat_message):
             cmd, args = self._parse_command(chat_message[1::])
             self._get_response(chat_message, cmd, args, room, user=user)
         elif chat_message == "bro?":
             self._bot_status_check(room)
+        elif chat_message == "no u":
+            self._ban_word(room, message, user, silent=True)
         elif (
             "petition" in chat_message
-            and user.name.title() != "Broiestbro"
             and "competition" not in chat_message
+            and user.name.title() != "Broiestbro"
         ):
             room.message(
                 "SIGN THE PETITION: \
@@ -146,8 +148,8 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-        elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
-            self._create_link_preview(room, message.body)
+        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
+        # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
 
     @staticmethod
