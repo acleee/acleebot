@@ -11,7 +11,7 @@ click==7.1.2; python_version >= "2.7" and python_full_version < "3.0.0" or pytho
 colorama==0.4.4; python_version >= "3.5" and python_full_version < "3.0.0" and sys_platform == "win32" or sys_platform == "win32" and python_version >= "3.5" and python_full_version >= "3.5.0"
 datadog==0.39.0
 ddtrace==0.48.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
-decorator==5.0.3; python_version >= "3.5"
+decorator==5.0.4; python_version >= "3.5"
 emoji==1.2.0
 google-api-core==1.26.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
 google-auth==1.28.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
