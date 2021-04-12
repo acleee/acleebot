@@ -132,7 +132,7 @@ class Bot(RoomManager):
             self._get_response(chat_message, cmd, args, room, user=user)
         elif chat_message == "bro?":
             self._bot_status_check(room)
-        elif chat_message == "no u":
+        elif chat_message.replace("!", "").strip() == "no u":
             self._ban_word(room, message, user, silent=True)
         elif (
             "petition" in chat_message
