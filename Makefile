@@ -87,8 +87,8 @@ clean:
 	find . -name '*.pyc' -delete
 	find . -name '__pycache__' -delete
 	find . -name 'poetry.lock' -delete
-	find . -name './logs/*.log' -delete
 	find . -name '*.log' -delete
-	find . -name 'logs/*.json' -delete
+	find . -wholename './logs/*.log' -delete
+	find . -wholename 'logs/*.json' -delete
 	find . -wholename '.pytest_cache' -delete
 	find . -wholename '*/.pytest_cache' -delete
