@@ -1,21 +1,25 @@
 SRCPATH := $(shell pwd)
 PROJECTNAME := $(shell basename $(CURDIR))
 ENTRYPOINT := $(PROJECTNAME).ini
+VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
+LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
 define HELP
 Manage $(PROJECTNAME). Usage:
 
 make run        - Run $(PROJECTNAME).
-make restart    - Purge cache & reinstall modules.
-make deploy     - Build application for the first time.
+make restart    - Restart systemd service.
+make install    - Build application for the first time.
 make update     - Update pip deploy in both poetry and pipenv environments.
-make lint       - Check code formatting with flake8
+make format     - Format source code and sort imports.
 make clean      - Remove cached files and lock files.
+make lint       - Check code formatting with flake8
+
 endef
 export HELP
 
 
-.PHONY: run restart install deploy update clean lint help
+.PHONY: run restart install update format clean lint help
 
 
 requirements: .requirements.txt
@@ -46,14 +50,19 @@ restart: env
 	service $(PROJECTNAME) start
 	service $(PROJECTNAME) status
 
-.PHONY:
-deploy:
-	$(shell . ./deploy.sh)
+
+.PHONY: install
+install:
+	make clean
+	python3 -m venv $(VIRTUAL_ENVIRONMENT)
+	. $(VIRTUAL_ENVIRONMENT)/bin/activate
+	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
+	$(LOCAL_PYTHON) -m pip install -r requirements.txt
 
 
 .PHONY: update
 update: env
-	.venv/bin/python3 -m pip install -U pip
+	$(LOCAL_PYTHON) -m pip install -U pip
 	poetry update
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
@@ -78,9 +87,8 @@ clean:
 	find . -name '*.pyc' -delete
 	find . -name '__pycache__' -delete
 	find . -name 'poetry.lock' -delete
-	find . -name 'Pipefile.lock' -delete
-	find . -name '.pytest_cache' -delete
 	find . -name './logs/*.log' -delete
-	find . -name '.pytest_cache' -delete
 	find . -name '*.log' -delete
 	find . -name 'logs/*.json' -delete
+	find . -wholename '.pytest_cache' -delete
+	find . -wholename '*/.pytest_cache' -delete
