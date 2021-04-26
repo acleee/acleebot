@@ -25,7 +25,7 @@ def weather_by_location(location: str, weather: DataFrame, room: str, user: str)
     :returns: str
     """
     units = "f"
-    endpoint = "http://api.weatherstack.com/current"
+    endpoint = "https://api.weatherstack.com/current"
     params = {
         "access_key": WEATHERSTACK_API_KEY,
         "query": location.replace(";", ""),

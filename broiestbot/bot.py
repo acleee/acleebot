@@ -15,6 +15,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_upcoming_fixtures,
     get_crypto,
+    get_fox_fixtures,
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
@@ -86,9 +87,13 @@ class Bot(RoomManager):
         elif cmd_type == "imdb" and args:
             return find_imdb_movie(args)
         elif cmd_type == "nsfw" and args is None:
-            return get_redgifs_gif("lesbians", after_dark_only=False)
+            return get_redgifs_gif(
+                "lesbians", user.name.title().lower(), after_dark_only=False
+            )
         elif cmd_type == "nsfw" and args:
-            return get_redgifs_gif(args, after_dark_only=True)
+            return get_redgifs_gif(
+                args, user.name.title().lower(), after_dark_only=True
+            )
         elif cmd_type == "urban" and args:
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
@@ -105,6 +110,8 @@ class Bot(RoomManager):
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
             return footy_predicts_today(room.name.lower(), user.name.title().lower())
+        elif cmd_type == "foxtures":
+            return get_fox_fixtures(room.name.lower(), user.name.title().lower())
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:

@@ -1,5 +1,5 @@
 """Miscellaneous utility/novelty commands."""
-from datetime import datetime, timedelta
+from datetime import datetime
 from typing import Optional
 
 import pytz
