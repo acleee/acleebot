@@ -30,12 +30,16 @@ def is_after_dark() -> bool:
     return False
 
 
-def get_redgifs_gif(query: str, after_dark_only: bool = False) -> Optional[str]:
+def get_redgifs_gif(
+    query: str, username: str, after_dark_only: bool = False
+) -> Optional[str]:
     """
     Fetch a special kind of gif, if you know what I mean ;).
 
     :param query: Gif search query.
     :type query: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
     :param after_dark_only: Whether results should be limited to the `after dark` timeframe.
     :type after_dark_only: bool
     :returns: Optional[str]
@@ -79,6 +83,11 @@ def get_redgifs_gif(query: str, after_dark_only: bool = False) -> Optional[str]:
             )
             return emojize(
                 f":warning: dude u must b a freak cuz that just broke bot :warning:",
+                use_aliases=True,
+            )
+        if username == "thegreatpizza":
+            return emojize(
+                f":pizza: :heart: wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( :heart: :pizza:",
                 use_aliases=True,
             )
         return emojize(
