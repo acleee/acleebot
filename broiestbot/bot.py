@@ -15,6 +15,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_upcoming_fixtures,
     get_crypto,
+    get_fox_fixtures,
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
@@ -105,6 +106,8 @@ class Bot(RoomManager):
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
             return footy_predicts_today(room.name.lower(), user.name.title().lower())
+        elif cmd_type == "foxtures":
+            return get_fox_fixtures(room.name.lower(), user.name.title().lower())
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:

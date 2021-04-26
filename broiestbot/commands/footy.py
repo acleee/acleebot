@@ -255,8 +255,9 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
         for fixture_id in fixture_ids:
             url = f"https://api-football-v1.p.rapidapi.com/v2/predictions/{fixture_id}"
             headers = {
-                "x-rapidapi-key": "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs",
+                "x-rapidapi-key": RAPID_API_KEY,
                 "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+                "Content-Type": "application/json",
             }
             res = requests.get(url, headers=headers)
             predictions = res.json()["api"]["predictions"]
@@ -296,8 +297,9 @@ def footy_fixtures_today(room: str, username: str) -> List[int]:
         url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"
         params = get_preferred_timezone(room, username)
         headers = {
-            "x-rapidapi-key": "g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs",
+            "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+            "Content-Type": "application/json",
         }
         res = requests.get(url, headers=headers, params=params)
         fixtures = res.json()["api"]["fixtures"]
@@ -315,6 +317,56 @@ def footy_fixtures_today(room: str, username: str) -> List[int]:
         LOGGER.error(f"KeyError while fetching today's footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching today's footy fixtures: {e}")
+
+
+def get_fox_fixtures(room: str, username: str) -> str:
+    """
+    Fetch next 5 fixtures played by Foxes.
+
+    :param room: Chatango room which triggered the command.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
+    """
+    try:
+        upcoming_foxtures = "\n\n\n:fox: FOXTURES:\n"
+        tz = get_preferred_timezone(room, username)
+        params = {"season": "2020", "team": "46", "next": "7"}
+        if bool(tz):
+            params.update(tz)
+        headers = {
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+            "Content-Type": "application/json",
+        }
+        req = requests.get(
+            "https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            headers=headers,
+            params=params,
+        )
+        res = req.json()
+        fixtures = res["response"]
+        if bool(fixtures):
+            for fixture in fixtures:
+                home_team = fixture["teams"]["home"]["name"]
+                away_team = fixture["teams"]["away"]["name"]
+                date = datetime.strptime(
+                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
+                )
+                display_date = get_preferred_time_format(date, room, username)
+                if room == CHATANGO_OBI_ROOM:
+                    display_date = get_preferred_time_format(date, room, username)
+                upcoming_foxtures = (
+                    upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
+                )
+            return emojize(upcoming_foxtures)
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
 def get_preferred_timezone(room: str, username: str) -> Dict:
