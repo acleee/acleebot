@@ -24,8 +24,7 @@ def weather_by_location(location: str, weather: DataFrame, room: str, user: str)
     :type user: str
     :returns: str
     """
-    units = "f"
-    endpoint = "https://api.weatherstack.com/current"
+    endpoint = "http://api.weatherstack.com/current"
     params = {
         "access_key": WEATHERSTACK_API_KEY,
         "query": location.replace(";", ""),
@@ -33,28 +32,23 @@ def weather_by_location(location: str, weather: DataFrame, room: str, user: str)
     }
     if room == CHATANGO_OBI_ROOM or user in METRIC_SYSTEM_USERS:
         params["units"] = "m"
-        units = "c"
     try:
-        req = requests.get(endpoint, params=params)
-        data = req.json()
-        if data.get("success") is False:
-            LOGGER.warning(
-                f'Failed to get weather for `{location}`: {data["error"]["info"]}'
-            )
+        res = requests.get(endpoint, params=params)
+        if res.status_code != 200:
             return emojize(
                 f":warning:️️ wtf even is `{location}` :warning:", use_aliases=True
             )
-        if req.status_code == 200 and data.get("current"):
-            weather_code = data["current"]["weather_code"]
-            weather_emoji = weather.find_row("code", weather_code).get("icon")
-            if weather_emoji:
-                weather_emoji = emojize(weather_emoji, use_aliases=True)
-            response = f'{data["request"]["query"]}: \
-                            {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                            {data["current"]["temperature"]}°{units} \
-                            (feels like {data["current"]["feelslike"]}°{units}). \
-                            {data["current"]["precip"] * 100}% precipitation.'
-            return response
+        data = res.json()
+        weather_code = data["current"]["weather_code"]
+        weather_emoji = weather.find_row("code", weather_code).get("icon")
+        if weather_emoji:
+            weather_emoji = emojize(weather_emoji, use_aliases=True)
+        response = f'{data["request"]["query"]}: \
+                        {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
+                        {data["current"]["temperature"]}°{"c" if params["units"] == "m" else "f"} \
+                        (feels like {data["current"]["feelslike"]}°{"c" if params["units"] == "m" else "f"}). \
+                        {data["current"]["precip"] * 100}% precipitation.'
+        return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
         return emojize(
