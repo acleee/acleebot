@@ -11,6 +11,7 @@ import urllib.parse
 import urllib.request
 
 from logger import LOGGER
+from config import CHATANGO_BOT_USERNAME
 
 from . import _ws
 
@@ -1995,9 +1996,10 @@ class RoomManager:
         :type message: Message
         :param message: message that got deleted
         """
-        LOGGER.warning(
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
-        )
+        if user.name.lower() != CHATANGO_BOT_USERNAME:
+            LOGGER.warning(
+                f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
+            )
 
     def on_mod_change(self, room):
         """
