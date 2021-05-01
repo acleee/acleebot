@@ -1,18 +1,46 @@
-"""Load SQL database tables into memory for commands & functionality."""
-import pandas as pd
-from sqlalchemy import create_engine
+"""Database client."""
+from typing import List, Optional
 
-from broiestbot.table import Table
+from sqlalchemy import create_engine, text
+from sqlalchemy.exc import SQLAlchemyError
 
 
 class Database:
-    """Database connection object."""
+    """Database client."""
 
-    def __init__(self, uri: str, connection_args: dict):
-        self.engine = create_engine(uri, connect_args=connection_args, echo=False)
+    def __init__(self, uri: str, args: dict):
+        self.commands_db = create_engine(uri, connect_args=args, echo=False)
+        self.weather_db = create_engine(uri, connect_args=args, echo=False)
 
-    def get_table(self, table, index) -> Table:
-        """Load table from SQL database."""
-        table_df = pd.read_sql_table(table, self.engine, index_col=index)
-        table = Table(table_df)
-        return table
+    def fetch_weather_icon(self, weather_query: int) -> Optional[dict]:
+        """
+        Fetch all rows via query.
+
+        :param weather_query: SQL query to run against database.
+        :type weather_query: int
+        :returns: Optional[List[str]]
+        """
+        try:
+            query = text(f"SELECT * FROM weather WHERE code = '{weather_query}';")
+            response = self.commands_db.execute(query).first()
+            if response is not None:
+                return dict(response)
+        except SQLAlchemyError as e:
+            print(f"Failed to execute SQL query {weather_query}: {e}")
+
+    def fetch_command_response(self, command_query: str) -> Optional[dict]:
+        """
+        Fetch a single row; typically used to verify whether a
+        record already exists (ie: users).
+
+        :param command_query: SQL query to run against database.
+        :type command_query: str
+        :returns: Optional[dict]
+        """
+        try:
+            query = text(f"SELECT * FROM commands WHERE command = '{command_query}';")
+            response = self.commands_db.execute(query).fetchone()
+            if response is not None:
+                return dict(response)
+        except SQLAlchemyError as e:
+            print(f"Failed to execute SQL query {command_query}: {e}")

@@ -1,7 +1,7 @@
 """Chatango bot."""
 import re
 from typing import Optional, Tuple
-
+from clients import db
 from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
@@ -40,7 +40,7 @@ class Bot(RoomManager):
         self.set_font_face("Arial")
         self.set_font_size(11)
 
-    def _create_message(
+    def create_message(
         self,
         cmd_type,
         content,
@@ -80,7 +80,7 @@ class Bot(RoomManager):
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
             return weather_by_location(
-                args, self.weather, room.name, user.name.title().lower()
+                args, room.room_name, user.name.title().lower()
             )
         elif cmd_type == "wiki" and args:
             return wiki_summary(args)
@@ -103,15 +103,15 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_fixtures(room.name.lower(), user.name.title().lower())
+            return footy_upcoming_fixtures(room.room_name.lower(), user.name.title().lower())
         elif cmd_type == "livefixtures":
             return footy_live_fixtures()
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
-            return footy_predicts_today(room.name.lower(), user.name.title().lower())
+            return footy_predicts_today(room.room_name.lower(), user.name.title().lower())
         elif cmd_type == "foxtures":
-            return get_fox_fixtures(room.name.lower(), user.name.title().lower())
+            return get_fox_fixtures(room.room_name.lower(), user.name.title().lower())
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:
@@ -157,7 +157,7 @@ class Bot(RoomManager):
             self._trademark(room, message)
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
-        LOGGER.info(f"[{room.name}] [{user.name}] [{message.ip}]: {message.body}")
+        LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
@@ -200,9 +200,9 @@ class Bot(RoomManager):
         """
         if cmd == "tune":  # Avoid clashes with Acleebot
             return None
-        command = self.commands.find_row("command", cmd)
+        command = db.fetch_command_response(cmd)
         if command is not None:
-            response = self._create_message(
+            response = self.create_message(
                 command["type"],
                 command["response"],
                 command=cmd,

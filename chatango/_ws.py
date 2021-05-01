@@ -1,7 +1,6 @@
 import collections
 import os
 import struct
-import sys
 
 CONTINUATION = 0
 TEXT = 1
@@ -127,8 +126,6 @@ def encode_frame(fin=True, opcode=TEXT, mask=False, payload=None):
 
     if isinstance(payload, str):
         payload = payload.encode("utf-8", "replace")
-    if sys.version_info[0] < 3 and isinstance(payload, unicode):
-        paylod = payload.encode("utf-8", "replace")
     if payload is None:
         payload = b""
     elif not isinstance(payload, (bytes, bytearray)):
@@ -215,8 +212,6 @@ def check_headers(headers):
         if b"\r\n\r\n" in headers:
             headers, _ = headers.split(b"\r\n\r\n", 1)
         headers = headers.decode()
-    if sys.version_info[0] < 3 and isinstance(headers, unicode):
-        headers = str(headers)
     if isinstance(headers, str):
         headers = headers.splitlines()
     if isinstance(headers, list):

@@ -1,21 +1,19 @@
 """Fetch weather for a given location."""
 import requests
 from emoji import emojize
-from pandas import DataFrame
 from requests.exceptions import HTTPError
+from clients import db
 
 from config import CHATANGO_OBI_ROOM, METRIC_SYSTEM_USERS, WEATHERSTACK_API_KEY
 from logger import LOGGER
 
 
-def weather_by_location(location: str, weather: DataFrame, room: str, user: str) -> str:
+def weather_by_location(location: str, room: str, user: str) -> str:
     """
     Return temperature and weather per city/state/zip.
 
     :param location: City or location to fetch weather for.
     :type location: str
-    :param weather: Table matching types of weather to emojis.
-    :type weather: DataFrame
     :param location: City or location to fetch weather for.
     :type location: str
     :param room: Name the Chatango room that made the request (used for metric system).
@@ -40,7 +38,7 @@ def weather_by_location(location: str, weather: DataFrame, room: str, user: str)
             )
         data = res.json()
         weather_code = data["current"]["weather_code"]
-        weather_emoji = weather.find_row("code", weather_code).get("icon")
+        weather_emoji = db.fetch_weather_icon(weather_code).get("icon")
         if weather_emoji:
             weather_emoji = emojize(weather_emoji, use_aliases=True)
         response = f'{data["request"]["query"]}: \
