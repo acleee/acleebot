@@ -23,7 +23,7 @@ class StockChartHandler:
             return message
         return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")
 
-    def get_chart_old(self, symbol: str) -> str:
+    '''def get_chart_old(self, symbol: str) -> str:
         """Create chart of a company's 30-day stock performance."""
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
@@ -31,7 +31,7 @@ class StockChartHandler:
             return f"{message} \n {chart}"
         elif message:
             return message
-        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")
+        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")'''
 
     def _get_price(self, symbol: str) -> Optional[str]:
         """Get daily price summary."""
@@ -75,7 +75,7 @@ class StockChartHandler:
             )
         return None
 
-    @staticmethod
+    '''@staticmethod
     def _parse_chart_data(data: bytes) -> Optional[pd.DataFrame]:
         """Parse JSON response into Pandas DataFrame"""
         stock_df = pd.read_json(data)
@@ -149,4 +149,4 @@ class StockChartHandler:
                 )[:-1]
                 + ".png"
             )
-        return None
+        return None'''

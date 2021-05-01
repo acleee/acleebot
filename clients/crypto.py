@@ -79,7 +79,7 @@ class CryptoChartHandler:
         except Exception as e:
             raise Exception(f"Unexpected error while crypto data for `{symbol}`: {e}")
 
-    @staticmethod
+    '''@staticmethod
     def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:
         """Parse JSON response into Pandas DataFrame."""
         df = pd.DataFrame.from_dict(
@@ -154,4 +154,4 @@ class CryptoChartHandler:
                 )[:-1]
                 + ".png"
             )
-        return None
+        return None'''
