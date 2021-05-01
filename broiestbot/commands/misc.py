@@ -1,5 +1,5 @@
 """Miscellaneous utility/novelty commands."""
-from datetime import datetime
+from datetime import datetime, timedelta
 from typing import Optional
 
 import pytz
@@ -35,7 +35,7 @@ def blaze_time_remaining() -> str:
     elif am_time < now < pm_time:
         remaining = f"{pm_time - now}"
     else:
-        tomorrow_am_time = now.replace(day=now.day + 1, hour=4, minute=20, second=0)
+        tomorrow_am_time = now.replace(hour=4, minute=20, second=0) + timedelta(days=1)
         remaining = f"{tomorrow_am_time - now}"
     remaining = remaining.split(":")
     return emojize(

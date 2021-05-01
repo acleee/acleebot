@@ -10,8 +10,8 @@ import time
 import urllib.parse
 import urllib.request
 
-from logger import LOGGER
 from config import CHATANGO_BOT_USERNAME
+from logger import LOGGER
 
 from . import _ws
 
@@ -1902,12 +1902,12 @@ class RoomManager:
                 print(text)
                 break
             except UnicodeError as ex:
-                text = text[0: ex.start] + "(unicode)" + text[ex.end:]
+                text = text[0 : ex.start] + "(unicode)" + text[ex.end :]
 
     def on_connect(self, room):
         """
         Called when connected to the room.
-        
+
         :param room: Chatango room recently joined by bot.
         :type room: Room
         """
@@ -2474,9 +2474,7 @@ class RoomManager:
             self._tick()
 
     @classmethod
-    def easy_start(
-        cls, rooms=None, name=None, password=None
-    ):
+    def easy_start(cls, rooms=None, name=None, password=None):
         """
         Prompts the user for missing info, then starts.
 

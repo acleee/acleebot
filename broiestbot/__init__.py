@@ -1,5 +1,6 @@
 """Initialize bot."""
 from typing import List
+
 from datadog import initialize
 
 from broiestbot.bot import Bot
