@@ -1995,8 +1995,6 @@ class RoomManager:
         :type message: Message
         :param message: message that got deleted
         """
-        if user.name.lower != "broiestbro":
-            room.message(f"@{user.name} YOOUUUGGGGHHHHHHH :@")
         LOGGER.warning(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
         )
