@@ -1,7 +1,7 @@
 """Chatango bot."""
 import re
 from typing import Optional, Tuple
-from clients import db
+
 from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
@@ -27,6 +27,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
+from clients import db
 from logger import LOGGER
 
 
@@ -79,9 +80,7 @@ class Bot(RoomManager):
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
-            return weather_by_location(
-                args, room.room_name, user.name.title().lower()
-            )
+            return weather_by_location(args, room.room_name, user.name.title().lower())
         elif cmd_type == "wiki" and args:
             return wiki_summary(args)
         elif cmd_type == "imdb" and args:
@@ -103,13 +102,17 @@ class Bot(RoomManager):
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_fixtures(room.room_name.lower(), user.name.title().lower())
+            return footy_upcoming_fixtures(
+                room.room_name.lower(), user.name.title().lower()
+            )
         elif cmd_type == "livefixtures":
             return footy_live_fixtures()
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
-            return footy_predicts_today(room.room_name.lower(), user.name.title().lower())
+            return footy_predicts_today(
+                room.room_name.lower(), user.name.title().lower()
+            )
         elif cmd_type == "foxtures":
             return get_fox_fixtures(room.room_name.lower(), user.name.title().lower())
         elif cmd_type == "covid":

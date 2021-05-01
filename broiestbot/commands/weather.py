@@ -2,8 +2,8 @@
 import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
-from clients import db
 
+from clients import db
 from config import CHATANGO_OBI_ROOM, METRIC_SYSTEM_USERS, WEATHERSTACK_API_KEY
 from logger import LOGGER
 
