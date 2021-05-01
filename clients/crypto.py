@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
-import pandas as pd
 import plotly.graph_objects as go
 import requests
 from emoji import emojize
