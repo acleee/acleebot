@@ -1,8 +1,8 @@
 """Initialize bot."""
+from typing import List
 from datadog import initialize
 
 from broiestbot.bot import Bot
-from clients import db
 from config import (
     CHATANGO_BRO_PASSWORD,
     CHATANGO_BRO_USERNAME,
@@ -14,18 +14,13 @@ from config import (
 )
 
 
-def join_rooms(rooms):
+def join_rooms(rooms: List[str]):
     """Create bot instance for single Chatango room."""
-    commands = db.get_table(DATABASE_COMMANDS_TABLE, "id")
-    weather = db.get_table(DATABASE_WEATHER_TABLE, "id")
-    chat_bot = Bot.easy_start(
+    Bot.easy_start(
         rooms=rooms,
         name=CHATANGO_BRO_USERNAME,
         password=CHATANGO_BRO_PASSWORD,
-        commands=commands,
-        weather=weather,
     )
-    chat_bot._create_message("basic", "Beep boop I'm dead inside 🤖")
 
 
 def start_bot():
