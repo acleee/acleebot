@@ -16,10 +16,16 @@ from config import (
 )
 from logger import LOGGER
 
+headers = {
+    "content-type": "application/json",
+    "x-rapidapi-key": RAPID_API_KEY,
+    "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+}
+
 
 def epl_standings(endpoint: str) -> Optional[str]:
     """
-    Get standings table for EPL.
+    Get team standings table for EPL.
 
     :param endpoint: Premiere league standings API endpoint.
     :type endpoint: str
@@ -27,11 +33,6 @@ def epl_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n"
-        headers = {
-            "content-type": "application/json",
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-        }
         req = requests.get(endpoint, headers=headers)
         req = json.loads(req.text)
         standings = req["api"]["standings"][0]
@@ -53,6 +54,72 @@ def epl_standings(endpoint: str) -> Optional[str]:
         LOGGER.error(f"KeyError while fetching EPL standings: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching EPL standings: {e}")
+
+
+def liga_standings(endpoint: str) -> Optional[str]:
+    """
+    Get team standings table for LIGA.
+
+    :param endpoint: La Liga standings API endpoint.
+    :type endpoint: str
+    :returns: Optional[str]
+    """
+    try:
+        standings_table = "\n\n"
+        req = requests.get(endpoint, headers=headers)
+        req = json.loads(req.text)
+        standings = req["api"]["standings"][0]
+        for standing in standings:
+            rank = standing["rank"]
+            team = standing["teamName"]
+            points = standing["points"]
+            wins = standing["all"]["win"]
+            draws = standing["all"]["draw"]
+            losses = standing["all"]["lose"]
+            standings_table = (
+                standings_table
+                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
+        return standings_table
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching LIGA standings: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching LIGA standings: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching LIGA standings: {e}")
+
+
+def bund_standings(endpoint: str) -> Optional[str]:
+    """
+    Get team standings table for Bundesliga.
+
+    :param endpoint: Bundesliga standings API endpoint.
+    :type endpoint: str
+    :returns: Optional[str]
+    """
+    try:
+        standings_table = "\n\n"
+        req = requests.get(endpoint, headers=headers)
+        req = json.loads(req.text)
+        standings = req["api"]["standings"][0]
+        for standing in standings:
+            rank = standing["rank"]
+            team = standing["teamName"]
+            points = standing["points"]
+            wins = standing["all"]["win"]
+            draws = standing["all"]["draw"]
+            losses = standing["all"]["lose"]
+            standings_table = (
+                standings_table
+                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
+        return standings_table
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching BUND standings: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching BUND standings: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching BUND standings: {e}")
 
 
 def footy_upcoming_fixtures(room: str, username: str) -> str:
@@ -95,11 +162,6 @@ def footy_upcoming_fixtures_per_league(
         num_fixtures = 0
         upcoming_fixtures = ""
         params = get_preferred_timezone(room, username)
-        headers = {
-            "content-type": "application/json",
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-        }
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{league_id}/next/5/",
             headers=headers,
@@ -142,11 +204,6 @@ def footy_live_fixtures() -> Optional[str]:
     """
     try:
         live_fixtures = "\n\n\n"
-        headers = {
-            "content-type": "application/json",
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-        }
         leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}"
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
@@ -205,11 +262,6 @@ def epl_golden_boot() -> str:
     :return: str
     """
     golden_boot_leaders = "\n\n\n"
-    headers = {
-        "content-type": "application/json",
-        "x-rapidapi-key": RAPID_API_KEY,
-        "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-    }
     try:
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/topscorers/{FOOTY_LEAGUE_IDS['EPL']}",
@@ -254,11 +306,6 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
             return "No fixtures today :("
         for fixture_id in fixture_ids:
             url = f"https://api-football-v1.p.rapidapi.com/v2/predictions/{fixture_id}"
-            headers = {
-                "x-rapidapi-key": RAPID_API_KEY,
-                "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-                "Content-Type": "application/json",
-            }
             res = requests.get(url, headers=headers)
             predictions = res.json()["api"]["predictions"]
             for prediction in predictions:
@@ -296,11 +343,6 @@ def footy_fixtures_today(room: str, username: str) -> List[int]:
         today = datetime.now().date()
         url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"
         params = get_preferred_timezone(room, username)
-        headers = {
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-            "Content-Type": "application/json",
-        }
         res = requests.get(url, headers=headers, params=params)
         fixtures = res.json()["api"]["fixtures"]
         if bool(fixtures):
@@ -335,11 +377,6 @@ def get_fox_fixtures(room: str, username: str) -> str:
         params = {"season": "2020", "team": "46", "next": "7"}
         if bool(tz):
             params.update(tz)
-        headers = {
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
-            "Content-Type": "application/json",
-        }
         req = requests.get(
             "https://api-football-v1.p.rapidapi.com/v3/fixtures",
             headers=headers,

@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
+    bund_standings,
     covid_cases_usa,
     create_instagram_preview,
     epl_golden_boot,
@@ -21,6 +22,7 @@ from broiestbot.commands import (
     get_stock,
     get_urban_definition,
     giphy_image_search,
+    liga_standings,
     random_image,
     send_text_message,
     weather_by_location,
@@ -41,8 +43,8 @@ class Bot(RoomManager):
         self.set_font_face("Arial")
         self.set_font_size(11)
 
+    @staticmethod
     def create_message(
-        self,
         cmd_type,
         content,
         command: Optional[str] = None,
@@ -101,6 +103,10 @@ class Bot(RoomManager):
             return send_text_message(args, user.name.title())
         elif cmd_type == "epltable":
             return epl_standings(content)
+        elif cmd_type == "ligatable":
+            return liga_standings(content)
+        elif cmd_type == "bundtable":
+            return bund_standings(content)
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(
                 room.room_name.lower(), user.name.title().lower()
