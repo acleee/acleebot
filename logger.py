@@ -9,7 +9,7 @@ from clients import sms
 from config import ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
 
 
-def formatter(record: dict):
+def json_formatter(record: dict):
     """
     Format info message logs.
 
@@ -76,7 +76,7 @@ def formatter(record: dict):
         }
         return json.dumps(subset)
 
-    if record["level"].name in ("WARNING", "SUCCESS", "TRACE"):
+    if record["level"].name in ("WARNING", "SUCCESS"):
         record["extra"]["serialized"] = serialize_event(record)
         return "{extra[serialized]},\n"
 
@@ -98,21 +98,35 @@ def error_handler(log: dict) -> None:
     )
 
 
+def log_formatter(record: dict) -> str:
+    """
+    Formatter for .log records
+
+    :param record: Log object containing log metadata & message.
+    :type record: dict
+    :returns: str
+    """
+    if record["level"].name == "TRACE":
+        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
+    elif record["level"].name == "INFO":
+        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+    elif record["level"].name == "WARNING":
+        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
+    elif record["level"].name == "SUCCESS":
+        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
+    elif record["level"].name == "ERROR":
+        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
+    return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+
+
 def create_logger() -> logger:
     """Customer logger creation."""
     logger.remove()
-    logger.add(
-        stdout,
-        colorize=True,
-        catch=True,
-        format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
-        + "<light-green>{level}</light-green>: "
-        + "<light-white>{message}</light-white>",
-    )
+    logger.add(stdout, colorize=True, catch=True, format=log_formatter)
     if ENVIRONMENT == "production":
         logger.add(
             "/var/log/broiestbot/info.json",
-            format=formatter,
+            format=json_formatter,
             rotation="200 MB",
             compression="zip",
             catch=True,
@@ -121,9 +135,7 @@ def create_logger() -> logger:
             "/var/log/broiestbot/info.log",
             colorize=True,
             catch=True,
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
-            + "<light-green>{level}</light-green>: "
-            + "<light-white>{message}</light-white>",
+            format=log_formatter,
             rotation="500 MB",
             compression="zip",
         )
