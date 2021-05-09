@@ -76,7 +76,7 @@ def json_formatter(record: dict):
         }
         return json.dumps(subset)
 
-    if record["level"].name in ("WARNING", "SUCCESS"):
+    if record["level"].name in ("WARNING", "SUCCESS", "TRACE"):
         record["extra"]["serialized"] = serialize_event(record)
         return "{extra[serialized]},\n"
 
