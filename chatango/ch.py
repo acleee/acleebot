@@ -1530,7 +1530,7 @@ class Room:
         """
         Delete a message. (Moderator only)
 
-        :param user: delete user's last message
+        :param user: Delete user's last message.
         :type user: User
         """
         if self.get_level(self.user) > 0:
@@ -1603,8 +1603,8 @@ class Room:
         """
         Ban a user. (Moderator only)
 
+        :param user: Chatango user to ban from room.
         :type user: User
-        :param user: user to ban
 
         @rtype: bool
         @return: whether a message to ban the user was found
@@ -1641,8 +1641,8 @@ class Room:
         """
         Unban a user. (Moderator only)
 
+        :param user: Chatango user to unban from room.
         :type user: User
-        :param user: user to unban
 
         @rtype: bool
         @return: whether it succeeded
@@ -1825,7 +1825,6 @@ class RoomManager:
         @rtype: Room or None
         @return: True or nothing
         """
-        room = room.lower()
         if room not in self._rooms:
             self._rooms_queue.put(room)
             return True
@@ -1838,7 +1837,6 @@ class RoomManager:
         :type room: str
         :param room: room to leave
         """
-        room = room.lower()
         if room in self._rooms:
             with self._rooms_lock:
                 con = self._rooms[room]
@@ -1854,7 +1852,6 @@ class RoomManager:
         @rtype: Room
         @return: the room
         """
-        room = room.lower()
         if room in self._rooms:
             return self._rooms[room]
         return None
@@ -1916,21 +1913,22 @@ class RoomManager:
             f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}"
         )
 
-    def on_reconnect(self, room):
+    def on_reconnect(self, room: Room):
         """
         Called when reconnected to the room.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
         """
         pass
 
-    def on_connect_fail(self, room):
+    @staticmethod
+    def on_connect_fail(room: Room):
         """
         Called when the connection failed.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
         """
         LOGGER.error(f"Failed to connect to {room.room_name}.")
 
@@ -1939,7 +1937,7 @@ class RoomManager:
         Called when the client gets disconnected.
 
         :type room: Room
-        :param room: room where the event occurred
+        :param room: Chatango room where the event occurred
         """
         LOGGER.error(f"Disconnected from {room.room_name}. Attempting to rejoin...")
         try:
@@ -1953,17 +1951,18 @@ class RoomManager:
         Called on login failure, disconnects after.
 
         :type room: Room
-        :param room: room where the event occurred
+        :param room: Chatango room where the event occurred
         """
         LOGGER.error(f"Failed to join {room.room_name}. Attempting to rejoin...")
         self.on_connect_fail(room)
 
-    def on_flood_ban(self, room):
+    @staticmethod
+    def on_flood_ban(room: Room):
         """
         Called when either flood banned or flagged.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
         """
         LOGGER.error(f"Bot was spam banned from {room.room_name}.")
 
@@ -1971,30 +1970,32 @@ class RoomManager:
         """
         Called when trying to send something when flood-banned.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
         """
         pass
 
-    def on_flood_warning(self, room):
+    @staticmethod
+    def on_flood_warning(room: Room):
         """
         Called when an overflow warning gets received.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
         """
         LOGGER.error(f"Bot is about to be banned for spamming {room.room_name}.")
 
-    def on_message_delete(self, room, user, message):
+    @staticmethod
+    def on_message_delete(room: Room, user, message):
         """
-        Called when a message gets deleted.
+        Listener for when a user message gets deleted.
 
+        :param room: Chatango room where the event occurred
         :type room: Room
-        :param room: room where the event occurred
+        :param user: Chatango user who sent deleted message.
         :type user: User
-        :param user: owner of deleted message
+        :param message: User message that got deleted.
         :type message: Message
-        :param message: message that got deleted
         """
         if user.name.lower() != CHATANGO_BOT_USERNAME:
             LOGGER.warning(
@@ -2005,12 +2006,13 @@ class RoomManager:
         """
         Called when the moderator list changes.
 
+        :param room: Chatango room where the event occurred.
         :type room: Room
-        :param room: room where the event occurred
         """
         pass
 
-    def on_mod_add(self, room, user):
+    @staticmethod
+    def on_mod_add(room: Room, user):
         """
         Logs event when a user gets modded.
 
@@ -2023,7 +2025,8 @@ class RoomManager:
             f"[{room.room_name}] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
         )
 
-    def on_mod_remove(self, room, user):
+    @staticmethod
+    def on_mod_remove(room: Room, user):
         """
         Called when a moderator gets removed.
 
@@ -2062,7 +2065,8 @@ class RoomManager:
         """
         pass
 
-    def on_join(self, room, user, puid):
+    @staticmethod
+    def on_join(room, user, puid):
         """
         Called when a user joins. Anonymous users get ignored here.
 
@@ -2073,11 +2077,12 @@ class RoomManager:
         :param puid: Personal unique id for a user.
         :type puid: str
         """
-        LOGGER.success(
+        LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} joined {room.room_name}."
         )
 
-    def on_leave(self, room, user, puid):
+    @staticmethod
+    def on_leave(room: Room, user, puid):
         """
         Called when a user leaves. Anonymous users get ignored here.
 
@@ -2088,7 +2093,7 @@ class RoomManager:
         :param puid: Personal unique id for a user.
         :type puid: str
         """
-        LOGGER.warning(
+        LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} left {room.room_name}."
         )
 
@@ -2121,7 +2126,8 @@ class RoomManager:
         """
         pass
 
-    def on_ban(self, room, user, target):
+    @staticmethod
+    def on_ban(room: Room, user, target):
         """
         Called when a user gets banned.
 
@@ -2136,7 +2142,8 @@ class RoomManager:
             f"[{room.room_name}] [{user.name.title()}]: {target.user} was banned from {room.room_name} by {user.name}."
         )
 
-    def on_unban(self, room, user, target):
+    @staticmethod
+    def on_unban(room, user, target):
         """
         Called when a user gets unbanned.
 

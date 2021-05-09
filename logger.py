@@ -9,8 +9,13 @@ from clients import sms
 from config import ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
 
 
-def formatter(record):
-    """Format info message logs."""
+def formatter(record: dict):
+    """
+    Format info message logs.
+
+    :param record: Log object containing log metadata & message.
+    :type record: dict
+    """
 
     def serialize_as_admin(log: dict) -> str:
         """
@@ -71,7 +76,7 @@ def formatter(record):
         }
         return json.dumps(subset)
 
-    if record["level"].name in ("WARNING", "SUCCESS"):
+    if record["level"].name in ("WARNING", "SUCCESS", "TRACE"):
         record["extra"]["serialized"] = serialize_event(record)
         return "{extra[serialized]},\n"
 
