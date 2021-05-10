@@ -86,11 +86,17 @@ def json_formatter(record: dict):
 
     else:
         record["extra"]["serialized"] = serialize_error(record)
-        error_handler(record)
+        sms_error_handler(record)
         return "{extra[serialized]},\n"
 
 
-def error_handler(log: dict) -> None:
+def sms_error_handler(log: dict) -> None:
+    """
+    Trigger error log SMS notification.
+
+    :param log: Log object containing log metadata & message.
+    :type log: dict
+    """
     sms.messages.create(
         body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
         from_=TWILIO_SENDER_PHONE,
@@ -107,16 +113,16 @@ def log_formatter(record: dict) -> str:
     :returns: str
     """
     if record["level"].name == "TRACE":
-        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
+        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "INFO":
-        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "WARNING":
-        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
+        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "SUCCESS":
-        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
+        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "ERROR":
-        return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
-    return "<light-white>{time:MM-DD-YYYY HH:mm:ss}</light-white> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
+    return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
 
 
 def create_logger() -> logger:
@@ -144,7 +150,7 @@ def create_logger() -> logger:
             colorize=True,
             catch=True,
             level="ERROR",
-            format="<light-cyan>{time:MM-DD-YYYY HH:mm:ss}</light-cyan> | "
+            format="<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | "
             + "<red>{level}</red>: "
             + "<light-white>{message}</light-white>",
             rotation="500 MB",

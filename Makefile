@@ -54,7 +54,7 @@ restart: env
 .PHONY: install
 install:
 	make clean
-	python3 -m venv $(VIRTUAL_ENVIRONMENT)
+	if [ ! -d "./.venv" ]; then python3 -m venv $(VIRTUAL_ENVIRONMENT); fi
 	. $(VIRTUAL_ENVIRONMENT)/bin/activate
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt
@@ -69,15 +69,15 @@ update: env
 
 .PHONY: format
 format: env
-	$(shell . .venv/bin/activate && isort ./)
-	$(shell . .venv/bin/activate && black ./)
+	isort --multi-line=3 .
+	black .
 
 
 .PHONY: lint
 lint:
 	flake8 . --count \
 			--select=E9,F63,F7,F82 \
-			--exclude .git,.github,__pycache__,.pytest_cache,.venv,logs,creds \
+			--exclude .git,.github,__pycache__,.pytest_cache,.venv,logs,creds,.venv,docs,logs \
 			--show-source \
 			--statistics
 
