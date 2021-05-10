@@ -113,16 +113,16 @@ def log_formatter(record: dict) -> str:
     :returns: str
     """
     if record["level"].name == "TRACE":
-        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "INFO":
-        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "WARNING":
-        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "SUCCESS":
-        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "ERROR":
-        return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
-    return "<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
+    return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
 
 
 def create_logger() -> logger:
@@ -150,7 +150,7 @@ def create_logger() -> logger:
             colorize=True,
             catch=True,
             level="ERROR",
-            format="<fg #526ea3>{time:MM-DD-YYYY HH:mm:ss}</fg #526ea3> | "
+            format="<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | "
             + "<red>{level}</red>: "
             + "<light-white>{message}</light-white>",
             rotation="500 MB",
