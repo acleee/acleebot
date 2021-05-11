@@ -12,13 +12,11 @@ def weather_by_location(location: str, room: str, user: str) -> str:
     """
     Return temperature and weather per city/state/zip.
 
-    :param location: City or location to fetch weather for.
+    :param location: Location to fetch weather for.
     :type location: str
-    :param location: City or location to fetch weather for.
-    :type location: str
-    :param room: Name the Chatango room that made the request (used for metric system).
+    :param room: Chatango room from which request originated.
     :type room: str
-    :param user: User who made the request (used for metric system).
+    :param user: User who made the request.
     :type user: str
     :returns: str
     """
@@ -37,6 +35,11 @@ def weather_by_location(location: str, room: str, user: str) -> str:
                 f":warning:️️ wtf even is `{location}` :warning:", use_aliases=True
             )
         data = res.json()
+        if data.get("current") is None:
+            return emojize(
+                f":warning:️️ idk wtf you did but `{location}` fucked me up b :warning:",
+                use_aliases=True,
+            )
         weather_code = data["current"]["weather_code"]
         weather_emoji = db.fetch_weather_icon(weather_code).get("icon")
         if weather_emoji:

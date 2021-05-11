@@ -104,5 +104,5 @@ def get_boxoffice_data(movie: Movie) -> Optional[str]:
         LOGGER.warning(f"KeyError when fetching box office info for `{movie}`: {e}")
     except Exception as e:
         LOGGER.error(
-            f"Unexpected error when fetching box office info for  `{movie}`: {e}"
+            f"Unexpected error when fetching box office info for `{movie}`: {e}"
         )
