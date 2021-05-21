@@ -35,6 +35,11 @@ def weather_by_location(location: str, room: str, user: str) -> str:
                 f":warning:️️ wtf even is `{location}` :warning:", use_aliases=True
             )
         data = res.json()
+        if data.get("success") == "false":
+            return emojize(
+                f":warning:️️ {data['error']['info']} :warning:",
+                use_aliases=True,
+            )
         if data.get("current") is None:
             return emojize(
                 f":warning:️️ idk wtf you did but `{location}` fucked me up b :warning:",
