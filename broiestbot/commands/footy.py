@@ -257,7 +257,7 @@ def footy_live_fixtures() -> Optional[str]:
 
 def epl_golden_boot() -> str:
     """
-    Get EPL top scorers.
+    Fetch list of EPL golden boot top scorers.
 
     :return: str
     """
