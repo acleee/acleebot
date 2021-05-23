@@ -176,7 +176,7 @@ def footy_upcoming_fixtures_per_league(
                 date = datetime.strptime(fixture["event_date"], "%Y-%m-%dT%H:%M:%S%z")
                 display_date = get_preferred_time_format(date, room, username)
                 tz = get_preferred_timezone_object(room, username)
-                if date - datetime.now(tz=tz) < timedelta(days=7) and i < 4:
+                if date - datetime.now(tz=tz) < timedelta(days=7) and i < 10:
                     if room == CHATANGO_OBI_ROOM:
                         display_date = get_preferred_time_format(date, room, username)
                     num_fixtures += 1
