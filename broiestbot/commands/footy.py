@@ -209,8 +209,10 @@ def footy_live_fixtures() -> Optional[str]:
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
             headers=headers,
         )
-        fixtures = req.json()["api"]["fixtures"]
-        if bool(fixtures):
+        fixtures = req.json()["api"].get("fixtures")
+        if bool(fixtures) is False or fixtures is None:
+            return "No live fixtures :("
+        else:
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["homeTeam"]["team_name"]
                 away_team = fixture["awayTeam"]["team_name"]
@@ -244,7 +246,6 @@ def footy_live_fixtures() -> Optional[str]:
                 if i < len(fixtures) - 1:
                     live_fixtures = live_fixtures + "-------------------------\n"
             return live_fixtures
-        return "No live fixtures :("
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError while fetching live EPL fixtures: {e.response.content}"
