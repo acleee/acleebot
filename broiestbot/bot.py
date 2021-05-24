@@ -181,9 +181,9 @@ class Bot(RoomManager):
         if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
-            LOGGER.debug(f"Command `{cmd}` found with args `{args}`.")
+            LOGGER.trace(f"Command `{cmd}` found with args `{args}`.")
             return cmd, args
-        LOGGER.debug(f"Command `{user_msg}` found with no args.")
+        LOGGER.trace(f"Command `{user_msg}` found with no args.")
         return user_msg, None
 
     def _get_response(
