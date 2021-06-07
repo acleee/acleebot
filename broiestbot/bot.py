@@ -316,7 +316,7 @@ class Bot(RoomManager):
         :returns: str
         """
         if user.name.title().lower() in CHATANGO_BLACKLISTED_USERS:
-            self.ban(message)
+            room.ban(message)
             reply = emojize(
                 f":wave: @{user.name.title()} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
