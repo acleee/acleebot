@@ -2,6 +2,8 @@
 import re
 from typing import Optional, Tuple
 
+from emoji import emojize
+
 from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
@@ -30,6 +32,7 @@ from broiestbot.commands import (
 )
 from chatango.ch import Message, Room, RoomManager, User
 from clients import db
+from config import CHATANGO_BLACKLISTED_USERS
 from logger import LOGGER
 
 
@@ -141,6 +144,7 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
+        self.check_blacklisted_users(room, user, message)
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!.+", chat_message):
@@ -298,3 +302,23 @@ class Bot(RoomManager):
         """
         message.delete()
         room.message("™")
+
+    def check_blacklisted_users(self, room: Room, user: User, message: Message) -> None:
+        """
+        Ban and delete chat history of blacklisted user.
+
+        :param room: Chatango room.
+        :type room: Room
+        :param user: Chatango user to validate against blacklist.
+        :type user: User
+        :param message: User submitted message.
+        :type message: Message
+        :returns: str
+        """
+        if user.name.title().lower() in CHATANGO_BLACKLISTED_USERS:
+            self.ban(message)
+            reply = emojize(
+                f":wave: @{user.name.title()} lmao pz fgt have fun being banned forever :wave:",
+                use_aliases=True,
+            )
+            room.message(reply)
