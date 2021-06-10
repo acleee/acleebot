@@ -18,6 +18,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_upcoming_fixtures,
     get_crypto,
+    get_english_translation,
     get_fox_fixtures,
     get_redgifs_gif,
     get_song_lyrics,
@@ -128,6 +129,8 @@ class Bot(RoomManager):
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:
             return get_song_lyrics(args)
+        elif cmd_type == "entranslation" and args:
+            return get_english_translation(command, args)
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 

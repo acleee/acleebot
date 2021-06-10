@@ -4,6 +4,7 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from clients import wiki
+from config import RAPID_API_KEY
 from logger import LOGGER
 
 
@@ -79,4 +80,54 @@ def wiki_summary(query: str) -> str:
         return emojize(
             f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:",
             use_aliases=True,
+        )
+
+
+def get_english_translation(language: str, phrase: str):
+    """
+    Translate a phrase between languages.
+
+    :param language: Language to translate from into English
+    :type language: str
+    :param phrase: Message to be translated.
+    :type phrase: str
+    :return: str
+    """
+    try:
+        url = "https://google-translate1.p.rapidapi.com/language/translate/v2"
+        data = {
+            "q": phrase,
+            "target": "en",
+            "source": language,
+        }
+        headers = {
+            "content-type": "application/x-www-form-urlencoded",
+            "accept-encoding": "application/gzip",
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "google-translate1.p.rapidapi.com",
+        }
+        res = requests.request("POST", url, data=data, headers=headers)
+        return (
+            f'TRANSLATION: `{res.json()["data"]["translations"][0]["translatedText"]}`'
+        )
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while translating `{phrase}`: {e.response.content}")
+        return emojize(
+            f":warning: wtf you broke the api? SPEAK ENGLISH :warning:",
+            use_aliases=True,
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError error while translating `{phrase}`: {e}")
+        return emojize(
+            ":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True
+        )
+    except IndexError as e:
+        LOGGER.error(f"IndexError error while translating `{phrase}`: {e}")
+        return emojize(
+            ":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while translating `{phrase}`: {e}")
+        return emojize(
+            ":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True
         )
