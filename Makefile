@@ -5,7 +5,7 @@ VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
 LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
 define HELP
-Manage $(PROJECTNAME). Usage:
+Manage $(PROJECT_NAME). Usage:
 
 make run        - Run $(PROJECT_NAME).
 make restart    - Restart systemd service (if exists).
