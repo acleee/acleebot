@@ -1,7 +1,6 @@
 SRCPATH := $(shell pwd)
 PROJECT_NAME := $(shell basename $(CURDIR))
-ENTRYPOINT := $(PROJECTNAME).ini
-VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
+VIRTUAL_ENVIRONMENT := $(PROJECT_NAME)/.venv
 LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
 define HELP
