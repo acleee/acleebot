@@ -8,12 +8,12 @@ define HELP
 Manage $(PROJECTNAME). Usage:
 
 make run        - Run $(PROJECTNAME).
-make restart    - Restart systemd service.
-make install    - Build application for the first time.
-make update     - Update pip deploy in both poetry and pipenv environments.
+make restart    - Restart systemd service (if exists).
+make install    - Build environment & install dependencies.
+make update     - Update depenencies with Poetry & outout new requirements.txt.
 make format     - Format source code and sort imports.
-make clean      - Remove cached files and lock files.
-make lint       - Check code formatting with flake8
+make clean      - Remove cached files, lockfiles, and other unnessecary junk.
+make lint       - Check code formatting with flake8.
 
 endef
 export HELP
