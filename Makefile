@@ -1,5 +1,5 @@
 SRCPATH := $(shell pwd)
-PROJECTNAME := $(shell basename $(CURDIR))
+PROJECT_NAME := $(shell basename $(CURDIR))
 ENTRYPOINT := $(PROJECTNAME).ini
 VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
 LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
@@ -7,7 +7,7 @@ LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 define HELP
 Manage $(PROJECTNAME). Usage:
 
-make run        - Run $(PROJECTNAME).
+make run        - Run $(PROJECT_NAME).
 make restart    - Restart systemd service (if exists).
 make install    - Build environment & install dependencies.
 make update     - Update depenencies with Poetry & outout new requirements.txt.
@@ -40,15 +40,15 @@ all help:
 
 .PHONY: run
 run: env
-	service $(PROJECTNAME) start
+	service $(PROJECT_NAME) start
 
 
 .PHONY: restart
 restart: env
-	service $(PROJECTNAME) stop
+	service $(PROJECT_NAME) stop
 	make clean
-	service $(PROJECTNAME) start
-	service $(PROJECTNAME) status
+	service $(PROJECT_NAME) start
+	service $(PROJECT_NAME) status
 
 
 .PHONY: install
