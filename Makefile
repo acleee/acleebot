@@ -62,7 +62,7 @@ install:
 
 .PHONY: update
 update: env
-	$(LOCAL_PYTHON) -m pip install -U pip
+	$(LOCAL_PYTHON) -m pip install -U pip setuptools wheel
 	poetry update
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
