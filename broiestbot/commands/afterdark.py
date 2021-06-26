@@ -47,8 +47,8 @@ def get_redgifs_gif(
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
-        endpoint = "https://napi.redgifs.com/v1/gfycats/search"
-        params = {"search_text": query, "count": 100, "start": 0}
+        endpoint = "https://api.redgifs.com/v1/gfycats/search"
+        params = {"search_text": query, "count": 100, "start": 0, "order": "trending"}
         headers = {"Authorization": f"Bearer {token}"}
         try:
             req = requests.get(endpoint, params=params, headers=headers)
@@ -61,7 +61,8 @@ def get_redgifs_gif(
                     if image_url is not None:
                         image_status = requests.get(image_url)
                         if image_status.status_code != 200:
-                            get_redgifs_gif(query, after_dark_only=False)
+                            for i in range(3):
+                                return get_redgifs_gif(query, username, after_dark_only=False)
                         return image_url
         except HTTPError as e:
             LOGGER.warning(
