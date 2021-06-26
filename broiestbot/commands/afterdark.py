@@ -57,13 +57,19 @@ def get_redgifs_gif(
                 if results:
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
-                    image_url = image_json.get("max1mbGif")
+                    image_url = image_json.get("max2mbGif")
                     if image_url is not None:
                         image_status = requests.get(image_url)
                         if image_status.status_code != 200:
                             for i in range(3):
-                                return get_redgifs_gif(query, username, after_dark_only=False)
+                                return get_redgifs_gif(
+                                    query, username, after_dark_only=False
+                                )
                         return image_url
+            else:
+                LOGGER.error(
+                    f"Error {req.status_code} fetching NSFW gif: {req.content}"
+                )
         except HTTPError as e:
             LOGGER.warning(
                 f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"

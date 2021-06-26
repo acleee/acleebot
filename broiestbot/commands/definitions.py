@@ -109,7 +109,8 @@ def get_english_translation(language: str, phrase: str):
         res = requests.request("POST", url, data=data, headers=headers)
         if res.status_code == 429:
             return emojize(
-            f":warning: yall translated too much shit this month now google tryna charge me smh :warning:")
+                f":warning: yall translated too much shit this month now google tryna charge me smh :warning:"
+            )
         return (
             f'TRANSLATION: `{res.json()["data"]["translations"][0]["translatedText"]}`'
         )
