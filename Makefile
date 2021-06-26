@@ -1,19 +1,18 @@
 SRCPATH := $(shell pwd)
-PROJECTNAME := $(shell basename $(CURDIR))
-ENTRYPOINT := $(PROJECTNAME).ini
-VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
+PROJECT_NAME := $(shell basename $(CURDIR))
+VIRTUAL_ENVIRONMENT := $(PROJECT_NAME)/.venv
 LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
 define HELP
-Manage $(PROJECTNAME). Usage:
+Manage $(PROJECT_NAME). Usage:
 
-make run        - Run $(PROJECTNAME).
-make restart    - Restart systemd service.
-make install    - Build application for the first time.
-make update     - Update pip deploy in both poetry and pipenv environments.
+make run        - Run $(PROJECT_NAME).
+make restart    - Restart systemd service (if exists).
+make install    - Build environment & install dependencies.
+make update     - Update depenencies with Poetry & outout new requirements.txt.
 make format     - Format source code and sort imports.
-make clean      - Remove cached files and lock files.
-make lint       - Check code formatting with flake8
+make clean      - Remove cached files, lockfiles, and other unnessecary junk.
+make lint       - Check code formatting with flake8.
 
 endef
 export HELP
@@ -40,15 +39,15 @@ all help:
 
 .PHONY: run
 run: env
-	service $(PROJECTNAME) start
+	service $(PROJECT_NAME) start
 
 
 .PHONY: restart
 restart: env
-	service $(PROJECTNAME) stop
+	service $(PROJECT_NAME) stop
 	make clean
-	service $(PROJECTNAME) start
-	service $(PROJECTNAME) status
+	service $(PROJECT_NAME) start
+	service $(PROJECT_NAME) status
 
 
 .PHONY: install
@@ -62,7 +61,7 @@ install:
 
 .PHONY: update
 update: env
-	$(LOCAL_PYTHON) -m pip install -U pip
+	$(LOCAL_PYTHON) -m pip install -U pip setuptools wheel
 	poetry update
 	poetry export -f requirements.txt --output requirements.txt --without-hashes
 
