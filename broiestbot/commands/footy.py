@@ -204,7 +204,7 @@ def footy_live_fixtures() -> Optional[str]:
     """
     try:
         live_fixtures = "\n\n\n"
-        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}"
+        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}-{FOOTY_LEAGUE_IDS['COPA']}-{FOOTY_LEAGUE_IDS['WORLD']}"
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
             headers=headers,
