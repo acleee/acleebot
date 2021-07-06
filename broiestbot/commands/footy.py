@@ -161,19 +161,20 @@ def footy_upcoming_fixtures_per_league(
     try:
         num_fixtures = 0
         upcoming_fixtures = ""
-        params = get_preferred_timezone(room, username)
+        params = {"season": 2020, "league": league_id, "next": 5}
+        params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/league/{league_id}/next/5/",
+            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
             headers=headers,
             params=params,
         )
-        req = json.loads(req.text)
-        fixtures = req["api"]["fixtures"]
-        if bool(fixtures):
+        req = req.json()
+        if bool(req["response"]):
+            fixtures = req["response"]
             for i, fixture in enumerate(fixtures):
-                home_team = fixture["homeTeam"]["team_name"]
-                away_team = fixture["awayTeam"]["team_name"]
-                date = datetime.strptime(fixture["event_date"], "%Y-%m-%dT%H:%M:%S%z")
+                home_team = fixture["teams"]["home"]["name"]
+                away_team = fixture["teams"]["away"]["name"]
+                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 display_date = get_preferred_time_format(date, room, username)
                 tz = get_preferred_timezone_object(room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=7) and i < 10:
@@ -343,7 +344,8 @@ def footy_fixtures_today(room: str, username: str) -> List[int]:
     try:
         today = datetime.now().date()
         url = f"https://api-football-v1.p.rapidapi.com/v2/fixtures/date/{today}"
-        params = get_preferred_timezone(room, username)
+        params = {"season": 2020}
+        params.update(get_preferred_timezone(room, username))
         res = requests.get(url, headers=headers, params=params)
         fixtures = res.json()["api"]["fixtures"]
         if bool(fixtures):
