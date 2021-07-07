@@ -142,6 +142,24 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     return upcoming_fixtures
 
 
+def fetch_upcoming_fixtures(season, league_id, room, username):
+    try:
+        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
+        params.update(get_preferred_timezone(room, username))
+        req = requests.get(
+            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            headers=headers,
+            params=params,
+        )
+        return req.json().get("response")
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
+
+
 def footy_upcoming_fixtures_per_league(
     league_name: str, league_id: int, room: str, username: str
 ) -> Optional[str]:
@@ -161,20 +179,17 @@ def footy_upcoming_fixtures_per_league(
     try:
         num_fixtures = 0
         upcoming_fixtures = ""
-        params = {"season": 2020, "league": league_id, "next": 5}
-        params.update(get_preferred_timezone(room, username))
-        req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
-            headers=headers,
-            params=params,
-        )
-        req = req.json()
-        if bool(req["response"]):
-            fixtures = req["response"]
+        season = datetime.now().year
+        fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
+        if bool(fixtures) is False:
+            fixtures = fetch_upcoming_fixtures(season - 1, league_id, room, username)
+        if fixtures:
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
-                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
+                date = datetime.strptime(
+                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
+                )
                 display_date = get_preferred_time_format(date, room, username)
                 tz = get_preferred_timezone_object(room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=7) and i < 10:

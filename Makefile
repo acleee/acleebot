@@ -1,7 +1,7 @@
 SRCPATH := $(shell pwd)
 PROJECT_NAME := $(shell basename $(CURDIR))
 VIRTUAL_ENVIRONMENT := $(PROJECT_NAME)/.venv
-LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
+LOCAL_PYTHON := .venv/bin/python3
 
 define HELP
 Manage $(PROJECT_NAME). Usage:
