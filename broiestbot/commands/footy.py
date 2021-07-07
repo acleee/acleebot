@@ -284,6 +284,10 @@ def get_events_per_fixture(fixture_id) -> Optional[str]:
                     event_log = event_log + emojize(
                         f':soccer_ball: {event["type"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
                     )
+                elif event["detail"] == "Own Goal":
+                    event_log = event_log + emojize(
+                        f':skull: :soccer_ball: {event["type"]}, {event["player"]["name"]} (via {event["assist"]["name"]}) {event["time"]["elapsed"]}"\n'
+                    )
                 elif event["type"] == "subst":
                     event_log = event_log + emojize(
                         f':red_triangle_pointed_down: {event["assist"]["name"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
