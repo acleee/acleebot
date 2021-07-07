@@ -249,16 +249,14 @@ def footy_live_fixtures() -> Optional[str]:
                     live_fixtures = live_fixtures + "-------------------------\n"
                 return live_fixtures
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching live fixtures: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching live EPL fixtures: {e}")
+        LOGGER.error(f"KeyError while fetching live fixtures: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching live EPL fixtures: {e}")
+        LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
 
 
-def get_events_per_fixture(fixture_id):
+def get_events_per_fixture(fixture_id) -> Optional[str]:
     try:
         event_log = "\n\n"
         params = {"fixture": fixture_id}
@@ -274,6 +272,10 @@ def get_events_per_fixture(fixture_id):
                     event_log = event_log + emojize(
                         f':yellow_square: {event["detail"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
                     )
+                elif event["detail"] == "Second Yellow card":
+                    event_log = event_log + emojize(
+                        f':yellow_square::yellow_square: {event["detail"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                    )
                 elif event["detail"] == "Red Card":
                     event_log = event_log + emojize(
                         f':red_square: {event["detail"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
@@ -284,78 +286,16 @@ def get_events_per_fixture(fixture_id):
                     )
                 elif event["type"] == "subst":
                     event_log = event_log + emojize(
-                        f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                        f':red_triangle_pointed_down: {event["assist"]["name"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
                     )
             return event_log
         return None
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching live fixtures: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching live fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
-
-
-def footy_live_fixtures_OLD() -> Optional[str]:
-    """
-    Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, and EUROPA.
-
-    :returns: Optional[str]
-    """
-    try:
-        live_fixtures = "\n\n\n"
-        leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}-{FOOTY_LEAGUE_IDS['COPA']}-{FOOTY_LEAGUE_IDS['WORLD']}"
-        req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
-            headers=headers,
-        )
-        fixtures = req.json()["api"].get("fixtures")
-        if bool(fixtures) is False or fixtures is None:
-            return "No live fixtures :("
-        else:
-            for i, fixture in enumerate(fixtures):
-                home_team = fixture["homeTeam"]["team_name"]
-                away_team = fixture["awayTeam"]["team_name"]
-                home_score = fixture["goalsHomeTeam"]
-                away_score = fixture["goalsAwayTeam"]
-                elapsed = fixture["elapsed"]
-                venue = fixture["venue"]
-                events = fixture.get("events")
-                live_fixtures = (
-                    live_fixtures
-                    + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
-                )
-                if events:
-                    for event in events:
-                        if event["detail"] == "Yellow Card":
-                            live_fixtures = live_fixtures + emojize(
-                                f':yellow_square: {event["detail"]}, {event["player"]} {event["elapsed"]}"\n'
-                            )
-                        elif event["detail"] == "Red Card":
-                            live_fixtures = live_fixtures + emojize(
-                                f':red_square: {event["detail"]}, {event["player"]} {event["elapsed"]}"\n'
-                            )
-                        elif event["type"] == "Goal":
-                            live_fixtures = live_fixtures + emojize(
-                                f':soccer_ball: {event["type"]}, {event["player"]} {event["elapsed"]}"\n'
-                            )
-                        elif event["type"] == "subst":
-                            live_fixtures = live_fixtures + emojize(
-                                f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]} {event["elapsed"]}"\n'
-                            )
-                if i < len(fixtures) - 1:
-                    live_fixtures = live_fixtures + "-------------------------\n"
-            return live_fixtures
-    except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching live EPL fixtures: {e.response.content}"
-        )
-    except KeyError as e:
-        LOGGER.error(f"KeyError while fetching live EPL fixtures: {e}")
-    except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching live EPL fixtures: {e}")
 
 
 def epl_golden_boot() -> str:
