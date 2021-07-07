@@ -220,6 +220,92 @@ def footy_live_fixtures() -> Optional[str]:
     """
     try:
         live_fixtures = "\n\n\n"
+        params = {
+            "live": f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}-{FOOTY_LEAGUE_IDS['COPA']}-{FOOTY_LEAGUE_IDS['WORLD']}"
+        }
+        req = requests.get(
+            "https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            headers=headers,
+            params=params,
+        )
+        fixtures = req.json().get("response")
+        if bool(fixtures) is False or fixtures is None:
+            return "No live fixtures :("
+        for i, fixture in enumerate(fixtures):
+            home_team = fixture["teams"]["home"]["name"]
+            away_team = fixture["teams"]["away"]["name"]
+            home_score = fixture["goals"]["home"]
+            away_score = fixture["goals"]["away"]
+            elapsed = fixture["fixture"]["status"]["elapsed"]
+            venue = fixture["fixture"]["venue"]["name"]
+            live_fixtures = (
+                live_fixtures
+                + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
+            )
+            events = get_events_per_fixture(fixture["fixture"]["id"])
+            if events:
+                live_fixtures = live_fixtures + events
+                if i < len(fixtures) - 1:
+                    live_fixtures = live_fixtures + "-------------------------\n"
+                return live_fixtures
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError while fetching live fixtures: {e.response.content}"
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching live EPL fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching live EPL fixtures: {e}")
+
+
+def get_events_per_fixture(fixture_id):
+    try:
+        event_log = "\n\n"
+        params = {"fixture": fixture_id}
+        req = requests.get(
+            "https://api-football-v1.p.rapidapi.com/v3/fixtures/events",
+            headers=headers,
+            params=params,
+        )
+        events = req.json().get("response")
+        if events:
+            for i, event in enumerate(events):
+                if event["detail"] == "Yellow Card":
+                    event_log = event_log + emojize(
+                        f':yellow_square: {event["detail"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                    )
+                elif event["detail"] == "Red Card":
+                    event_log = event_log + emojize(
+                        f':red_square: {event["detail"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                    )
+                elif event["detail"] == "Normal Goal":
+                    event_log = event_log + emojize(
+                        f':soccer_ball: {event["type"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                    )
+                elif event["type"] == "subst":
+                    event_log = event_log + emojize(
+                        f':red_triangle_pointed_down: {event["detail"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n'
+                    )
+            return event_log
+        return None
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError while fetching live fixtures: {e.response.content}"
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching live fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
+
+
+def footy_live_fixtures_OLD() -> Optional[str]:
+    """
+    Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, and EUROPA.
+
+    :returns: Optional[str]
+    """
+    try:
+        live_fixtures = "\n\n\n"
         leagues = f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}-{FOOTY_LEAGUE_IDS['COPA']}-{FOOTY_LEAGUE_IDS['WORLD']}"
         req = requests.get(
             f"https://api-football-v1.p.rapidapi.com/v2/fixtures/live/{leagues}",
