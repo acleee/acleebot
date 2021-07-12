@@ -116,7 +116,9 @@ class Bot(RoomManager):
                 room.room_name.lower(), user.name.title().lower()
             )
         elif cmd_type == "livefixtures":
-            return footy_live_fixtures()
+            return footy_live_fixtures(
+                room.room_name.lower(), user.name.title().lower()
+            )
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":

@@ -142,24 +142,6 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     return upcoming_fixtures
 
 
-def fetch_upcoming_fixtures(season, league_id, room, username):
-    try:
-        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
-        params.update(get_preferred_timezone(room, username))
-        req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
-            headers=headers,
-            params=params,
-        )
-        return req.json().get("response")
-    except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
-    except KeyError as e:
-        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
-    except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
-
-
 def footy_upcoming_fixtures_per_league(
     league_name: str, league_id: int, room: str, username: str
 ) -> Optional[str]:
@@ -212,48 +194,100 @@ def footy_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def footy_live_fixtures() -> Optional[str]:
+def footy_live_fixtures(room: str, username: str) -> str:
     """
-    Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, and EUROPA.
+    Fetch live fixtures for EPL, LIGA, BUND, FA, UCL, and EUROPA.
 
-    :returns: Optional[str]
+    :param room: Chatango room where command was triggered.
+    :type room: str
+    :param username: Chatango user who triggered the command.
+    :type username: str
+    :returns: str
     """
+    live_fixtures = "\n\n\n"
+    for league_name, league_id in FOOTY_LEAGUE_IDS.items():
+        league_fixtures = footy_live_fixtures_per_league(league_id, room, username)
+        if league_fixtures is not None:
+            live_fixtures += league_fixtures + "\n"
+    if live_fixtures == "\n\n\n":
+        return "No live fixtures :("
+    return live_fixtures
+
+
+def fetch_upcoming_fixtures(season: int, league_id, room, username):
     try:
-        live_fixtures = "\n\n\n"
-        params = {
-            "live": f"{FOOTY_LEAGUE_IDS['EPL']}-{FOOTY_LEAGUE_IDS['UCL']}-{FOOTY_LEAGUE_IDS['FA']}-{FOOTY_LEAGUE_IDS['EUROPA']}-{FOOTY_LEAGUE_IDS['BUND']}-{FOOTY_LEAGUE_IDS['LIGA']}-{FOOTY_LEAGUE_IDS['EUROS']}-{FOOTY_LEAGUE_IDS['COPA']}-{FOOTY_LEAGUE_IDS['WORLD']}"
-        }
+        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
+        params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            "https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
             headers=headers,
             params=params,
         )
-        fixtures = req.json().get("response")
+        return req.json().get("response")
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
+
+
+def footy_live_fixtures_per_league(league_id, room, username):
+    try:
+        live_fixtures = "\n\n"
+        season = datetime.now().year
+        fixtures = fetch_live_fixtures(season, league_id, room, username)
         if bool(fixtures) is False or fixtures is None:
-            return "No live fixtures :("
-        for i, fixture in enumerate(fixtures):
-            home_team = fixture["teams"]["home"]["name"]
-            away_team = fixture["teams"]["away"]["name"]
-            home_score = fixture["goals"]["home"]
-            away_score = fixture["goals"]["away"]
-            elapsed = fixture["fixture"]["status"]["elapsed"]
-            venue = fixture["fixture"]["venue"]["name"]
-            live_fixtures = (
-                live_fixtures
-                + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
-            )
-            events = get_events_per_fixture(fixture["fixture"]["id"])
-            if events:
-                live_fixtures = live_fixtures + events
-                if i < len(fixtures) - 1:
-                    live_fixtures = live_fixtures + "-------------------------\n"
-                return live_fixtures
+            fixtures = fetch_live_fixtures(season - 1, league_id, room, username)
+        if fixtures:
+            for i, fixture in enumerate(fixtures):
+                home_team = fixture["teams"]["home"]["name"]
+                away_team = fixture["teams"]["away"]["name"]
+                home_score = fixture["goals"]["home"]
+                away_score = fixture["goals"]["away"]
+                elapsed = fixture["fixture"]["status"]["elapsed"]
+                venue = fixture["fixture"]["venue"]["name"]
+                live_fixtures = (
+                    live_fixtures
+                    + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
+                )
+                events = get_events_per_fixture(fixture["fixture"]["id"])
+                if events:
+                    live_fixtures = live_fixtures + events
+                    if i < len(fixtures) - 1:
+                        live_fixtures = live_fixtures + "-------------------------\n"
+                    return live_fixtures
+        return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching live fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
+
+
+def fetch_live_fixtures(season, league_id, room, username) -> Optional[str]:
+    """
+    Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, and EUROPA.
+
+    :returns: Optional[str]
+    """
+    try:
+
+        params = {"season": season, "league": league_id, "live": "all"}
+        params.update(get_preferred_timezone(room, username))
+        req = requests.get(
+            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            headers=headers,
+            params=params,
+        )
+        return req.json().get("response")
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
 def get_events_per_fixture(fixture_id) -> Optional[str]:
