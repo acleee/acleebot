@@ -159,13 +159,13 @@ def footy_upcoming_fixtures_per_league(
     :returns: Optional[str]
     """
     try:
-        num_fixtures = 0
         upcoming_fixtures = ""
         season = datetime.now().year
         fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
         if bool(fixtures) is False:
             fixtures = fetch_upcoming_fixtures(season - 1, league_id, room, username)
-        if fixtures:
+        if fixtures and len(fixtures) > 0:
+            upcoming_fixtures += f"{league_name}:\n"
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
@@ -174,13 +174,9 @@ def footy_upcoming_fixtures_per_league(
                 )
                 display_date = get_preferred_time_format(date, room, username)
                 tz = get_preferred_timezone_object(room, username)
-                if date - datetime.now(tz=tz) < timedelta(days=7) and i < 10:
+                if date - datetime.now(tz=tz) < timedelta(days=10):
                     if room == CHATANGO_OBI_ROOM:
                         display_date = get_preferred_time_format(date, room, username)
-                    num_fixtures += 1
-                    if num_fixtures > 0:
-                        if num_fixtures == 1:
-                            upcoming_fixtures += f"{league_name}:\n"
                     upcoming_fixtures = (
                         upcoming_fixtures
                         + f"{away_team} @ {home_team} - {display_date}\n"
@@ -251,7 +247,7 @@ def footy_live_fixtures_per_league(league_id, room, username):
                     live_fixtures
                     + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
                 )
-                events = get_events_per_fixture(fixture["fixture"]["id"])
+                events = get_events_per_live_fixture(fixture["fixture"]["id"])
                 if events:
                     live_fixtures = live_fixtures + events
                     if i < len(fixtures) - 1:
@@ -290,7 +286,7 @@ def fetch_live_fixtures(season, league_id, room, username) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def get_events_per_fixture(fixture_id) -> Optional[str]:
+def get_events_per_live_fixture(fixture_id) -> Optional[str]:
     try:
         event_log = "\n\n"
         params = {"fixture": fixture_id}
