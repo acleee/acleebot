@@ -1,8 +1,9 @@
 """Footy standings, fixtures, live games, scoring leaders, & predicts."""
 from datetime import datetime, timedelta
-from typing import Dict, List, Optional
+from typing import Dict, List, Optional, Tuple
 
 import pytz
+from pytz import BaseTzInfo
 import requests
 import simplejson as json
 from emoji import emojize
@@ -165,21 +166,23 @@ def footy_upcoming_fixtures_per_league(
         if bool(fixtures) is False:
             fixtures = fetch_upcoming_fixtures(season - 1, league_id, room, username)
         if fixtures and len(fixtures) > 0:
-            upcoming_fixtures += f"{league_name}:\n"
             for i, fixture in enumerate(fixtures):
-                home_team = fixture["teams"]["home"]["name"]
-                away_team = fixture["teams"]["away"]["name"]
                 date = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
-                display_date = get_preferred_time_format(date, room, username)
-                tz = get_preferred_timezone_object(room, username)
+                display_date, tz = get_preferred_time_format(date, room, username)
+                if room == CHATANGO_OBI_ROOM:
+                    display_date, tz = get_preferred_time_format(date, room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=10):
-                    if room == CHATANGO_OBI_ROOM:
-                        display_date = get_preferred_time_format(date, room, username)
+                    if i == 0:
+                        upcoming_fixtures += f"{league_name}:\n"
+                    home_team = fixture["teams"]["home"]["name"]
+                    away_team = fixture["teams"]["away"]["name"]
+                    display_date = get_preferred_time_format(date, room, username)
+
                     upcoming_fixtures = (
-                        upcoming_fixtures
-                        + f"{away_team} @ {home_team} - {display_date}\n"
+                            upcoming_fixtures
+                            + f"{away_team} @ {home_team} - {display_date}\n"
                     )
             return upcoming_fixtures
     except HTTPError as e:
@@ -499,7 +502,7 @@ def get_preferred_timezone(room: str, username: str) -> Dict:
     return {"timezone": "America/New_York"}
 
 
-def get_preferred_time_format(start_time: datetime, room: str, username: str):
+def get_preferred_time_format(start_time: datetime, room: str, username: str) -> Tuple[str, BaseTzInfo]:
     """
     Display fixture times depending on preferred timezone of requesting user.
 
@@ -512,8 +515,8 @@ def get_preferred_time_format(start_time: datetime, room: str, username: str):
     :returns: str
     """
     if room == CHATANGO_OBI_ROOM or username in METRIC_SYSTEM_USERS:
-        return start_time.strftime("%b %d, %H:%M")
-    return start_time.strftime("%b %d, %l:%M%p").replace("AM", "am").replace("PM", "pm")
+        return start_time.strftime("%b %d, %H:%M"), pytz.utc
+    return start_time.strftime("%b %d, %l:%M%p").replace("AM", "am").replace("PM", "pm"), pytz.timezone("America/New_York")
 
 
 def get_preferred_timezone_object(room: str, username: str):
