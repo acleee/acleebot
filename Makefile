@@ -39,7 +39,7 @@ all help:
 
 .PHONY: run
 run: env
-	service $(PROJECT_NAME) start
+	uwsgi --ini broiestbot.ini
 
 
 .PHONY: restart

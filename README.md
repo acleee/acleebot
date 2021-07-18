@@ -1,10 +1,9 @@
 # BroiestBot
 
-![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![Pandas](https://img.shields.io/badge/pandas-^1.1.1-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
-![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac)
+![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
+![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=ChatBot&logoColor=white)
+![Requests](https://img.shields.io/badge/Requests-^v2.26.0-red.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-^1.4.0-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
-![PyMySQL](https://img.shields.io/badge/PyMySQL-^v1.0.0-red.svg?longCache=true&style=flat-square&logo=mysql&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/issues)
 [![GitHub Stars](https://img.shields.io/github/stars/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/stargazers)
@@ -32,7 +31,8 @@ Get up and running with `make deploy`:
 ```shell
 $ git clone https://github.com/toddbirchard/broiestbot.git
 $ cd broiestbot
-$ make deploy
+$ make install
+$ make run
 ``` 
 
 
@@ -52,24 +52,35 @@ DATABASE_TABLE=yourdatabbasetable
 
 These variables are optional to enable different services, such as pulling images from Google Cloud or fetching Stock prices:
 
-```
+```env
+# Fetching images from Google Storage
 GOOGLE_broiestbot_CREDENTIALS=/path/to/credentials.json
 GOOGLE_BUCKET_NAME=nameOfStorageBucket
-GOOGLE_BUCKET_URL=http://storage.googleapis.com/
 
+# Fetching .gifs
 GIPHY_API_KEY=yourGiphyAPIKey
 
+# Stock market & crypto price data
 IEX_API_TOKEN=yourIEXStockAPIToken
+ALPHA_VANTAGE_API_KEY=yourAlphaVantageKey
 
+# Chart generation
 PLOTLY_API_KEY=yourPlotlyApiKey
 PLOTLY_USERNAME=yourPlotlyUsername
 
-REDDIT_CLIENT_ID=yourClientId
-REDDT_CLIENT_SECRET=yourClientSecret
-REDDIT_PASSWORD=yourRedditPassword
+# Weather by location
+WEATHERSTACK_API_KEY=yourWeatherstackApiKey
 
+# Text notifications
 TWILIO_SENDER_PHONE=123456789
 TWILIO_RECIPIENT_PHONE=123456789
-TWILIO_AUTH_TOKEN=yourKey
-TWILIO_ACCOUNT_SID=yourSid
+TWILIO_AUTH_TOKEN=yourTwilioToken
+TWILIO_ACCOUNT_SID=yourTwilioAccountSid
+
+# All APIs hosted on RapidAPI
+RAPID_API_KEY=yourRapidApiKey
+
+# Song Lyrics
+GENIUS_KEY_ID=yourLyricsGeniusKey
+GENIUS_ACCESS_TOKEN=yourLyricsGeniusToken
 ```
