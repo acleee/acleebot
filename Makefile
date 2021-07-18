@@ -52,7 +52,7 @@ restart: env
 
 .PHONY: install
 install:
-	. $(VIRTUAL_ENVIRONMENT)/bin/activate
+	. .venv/bin/activate
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt
 
