@@ -1917,41 +1917,37 @@ class RoomManager:
         """
         Called when reconnected to the room.
 
-        :param room: Chatango room where the event occurred
-        :type room: Room
+        :param Room room: Chatango room where the event occurred
         """
-        pass
+        LOGGER.success(f"Successfully connected to {room.room_name}.")
 
-    @staticmethod
-    def on_connect_fail(room: Room):
+    def on_connect_fail(self, room: Room):
         """
         Called when the connection failed.
 
-        :param room: Chatango room where the event occurred
-        :type room: Room
+        :param Room room: Chatango room where the event occurred
         """
         LOGGER.error(f"Failed to connect to {room.room_name}.")
+        self.set_timeout(60, self.stop)
+        LOGGER.info(f"Attempting to connect to {room.room_name} again...")
+        self.set_timeout(60, self.join_room(room))
 
-    def on_disconnect(self, room):
+    def on_disconnect(self, room: Room):
         """
         Called when the client gets disconnected.
 
-        :type room: Room
-        :param room: Chatango room where the event occurred
+        :param Room room: Chatango room where the event occurred
         """
-        LOGGER.error(f"Disconnected from {room.room_name}. Attempting to rejoin...")
-        try:
-            time.sleep(5)
-            self.join_room(room)
-        except Exception as e:
-            LOGGER.error(f"Failed to rejoin {room.room_name}: `{e}`")
+        LOGGER.error(f"Disconnected from {room.room_name}.")
+        self.set_timeout(60, self.stop)
+        LOGGER.info(f"Attempting to reconnect to {room.room_name}...")
+        self.set_timeout(60, self.join_room(room))
 
-    def on_login_fail(self, room):
+    def on_login_fail(self, room: Room):
         """
         Called on login failure, disconnects after.
 
-        :type room: Room
-        :param room: Chatango room where the event occurred
+        :param Room room: Chatango room where the event occurred
         """
         LOGGER.error(f"Failed to join {room.room_name}. Attempting to rejoin...")
         self.on_connect_fail(room)

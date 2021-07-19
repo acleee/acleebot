@@ -59,18 +59,13 @@ class Bot(RoomManager):
         """
         Construct a message response based on command type and arguments.
 
-        :param cmd_type: `Type` of command triggered by a user.
-        :type cmd_type: str
-        :param content: Content to be used in response.
-        :type content: str
-        :param command: Name of command triggered by user.
-        :type command: Optional[str]
-        :param args: Additional arguments passed with user command.
-        :type args: Optional[str]
-        :param room: Chatango room.
-        :type room: Optional[Room]
-        :param user: User responsible for triggering command.
-        :type user: Optional[User]
+        :param str cmd_type: `Type` of command triggered by a user.
+        :param str content: Content to be used in response.
+        :param Optional[str] command: Name of command triggered by user.
+        :param Optional[str] args: Additional arguments passed with user command.
+        :param Optional[Room] room: Chatango room.
+        :param Optional[User] user: User who triggered command.
+
         :returns: Optional[str]
         """
         if cmd_type == "basic":
@@ -140,12 +135,10 @@ class Bot(RoomManager):
         """
         Boilerplate function trigger on message.
 
-        :param room: Chatango room.
-        :type room: Room
-        :param user: User responsible for triggering command.
-        :type user: Optional[User]
-        :param message: Raw chat message submitted by a user.
-        :type message: Message
+        :param Room room: Chatango room.
+        :param User user: User responsible for triggering command.
+        :param Message message: Raw chat message submitted by a user.
+
         :returns: None
         """
         chat_message = message.body.lower()
@@ -157,6 +150,8 @@ class Bot(RoomManager):
             self._get_response(chat_message, cmd, args, room, user=user)
         elif chat_message == "bro?":
             self._bot_status_check(room)
+        elif chat_message.lower().strip() == "@broiestbro *waves*":
+            self._wave_back(room, user)
         elif chat_message.replace("!", "").strip() == "no u":
             self._ban_word(room, message, user, silent=True)
         elif (
@@ -182,8 +177,8 @@ class Bot(RoomManager):
         """
         Parse user message into command & arguments.
 
-        :param user_msg: Raw chat message submitted by a user.
-        :type user_msg: str
+        :param str user_msg: Raw chat message submitted by a user.
+
         :returns: Tuple[str, Optional[str]]
         """
         user_msg = user_msg.lower().strip()
@@ -206,16 +201,12 @@ class Bot(RoomManager):
         """
         Fetch response from database to send to chat.
 
-        :param chat_message: Raw message sent by user.
-        :type chat_message: str
-        :param cmd: Command triggered by a user.
-        :type cmd: str
-        :param args: Additional arguments passed with user command.
-        :type args: Optional[str]
-        :param room: Chatango room.
-        :type room: Room
-        :param user: User responsible for triggering command.
-        :type user: Optional[User]
+        :param str chat_message: Raw message sent by user.
+        :param str cmd: Command triggered by a user.
+        :param Optional[str] args: Additional arguments passed with user command.
+        :param Room room: Chatango room.
+        :param Optional[User] user: User responsible for triggering command.
+
         :returns: Optional[str]
         """
         if cmd == "tune":  # Avoid clashes with Acleebot
@@ -260,14 +251,25 @@ class Bot(RoomManager):
         room.message("hellouughhgughhg?")
 
     @staticmethod
+    def _wave_back(room: Room, user: User) -> None:
+        """
+        Wave back at user.
+
+        :param Room room: Chatango room.
+        :param User user: Chatango user who waved.
+
+        :returns: None
+        """
+        room.message(f"@{user.name} *waves*")
+
+    @staticmethod
     def _giphy_fallback(message: str, room: Room):
         """
         Default to Giphy for non-existent commands.
 
-        :param message: Command triggered by a user.
-        :type message: str
-        :param room: Chatango room.
-        :type room: Room
+        :param str message: Command triggered by a user.
+        :param Room room: Chatango room.
+
         :returns: Optional[str]
         """
         query = message.replace("!", "").lower().strip()
@@ -280,14 +282,11 @@ class Bot(RoomManager):
         """
         Remove banned word and warn offending user.
 
-        :param room: Chatango room.
-        :type room: Room
-        :param message: Message sent by user.
-        :type message: Message
-        :param user: User responsible for triggering command.
-        :type user: Optional[User]
-        :param silent: Whether or not offending user should be warned.
-        :type silent: bool
+        :param Room room: Chatango room.
+        :param Message message: Message sent by user.
+        :param User user: User responsible for triggering command.
+        :param bool silent: Whether or not offending user should be warned.
+
         :returns: None
         """
         message.delete()
@@ -299,26 +298,24 @@ class Bot(RoomManager):
         """
         Trademark symbol helper.
 
-        :param room: Chatango room.
-        :type room: Room
-        :param message: User submitted `tm` to be replaced.
-        :type message: Message
+        :param Room room: Chatango room.
+        :param Message message: User submitted `tm` to be replaced.
+
         :returns: None
         """
         message.delete()
         room.message("™")
 
-    def check_blacklisted_users(self, room: Room, user: User, message: Message) -> None:
+    @staticmethod
+    def check_blacklisted_users(room: Room, user: User, message: Message) -> None:
         """
         Ban and delete chat history of blacklisted user.
 
-        :param room: Chatango room.
-        :type room: Room
-        :param user: Chatango user to validate against blacklist.
-        :type user: User
-        :param message: User submitted message.
-        :type message: Message
-        :returns: str
+        :param Room room: Chatango room.
+        :param User user: Chatango user to validate against blacklist.
+        :param Message message: User submitted message.
+
+        :returns: None
         """
         if user.name.title().lower() in CHATANGO_BLACKLISTED_USERS:
             room.ban(message)
