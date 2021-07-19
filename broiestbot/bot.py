@@ -150,7 +150,9 @@ class Bot(RoomManager):
             self._get_response(chat_message, cmd, args, room, user=user)
         elif chat_message == "bro?":
             self._bot_status_check(room)
-        elif chat_message.lower().strip() == "@broiestbro *waves*":
+        elif (
+            "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower()
+        ):
             self._wave_back(room, user)
         elif chat_message.replace("!", "").strip() == "no u":
             self._ban_word(room, message, user, silent=True)
@@ -261,7 +263,9 @@ class Bot(RoomManager):
         :returns: None
         """
         if user.name == "broiestbro":
-            room.message(f"lol stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro")
+            room.message(
+                f"lol stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
+            )
         else:
             room.message(f"@{user.name} *waves*")
 

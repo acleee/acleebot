@@ -269,7 +269,7 @@ def footy_live_fixtures_per_league(
                 if events:
                     live_fixtures = live_fixtures + events
                     if i < len(fixtures) - 1 and len(fixtures) > 1:
-                        live_fixtures = live_fixtures + "———————————————————\n"
+                        live_fixtures = live_fixtures + "——————————————————\n"
                     return live_fixtures
         return None
     except HTTPError as e:
