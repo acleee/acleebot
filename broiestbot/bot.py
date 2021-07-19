@@ -260,7 +260,10 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        room.message(f"@{user.name} *waves*")
+        if user.name == "broiestbro":
+            room.message(f"lol stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro")
+        else:
+            room.message(f"@{user.name} *waves*")
 
     @staticmethod
     def _giphy_fallback(message: str, room: Room):
