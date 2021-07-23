@@ -137,24 +137,28 @@ WC_QUALIFIERS_CONCACAF = 31
 WC_QUALIFIERS_EUROPE = 32
 
 
-FOOTY_LEAGUE_IDS = {
-    ":lion: EPL": EPL_LEAGUE_ID,
-    ":trophy: UCL": UCL_LEAGUE_ID,
-    ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
-    ":European_Union: UEFA EUROPA": UEFA_EUROPA_ID,
-    ":England: FA": FA_LEAGUE_ID,
-    ":Germany: BUND": BUND_LEAGUE_ID,
-    ":Spain: LIGA": LIGA_LEAGUE_ID,
-    ":European_Union: EUROS": EUROS_LEAGUE_ID,
-    ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
-    ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
-    ":United_States: MLS": MLS_LEAGUE_ID,
-    ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-    ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
-    ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
-    ":sports_medal: OLYMPICS": OLYMPICS_LEAGUE_ID,
-    ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
-    ":world_map: WORLD CUP": WORLD_CUP_ID,
-    ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
-    ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
+FOOTY_LEAGUES_BY_SEASON = {
+    "2020": {
+        ":sports_medal: OLYMPICS": OLYMPICS_LEAGUE_ID,
+        ":world_map: WORLD CUP": WORLD_CUP_ID,
+        # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
+        # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
+    },
+    "2021": {
+        ":lion: EPL": EPL_LEAGUE_ID,
+        ":trophy: UCL": UCL_LEAGUE_ID,
+        ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
+        ":European_Union: UEFA EUROPA": UEFA_EUROPA_ID,
+        ":England: FA": FA_LEAGUE_ID,
+        ":Germany: BUND": BUND_LEAGUE_ID,
+        ":Spain: LIGA": LIGA_LEAGUE_ID,
+        ":European_Union: EUROS": EUROS_LEAGUE_ID,
+        ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
+        ":United_States: MLS": MLS_LEAGUE_ID,
+        ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+        ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+        ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
+        ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+        ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+    },
 }

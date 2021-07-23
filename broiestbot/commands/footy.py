@@ -11,7 +11,7 @@ from requests.exceptions import HTTPError
 
 from config import (
     CHATANGO_OBI_ROOM,
-    FOOTY_LEAGUE_IDS,
+    FOOTY_LEAGUES_BY_SEASON,
     METRIC_SYSTEM_USERS,
     RAPID_API_KEY,
 )
@@ -133,19 +133,20 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     upcoming_fixtures = "\n\n"
-    for league_name, league_id in FOOTY_LEAGUE_IDS.items():
-        league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room, username
-        )
-        if league_fixtures is not None:
-            upcoming_fixtures += league_fixtures + "\n"
+    for season, leagues in FOOTY_LEAGUES_BY_SEASON.items():
+        for league_name, league_id in leagues.items():
+            league_fixtures = footy_upcoming_fixtures_per_league(
+                league_name, league_id, room, username, season
+            )
+            if league_fixtures is not None:
+                upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n":
         return upcoming_fixtures
     return emojize(":warning: Couldn't find any upcoming fixtures :warning:")
 
 
 def footy_upcoming_fixtures_per_league(
-    league_name: str, league_id: int, room: str, username: str
+    league_name: str, league_id: int, room: str, username: str, season: int
 ) -> Optional[str]:
     """
     Get upcoming fixtures for a given league or tournament.
@@ -154,15 +155,13 @@ def footy_upcoming_fixtures_per_league(
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+    :param int season: Season year of league/cup.
 
     :returns: Optional[str]
     """
     try:
         upcoming_fixtures = ""
-        season = datetime.now().year
         fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
-        if bool(fixtures) is False:
-            fixtures = fetch_upcoming_fixtures(season - 1, league_id, room, username)
         if fixtures and len(fixtures) > 0:
             for i, fixture in enumerate(fixtures):
                 date = datetime.strptime(
@@ -172,10 +171,10 @@ def footy_upcoming_fixtures_per_league(
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=10):
-                    if i == 0:
+                    if i == 0 and len(fixture) > 1:
                         upcoming_fixtures += emojize(f"{league_name}:\n")
-                    home_team = fixture["teams"]["home"]["name"]
-                    away_team = fixture["teams"]["away"]["name"]
+                    home_team = fixture["teams"]["home"]["name"].replace(" U23", "")
+                    away_team = fixture["teams"]["away"]["name"].replace(" U23", "")
                     display_date, tz = get_preferred_time_format(date, room, username)
                     upcoming_fixtures = (
                         upcoming_fixtures
@@ -200,12 +199,15 @@ def footy_live_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     live_fixtures = "\n\n\n"
-    for league_name, league_id in FOOTY_LEAGUE_IDS.items():
-        league_fixtures = footy_live_fixtures_per_league(league_id, room, username)
-        if league_fixtures is not None:
-            live_fixtures += league_fixtures + "\n"
-    if live_fixtures == "\n\n\n":
-        return ":warning: No live fixtures :( :warning:"
+    for season, leagues in FOOTY_LEAGUES_BY_SEASON.items():
+        for league_name, league_id in leagues.items():
+            league_fixtures = footy_live_fixtures_per_league(
+                league_id, room, username, season
+            )
+            if league_fixtures is not None:
+                live_fixtures += league_fixtures + "\n"
+        if live_fixtures == "\n\n\n":
+            return ":warning: No live fixtures :( :warning:"
     return live_fixtures
 
 
@@ -236,7 +238,7 @@ def fetch_upcoming_fixtures(season: int, league_id: int, room: str, username: st
 
 
 def footy_live_fixtures_per_league(
-    league_id: int, room: str, username: str
+    league_id: int, room: str, username: str, season: int
 ) -> Optional[str]:
     """
     Construct summary of events for all live fixtures in a given league.
@@ -244,15 +246,13 @@ def footy_live_fixtures_per_league(
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+    :param int season: Season year of league/cup.
 
     :returns: Optional[str]
     """
     try:
         live_fixtures = "\n\n"
-        season = datetime.now().year
         fixtures = fetch_live_fixtures(season, league_id, room, username)
-        if bool(fixtures) is False or fixtures is None:
-            fixtures = fetch_live_fixtures(season - 1, league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
@@ -463,7 +463,7 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
             return [
                 fixture["fixture"]["id"]
                 for fixture in fixtures
-                if fixture["league"]["id"] in FOOTY_LEAGUE_IDS.values()
+                if fixture["league"]["id"] in FOOTY_LEAGUES_BY_SEASON.values()
             ]
     except HTTPError as e:
         LOGGER.error(
