@@ -6,10 +6,10 @@ from .footy import (
     bund_standings,
     epl_golden_boot,
     epl_standings,
+    fetch_fox_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
     footy_upcoming_fixtures,
-    get_fox_fixtures,
     liga_standings,
 )
 from .images import (

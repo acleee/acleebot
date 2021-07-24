@@ -12,6 +12,7 @@ from broiestbot.commands import (
     create_instagram_preview,
     epl_golden_boot,
     epl_standings,
+    fetch_fox_fixtures,
     fetch_image_from_gcs,
     find_imdb_movie,
     footy_live_fixtures,
@@ -19,7 +20,6 @@ from broiestbot.commands import (
     footy_upcoming_fixtures,
     get_crypto,
     get_english_translation,
-    get_fox_fixtures,
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
@@ -121,7 +121,7 @@ class Bot(RoomManager):
                 room.room_name.lower(), user.name.title().lower()
             )
         elif cmd_type == "foxtures":
-            return get_fox_fixtures(room.room_name.lower(), user.name.title().lower())
+            return fetch_fox_fixtures(room.room_name.lower(), user.name.title().lower())
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:

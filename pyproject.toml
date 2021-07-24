@@ -41,6 +41,7 @@ python-dotenv = "*"
 twilio = "^6.47.0"
 datadog = "^0.39.0"
 lyricsgenius = "^3.0.0"
+pytz = "^2021.1"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

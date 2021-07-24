@@ -115,6 +115,13 @@ INSTAGRAM_APP_SECRET = getenv("INSTAGRAM_APP_SECRET")
 GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
+# Rapid API Headers to send with every request
+RAPID_HTTP_HEADERS = {
+    "content-type": "application/json",
+    "x-rapidapi-key": RAPID_API_KEY,
+    "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
+}
+
 # 2020-2021 Footy
 EPL_LEAGUE_ID = 2790
 UCL_LEAGUE_ID = 2771
