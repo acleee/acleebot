@@ -12,22 +12,18 @@ def weather_by_location(location: str, room: str, user: str) -> str:
     """
     Return temperature and weather per city/state/zip.
 
-    :param location: Location to fetch weather for.
-    :type location: str
+    :param str location: Location to fetch weather for.
     :param room: Chatango room from which request originated.
-    :type room: str
-    :param user: User who made the request.
-    :type user: str
+    :param str user: User who made the request.
     :returns: str
     """
     endpoint = "http://api.weatherstack.com/current"
+    temperature_units = get_preferred_units(room, user)
     params = {
         "access_key": WEATHERSTACK_API_KEY,
         "query": location.replace(";", ""),
-        "units": "f",
+        "units": temperature_units,
     }
-    if room == CHATANGO_OBI_ROOM or user in METRIC_SYSTEM_USERS:
-        params["units"] = "m"
     try:
         res = requests.get(endpoint, params=params)
         if res.status_code != 200:
@@ -49,11 +45,13 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         weather_emoji = db.fetch_weather_icon(weather_code).get("icon")
         if weather_emoji:
             weather_emoji = emojize(weather_emoji, use_aliases=True)
-        response = f'{data["request"]["query"]}: \
-                        {weather_emoji} {data["current"]["weather_descriptions"][0]}. \
-                        {data["current"]["temperature"]}°{"c" if params["units"] == "m" else "f"} \
-                        (feels like {data["current"]["feelslike"]}°{"c" if params["units"] == "m" else "f"}). \
-                        {data["current"]["precip"] * 100}% precipitation.'
+        response = f'\n\n{data["request"]["query"]}\n \
+                        {weather_emoji} {data["current"]["weather_descriptions"][0]}\n \
+                        Temp: {data["current"]["temperature"]}°{temperature_units}° (feels like: {data["current"]["feelslike"]}°{temperature_units})\n \
+                        Precipitation: {data["current"]["precip"]}%\n \
+                        Humidity: {data["current"]["humidity"]}%\n \
+                        Cloud cover: {data["current"]["cloudcover"]}%\n \
+                        Wind speed: {data["current"]["wind_speed"]}'
         return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
@@ -73,3 +71,12 @@ def weather_by_location(location: str, room: str, user: str) -> str:
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
             use_aliases=True,
         )
+
+
+def get_preferred_units(room: str, user: str):
+    """
+    Determine whether to use metric or imperial units
+    """
+    if room == CHATANGO_OBI_ROOM or user in METRIC_SYSTEM_USERS:
+        return "m"
+    return "f"
