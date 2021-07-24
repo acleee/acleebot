@@ -47,7 +47,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
             weather_emoji = emojize(weather_emoji, use_aliases=True)
         response = f'\n\n{data["request"]["query"]}\n \
                         {weather_emoji} {data["current"]["weather_descriptions"][0]}\n \
-                        Temp: {data["current"]["temperature"]}°{temperature_units}° (feels like: {data["current"]["feelslike"]}°{temperature_units})\n \
+                        Temp: {data["current"]["temperature"]}°{"c" if params["units"] == "m" else "f"} (feels like: {data["current"]["feelslike"]}{"c" if params["units"] == "m" else "f"}°)\n \
                         Precipitation: {data["current"]["precip"]}%\n \
                         Humidity: {data["current"]["humidity"]}%\n \
                         Cloud cover: {data["current"]["cloudcover"]}%\n \
