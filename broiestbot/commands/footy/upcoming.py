@@ -31,14 +31,14 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
                 upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :warning:")
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:")
 
 
 def footy_upcoming_fixtures_per_league(
     league_name: str, league_id: int, room: str, username: str, season: int
 ) -> Optional[str]:
     """
-    Get upcoming fixtures for a given league or tournament.
+    Get this week's upcoming fixtures for a given league or tournament.
 
     :param str league_name: Name of footy league/cup.
     :param int league_id: ID of footy league/cup.
@@ -59,15 +59,11 @@ def footy_upcoming_fixtures_per_league(
                 display_date, tz = get_preferred_time_format(date, room, username)
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
-                if date - datetime.now(tz=tz) < timedelta(days=10):
+                if date - datetime.now(tz=tz) < timedelta(days=7):
                     if i == 0 and len(fixture) > 1:
                         upcoming_fixtures += emojize(f"{league_name}:\n")
-                    home_team = fixture["teams"]["home"]["name"].replace(" U23", "")
-                    away_team = fixture["teams"]["away"]["name"].replace(" U23", "")
-                    display_date, tz = get_preferred_time_format(date, room, username)
-                    upcoming_fixtures = (
-                        upcoming_fixtures
-                        + f"{away_team} @ {home_team} - {display_date}\n"
+                    upcoming_fixtures += add_upcoming_fixture(
+                        fixture, date, room, username
                     )
             return upcoming_fixtures
     except HTTPError as e:
@@ -102,6 +98,25 @@ def fetch_upcoming_fixtures(season: int, league_id: int, room: str, username: st
         LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
+
+
+def add_upcoming_fixture(
+    fixture: dict, date: datetime, room: str, username: str
+) -> str:
+    """
+    Construct upcoming fixture match-up.
+
+    :param dict fixture: Scheduled fixture data.
+    :param datetime date: Fixture start time/date defaulted to UTC time.
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: str
+    """
+    home_team = fixture["teams"]["home"]["name"].replace(" U23", "").replace("W ", "")
+    away_team = fixture["teams"]["away"]["name"].replace(" U23", "").replace("W ", "")
+    display_date, tz = get_preferred_time_format(date, room, username)
+    return f"{away_team} @ {home_team} - {display_date}\n"
 
 
 def fetch_fox_fixtures(room: str, username: str) -> str:
@@ -142,8 +157,8 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
             f":warning: Couldn't find fixtures, has season started yet? :warning:"
         )
     except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
+        LOGGER.error(f"HTTPError while fetching fox fixtures: {e.response.content}")
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+        LOGGER.error(f"KeyError while fetching fox fixtures: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
+        LOGGER.error(f"Unexpected error when fetching fox fixtures: {e}")
