@@ -1,5 +1,5 @@
 """Database client."""
-from typing import List, Optional
+from typing import Optional
 
 from sqlalchemy import create_engine, text
 from sqlalchemy.exc import SQLAlchemyError
@@ -16,9 +16,9 @@ class Database:
         """
         Fetch all rows via query.
 
-        :param weather_query: SQL query to run against database.
-        :type weather_query: int
-        :returns: Optional[List[str]]
+        :param int weather_query: SQL query to run against database.
+
+        :returns: Optional[str]
         """
         try:
             query = text(f"SELECT * FROM weather WHERE code = '{weather_query}';")
@@ -26,7 +26,9 @@ class Database:
             if response is not None:
                 return dict(response)
         except SQLAlchemyError as e:
-            print(f"Failed to execute SQL query {weather_query}: {e}")
+            print(f"Failed to execute SQL query `{weather_query}`: {e}")
+        except Exception as e:
+            print(f"Failed to execute SQL query `{weather_query}`: {e}")
 
     def fetch_command_response(self, command_query: str) -> Optional[dict]:
         """
@@ -43,4 +45,6 @@ class Database:
             if response is not None:
                 return dict(response)
         except SQLAlchemyError as e:
-            print(f"Failed to execute SQL query {command_query}: {e}")
+            print(f"Failed to execute SQL query `{command_query}`: {e}")
+        except Exception as e:
+            print(f"Failed to execute SQL query `{command_query}`: {e}")
