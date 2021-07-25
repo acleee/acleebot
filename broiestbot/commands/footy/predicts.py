@@ -5,7 +5,12 @@ from typing import List, Optional
 import requests
 from requests.exceptions import HTTPError
 
-from config import FOOTY_LEAGUES_BY_SEASON, RAPID_HTTP_HEADERS
+from config import (
+    FOOTY_LEAGUES_BY_SEASON,
+    RAPID_FOOTY_FIXTURES_ENDPOINT,
+    RAPID_FOOTY_PREDICTS_ENDPOINT,
+    RAPID_HTTP_HEADERS,
+)
 from logger import LOGGER
 
 from .util import get_preferred_time_format, get_preferred_timezone
@@ -26,7 +31,7 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
         if bool(fixture_ids) is False:
             return "No fixtures today :("
         for fixture_id in fixture_ids:
-            url = f"https://api-football-v1.p.rapidapi.com/v3/predictions/{fixture_id}"
+            url = f"{RAPID_FOOTY_PREDICTS_ENDPOINT}/{fixture_id}"
             res = requests.get(url, headers=RAPID_HTTP_HEADERS)
             predictions = res.json()["api"]["predictions"]
             for prediction in predictions:
@@ -62,10 +67,11 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
     try:
         today = datetime.now()
         display_date, tz = get_preferred_time_format(today, room, username)
-        url = f"https://api-football-v1.p.rapidapi.com/v3/fixtures"
         params = {"date": display_date}
         params.update(get_preferred_timezone(room, username))
-        res = requests.get(url, headers=RAPID_HTTP_HEADERS, params=params)
+        res = requests.get(
+            RAPID_FOOTY_FIXTURES_ENDPOINT, headers=RAPID_HTTP_HEADERS, params=params
+        )
         fixtures = res.json().get("response")
         if bool(fixtures):
             return [

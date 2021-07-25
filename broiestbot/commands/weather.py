@@ -4,7 +4,12 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from clients import db
-from config import CHATANGO_OBI_ROOM, METRIC_SYSTEM_USERS, WEATHERSTACK_API_KEY
+from config import (
+    CHATANGO_OBI_ROOM,
+    METRIC_SYSTEM_USERS,
+    WEATHERSTACK_API_ENDPOINT,
+    WEATHERSTACK_API_KEY,
+)
 from logger import LOGGER
 
 
@@ -17,7 +22,6 @@ def weather_by_location(location: str, room: str, user: str) -> str:
     :param str user: User who made the request.
     :returns: str
     """
-    endpoint = "http://api.weatherstack.com/current"
     temperature_units = get_preferred_units(room, user)
     params = {
         "access_key": WEATHERSTACK_API_KEY,
@@ -25,7 +29,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         "units": temperature_units,
     }
     try:
-        res = requests.get(endpoint, params=params)
+        res = requests.get(WEATHERSTACK_API_ENDPOINT, params=params)
         if res.status_code != 200:
             return emojize(f":warning:️️ wtf even is `{location}` :warning:")
         data = res.json()

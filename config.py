@@ -81,6 +81,7 @@ PLOTLY_ALT_API_KEY = getenv("PLOTLY_ALT_API_KEY")
 PLOTLY_ALT_USERNAME = getenv("PLOTLY_ALT_USERNAME")
 
 # Weather
+WEATHERSTACK_API_ENDPOINT = "http://api.weatherstack.com/current"
 WEATHERSTACK_API_KEY = getenv("WEATHERSTACK_API_KEY")
 METRIC_SYSTEM_USERS = getenv("METRIC_SYSTEM_USERS")
 
@@ -116,6 +117,11 @@ GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
 # Rapid API Headers to send with every request
+RAPID_FOOTY_FIXTURES_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+RAPID_FOOTY_PREDICTS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/predictions"
+RAPID_FOOTY_TOPSCORERS_ENDPOINT = (
+    "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
+)
 RAPID_HTTP_HEADERS = {
     "content-type": "application/json",
     "x-rapidapi-key": RAPID_API_KEY,

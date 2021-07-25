@@ -6,7 +6,12 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import CHATANGO_OBI_ROOM, FOOTY_LEAGUES_BY_SEASON, RAPID_HTTP_HEADERS
+from config import (
+    CHATANGO_OBI_ROOM,
+    FOOTY_LEAGUES_BY_SEASON,
+    RAPID_FOOTY_FIXTURES_ENDPOINT,
+    RAPID_HTTP_HEADERS,
+)
 from logger import LOGGER
 
 from .util import get_preferred_time_format, get_preferred_timezone
@@ -31,7 +36,9 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
                 upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:")
+    return emojize(
+        ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
+    )
 
 
 def footy_upcoming_fixtures_per_league(
@@ -61,7 +68,9 @@ def footy_upcoming_fixtures_per_league(
                     display_date, tz = get_preferred_time_format(date, room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=7):
                     if i == 0 and len(fixture) > 1:
-                        upcoming_fixtures += emojize(f"{league_name}:\n")
+                        upcoming_fixtures += emojize(
+                            f"{league_name}:\n", use_aliases=True
+                        )
                     upcoming_fixtures += add_upcoming_fixture(
                         fixture, date, room, username
                     )
@@ -87,7 +96,7 @@ def fetch_upcoming_fixtures(season: int, league_id: int, room: str, username: st
         params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            RAPID_FOOTY_FIXTURES_ENDPOINT,
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )
@@ -134,7 +143,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
         params = {"season": season, "team": "46", "next": "7"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            "https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            RAPID_FOOTY_FIXTURES_ENDPOINT,
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )
@@ -152,9 +161,10 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 upcoming_foxtures = (
                     upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
                 )
-            return emojize(upcoming_foxtures)
+            return emojize(upcoming_foxtures, use_aliases=True)
         return emojize(
-            f":warning: Couldn't find fixtures, has season started yet? :warning:"
+            f":warning: Couldn't find fixtures, has season started yet? :warning:",
+            use_aliases=True,
         )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching fox fixtures: {e.response.content}")

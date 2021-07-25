@@ -5,7 +5,11 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import FOOTY_LEAGUES_BY_SEASON, RAPID_HTTP_HEADERS
+from config import (
+    FOOTY_LEAGUES_BY_SEASON,
+    RAPID_FOOTY_FIXTURES_ENDPOINT,
+    RAPID_HTTP_HEADERS,
+)
 from logger import LOGGER
 
 from .util import get_preferred_timezone
@@ -94,7 +98,7 @@ def fetch_live_fixtures(
         params = {"season": season, "league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            f"https://api-football-v1.p.rapidapi.com/v3/fixtures",
+            RAPID_FOOTY_FIXTURES_ENDPOINT,
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )
@@ -119,7 +123,7 @@ def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
         event_log = "\n\n"
         params = {"fixture": fixture_id}
         req = requests.get(
-            "https://api-football-v1.p.rapidapi.com/v3/fixtures/events",
+            f"{RAPID_FOOTY_FIXTURES_ENDPOINT}/events",
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )

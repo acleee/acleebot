@@ -5,7 +5,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import RAPID_HTTP_HEADERS
+from config import RAPID_FOOTY_TOPSCORERS_ENDPOINT, RAPID_HTTP_HEADERS
 from logger import LOGGER
 
 
@@ -20,7 +20,7 @@ def epl_golden_boot() -> str:
         season = datetime.now().year
         params = {"season": season, "league": 39}
         req = requests.get(
-            "https://api-football-v1.p.rapidapi.com/v3/players/topscorers",
+            RAPID_FOOTY_TOPSCORERS_ENDPOINT,
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )
@@ -38,7 +38,8 @@ def epl_golden_boot() -> str:
                     break
             return golden_boot_leaders
         return emojize(
-            f":warning: Couldn't find golden boot leaders; has season started yet? :warning:"
+            f":warning: Couldn't find golden boot leaders; has season started yet? :warning:",
+            use_aliases=True,
         )
     except HTTPError as e:
         LOGGER.error(
