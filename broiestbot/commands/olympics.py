@@ -1,4 +1,4 @@
-""""""
+"""2020 Olympics medal leaders"""
 import pandas as pd
 from emoji import emojize
 
@@ -13,10 +13,16 @@ def get_olympic_medals_per_nation() -> str:
     medals_df = medals_df[0].head(10)
     medals_df.rename(
         columns={
-            "G": f"{emojize(':1st_place_medal:', use_aliases=True)}",
-            "S": f"{emojize(':2nd_place_medal:', use_aliases=True)}",
+            "Group": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
+            "G": f"{emojize(':1st_place_medal:', use_aliases=True)}  ",
+            "S": f"{emojize(':2nd_place_medal:', use_aliases=True)}  ",
             "B": f"{emojize(':3rd_place_medal:', use_aliases=True)}",
         },
         inplace=True,
     )
-    return f"\n\n{medals_df.to_string(index=False, col_space=10, header=True, justify='center')}"
+    # medals_df.iloc[0] = medals_df.apply(format_country_name, axis=1)
+    return f"\n\n{medals_df.to_string(index=False, header=True, col_space=10, justify='center')}"
+
+
+def format_country_name(value: str):
+    return f"{value}&nbsp;&nbsp;"

@@ -226,7 +226,7 @@ class Bot(RoomManager):
                 room=room,
                 user=user,
             )
-            room.message(response)
+            room.message(response, html=True)
         else:
             self._giphy_fallback(chat_message, room)
 
