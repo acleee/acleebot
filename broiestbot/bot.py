@@ -20,6 +20,7 @@ from broiestbot.commands import (
     footy_upcoming_fixtures,
     get_crypto,
     get_english_translation,
+    get_olympic_medals_per_nation,
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
@@ -128,6 +129,8 @@ class Bot(RoomManager):
             return get_song_lyrics(args)
         elif cmd_type == "entranslation" and args:
             return get_english_translation(command, args)
+        elif cmd_type == "olympics":
+            return get_olympic_medals_per_nation()
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
