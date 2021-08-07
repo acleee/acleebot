@@ -83,7 +83,9 @@ def footy_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def fetch_upcoming_fixtures(season: int, league_id: int, room: str, username: str):
+def fetch_upcoming_fixtures(
+    season: int, league_id: int, room: str, username: str
+) -> Optional[dict]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
@@ -91,6 +93,8 @@ def fetch_upcoming_fixtures(season: int, league_id: int, room: str, username: st
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+
+    :returns: Optional[dict]
     """
     try:
         params = {"season": season, "league": league_id, "next": 5, "status": "NS"}

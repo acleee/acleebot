@@ -129,7 +129,7 @@ RAPID_HTTP_HEADERS = {
 }
 
 # 2020-2021 Footy
-EPL_LEAGUE_ID = 2790
+EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2771
 FA_LEAGUE_ID = 2791
 EUROPA_LEAGUE_ID = 2777
@@ -152,8 +152,8 @@ WC_QUALIFIERS_EUROPE = 32
 
 FOOTY_LEAGUES_BY_SEASON = {
     "2020": {
-        ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
-        ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
+        # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
+        # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
         ":world_map: WORLD CUP": WORLD_CUP_ID,
         # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
         # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
@@ -162,7 +162,7 @@ FOOTY_LEAGUES_BY_SEASON = {
         ":lion: EPL": EPL_LEAGUE_ID,
         ":trophy: UCL": UCL_LEAGUE_ID,
         ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
-        ":European_Union: UEFA EUROPA": UEFA_EUROPA_ID,
+        # ":European_Union: UEFA EUROPA": UEFA_EUROPA_ID,
         ":England: FA": FA_LEAGUE_ID,
         ":Germany: BUND": BUND_LEAGUE_ID,
         ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -171,8 +171,8 @@ FOOTY_LEAGUES_BY_SEASON = {
         ":United_States: MLS": MLS_LEAGUE_ID,
         ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
         ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
-        ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
+        # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
         ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
-        ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+        # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
     },
 }
