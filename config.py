@@ -112,7 +112,7 @@ INSTAGRAM_PASSWORD = getenv("INSTAGRAM_PASSWORD")
 INSTAGRAM_APP_ID = getenv("INSTAGRAM_APP_ID")
 INSTAGRAM_APP_SECRET = getenv("INSTAGRAM_APP_SECRET")
 
-# Genius
+# Lyrics Genius
 GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
@@ -128,7 +128,7 @@ RAPID_HTTP_HEADERS = {
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
 }
 
-# 2020-2021 Footy
+# 2020-2021 Footy Leagues
 EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2771
 FA_LEAGUE_ID = 2791
@@ -150,6 +150,10 @@ WORLD_CUP_ID = 1
 WC_QUALIFIERS_CONCACAF = 31
 WC_QUALIFIERS_EUROPE = 32
 
+# Footy team IDs
+LIVERPOOL_TEAM_ID = 33
+FOXES_TEAM_ID = 46
+
 FOOTY_LEAGUES_BY_SEASON = {
     "2020": {
         # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
@@ -162,7 +166,6 @@ FOOTY_LEAGUES_BY_SEASON = {
         ":lion: EPL": EPL_LEAGUE_ID,
         ":trophy: UCL": UCL_LEAGUE_ID,
         ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
-        # ":European_Union: UEFA EUROPA": UEFA_EUROPA_ID,
         ":England: FA": FA_LEAGUE_ID,
         ":Germany: BUND": BUND_LEAGUE_ID,
         ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -170,9 +173,9 @@ FOOTY_LEAGUES_BY_SEASON = {
         ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
         ":United_States: MLS": MLS_LEAGUE_ID,
         ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-        ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+        # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
         # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
-        ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+        # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
         # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
     },
 }

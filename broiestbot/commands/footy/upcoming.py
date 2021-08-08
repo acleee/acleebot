@@ -11,6 +11,7 @@ from config import (
     FOOTY_LEAGUES_BY_SEASON,
     RAPID_FOOTY_FIXTURES_ENDPOINT,
     RAPID_HTTP_HEADERS,
+    FOXES_TEAM_ID
 )
 from logger import LOGGER
 
@@ -144,7 +145,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     try:
         upcoming_foxtures = "\n\n\n:fox: FOXTURES:\n"
         season = datetime.now().year
-        params = {"season": season, "team": "46", "next": "7"}
+        params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
             RAPID_FOOTY_FIXTURES_ENDPOINT,
