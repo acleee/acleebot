@@ -130,7 +130,7 @@ RAPID_HTTP_HEADERS = {
 
 # 2020-2021 Footy Leagues
 EPL_LEAGUE_ID = 39
-UCL_LEAGUE_ID = 2771
+UCL_LEAGUE_ID = 2
 FA_LEAGUE_ID = 2791
 EUROPA_LEAGUE_ID = 2777
 UEFA_EUROPA_ID = 3
@@ -172,7 +172,7 @@ FOOTY_LEAGUES_BY_SEASON = {
         ":European_Union: EUROS": EUROS_LEAGUE_ID,
         ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
         ":United_States: MLS": MLS_LEAGUE_ID,
-        ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+        # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
         # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
         # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
         # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,

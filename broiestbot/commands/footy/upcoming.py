@@ -9,9 +9,9 @@ from requests.exceptions import HTTPError
 from config import (
     CHATANGO_OBI_ROOM,
     FOOTY_LEAGUES_BY_SEASON,
+    FOXES_TEAM_ID,
     RAPID_FOOTY_FIXTURES_ENDPOINT,
     RAPID_HTTP_HEADERS,
-    FOXES_TEAM_ID
 )
 from logger import LOGGER
 
@@ -98,7 +98,7 @@ def fetch_upcoming_fixtures(
     :returns: Optional[dict]
     """
     try:
-        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
+        params = {"season": season, "league": league_id, "next": 7, "status": "NS"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
             RAPID_FOOTY_FIXTURES_ENDPOINT,
