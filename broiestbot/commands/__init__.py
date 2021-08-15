@@ -9,9 +9,9 @@ from .footy import (
     fetch_fox_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
+    footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
     liga_standings,
-    footy_todays_upcoming_fixtures
 )
 from .images import (
     fetch_image_from_gcs,

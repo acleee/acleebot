@@ -17,8 +17,8 @@ from broiestbot.commands import (
     find_imdb_movie,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_upcoming_fixtures,
     footy_todays_upcoming_fixtures,
+    footy_upcoming_fixtures,
     get_crypto,
     get_english_translation,
     get_olympic_medals_per_nation,
@@ -56,7 +56,7 @@ class Bot(RoomManager):
         command: Optional[str] = None,
         args: Optional[str] = None,
         room: Optional[Room] = None,
-        user: Optional[User] = None,
+        user_name: Optional[str] = None,
     ) -> Optional[str]:
         """
         Construct a message response based on command type and arguments.
@@ -66,7 +66,7 @@ class Bot(RoomManager):
         :param Optional[str] command: Name of command triggered by user.
         :param Optional[str] args: Additional arguments passed with user command.
         :param Optional[Room] room: Chatango room.
-        :param Optional[User] user: User who triggered command.
+        :param Optional[str] user_name: User who triggered command.
 
         :returns: Optional[str]
         """
@@ -83,25 +83,21 @@ class Bot(RoomManager):
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
-            return weather_by_location(args, room.room_name, user.name.title().lower())
+            return weather_by_location(args, room.room_name, user_name)
         elif cmd_type == "wiki" and args:
             return wiki_summary(args)
         elif cmd_type == "imdb" and args:
             return find_imdb_movie(args)
         elif cmd_type == "nsfw" and args is None:
-            return get_redgifs_gif(
-                "lesbians", user.name.title().lower(), after_dark_only=False
-            )
+            return get_redgifs_gif("lesbians", user_name, after_dark_only=False)
         elif cmd_type == "nsfw" and args:
-            return get_redgifs_gif(
-                args, user.name.title().lower(), after_dark_only=True
-            )
+            return get_redgifs_gif(args, user_name, after_dark_only=True)
         elif cmd_type == "urban" and args:
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
             return blaze_time_remaining()
-        elif cmd_type == "sms" and args and user:
-            return send_text_message(args, user.name.title())
+        elif cmd_type == "sms" and args and user_name:
+            return send_text_message(args, user_name)
         elif cmd_type == "epltable":
             return epl_standings(content)
         elif cmd_type == "ligatable":
@@ -109,26 +105,17 @@ class Bot(RoomManager):
         elif cmd_type == "bundtable":
             return bund_standings(content)
         elif cmd_type == "fixtures":
-            return footy_upcoming_fixtures(
-                room.room_name.lower(), user.name.title().lower()
-            )
+            return footy_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "livefixtures":
-            return footy_live_fixtures(
-                room.room_name.lower(), user.name.title().lower()
-            )
+            return footy_live_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "todayfixtures":
-            return footy_todays_upcoming_fixtures(
-                room.room_name.lower(),
-                user.name.title().lower()
-            )
+            return footy_todays_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "eplpredicts":
-            return footy_predicts_today(
-                room.room_name.lower(), user.name.title().lower()
-            )
+            return footy_predicts_today(room.room_name.lower(), user_name)
         elif cmd_type == "foxtures":
-            return fetch_fox_fixtures(room.room_name.lower(), user.name.title().lower())
+            return fetch_fox_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:
@@ -151,24 +138,24 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
-        self.check_blacklisted_users(room, user, message)
+        user_name = user.name.title().lower()
+        self.check_blacklisted_users(room, user_name, message)
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!.+", chat_message):
-            cmd, args = self._parse_command(chat_message[1::])
-            self._get_response(chat_message, cmd, args, room, user=user)
+            return self._get_response(chat_message, room, user_name)
         elif chat_message == "bro?":
             self._bot_status_check(room)
         elif (
             "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower()
         ):
-            self._wave_back(room, user)
+            self._wave_back(room, user_name)
         elif chat_message.replace("!", "").strip() == "no u":
-            self._ban_word(room, message, user, silent=True)
+            self._ban_word(room, message, user_name, silent=True)
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
-            and user.name.title() != "Broiestbro"
+            and user_name != "broiestbro"
         ):
             room.message(
                 "SIGN THE PETITION: \
@@ -202,24 +189,18 @@ class Bot(RoomManager):
         return user_msg, None
 
     def _get_response(
-        self,
-        chat_message: str,
-        cmd: str,
-        args: Optional[str],
-        room: Room,
-        user: Optional[User] = None,
+        self, chat_message: str, room: Room, user_name: str
     ) -> Optional[str]:
         """
         Fetch response from database to send to chat.
 
         :param str chat_message: Raw message sent by user.
-        :param str cmd: Command triggered by a user.
-        :param Optional[str] args: Additional arguments passed with user command.
         :param Room room: Chatango room.
-        :param Optional[User] user: User responsible for triggering command.
+        :param str user_name: User responsible for triggering command.
 
         :returns: Optional[str]
         """
+        cmd, args = self._parse_command(chat_message[1::])
         if cmd == "tune":  # Avoid clashes with Acleebot
             return None
         command = db.fetch_command_response(cmd)
@@ -230,7 +211,7 @@ class Bot(RoomManager):
                 command=cmd,
                 args=args,
                 room=room,
-                user=user,
+                user_name=user_name,
             )
             room.message(response, html=True)
         else:
@@ -241,10 +222,9 @@ class Bot(RoomManager):
         """
         Generate link preview for Instagram post URL.
 
-        :param room: Chatango room.
-        :type room: Room
-        :param url: URL of an Instagram post.
-        :type url: str
+        :param Room room: Chatango room.
+        :param str url: URL of an Instagram post.
+
         :returns: None
         """
         preview = create_instagram_preview(url)
@@ -255,28 +235,28 @@ class Bot(RoomManager):
         """
         Check bot status.
 
-        :param room: Chatango room.
-        :type room: Room
+        :param Room room: Chatango room.
+
         :returns: None
         """
         room.message("hellouughhgughhg?")
 
     @staticmethod
-    def _wave_back(room: Room, user: User) -> None:
+    def _wave_back(room: Room, user_name: str) -> None:
         """
         Wave back at user.
 
         :param Room room: Chatango room.
-        :param User user: Chatango user who waved.
+        :param str user_name: User name of Chatango user who waved.
 
         :returns: None
         """
-        if user.name == "broiestbro":
+        if user_name == "broiestbro":
             room.message(
                 f"lol stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
             )
         else:
-            room.message(f"@{user.name} *waves*")
+            room.message(f"@{user_name} *waves*")
 
     @staticmethod
     def _giphy_fallback(message: str, room: Room):
@@ -294,20 +274,20 @@ class Bot(RoomManager):
             room.message(response)
 
     @staticmethod
-    def _ban_word(room: Room, message: Message, user: User, silent=False) -> None:
+    def _ban_word(room: Room, message: Message, user_name: str, silent=False) -> None:
         """
         Remove banned word and warn offending user.
 
         :param Room room: Chatango room.
         :param Message message: Message sent by user.
-        :param User user: User responsible for triggering command.
+        :param str user_name: User responsible for triggering command.
         :param bool silent: Whether or not offending user should be warned.
 
         :returns: None
         """
         message.delete()
         if silent is False:
-            room.message(f"DO NOT SAY THAT WORD @{user.name.upper()} :@")
+            room.message(f"DO NOT SAY THAT WORD @{user_name.upper()} :@")
 
     @staticmethod
     def _trademark(room: Room, message: Message) -> None:
@@ -323,20 +303,20 @@ class Bot(RoomManager):
         room.message("™")
 
     @staticmethod
-    def check_blacklisted_users(room: Room, user: User, message: Message) -> None:
+    def check_blacklisted_users(room: Room, user_name: str, message: Message) -> None:
         """
         Ban and delete chat history of blacklisted user.
 
-        :param Room room: Chatango room.
-        :param User user: Chatango user to validate against blacklist.
+        :param Room room: Chatango room name.
+        :param str user_name: Chatango username to validate against blacklist.
         :param Message message: User submitted message.
 
         :returns: None
         """
-        if user.name.title().lower() in CHATANGO_BLACKLISTED_USERS:
+        if user_name in CHATANGO_BLACKLISTED_USERS:
             room.ban(message)
             reply = emojize(
-                f":wave: @{user.name.title()} lmao pz fgt have fun being banned forever :wave:",
+                f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
             )
             room.message(reply)
