@@ -1,4 +1,5 @@
 """Match breakdown of all currently live fixtures."""
+from datetime import datetime
 from typing import Optional
 
 import requests
@@ -6,8 +7,9 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from config import (
-    FOOTY_LEAGUES_BY_SEASON,
+    FOOTY_LEAGUES,
     RAPID_FOOTY_FIXTURES_ENDPOINT,
+    RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
     RAPID_HTTP_HEADERS,
 )
 from logger import LOGGER
@@ -25,15 +27,15 @@ def footy_live_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     live_fixtures = "\n\n\n"
-    for season, leagues in FOOTY_LEAGUES_BY_SEASON.items():
-        for league_name, league_id in leagues.items():
-            league_fixtures = footy_live_fixtures_per_league(
-                league_id, room, username, season
-            )
-            if league_fixtures is not None:
-                live_fixtures += league_fixtures + "\n"
-        if live_fixtures == "\n\n\n":
-            return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
+    season = datetime.now().year
+    for league_name, league_id in FOOTY_LEAGUES.items():
+        league_fixtures = footy_live_fixtures_per_league(
+            league_id, room, username, season
+        )
+        if league_fixtures is not None:
+            live_fixtures += league_fixtures + "\n"
+    if live_fixtures == "\n\n\n":
+        return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
     return live_fixtures
 
 
@@ -52,11 +54,12 @@ def footy_live_fixtures_per_league(
     """
     try:
         live_fixtures = "\n\n"
+        season = datetime.now().year
         fixtures = fetch_live_fixtures(season, league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
-                home_team = fixture["teams"]["home"]["name"].replace("U23", "")
-                away_team = fixture["teams"]["away"]["name"].replace("U23", "")
+                home_team = fixture["teams"]["home"]["name"]
+                away_team = fixture["teams"]["away"]["name"]
                 home_score = fixture["goals"]["home"]
                 away_score = fixture["goals"]["away"]
                 elapsed = fixture["fixture"]["status"]["elapsed"]
@@ -95,7 +98,6 @@ def fetch_live_fixtures(
     :returns: Optional[str]
     """
     try:
-
         params = {"season": season, "league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
@@ -124,7 +126,7 @@ def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
         event_log = "\n\n"
         params = {"fixture": fixture_id}
         req = requests.get(
-            f"{RAPID_FOOTY_FIXTURES_ENDPOINT}/events",
+            RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
             headers=RAPID_HTTP_HEADERS,
             params=params,
         )

@@ -6,7 +6,7 @@ import requests
 from requests.exceptions import HTTPError
 
 from config import (
-    FOOTY_LEAGUES_BY_SEASON,
+    FOOTY_LEAGUES,
     RAPID_FOOTY_FIXTURES_ENDPOINT,
     RAPID_FOOTY_PREDICTS_ENDPOINT,
     RAPID_HTTP_HEADERS,
@@ -77,7 +77,7 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
             return [
                 fixture["fixture"]["id"]
                 for fixture in fixtures
-                if fixture["league"]["id"] in FOOTY_LEAGUES_BY_SEASON.values()
+                if fixture["league"]["id"] in FOOTY_LEAGUES.values()
             ]
     except HTTPError as e:
         LOGGER.error(

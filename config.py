@@ -118,6 +118,9 @@ GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
 # Rapid API Headers to send with every request
 RAPID_FOOTY_FIXTURES_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = (
+    "https://api-football-v1.p.rapidapi.com/v3/fixtures/events"
+)
 RAPID_FOOTY_PREDICTS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/predictions"
 RAPID_FOOTY_TOPSCORERS_ENDPOINT = (
     "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
@@ -154,28 +157,24 @@ WC_QUALIFIERS_EUROPE = 32
 LIVERPOOL_TEAM_ID = 33
 FOXES_TEAM_ID = 46
 
-FOOTY_LEAGUES_BY_SEASON = {
-    "2020": {
-        # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
-        # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
-        ":world_map: WORLD CUP": WORLD_CUP_ID,
-        # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
-        # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
-    },
-    "2021": {
-        ":lion: EPL": EPL_LEAGUE_ID,
-        ":trophy: UCL": UCL_LEAGUE_ID,
-        ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
-        ":England: FA": FA_LEAGUE_ID,
-        ":Germany: BUND": BUND_LEAGUE_ID,
-        ":Spain: LIGA": LIGA_LEAGUE_ID,
-        ":European_Union: EUROS": EUROS_LEAGUE_ID,
-        ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
-        ":United_States: MLS": MLS_LEAGUE_ID,
-        # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-        # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
-        # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
-        # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
-        # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
-    },
+FOOTY_LEAGUES = {
+    # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
+    # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
+    # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
+    # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
+    ":lion: EPL": EPL_LEAGUE_ID,
+    ":trophy: UCL": UCL_LEAGUE_ID,
+    ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
+    ":England: FA": FA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":European_Union: EUROS": EUROS_LEAGUE_ID,
+    ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
+    ":United_States: MLS": MLS_LEAGUE_ID,
+    ":world_map: WORLD CUP": WORLD_CUP_ID,
+    # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+    # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
+    # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+    # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
 }
