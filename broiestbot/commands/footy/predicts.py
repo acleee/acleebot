@@ -6,10 +6,10 @@ import requests
 from requests.exceptions import HTTPError
 
 from config import (
+    FOOTY_FIXTURES_ENDPOINT,
+    FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    RAPID_FOOTY_FIXTURES_ENDPOINT,
-    RAPID_FOOTY_PREDICTS_ENDPOINT,
-    RAPID_HTTP_HEADERS,
+    FOOTY_PREDICTS_ENDPOINT,
 )
 from logger import LOGGER
 
@@ -31,8 +31,8 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
         if bool(fixture_ids) is False:
             return "No fixtures today :("
         for fixture_id in fixture_ids:
-            url = f"{RAPID_FOOTY_PREDICTS_ENDPOINT}/{fixture_id}"
-            res = requests.get(url, headers=RAPID_HTTP_HEADERS)
+            url = f"{FOOTY_PREDICTS_ENDPOINT}/{fixture_id}"
+            res = requests.get(url, headers=FOOTY_HTTP_HEADERS)
             predictions = res.json()["api"]["predictions"]
             for prediction in predictions:
                 home_chance = prediction["winning_percent"]["home"]
@@ -70,7 +70,7 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
         params = {"date": display_date}
         params.update(get_preferred_timezone(room, username))
         res = requests.get(
-            RAPID_FOOTY_FIXTURES_ENDPOINT, headers=RAPID_HTTP_HEADERS, params=params
+            FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
         )
         fixtures = res.json().get("response")
         if bool(fixtures):

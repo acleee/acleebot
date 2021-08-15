@@ -7,10 +7,10 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from config import (
+    FOOTY_FIXTURES_ENDPOINT,
+    FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    RAPID_FOOTY_FIXTURES_ENDPOINT,
-    RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
-    RAPID_HTTP_HEADERS,
+    FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
 from logger import LOGGER
 
@@ -101,8 +101,8 @@ def fetch_live_fixtures(
         params = {"season": season, "league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            RAPID_FOOTY_FIXTURES_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         return req.json().get("response")
@@ -126,8 +126,8 @@ def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
         event_log = "\n\n"
         params = {"fixture": fixture_id}
         req = requests.get(
-            RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         events = req.json().get("response")

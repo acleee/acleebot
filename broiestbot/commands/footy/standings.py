@@ -1,12 +1,18 @@
 """Get team standings per league."""
-import json
+from datetime import datetime
 from typing import Optional
 
 import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import RAPID_HTTP_HEADERS
+from config import (
+    BUND_LEAGUE_ID,
+    EPL_LEAGUE_ID,
+    FOOTY_HTTP_HEADERS,
+    FOOTY_STANDINGS_ENDPOINT,
+    LIGA_LEAGUE_ID,
+)
 from logger import LOGGER
 
 
@@ -20,12 +26,16 @@ def epl_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n"
-        req = requests.get(endpoint, headers=RAPID_HTTP_HEADERS)
-        req = json.loads(req.text)
-        standings = req["api"]["standings"][0]
+        season = datetime.now().year
+        params = {"league": EPL_LEAGUE_ID, "season": season}
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
+        )
+        res = req.json()
+        standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
             rank = standing["rank"]
-            team = standing["teamName"]
+            team = standing["team"]["name"]
             points = standing["points"]
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
@@ -57,12 +67,16 @@ def liga_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n"
-        req = requests.get(endpoint, headers=RAPID_HTTP_HEADERS)
-        req = json.loads(req.text)
-        standings = req["api"]["standings"][0]
+        season = datetime.now().year
+        params = {"league": LIGA_LEAGUE_ID, "season": season}
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
+        )
+        res = req.json()
+        standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
             rank = standing["rank"]
-            team = standing["teamName"]
+            team = standing["team"]["name"]
             points = standing["points"]
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
@@ -94,12 +108,16 @@ def bund_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n"
-        req = requests.get(endpoint, headers=RAPID_HTTP_HEADERS)
-        req = json.loads(req.text)
-        standings = req["api"]["standings"][0]
+        season = datetime.now().year
+        params = {"league": BUND_LEAGUE_ID, "season": season}
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
+        )
+        res = req.json()
+        standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
             rank = standing["rank"]
-            team = standing["teamName"]
+            team = standing["team"]["name"]
             points = standing["points"]
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]

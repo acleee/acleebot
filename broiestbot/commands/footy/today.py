@@ -8,9 +8,9 @@ from requests.exceptions import HTTPError
 
 from config import (
     CHATANGO_OBI_ROOM,
+    FOOTY_FIXTURES_ENDPOINT,
+    FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    RAPID_FOOTY_FIXTURES_ENDPOINT,
-    RAPID_HTTP_HEADERS,
 )
 from logger import LOGGER
 
@@ -100,8 +100,8 @@ def fetch_todays_upcoming_fixtures(
         params = {"date": today, "league": league_id, "next": 7, "status": "NS"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            RAPID_FOOTY_FIXTURES_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         return req.json().get("response")

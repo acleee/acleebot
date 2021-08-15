@@ -8,10 +8,10 @@ from requests.exceptions import HTTPError
 
 from config import (
     CHATANGO_OBI_ROOM,
+    FOOTY_FIXTURES_ENDPOINT,
+    FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
     FOXES_TEAM_ID,
-    RAPID_FOOTY_FIXTURES_ENDPOINT,
-    RAPID_HTTP_HEADERS,
 )
 from logger import LOGGER
 
@@ -101,8 +101,8 @@ def fetch_upcoming_fixtures(
         params = {"season": season, "league": league_id, "next": 7, "status": "NS"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            RAPID_FOOTY_FIXTURES_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         return req.json().get("response")
@@ -148,8 +148,8 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
-            RAPID_FOOTY_FIXTURES_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         fixtures = req.json().get("response")

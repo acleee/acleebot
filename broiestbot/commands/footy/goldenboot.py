@@ -5,7 +5,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import EPL_LEAGUE_ID, RAPID_FOOTY_TOPSCORERS_ENDPOINT, RAPID_HTTP_HEADERS
+from config import EPL_LEAGUE_ID, FOOTY_HTTP_HEADERS, FOOTY_TOPSCORERS_ENDPOINT
 from logger import LOGGER
 
 
@@ -20,8 +20,8 @@ def epl_golden_boot() -> str:
         season = datetime.now().year
         params = {"season": season, "league": EPL_LEAGUE_ID}
         req = requests.get(
-            RAPID_FOOTY_TOPSCORERS_ENDPOINT,
-            headers=RAPID_HTTP_HEADERS,
+            FOOTY_TOPSCORERS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
         players = req.json().get("response")

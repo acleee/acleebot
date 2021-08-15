@@ -103,7 +103,7 @@ def get_english_translation(language: str, phrase: str):
         headers = {
             "content-type": "application/x-www-form-urlencoded",
             "accept-encoding": "application/gzip",
-            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-key": API_KEY,
             "x-rapidapi-host": "google-translate1.p.rapidapi.com",
         }
         res = requests.request("POST", url, data=data, headers=headers)

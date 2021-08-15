@@ -117,15 +117,18 @@ GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
 # Rapid API Headers to send with every request
-RAPID_FOOTY_FIXTURES_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
-RAPID_FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = (
+FOOTY_FIXTURES_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
+FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = (
     "https://api-football-v1.p.rapidapi.com/v3/fixtures/events"
 )
-RAPID_FOOTY_PREDICTS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/predictions"
-RAPID_FOOTY_TOPSCORERS_ENDPOINT = (
+FOOTY_PREDICTS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/predictions"
+FOOTY_TOPSCORERS_ENDPOINT = (
     "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
 )
-RAPID_HTTP_HEADERS = {
+FOOTY_STANDINGS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/standings"
+
+
+FOOTY_HTTP_HEADERS = {
     "content-type": "application/json",
     "x-rapidapi-key": RAPID_API_KEY,
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
