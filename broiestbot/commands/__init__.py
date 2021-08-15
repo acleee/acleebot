@@ -11,6 +11,7 @@ from .footy import (
     footy_predicts_today,
     footy_upcoming_fixtures,
     liga_standings,
+    footy_todays_upcoming_fixtures
 )
 from .images import (
     fetch_image_from_gcs,

@@ -18,6 +18,7 @@ from broiestbot.commands import (
     footy_live_fixtures,
     footy_predicts_today,
     footy_upcoming_fixtures,
+    footy_todays_upcoming_fixtures,
     get_crypto,
     get_english_translation,
     get_olympic_medals_per_nation,
@@ -114,6 +115,11 @@ class Bot(RoomManager):
         elif cmd_type == "livefixtures":
             return footy_live_fixtures(
                 room.room_name.lower(), user.name.title().lower()
+            )
+        elif cmd_type == "todayfixtures":
+            return footy_todays_upcoming_fixtures(
+                room.room_name.lower(),
+                user.name.title().lower()
             )
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
