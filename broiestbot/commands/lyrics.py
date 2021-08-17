@@ -6,8 +6,8 @@ def get_song_lyrics(song_title_query: str) -> str:
     """
     Search for song lyrics by song title.
 
-    :param song_title_query: Song title to fetch lyrics for.
-    :type song_title_query: str
+    :param str song_title_query: Song title to fetch lyrics for.
+
     :returns: str
     """
     try:

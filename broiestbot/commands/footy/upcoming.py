@@ -27,7 +27,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
 
     :returns: str
     """
-    upcoming_fixtures = "\n\n"
+    upcoming_fixtures = "\n\n\n"
     season = datetime.now().year
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(
@@ -35,7 +35,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
         )
         if league_fixtures is not None:
             upcoming_fixtures += league_fixtures + "\n"
-    if upcoming_fixtures != "\n\n":
+    if upcoming_fixtures != "\n\n\n":
         return upcoming_fixtures
     return emojize(
         ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True

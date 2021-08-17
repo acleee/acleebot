@@ -17,8 +17,8 @@ def get_crypto(symbol: str) -> str:
     """
     Fetch crypto price and generate 60-day performance chart.
 
-    :param symbol: Crypto symbol to fetch prices for.
-    :type symbol: str
+    :param str symbol: Crypto symbol to fetch prices for.
+
     :returns: str
     """
     try:
@@ -42,8 +42,8 @@ def get_stock(symbol: str) -> str:
     """
     Fetch stock price and generate 30-day performance chart.
 
-    :param symbol: Stock symbol to fetch prices for.
-    :type symbol: str
+    :param str symbol: Stock symbol to fetch prices for.
+
     :returns: str
     """
     try:

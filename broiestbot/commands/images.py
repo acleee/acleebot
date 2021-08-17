@@ -15,8 +15,8 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
     """
     Get image from Google Cloud Storage bucket.
 
-    :param subdirectory: Directory on remote CDN from which to fetch random image.
-    :type subdirectory: str
+    :param str subdirectory: Directory on remote CDN from which to fetch random image.
+
     :returns: str
     """
     images = gcs.bucket.list_blobs(prefix=subdirectory)
@@ -30,8 +30,8 @@ def giphy_image_search(query: str) -> str:
     """
     Perform a gif image and return a random result from the top-20 images.
 
-    :param query: Query passed to Giphy to find gif.
-    :type query: str
+    :param str query: Query passed to Giphy to find gif.
+
     :returns: str
     """
     rand = randint(0, 20)
@@ -78,8 +78,8 @@ def random_image(message: str) -> str:
     Select a random image from a fixed set associated with a command.
     NOTE: This is a legacy command which should later be replaced with `fetch_image_from_gcs`.
 
-    :param message: Query matching a command to set a random image from a set.
-    :type message: str
+    :param str message: Query matching a command to set a random image from a set.
+
     :returns: str
     """
     try:
@@ -107,8 +107,8 @@ def subreddit_image(subreddit: str) -> str:
     """
     Fetch most recent image posted to a subreddit.
 
-    :param subreddit: Name of subreddit matching URL (sans `/r/`)
-    :type subreddit: str
+    :param str subreddit: Name of subreddit matching URL (sans `/r/`)
+
     :returns: str
     """
     try:

@@ -20,6 +20,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
     :param str location: Location to fetch weather for.
     :param room: Chatango room from which request originated.
     :param str user: User who made the request.
+
     :returns: str
     """
     temperature_units = get_preferred_units(room, user)
@@ -81,6 +82,7 @@ def get_preferred_units(room: str, user: str) -> str:
 
     :param room: Chatango room from which request originated.
     :param str user: User who made the request.
+
     :returns: str
     """
     if room == CHATANGO_OBI_ROOM or user in METRIC_SYSTEM_USERS:
@@ -94,6 +96,7 @@ def get_weather_emoji(weather_code: int, is_day: str) -> str:
 
     :param int weather_code: Numerical code representing general weather type.
     :param str is_day: Whether the target location is currently experiencing daylight.
+
     :returns: str
     """
     weather_emoji_response = db.fetch_weather_icon(weather_code)

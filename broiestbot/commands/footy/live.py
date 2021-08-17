@@ -54,7 +54,6 @@ def footy_live_fixtures_per_league(
     """
     try:
         live_fixtures = "\n\n"
-        season = datetime.now().year
         fixtures = fetch_live_fixtures(season, league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):

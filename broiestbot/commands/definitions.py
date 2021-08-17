@@ -12,8 +12,8 @@ def get_urban_definition(term: str) -> str:
     """
     Fetch Urban Dictionary definition for a given phrase or word.
 
-    :param term: Word or phrase to fetch UD definition for.
-    :type term: str
+    :param str term: Word or phrase to fetch UD definition for.
+
     :returns: str
     """
     params = {"term": term}
@@ -63,8 +63,8 @@ def wiki_summary(query: str) -> str:
     """
     Fetch Wikipedia summary for a given query.
 
-    :param query: Query to fetch corresponding Wikipedia page.
-    :type query: str
+    :param str query: Query to fetch corresponding Wikipedia page.
+
     :returns: str
     """
     try:
@@ -87,10 +87,9 @@ def get_english_translation(language: str, phrase: str):
     """
     Translate a phrase between languages.
 
-    :param language: Language to translate from into English
-    :type language: str
-    :param phrase: Message to be translated.
-    :type phrase: str
+    :param str language: Language to translate from into English
+    :param str phrase: Message to be translated.
+
     :return: str
     """
     try:
@@ -103,7 +102,7 @@ def get_english_translation(language: str, phrase: str):
         headers = {
             "content-type": "application/x-www-form-urlencoded",
             "accept-encoding": "application/gzip",
-            "x-rapidapi-key": API_KEY,
+            "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "google-translate1.p.rapidapi.com",
         }
         res = requests.request("POST", url, data=data, headers=headers)

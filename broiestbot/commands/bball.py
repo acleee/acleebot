@@ -3,7 +3,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import API_KEY
+from config import RAPID_API_KEY
 from logger import LOGGER
 
 
@@ -13,7 +13,7 @@ def live_nba_games() -> str:
         params = {"Category": "basketball", "Date": "20210521"}
         headers = {
             "content-type": "application/json",
-            "x-rapidapi-key": API_KEY,
+            "x-rapidapi-key": RAPID_API_KEY,
             "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
         }
         req = requests.get(endpoint, headers=headers, params=params)

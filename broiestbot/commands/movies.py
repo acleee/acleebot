@@ -13,8 +13,8 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
     """
     Get movie summary, rating, actors, poster, & box office info from IMDB.
 
-    :param movie_title: Movie to fetch IMDB info & box office info for.
-    :type movie_title: str
+    :param str movie_title: Movie to fetch IMDB info & box office info for.
+
     :returns: Optional[str]
     """
     try:
@@ -80,8 +80,8 @@ def get_boxoffice_data(movie: Movie) -> Optional[str]:
     """
     Get IMDB box office performance for a given film.
 
-    :param movie: IMDB movie object.
-    :type movie: Movie
+    :param Movie movie: IMDB movie object.
+
     :returns: Optional[str]
     """
     try:

@@ -15,6 +15,7 @@ from logger import LOGGER
 def is_after_dark() -> bool:
     """
     Determine if current time is in threshold for `After Dark` mode.
+
     :return: Boolean
     """
     tz = pytz.timezone("America/New_York")
@@ -36,12 +37,10 @@ def get_redgifs_gif(
     """
     Fetch a special kind of gif, if you know what I mean ;).
 
-    :param query: Gif search query.
-    :type query: str
-    :param username: Chatango user who triggered the command.
-    :type username: str
-    :param after_dark_only: Whether results should be limited to the `after dark` timeframe.
-    :type after_dark_only: bool
+    :param str query: Gif search query.
+    :param str username: Chatango user who triggered the command.
+    :param bool after_dark_only: Whether results should be limited to the `after dark` timeframe.
+
     :returns: Optional[str]
     """
     night_mode = is_after_dark()

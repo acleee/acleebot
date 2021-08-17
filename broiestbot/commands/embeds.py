@@ -14,8 +14,8 @@ def create_instagram_preview(url: str) -> Optional[str]:
     """
     Generate link preview for Instagram post URLs.
 
-    :param url: Instagram post URL (image or video).
-    :type url: str
+    :param str url: Instagram post URL (image or video).
+
     :returns: Optional[str]
     """
     try:

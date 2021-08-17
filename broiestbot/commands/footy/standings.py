@@ -25,7 +25,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        standings_table = "\n\n"
+        standings_table = "\n\n\n"
         season = datetime.now().year
         params = {"league": EPL_LEAGUE_ID, "season": season}
         req = requests.get(
@@ -44,7 +44,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
                 standings_table
                 + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
             )
-        if standings_table != "\n\n":
+        if standings_table != "\n\n\n":
             return standings_table
         return emojize(
             ":warning: Couldn't fetch standings :( :warning:", use_aliases=True
@@ -66,7 +66,7 @@ def liga_standings(endpoint: str) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        standings_table = "\n\n"
+        standings_table = "\n\n\n"
         season = datetime.now().year
         params = {"league": LIGA_LEAGUE_ID, "season": season}
         req = requests.get(
@@ -85,7 +85,7 @@ def liga_standings(endpoint: str) -> Optional[str]:
                 standings_table
                 + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
             )
-        if standings_table != "\n\n":
+        if standings_table != "\n\n\n":
             return standings_table
         return emojize(
             ":warning: Couldn't fetch standings :( :warning:", use_aliases=True
@@ -107,7 +107,7 @@ def bund_standings(endpoint: str) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        standings_table = "\n\n"
+        standings_table = "\n\n]\n"
         season = datetime.now().year
         params = {"league": BUND_LEAGUE_ID, "season": season}
         req = requests.get(
@@ -126,7 +126,7 @@ def bund_standings(endpoint: str) -> Optional[str]:
                 standings_table
                 + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
             )
-        if standings_table != "\n\n":
+        if standings_table != "\n\n\n":
             return standings_table
         return emojize(
             ":warning: Couldn't fetch standings :( :warning:", use_aliases=True

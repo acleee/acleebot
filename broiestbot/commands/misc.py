@@ -50,10 +50,9 @@ def send_text_message(message: str, user: str) -> Optional[str]:
     """
     Send SMS to Bro via Twilio.
 
-    :param message: Text message body to send via SMS.
-    :type message: str
-    :param user: User attempting to send SMS.
-    :type user: str
+    :param str message: Text message body to send via SMS.
+    :param str user: Username of user attempting to send SMS.
+
     :returns: Optional[str]
     """
     try:
@@ -72,8 +71,12 @@ def send_text_message(message: str, user: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
 
-def covid_cases_usa():
-    covid_by_state = "\n\n\n"
+def covid_cases_usa() -> str:
+    """
+    Retrieve reported COVID-19 cases and deaths in the US.
+
+    :returns: str
+    """
     url = "https://covid-19-data.p.rapidapi.com/country/code"
     params = {
         "code": "usa",
@@ -87,7 +90,7 @@ def covid_cases_usa():
     deaths = res["deaths"]
     critical = res["critical"]
     cases = res["confirmed"]
-    covid_summary = f"\n\n:flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n:chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n:face_with_medical_mask: {critical:,} critical"
+    covid_summary = f"\n\n\n:flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n:chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n:face_with_medical_mask: {critical:,} critical"
     return emojize(
         covid_summary,
         use_aliases=True,

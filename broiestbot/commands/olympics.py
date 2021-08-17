@@ -4,7 +4,11 @@ from emoji import emojize
 
 
 def get_olympic_medals_per_nation() -> str:
-    """Return olympic leaders by number of gold medals"""
+    """
+    Return olympic leaders by number of gold medals.py
+
+    :returns: str
+    """
     medals_df = pd.read_html(
         "https://www.espn.com/olympics/summer/2020/medals/_/view/overall/sort/gold",
         flavor="bs4",
