@@ -11,6 +11,7 @@ from .footy import (
     footy_predicts_today,
     footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
+    get_footy_odds,
     liga_standings,
 )
 from .images import (

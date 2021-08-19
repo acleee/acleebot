@@ -21,6 +21,7 @@ from broiestbot.commands import (
     footy_upcoming_fixtures,
     get_crypto,
     get_english_translation,
+    get_footy_odds,
     get_olympic_medals_per_nation,
     get_redgifs_gif,
     get_song_lyrics,
@@ -124,6 +125,8 @@ class Bot(RoomManager):
             return get_english_translation(command, args)
         elif cmd_type == "olympics":
             return get_olympic_medals_per_nation()
+        elif cmd_type == "footyodds":
+            return get_footy_odds()
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 

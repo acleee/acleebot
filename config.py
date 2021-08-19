@@ -167,7 +167,7 @@ FOOTY_LEAGUES = {
     # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
     # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
     ":lion: EPL": EPL_LEAGUE_ID,
-    # ":trophy: UCL": UCL_LEAGUE_ID,
+    ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
     ":England: FA": FA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
