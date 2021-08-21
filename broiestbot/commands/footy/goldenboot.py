@@ -27,13 +27,15 @@ def epl_golden_boot() -> str:
         players = req.json().get("response")
         if players:
             for i, player in enumerate(players):
-                name = player["player_name"]
-                team = player["team_name"]
-                goals = player["goals"]["total"]
-                assists = player["goals"]["assists"]
-                shots_on = player["shots"]["on"]
-                shots_total = player["shots"]["total"]
-                golden_boot_leaders += f"{goals} - {name}, {team}. ({assists} assists, {shots_on}/{shots_total} SOG)\n"
+                name = player["player"]["name"]
+                team = player["statistics"][0]["team"]["name"]
+                goals = player["statistics"][0]["goals"]["total"]
+                assists = player["statistics"][0]["goals"].get("assists", 0)
+                shots_on = player["statistics"][0]["shots"].get("on", 0)
+                shots_total = player["statistics"][0]["shots"].get("total", 0)
+                if assists is None:
+                    assists = 0
+                golden_boot_leaders += f"{goals} - {name}, {team}  ({assists} assists, {shots_on}/{shots_total} SOG)\n"
                 if i > 9:
                     break
             return golden_boot_leaders
