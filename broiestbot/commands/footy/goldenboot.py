@@ -15,7 +15,7 @@ def epl_golden_boot() -> str:
 
     :return: str
     """
-    golden_boot_leaders = "\n\n\n"
+    golden_boot_leaders = "\n\n\n\n"
     try:
         season = datetime.now().year
         params = {"season": season, "league": EPL_LEAGUE_ID}

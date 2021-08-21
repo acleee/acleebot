@@ -25,7 +25,7 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
 
     :returns: Optional[str]
     """
-    todays_predicts = "\n\n\n"
+    todays_predicts = "\n\n\n\n"
     try:
         fixture_ids = footy_fixtures_today(room, username)
         if bool(fixture_ids) is False:

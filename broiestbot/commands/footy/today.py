@@ -26,7 +26,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
 
     :returns: str
     """
-    upcoming_fixtures = "\n\n\n"
+    upcoming_fixtures = "\n\n\n\n"
     today = datetime.now().strftime("%Y-%m-%d")
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_todays_upcoming_fixtures_per_league(
