@@ -63,16 +63,12 @@ def footy_live_fixtures_per_league(
                 away_score = fixture["goals"]["away"]
                 elapsed = fixture["fixture"]["status"]["elapsed"]
                 venue = fixture["fixture"]["venue"]["name"]
-                live_fixtures = (
-                    live_fixtures
-                    + f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"\n'
-                    + f"{fixture['league']['round']}"
-                )
+                live_fixture = f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"'
                 events = get_events_per_live_fixture(fixture["fixture"]["id"])
-                if events:
-                    live_fixtures = live_fixtures + events
+                if events and live_fixture:
+                    live_fixtures += live_fixture + events
                     if i < len(fixtures) - 1 and len(fixtures) > 1:
-                        live_fixtures = live_fixtures + "\n\n"
+                        return live_fixtures + "\n\n"
                     return live_fixtures
         return None
     except HTTPError as e:
@@ -99,12 +95,12 @@ def fetch_live_fixtures(
     try:
         params = {"season": season, "league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
-        req = requests.get(
+        res = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
-        return req.json().get("response")
+        return res.json().get("response")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -122,7 +118,7 @@ def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        event_log = "\n\n"
+        event_log = "\n"
         params = {"fixture": fixture_id}
         req = requests.get(
             FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
