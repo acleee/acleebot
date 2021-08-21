@@ -98,7 +98,7 @@ def fetch_upcoming_fixtures(
     :returns: Optional[dict]
     """
     try:
-        params = {"season": season, "league": league_id, "next": 7, "status": "NS"}
+        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
             FOOTY_FIXTURES_ENDPOINT,

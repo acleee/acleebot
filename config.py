@@ -136,9 +136,10 @@ FOOTY_HTTP_HEADERS = {
 
 # 2020-2021 Footy Leagues
 EPL_LEAGUE_ID = 39
-ENG_DIV1_LEAGUE_ID = 111
 UCL_LEAGUE_ID = 2
-FA_LEAGUE_ID = 2791
+FA_CUP_ID = 45
+EFL_CUP_ID = 46
+LEAGUE_ONE_ID = 41
 EUROPA_LEAGUE_ID = 2777
 UEFA_EUROPA_ID = 3
 BUND_LEAGUE_ID = 78
@@ -156,6 +157,8 @@ OLYMPICS_WOMEN_LEAGUE_ID = 524
 WORLD_CUP_ID = 1
 WC_QUALIFIERS_CONCACAF = 31
 WC_QUALIFIERS_EUROPE = 32
+SERIE_A_LEAGUE_ID = 135
+COMMUNITY_SHIELD_CUP = 528
 
 # Footy team IDs
 LIVERPOOL_TEAM_ID = 33
@@ -168,15 +171,18 @@ FOOTY_LEAGUES = {
     # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
+    ":England: FA": FA_CUP_ID,
+    ":England: EFL": EFL_CUP_ID,
     ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
-    ":England: FA": FA_LEAGUE_ID,
-    ":Germany: BUND": BUND_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
     ":European_Union: EUROS": EUROS_LEAGUE_ID,
     ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
-    ":England: Div 1": ENG_DIV1_LEAGUE_ID,
+    ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     ":world_map: WORLD CUP": WORLD_CUP_ID,
+    ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
     # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
@@ -187,6 +193,6 @@ FOOTY_LEAGUES = {
 FOOTY_LEAGUES_PRIORITY = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
-    ":England: FA": FA_LEAGUE_ID,
+    ":England: FA": FA_CUP_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
 }
