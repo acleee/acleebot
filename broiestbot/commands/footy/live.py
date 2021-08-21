@@ -27,7 +27,7 @@ def footy_live_fixtures(room: str, username: str) -> str:
 
     :returns: str
     """
-    live_fixtures = "\n\n\n"
+    live_fixtures = "\n\n\n\n"
     season = datetime.now().year
     for league_name, league_id in FOOTY_LEAGUES_PRIORITY.items():
         league_fixtures = footy_live_fixtures_per_league(
@@ -35,7 +35,7 @@ def footy_live_fixtures(room: str, username: str) -> str:
         )
         if league_fixtures is not None:
             live_fixtures += league_fixtures + "\n"
-    if live_fixtures == "\n\n\n":
+    if live_fixtures == "\n\n\n\n":
         return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
     return live_fixtures
 
