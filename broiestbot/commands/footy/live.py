@@ -10,6 +10,7 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
+    FOOTY_LEAGUES_PRIORITY,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
 from logger import LOGGER
@@ -28,7 +29,7 @@ def footy_live_fixtures(room: str, username: str) -> str:
     """
     live_fixtures = "\n\n\n"
     season = datetime.now().year
-    for league_name, league_id in FOOTY_LEAGUES.items():
+    for league_name, league_id in FOOTY_LEAGUES_PRIORITY.items():
         league_fixtures = footy_live_fixtures_per_league(
             league_id, room, username, season
         )
@@ -67,9 +68,9 @@ def footy_live_fixtures_per_league(
                 events = get_events_per_live_fixture(fixture["fixture"]["id"])
                 if events and live_fixture:
                     live_fixtures += live_fixture + events
-                    if i < len(fixtures) - 1 and len(fixtures) > 1:
-                        return live_fixtures + "\n\n"
-                    return live_fixtures
+                    if i < len(fixtures) - 1:
+                        live_fixtures += "\n\n"
+            return live_fixtures
         return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")

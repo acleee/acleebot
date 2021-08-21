@@ -183,3 +183,10 @@ FOOTY_LEAGUES = {
     # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
     # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
 }
+
+FOOTY_LEAGUES_PRIORITY = {
+    ":lion: EPL": EPL_LEAGUE_ID,
+    ":trophy: UCL": UCL_LEAGUE_ID,
+    ":England: FA": FA_LEAGUE_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
+}
