@@ -56,6 +56,5 @@ class Database:
 
         :param DataFrame df: Pandas DataFrame.
         """
-        df.reset_index(inplace=True)
-        df.to_sql(self.users_table, self.db, index_label="id", if_exists="replace")
+        df.to_sql(self.users_table, self.db, index_label="user", if_exists="replace")
         print(f"Inserted {df.head()}")
