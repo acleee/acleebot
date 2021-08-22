@@ -15,7 +15,8 @@ from config import (
     GOOGLE_BUCKET_URL,
     IEX_API_BASE_URL,
     IEX_API_TOKEN,
-    IP_DATA_KEY,
+    IP_DATA_ENDPOINT,
+    IP_DATA_KEY
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
@@ -64,7 +65,7 @@ reddit = praw.Reddit(
 )
 
 # IP Data Client
-geo = GeoIP(IP_DATA_KEY)
+geo = GeoIP(IP_DATA_ENDPOINT, IP_DATA_KEY)
 
 # Rap Genius
 genius = lyricsgenius.Genius()
