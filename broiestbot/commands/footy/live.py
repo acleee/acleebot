@@ -70,8 +70,8 @@ def footy_live_fixtures_per_league(
                     live_fixtures += live_fixture + events
                     if i < len(fixtures) - 1:
                         live_fixtures += "\n\n"
-        if live_fixtures != "\n\n\n"
-            return live_fixtures
+            if live_fixtures != "\n\n\n"
+                return live_fixtures
         return "No live fixtures :("
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
