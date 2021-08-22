@@ -69,7 +69,7 @@ def footy_live_fixtures_per_league(
                 events = get_events_per_live_fixture(fixture["fixture"]["id"])
                 if events:
                     live_fixtures += events
-                if len(fixtures) > 1 and i < len(fixtures) -1:
+                if len(fixtures) > 1 and i < len(fixtures) - 1:
                     live_fixtures += "\n\n"
             if live_fixtures != "\n\n\n\n":
                 return live_fixtures

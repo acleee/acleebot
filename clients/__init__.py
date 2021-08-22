@@ -11,12 +11,12 @@ from config import (
     ALPHA_VANTAGE_PRICE_BASE_URL,
     DATABASE_ARGS,
     DATABASE_URI,
+    DATABASE_USERS_TABLE,
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
     IEX_API_BASE_URL,
     IEX_API_TOKEN,
-    IP_DATA_ENDPOINT,
-    IP_DATA_KEY
+    IP_DATA_KEY,
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
@@ -31,7 +31,7 @@ from .geo import GeoIP
 from .stock import StockChartHandler
 
 # Bot Database
-db = Database(DATABASE_URI, DATABASE_ARGS)
+db = Database(DATABASE_URI, DATABASE_ARGS, DATABASE_USERS_TABLE)
 
 # Google Cloud Storage
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
@@ -65,7 +65,7 @@ reddit = praw.Reddit(
 )
 
 # IP Data Client
-geo = GeoIP(IP_DATA_ENDPOINT, IP_DATA_KEY)
+geo = GeoIP(IP_DATA_KEY)
 
 # Rap Genius
 genius = lyricsgenius.Genius()
