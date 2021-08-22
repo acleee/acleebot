@@ -192,7 +192,8 @@ FOOTY_LEAGUES = {
 
 FOOTY_LEAGUES_PRIORITY = {
     ":lion: EPL": EPL_LEAGUE_ID,
-    ":trophy: UCL": UCL_LEAGUE_ID,
-    ":England: FA": FA_CUP_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
+    ":United_States: MLS": MLS_LEAGUE_ID,
 }
