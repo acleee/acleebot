@@ -72,7 +72,7 @@ def footy_live_fixtures_per_league(
                         live_fixtures += "\n\n"
             if live_fixtures != "\n\n\n"
                 return live_fixtures
-            return "No live fixtures :("
+        return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
     except KeyError as e:
