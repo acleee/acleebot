@@ -54,7 +54,7 @@ def footy_live_fixtures_per_league(
     :returns: Optional[str]
     """
     try:
-        live_fixtures = "\n\n"
+        live_fixtures = "\n\n\n"
         fixtures = fetch_live_fixtures(season, league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
@@ -70,8 +70,9 @@ def footy_live_fixtures_per_league(
                     live_fixtures += live_fixture + events
                     if i < len(fixtures) - 1:
                         live_fixtures += "\n\n"
+        if live_fixtures != "\n\n\n"
             return live_fixtures
-        return None
+        return "No live fixtures :("
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live fixtures: {e.response.content}")
     except KeyError as e:
