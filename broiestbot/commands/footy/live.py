@@ -54,7 +54,7 @@ def footy_live_fixtures_per_league(
     :returns: Optional[str]
     """
     try:
-        live_fixtures = "\n\n\n"
+        live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(season, league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
@@ -65,12 +65,13 @@ def footy_live_fixtures_per_league(
                 elapsed = fixture["fixture"]["status"]["elapsed"]
                 venue = fixture["fixture"]["venue"]["name"]
                 live_fixture = f'{home_team} {home_score} - {away_team} {away_score}\n{venue}, {elapsed}"'
+                live_fixtures += live_fixture
                 events = get_events_per_live_fixture(fixture["fixture"]["id"])
-                if events and live_fixture:
-                    live_fixtures += live_fixture + events
-                    if len(fixtures) > 1 and i < len(fixtures):
-                        live_fixtures += "\n\n"
-            if live_fixtures != "\n\n\n"
+                if events:
+                    live_fixtures += events
+                if len(fixtures) > 1 and i < len(fixtures) -1:
+                    live_fixtures += "\n\n"
+            if live_fixtures != "\n\n\n\n"
                 return live_fixtures
         return None
     except HTTPError as e:
