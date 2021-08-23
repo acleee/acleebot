@@ -181,6 +181,12 @@ class Bot(RoomManager):
 
     @staticmethod
     def get_user_data(user: User, message: Message):
+        """
+        Store general user data.
+
+        :param User user: User responsible for triggering command.
+        :param Message message: User submitted message.
+        """
         metadata_df = geo.parse(user.name, message.ip)
         db.insert_data_from_dataframe(metadata_df)
 

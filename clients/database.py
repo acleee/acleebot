@@ -46,13 +46,15 @@ class Database:
             if response is not None:
                 return dict(response)
         except SQLAlchemyError as e:
-            print(f"Failed to execute SQL query `{command_query}`: {e}")
+            print(
+                f"SQLAlchemyError occurred when executing SQL query `{command_query}`: {e}"
+            )
         except Exception as e:
             print(f"Failed to execute SQL query `{command_query}`: {e}")
 
     def insert_data_from_dataframe(self, df: DataFrame):
         """
-        Agnostic method to insert parsed data into a provided SQL table.
+        Insert record into SQL table as a Dataframe consisting of a single row.
 
         :param DataFrame df: Pandas DataFrame.
         """

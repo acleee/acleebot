@@ -55,6 +55,6 @@ class GeoIP:
         record = {"user": user_name}
         ip_metadata = self.get_ip_metadata(ip_address)
         record.update(ip_metadata)
-        metadata_df = pd.json_normalize([record])
+        metadata_df = pd.json_normalize([record], sep="_")
         metadata_df = metadata_df.infer_objects()
         return metadata_df
