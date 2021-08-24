@@ -183,16 +183,25 @@ class Bot(RoomManager):
     @staticmethod
     def _get_user_data(room_name: str, user: User, message: Message):
         """
-        Store general user data.
+        Persist metadata regarding message history.
 
         :param str room_name: Chatango room.
         :param User user: User responsible for triggering command.
         :param Message message: User submitted message.
         """
-        metadata_df = geo.parse(user.name, message.ip, room_name)
-        LOGGER.info(f"User {user.name} IP {message.ip} room {room_name}")
-        db.insert_data_from_dataframe(metadata_df)
-        LOGGER.info(metadata_df.to_json(orient="records"))
+        if message.ip:
+            ip_metadata = geo.lookup_user(message.ip)
+            metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
+            LOGGER.info(f"User {user.name} IP {message.ip} room {room_name}")
+            result, success = db.insert_data_from_dataframe(metadata_df)
+            if success:
+                LOGGER.success(result)
+            else:
+                LOGGER.error(result)
+        else:
+            LOGGER.warn(
+                f"Insufficient permissions to persist metadata in room {room_name}"
+            )
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:

@@ -15,7 +15,7 @@ class GeoIP:
         except APIKeyNotSet as e:
             raise APIKeyNotSet(e)
 
-    def get_ip_metadata(self, ip_address: str) -> dict:
+    def lookup_user(self, ip_address: str) -> dict:
         """
         Fetch metadata associated with user's IP address.
 
@@ -43,19 +43,22 @@ class GeoIP:
         except IncompatibleParameters as e:
             raise IncompatibleParameters(e)
 
-    def parse(self, room_name: str, user_name: str, ip_address: str) -> DataFrame:
+    @staticmethod
+    def save_metadata(room_name: str, user_name: str, ip_metadata: dict) -> DataFrame:
         """
         Parse IP metadata into Pandas Dataframe.
 
         :param str room_name: Chatango room.
         :param str user_name: Chatango user's username.
-        :param str ip_address: Chatango user's IP address.
+        :param dict ip_metadata: Metadata associated with a given message.
 
         :returns: DataFrame
         """
-        record = {"user": user_name, "chatango_room": room_name}
-        ip_metadata = self.get_ip_metadata(ip_address)
+        record = {"username": user_name, "chatango_room": room_name}
         record.update(ip_metadata)
         metadata_df = pd.json_normalize([record], sep="_")
         metadata_df = metadata_df.infer_objects()
+        pd.to_datetime(
+            metadata_df["time_zone_current_time"], infer_datetime_format=True
+        )
         return metadata_df

@@ -1994,7 +1994,7 @@ class RoomManager:
         :type message: Message
         """
         if user.name.lower() != CHATANGO_BOT_USERNAME:
-            LOGGER.warning(
+            LOGGER.trace(
                 f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
             )
 
@@ -2017,7 +2017,7 @@ class RoomManager:
         :param user: User promoted to mod.
         :type user: User
         """
-        LOGGER.warning(
+        LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
         )
 
@@ -2031,7 +2031,7 @@ class RoomManager:
         :param user: User demoted from mod.
         :type user: User
         """
-        LOGGER.warning(
+        LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} was demodded in {room.room_name}."
         )
 
@@ -2082,12 +2082,9 @@ class RoomManager:
         """
         Called when a user leaves. Anonymous users get ignored here.
 
-        :param room: Chatango room where a user left.
-        :type room: Room
-        :param user: Recently departed user.
-        :type user: User
-        :param puid: Personal unique id for a user.
-        :type puid: str
+        :param Room room: Chatango room where a user left.
+        :param User user: Recently departed user.
+        :param str puid: Personal unique id for a user.
         """
         LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} left {room.room_name}."
@@ -2127,15 +2124,12 @@ class RoomManager:
         """
         Called when a user gets banned.
 
-        :param room: Chatango room where user was banned.
-        :type room: Room
-        :param user: Moderator who banned user.
-        :type user: User
-        :param target: User that got banned.
-        :type target: User
+        :param Room room: Chatango room where user was unbanned.
+        :param User user: Moderator who unbanned user.
+        :param User target: User that got unbanned.
         """
-        LOGGER.warning(
-            f"[{room.room_name}] [{user.name.title()}]: {target.user} was banned from {room.room_name} by {user.name}."
+        LOGGER.trace(
+            f"[{room.room_name}] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}."
         )
 
     @staticmethod
@@ -2143,23 +2137,19 @@ class RoomManager:
         """
         Called when a user gets unbanned.
 
-        :param room: Chatango room where user was unbanned.
-        :type room: Room
-        :param user: Moderator who unbanned user.
-        :type user: User
-        :param target: User that got unbanned.
-        :type target: User
+        :param Room room: Chatango room where user was unbanned.
+        :param User user: Moderator who unbanned user.
+        :param User target: User that got unbanned.
         """
-        LOGGER.warning(
+        LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}."
         )
 
-    def on_banlist_update(self, room):
+    def on_banlist_update(self, room: Room):
         """
         Called when a banlist gets updated.
 
-        :param room: Chatango room where the event occurred.
-        :type room: Room
+        :param Room room: Chatango room where the event occurred.
         """
         pass
 

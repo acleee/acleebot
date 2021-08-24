@@ -1,5 +1,5 @@
 """Database client."""
-from typing import Optional
+from typing import Optional, Tuple
 
 from pandas import DataFrame
 from sqlalchemy import create_engine, text
@@ -52,11 +52,17 @@ class Database:
         except Exception as e:
             print(f"Failed to execute SQL query `{command_query}`: {e}")
 
-    def insert_data_from_dataframe(self, df: DataFrame):
+    def insert_data_from_dataframe(self, df: DataFrame) -> Tuple[str, bool]:
         """
         Insert record into SQL table as a Dataframe consisting of a single row.
 
         :param DataFrame df: Pandas DataFrame.
         """
-        df.to_sql("user", self.db, index_label="id", if_exists="append")
-        print(f"Inserted {df.head()}")
+        try:
+            df.to_sql("user", self.db, if_exists="append", index=False)
+            return (
+                f"Successfully inserted record for {df['username']} in {df['chatango_room']}",
+                True,
+            )
+        except Exception as e:
+            return f"Failed to save metadata: {e}", False
