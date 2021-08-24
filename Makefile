@@ -52,6 +52,7 @@ restart: env
 
 .PHONY: install
 install:
+	if [ ! -d "./.venv" ]; then python3 -m venv $(VIRTUAL_ENVIRONMENT); fi
 	. .venv/bin/activate
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt

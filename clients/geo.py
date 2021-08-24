@@ -43,16 +43,17 @@ class GeoIP:
         except IncompatibleParameters as e:
             raise IncompatibleParameters(e)
 
-    def parse(self, user_name: str, ip_address: str) -> DataFrame:
+    def parse(self, room_name: str, user_name: str, ip_address: str) -> DataFrame:
         """
         Parse IP metadata into Pandas Dataframe.
 
+        :param str room_name: Chatango room.
         :param str user_name: Chatango user's username.
         :param str ip_address: Chatango user's IP address.
 
         :returns: DataFrame
         """
-        record = {"user": user_name}
+        record = {"user": user_name, "chatango_room": room_name}
         ip_metadata = self.get_ip_metadata(ip_address)
         record.update(ip_metadata)
         metadata_df = pd.json_normalize([record], sep="_")

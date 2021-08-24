@@ -142,9 +142,10 @@ class Bot(RoomManager):
         """
         chat_message = message.body.lower()
         user_name = user.name.title().lower()
+        room_name = room.room_name.lower()
         self.check_blacklisted_users(room, user_name, message)
         self.get_response(chat_message, room, user_name, message)
-        self.get_user_data(user, message)
+        self._get_user_data(room_name, user, message)
 
     def get_response(
         self, chat_message: str, room: Room, user_name: str, message: Message
@@ -180,14 +181,16 @@ class Bot(RoomManager):
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
 
     @staticmethod
-    def get_user_data(user: User, message: Message):
+    def _get_user_data(room_name: str, user: User, message: Message):
         """
         Store general user data.
 
+        :param str room_name: Chatango room.
         :param User user: User responsible for triggering command.
         :param Message message: User submitted message.
         """
-        metadata_df = geo.parse(user.name, message.ip)
+        metadata_df = geo.parse(user.name, message.ip, room_name)
+        LOGGER.info(f"User {user.name} IP {message.ip} room {room_name}")
         db.insert_data_from_dataframe(metadata_df)
         LOGGER.info(metadata_df.to_json(orient="records"))
 
