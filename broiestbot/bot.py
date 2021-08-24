@@ -189,6 +189,7 @@ class Bot(RoomManager):
         """
         metadata_df = geo.parse(user.name, message.ip)
         db.insert_data_from_dataframe(metadata_df)
+        LOGGER.info(metadata_df.to_json(orient="records"))
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:

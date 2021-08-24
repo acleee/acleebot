@@ -9,7 +9,6 @@ from requests.exceptions import HTTPError
 from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
-    FOOTY_LEAGUES,
     FOOTY_LEAGUES_PRIORITY,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
@@ -70,7 +69,7 @@ def footy_live_fixtures_per_league(
                 if events:
                     live_fixtures += events
                 if len(fixtures) > 1 and i < len(fixtures) - 1:
-                    live_fixtures += "\n\n"
+                    live_fixtures += "\n\n\n"
             if live_fixtures != "\n\n\n\n":
                 return live_fixtures
         return None
