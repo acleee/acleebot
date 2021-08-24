@@ -173,14 +173,13 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*"
 
 [[package]]
 name = "datadog"
-version = "0.39.0"
+version = "0.42.0"
 description = "The Datadog Python library"
 category = "main"
 optional = false
 python-versions = "*"
 
 [package.dependencies]
-decorator = ">=3.3.2"
 requests = ">=2.6.0"
 
 [[package]]
@@ -200,14 +199,6 @@ tenacity = ">=5"
 
 [package.extras]
 opentracing = ["opentracing (>=2.0.0)"]
-
-[[package]]
-name = "decorator"
-version = "5.0.9"
-description = "Decorators for Humans"
-category = "main"
-optional = false
-python-versions = ">=3.5"
 
 [[package]]
 name = "emoji"
@@ -965,7 +956,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "31063ac1a82096dafbecef651a25e86f7bbafc7d039270629ad86255083c6b16"
+content-hash = "ba83eec36b4f6c72192e5c877b9882476d5d034dd1cd1fa19d0c0cdb8ee59135"
 
 [metadata.files]
 appdirs = [
@@ -1072,8 +1063,8 @@ colorama = [
     {file = "colorama-0.4.4.tar.gz", hash = "sha256:5941b2b48a20143d2267e95b1c2a7603ce057ee39fd88e7329b0c292aa16869b"},
 ]
 datadog = [
-    {file = "datadog-0.39.0-py2.py3-none-any.whl", hash = "sha256:b6a42e3e99f704f0a9065e5659e82f11a931c771fc2b119795e86c836f6c5e14"},
-    {file = "datadog-0.39.0.tar.gz", hash = "sha256:b0ef69a27aad0e4412c1ac3e6894fa1b5741db735515c34dfe1606d8cf30e4e5"},
+    {file = "datadog-0.42.0-py2.py3-none-any.whl", hash = "sha256:140b51f5db3f46d6f3ec022c05830c6b3e13e4f62c19c823e1227ac322b26667"},
+    {file = "datadog-0.42.0.tar.gz", hash = "sha256:7a6fac17a7d09f1883ab9a45ce4ff7a16aa1a5eb3cc4c6cddac7f8c53e7d1e9b"},
 ]
 ddtrace = [
     {file = "ddtrace-0.51.2-cp27-cp27m-macosx_10_9_x86_64.whl", hash = "sha256:7a8e0a40c5787ffdc4365030002bcc7823859ae8a58d3c9124847e88ccb7b221"},
@@ -1114,10 +1105,6 @@ ddtrace = [
     {file = "ddtrace-0.51.2-cp39-cp39-win32.whl", hash = "sha256:9e7b30f822e3661ccff5bc78b7bc6365477d9bfbc13d39fcc34dd527ebabe1da"},
     {file = "ddtrace-0.51.2-cp39-cp39-win_amd64.whl", hash = "sha256:afb1d74e6c70c1c915c3d8a85ec716e7d2b2abcc168d6cc4f3ac54f4119578d7"},
     {file = "ddtrace-0.51.2.tar.gz", hash = "sha256:fb29142a03ec68324c764987eb70f293f80725332149195ca70d3ea1d69eb0df"},
-]
-decorator = [
-    {file = "decorator-5.0.9-py3-none-any.whl", hash = "sha256:6e5c199c16f7a9f0e3a61a4a54b3d27e7dad0dbdde92b944426cb20914376323"},
-    {file = "decorator-5.0.9.tar.gz", hash = "sha256:72ecfba4320a893c53f9706bebb2d55c270c1e51a28789361aa93e4a21319ed5"},
 ]
 emoji = [
     {file = "emoji-1.4.2.tar.gz", hash = "sha256:21257f311e24468031e85685867c00b87249dc7612b82dc763a771ba5fb00c01"},

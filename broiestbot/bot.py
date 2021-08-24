@@ -144,8 +144,8 @@ class Bot(RoomManager):
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
         self.check_blacklisted_users(room, user_name, message)
-        self.get_response(chat_message, room, user_name, message)
         self._get_user_data(room_name, user, message)
+        self.get_response(chat_message, room, user_name, message)
 
     def get_response(
         self, chat_message: str, room: Room, user_name: str, message: Message
