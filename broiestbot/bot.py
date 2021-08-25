@@ -192,7 +192,6 @@ class Bot(RoomManager):
         if message.ip:
             ip_metadata = geo.lookup_user(message.ip)
             metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
-            LOGGER.info(f"User {user.name} IP {message.ip} room {room_name}")
             result, success = db.insert_data_from_dataframe(metadata_df)
             if success:
                 LOGGER.success(result)
@@ -298,8 +297,6 @@ class Bot(RoomManager):
 
         :param str message: Command triggered by a user.
         :param Room room: Chatango room.
-
-        :returns: Optional[str]
         """
         query = message.replace("!", "").lower().strip()
         if len(query) > 1:
