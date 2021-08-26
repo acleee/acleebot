@@ -3,6 +3,7 @@ from typing import Optional, Tuple
 
 from pandas import DataFrame
 from sqlalchemy import create_engine, text
+from sqlalchemy.engine import Row
 from sqlalchemy.exc import SQLAlchemyError
 
 
@@ -31,13 +32,13 @@ class Database:
         except Exception as e:
             print(f"Failed to execute SQL query `{weather_query}`: {e}")
 
-    def fetch_command_response(self, command_query: str) -> Optional[dict]:
+    def fetch_cmd_response(self, command_query: str) -> Optional[dict]:
         """
         Fetch a single row; typically used to verify whether a
         record already exists (ie: users).
 
-        :param command_query: SQL query to run against database.
-        :type command_query: str
+        :param str command_query: SQL query to run against database.
+
         :returns: Optional[dict]
         """
         try:
@@ -51,6 +52,26 @@ class Database:
             )
         except Exception as e:
             print(f"Failed to execute SQL query `{command_query}`: {e}")
+
+    def fetch_user(self, room_name: str, user, message) -> Optional[Row]:
+        """
+        Run a SELECT query.
+
+        :param str room_name: Chatango room.
+        :param user: User responsible for triggering command.
+        :param message: User submitted message.
+
+        :returns: Optional[Row]
+        """
+        try:
+            query = text(
+                f"SELECT * FROM user WHERE username = '{user.name}' AND chatango_room = '{room_name}';"
+            )
+            return self.db.execute(query).fetchone()
+        except SQLAlchemyError as e:
+            print(f"SQLAlchemyError occurred while fetching user {user.name}: {e}")
+        except Exception as e:
+            print(f"Failed to execute SQL query while fetching user {user.name}: {e}")
 
     def insert_data_from_dataframe(self, df: DataFrame) -> Tuple[str, bool]:
         """

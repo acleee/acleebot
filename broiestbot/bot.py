@@ -144,7 +144,7 @@ class Bot(RoomManager):
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
         self.check_blacklisted_users(room, user_name, message)
-        # self._get_user_data(room_name, user, message)
+        self._get_user_data(room_name, user, message)
         self.get_response(chat_message, room, user_name, message)
 
     def get_response(
@@ -190,13 +190,15 @@ class Bot(RoomManager):
         :param Message message: User submitted message.
         """
         if message.ip:
-            ip_metadata = geo.lookup_user(message.ip)
-            metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
-            result, success = db.insert_data_from_dataframe(metadata_df)
-            if success:
-                LOGGER.success(result)
-            else:
-                LOGGER.error(result)
+            existing_user = db.fetch_user(room_name, user, message)
+            if existing_user is None:
+                ip_metadata = geo.lookup_user(message.ip)
+                metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
+                result, success = db.insert_data_from_dataframe(metadata_df)
+                if success:
+                    LOGGER.success(result)
+                else:
+                    LOGGER.error(result)
         else:
             LOGGER.warn(
                 f"Insufficient permissions to persist metadata in room {room_name}"
@@ -235,7 +237,7 @@ class Bot(RoomManager):
         cmd, args = self._parse_command(chat_message[1::])
         if cmd == "tune":  # Avoid clashes with Acleebot
             return None
-        command = db.fetch_command_response(cmd)
+        command = db.fetch_cmd_response(cmd)
         if command is not None:
             response = self.create_message(
                 command["type"],

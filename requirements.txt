@@ -1,7 +1,7 @@
 attrs==21.2.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 beautifulsoup4==4.9.3
 boto==2.49.0
-botocore==1.21.28; python_version >= "3.6"
+botocore==1.21.30; python_version >= "3.6"
 bs4==0.0.1
 cachetools==4.2.2; python_version >= "3.5" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 certifi==2021.5.30; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
@@ -11,7 +11,7 @@ chart-studio==1.1.0
 click==8.0.1; python_version >= "3.6"
 colorama==0.4.4; python_version >= "3.6" and python_full_version < "3.0.0" and sys_platform == "win32" and platform_system == "Windows" or sys_platform == "win32" and python_version >= "3.6" and python_full_version >= "3.5.0" and platform_system == "Windows"
 datadog==0.42.0
-ddtrace==0.51.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+ddtrace==0.52.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 emoji==1.4.2
 google-api-core==2.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 google-auth==2.0.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
@@ -55,7 +55,7 @@ soupsieve==2.2.1; python_version >= "3.6"
 sqlalchemy==1.4.23; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 tenacity==8.0.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 tqdm==4.62.2; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
-twilio==6.63.0
+twilio==6.63.1
 update-checker==0.18.0; python_version >= "3.6" and python_version < "4.0"
 urllib3==1.26.6; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.6"
 uwsgi==2.0.19.1
