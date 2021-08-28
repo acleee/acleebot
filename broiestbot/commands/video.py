@@ -1,10 +1,10 @@
 from googleapiclient.errors import HttpError
 
-from clients import yt
-from logger import LOGGER
+# from clients import yt
+# from logger import LOGGER
 
 
-def search_youtube_for_video(query: str) -> str:
+'''def search_youtube_for_video(query: str) -> str:
     """
     Search for a Youtube video.
 
@@ -22,4 +22,4 @@ def search_youtube_for_video(query: str) -> str:
     except HttpError as e:
         LOGGER.error(f"HttpError while fetching YouTube video: {e}")
     except Exception as e:
-        LOGGER.error(f"Error while fetching YouTube video: {e}")
+        LOGGER.error(f"Error while fetching YouTube video: {e}")'''
