@@ -128,8 +128,8 @@ class Bot(RoomManager):
             return get_olympic_medals_per_nation()
         elif cmd_type == "footyodds":
             return get_footy_odds()
-        elif cmd_type == "youtube" and args:
-            return search_youtube_for_video(args)
+        # elif cmd_type == "youtube" and args:
+            # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 

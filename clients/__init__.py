@@ -74,4 +74,4 @@ genius = lyricsgenius.Genius()
 genius.remove_section_headers = True
 
 # Youtube
-yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+# yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
