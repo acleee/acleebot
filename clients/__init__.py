@@ -2,6 +2,7 @@
 import lyricsgenius
 import praw
 import wikipediaapi
+from googleapiclient.discovery import build
 from imdb import IMDb
 from twilio.rest import Client
 
@@ -22,6 +23,7 @@ from config import (
     REDDIT_PASSWORD,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
+    YOUTUBE_API_KEY,
 )
 
 from .crypto import CryptoChartHandler
@@ -70,3 +72,6 @@ geo = GeoIP(IP_DATA_KEY)
 # Rap Genius
 genius = lyricsgenius.Genius()
 genius.remove_section_headers = True
+
+# Youtube
+yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)

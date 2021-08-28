@@ -44,6 +44,7 @@ lyricsgenius = "*"
 pytz = "*"
 pandas = "*"
 html5lib = "*"
+google-api-python-client = "^2.18.0"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

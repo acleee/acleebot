@@ -115,16 +115,16 @@ INSTAGRAM_APP_SECRET = getenv("INSTAGRAM_APP_SECRET")
 GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
+# Youtube
+YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
+
 # Rapid API Headers to send with every request
-FOOTY_FIXTURES_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures"
-FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = (
-    "https://api-football-v1.p.rapidapi.com/v3/fixtures/events"
-)
-FOOTY_PREDICTS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/predictions"
-FOOTY_TOPSCORERS_ENDPOINT = (
-    "https://api-football-v1.p.rapidapi.com/v3/players/topscorers"
-)
-FOOTY_STANDINGS_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/standings"
+FOOTY_BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
+FOOTY_FIXTURES_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures"
+FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures/events"
+FOOTY_PREDICTS_ENDPOINT = f"{FOOTY_BASE_URL}/predictions"
+FOOTY_TOPSCORERS_ENDPOINT = f"{FOOTY_BASE_URL}/players/topscorers"
+FOOTY_STANDINGS_ENDPOINT = f"{FOOTY_BASE_URL}/standings"
 
 
 FOOTY_HTTP_HEADERS = {
@@ -170,18 +170,18 @@ FOOTY_LEAGUES = {
     # ":world_map: WORLD CUP QUALIFIERS EUROPE": WC_QUALIFIERS_EUROPE,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
-    ":England: FA": FA_CUP_ID,
-    ":England: EFL": EFL_CUP_ID,
+    # ":England: FA": FA_CUP_ID,
+    # ":England: EFL": EFL_CUP_ID,
     ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
     ":European_Union: EUROS": EUROS_LEAGUE_ID,
-    ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
+    # ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     ":England: LEAGUE ONE": LEAGUE_ONE_ID,
-    ":world_map: WORLD CUP": WORLD_CUP_ID,
-    ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
+    # ":world_map: WORLD CUP": WORLD_CUP_ID,
+    # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
     # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,

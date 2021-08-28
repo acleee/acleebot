@@ -71,7 +71,9 @@ def wiki_summary(query: str) -> str:
         wiki_page = wiki.page(query)
         if wiki_page.exists():
             title = wiki_page.title.upper()
-            main_category = list(wiki_page.categories.values())[0].title.replace("Category:", "Category: ")
+            main_category = list(wiki_page.categories.values())[0].title.replace(
+                "Category:", "Category: "
+            )
             text = wiki_page.text
             if "disambiguation" in main_category and "Other uses" in text:
                 text = text.split("Other uses")[0]
