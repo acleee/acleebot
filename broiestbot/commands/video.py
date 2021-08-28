@@ -42,6 +42,22 @@ def get_live_twitch_stream():
         LOGGER.error(f"HTTPError when fetching Twitch stream: {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch stream: {e}")
+        
+        
+def get_twitch_channel_info():
+    endpoint = "https://api.twitch.tv/helix/channels"
+    token = get_twitch_auth_token()
+    params = {"broadcaster_id": TWITCH_BROADCASTER_ID, "user_login": "broiestbro"}
+    headers = {"Authorization": f"Bearer {token}"}
+    try:
+        req = requests.get(endpoint, params=params, headers=headers)
+        resp = req.json().get("data")
+        if resp:
+            return resp
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError when fetching Twitch channel: {e.response.content}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching Twitch channel: {e}")
 
 
 def get_twitch_auth_token():
