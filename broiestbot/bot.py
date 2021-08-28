@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 
 from emoji import emojize
 
-from broiestbot.commands import (
+from broiestbot.commands import (  # search_youtube_for_video,
     basic_message,
     blaze_time_remaining,
     bund_standings,
@@ -30,7 +30,6 @@ from broiestbot.commands import (
     giphy_image_search,
     liga_standings,
     random_image,
-    # search_youtube_for_video,
     send_text_message,
     weather_by_location,
     wiki_summary,
@@ -129,7 +128,7 @@ class Bot(RoomManager):
         elif cmd_type == "footyodds":
             return get_footy_odds()
         # elif cmd_type == "youtube" and args:
-            # return search_youtube_for_video(args)
+        # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
         return None
 
