@@ -70,7 +70,12 @@ def wiki_summary(query: str) -> str:
     try:
         wiki_page = wiki.page(query)
         if wiki_page.exists():
-            return f"{wiki_page.title.upper()}: {wiki_page.summary[0:1500]}"
+            title = wiki_page.title.upper()
+            main_category = list(wiki_page.categories.values())[0].title.replace("Category:", "Category: ")
+            text = wiki_page.text
+            if "disambiguation" in main_category and "Other uses" in text:
+                text = text.split("Other uses")[0]
+            return f"\n\n\n\n{title}: {text[0:1500]}\n \n\n {main_category}"
         return emojize(
             f":warning: bruh i couldnt find shit for `{query}` :warning:",
             use_aliases=True,
