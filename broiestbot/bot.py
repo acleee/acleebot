@@ -30,7 +30,7 @@ from broiestbot.commands import (
     giphy_image_search,
     liga_standings,
     random_image,
-    search_youtube_for_video,
+    # search_youtube_for_video,
     send_text_message,
     weather_by_location,
     wiki_summary,
