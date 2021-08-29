@@ -184,7 +184,7 @@ FOOTY_LEAGUES = {
     ":European_Union: EUROS": EUROS_LEAGUE_ID,
     # ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
-    ":England: LEAGUE ONE": LEAGUE_ONE_ID,
+    # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
     # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,

@@ -27,10 +27,9 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     upcoming_fixtures = "\n\n\n\n"
-    today = datetime.now().strftime("%Y-%m-%d")
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_todays_upcoming_fixtures_per_league(
-            league_name, league_id, room, username, today
+            league_name, league_id, room, username
         )
         if league_fixtures is not None:
             upcoming_fixtures += league_fixtures + "\n"
@@ -42,7 +41,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
 
 
 def footy_todays_upcoming_fixtures_per_league(
-    league_name: str, league_id: int, room: str, username: str, today: str
+    league_name: str, league_id: int, room: str, username: str
 ) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
@@ -51,13 +50,12 @@ def footy_todays_upcoming_fixtures_per_league(
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
-    :param str today: Today's date.
 
     :returns: Optional[str]
     """
     try:
-        upcoming_fixtures = ""
-        fixtures = fetch_todays_upcoming_fixtures(today, league_id, room, username)
+        league_upcoming_fixtures = ""
+        fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
         if fixtures and len(fixtures) > 0:
             for i, fixture in enumerate(fixtures):
                 date = datetime.strptime(
@@ -68,13 +66,13 @@ def footy_todays_upcoming_fixtures_per_league(
                     display_date, tz = get_preferred_time_format(date, room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=7):
                     if i == 0 and len(fixture) > 1:
-                        upcoming_fixtures += emojize(
+                        league_upcoming_fixtures += emojize(
                             f"{league_name}:\n", use_aliases=True
                         )
-                    upcoming_fixtures += add_upcoming_fixture(
+                    league_upcoming_fixtures += add_upcoming_fixture(
                         fixture, date, room, username
                     )
-            return upcoming_fixtures
+            return league_upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -83,13 +81,12 @@ def footy_todays_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def fetch_todays_upcoming_fixtures(
-    today: str, league_id: int, room: str, username: str
+def todays_upcoming_fixtures_by_league(
+    league_id: int, room: str, username: str
 ) -> Optional[dict]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
-    :param str today: Today's date.
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
@@ -97,8 +94,14 @@ def fetch_todays_upcoming_fixtures(
     :returns: Optional[dict]
     """
     try:
-        params = {"date": today, "league": league_id, "next": 7, "status": "NS"}
-        params.update(get_preferred_timezone(room, username))
+        today = datetime.now().strftime("%Y-%m-%d")
+        params = {
+            "date": today,
+            "league": league_id,
+            "status": "NS",
+            "timezone": "Europe/London",
+            "season": datetime.now().year,
+        }
         req = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
