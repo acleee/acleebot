@@ -55,7 +55,7 @@ def footy_todays_upcoming_fixtures_per_league(
     """
     try:
         league_upcoming_fixtures = ""
-        fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
+        fixtures = todays_upcoming_fixtures_by_league(league_id)
         if fixtures and len(fixtures) > 0:
             for i, fixture in enumerate(fixtures):
                 date = datetime.strptime(
@@ -81,15 +81,11 @@ def footy_todays_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def todays_upcoming_fixtures_by_league(
-    league_id: int, room: str, username: str
-) -> Optional[dict]:
+def todays_upcoming_fixtures_by_league(league_id: int) -> Optional[dict]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
     :param int league_id: ID of footy league/cup.
-    :param str room: Chatango room in which command was triggered.
-    :param str username: Name of user who triggered the command.
 
     :returns: Optional[dict]
     """
