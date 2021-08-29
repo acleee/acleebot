@@ -186,13 +186,15 @@ class Bot(RoomManager):
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
 
     @staticmethod
-    def _get_user_data(room_name: str, user: User, message: Message):
+    def _get_user_data(room_name: str, user: User, message: Message) -> None:
         """
         Persist metadata regarding message history.
 
         :param str room_name: Chatango room.
         :param User user: User responsible for triggering command.
         :param Message message: User submitted message.
+
+        :returns: None
         """
         if message.ip:
             existing_user = db.fetch_user(room_name, user, message)
@@ -298,12 +300,14 @@ class Bot(RoomManager):
             room.message(f"@{user_name} *waves*")
 
     @staticmethod
-    def _giphy_fallback(message: str, room: Room):
+    def _giphy_fallback(message: str, room: Room) -> None:
         """
         Default to Giphy for non-existent commands.
 
         :param str message: Command triggered by a user.
         :param Room room: Chatango room.
+
+        :returns: None
         """
         query = message.replace("!", "").lower().strip()
         if len(query) > 1:

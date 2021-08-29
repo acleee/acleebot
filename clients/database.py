@@ -77,7 +77,7 @@ class Database:
         """
         Insert record into SQL table as a Dataframe consisting of a single row.
 
-        :param DataFrame df: Pandas DataFrame.
+        :param Tuple[str, bool] df: Summary of SQL execution result.
         """
         try:
             df.to_sql("user", self.db, if_exists="append", index=False)
@@ -85,5 +85,13 @@ class Database:
                 f"Successfully inserted record for {df['username']} in {df['chatango_room']}",
                 True,
             )
+        except ValueError as e:
+            return (
+                f"Record already exists for {df['username']} in {df['chatango_room']}: {e}",
+                False,
+            )
         except Exception as e:
-            return f"Failed to save metadata: {e}", False
+            return (
+                f"Failed to save metadata: {e}",
+                False,
+            )
