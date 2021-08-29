@@ -27,6 +27,7 @@ from .movies import find_imdb_movie
 from .olympics import get_olympic_medals_per_nation
 
 # from .video import search_youtube_for_video
+from .video import get_live_twitch_stream
 from .weather import weather_by_location
 
 

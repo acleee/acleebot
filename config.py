@@ -121,6 +121,7 @@ YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
 TWITCH_CLIENT_ID = getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = getenv("TWITCH_CLIENT_SECRET")
 TWITCH_BROADCASTER_ID = getenv("TWITCH_BROADCASTER_ID")
+TWITCH_USER_LOGIN = getenv("TWITCH_USER_LOGIN")
 
 # Rapid API Headers to send with every request
 FOOTY_BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"

@@ -1,8 +1,17 @@
+from datetime import datetime
+
 import requests
+from emoji import emojize
+
 # from googleapiclient.errors import HttpError
 from requests.exceptions import HTTPError
 
-from config import TWITCH_BROADCASTER_ID, TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET
+from config import (
+    TWITCH_BROADCASTER_ID,
+    TWITCH_CLIENT_ID,
+    TWITCH_CLIENT_SECRET,
+    TWITCH_USER_LOGIN,
+)
 
 # from clients import yt
 from logger import LOGGER
@@ -29,38 +38,54 @@ from logger import LOGGER
 
 
 def get_live_twitch_stream():
-    endpoint = "https://api.twitch.tv/helix/channels"
+    """Check if Twitch user is live streaming and return stream info."""
+    endpoint = "https://api.twitch.tv/helix/streams"
     token = get_twitch_auth_token()
-    params = {"broadcaster_id": TWITCH_BROADCASTER_ID, "user_login": "broiestbro"}
-    headers = {"Authorization": f"Bearer {token}"}
+    params = {"user_id": TWITCH_BROADCASTER_ID}
+    headers = {
+        "Authorization": f"Bearer {token}",
+        "client-id": TWITCH_CLIENT_ID,
+        "Accept": "application/vnd.twitchtv.v5+json",
+    }
     try:
         req = requests.get(endpoint, params=params, headers=headers)
-        resp = req.json().get("data")
+        resp = req.json().get("data")[0]
         if resp:
-            return resp
-    except HTTPError as e:
-        LOGGER.error(f"HTTPError when fetching Twitch stream: {e.response.content}")
-    except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching Twitch stream: {e}")
-        
-        
-def get_twitch_channel_info():
-    endpoint = "https://api.twitch.tv/helix/channels"
-    token = get_twitch_auth_token()
-    params = {"broadcaster_id": TWITCH_BROADCASTER_ID, "user_login": "broiestbro"}
-    headers = {"Authorization": f"Bearer {token}"}
-    try:
-        req = requests.get(endpoint, params=params, headers=headers)
-        resp = req.json().get("data")
-        if resp:
-            return resp
+            broadcaster = resp.get("user_name")
+            game = resp.get("game_name")
+            title = resp.get("title")
+            viewers = resp.get("viewer_count")
+            start_time = resp.get("started_at").replace("Z", "")
+            duration = (
+                datetime.utcnow() - datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S")
+            ).seconds / 60
+            thumbnail = (
+                resp.get("thumbnail_url")
+                .replace("{width}", "550")
+                .replace("{height}", "300")
+            )
+            url = f"https://www.twitch.tv/{broadcaster}"
+            return f"\n\n\n{broadcaster.upper()} is streaming {game}\n{title}\n{viewers} viewers, {int(duration)} minutes\n{url}\n\n{thumbnail}"
+        return emojize(
+            f":frowning: no memers streaming twitch rn :frowning:",
+            use_aliases=True,
+        )
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Twitch channel: {e.response.content}")
+        return emojize(
+            f":frowning: no memers streaming twitch rn :frowning:",
+            use_aliases=True,
+        )
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch channel: {e}")
+        return emojize(
+            f":frowning: no memers streaming twitch rn :frowning:",
+            use_aliases=True,
+        )
 
 
-def get_twitch_auth_token():
+def get_twitch_auth_token() -> str:
+    """Generate Twitch auth token."""
     try:
         endpoint = "https://id.twitch.tv/oauth2/token"
         params = {
@@ -68,7 +93,7 @@ def get_twitch_auth_token():
             "client_secret": TWITCH_CLIENT_SECRET,
             "grant_type": "client_credentials",
         }
-        resp = requests.get(endpoint, params=params)
+        resp = requests.post(endpoint, params=params)
         return resp.json().get("access_token")
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Twitch auth token: {e.response.content}")
