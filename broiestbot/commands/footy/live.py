@@ -1,5 +1,4 @@
 """Match breakdown of all currently live fixtures."""
-from datetime import datetime
 from typing import Optional
 
 import requests
@@ -27,11 +26,8 @@ def footy_live_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     live_fixtures = "\n\n\n\n"
-    season = datetime.now().year
     for league_name, league_id in FOOTY_LEAGUES_PRIORITY.items():
-        league_fixtures = footy_live_fixtures_per_league(
-            league_id, room, username, season
-        )
+        league_fixtures = footy_live_fixtures_per_league(league_id, room, username)
         if league_fixtures is not None:
             live_fixtures += league_fixtures + "\n"
     if live_fixtures == "\n\n\n\n":
@@ -40,7 +36,7 @@ def footy_live_fixtures(room: str, username: str) -> str:
 
 
 def footy_live_fixtures_per_league(
-    league_id: int, room: str, username: str, season: int
+    league_id: int, room: str, username: str
 ) -> Optional[str]:
     """
     Construct summary of events for all live fixtures in a given league.
@@ -48,13 +44,12 @@ def footy_live_fixtures_per_league(
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
-    :param int season: Season year of league/cup.
 
     :returns: Optional[str]
     """
     try:
         live_fixtures = "\n\n\n\n"
-        fixtures = fetch_live_fixtures(season, league_id, room, username)
+        fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
@@ -81,13 +76,10 @@ def footy_live_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
 
 
-def fetch_live_fixtures(
-    season: int, league_id: int, room: str, username: str
-) -> Optional[str]:
+def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[str]:
     """
     Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, EUROPA, etc.
 
-    :param int season: Season year of league/cup.
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
@@ -95,7 +87,7 @@ def fetch_live_fixtures(
     :returns: Optional[str]
     """
     try:
-        params = {"season": season, "league": league_id, "live": "all"}
+        params = {"league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
         res = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
