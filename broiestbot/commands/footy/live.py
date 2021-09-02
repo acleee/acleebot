@@ -27,7 +27,7 @@ def footy_live_fixtures(room: str, username: str) -> str:
     """
     live_fixtures = "\n\n\n\n"
     for league_name, league_id in FOOTY_LEAGUES_PRIORITY.items():
-        league_fixtures = footy_live_fixtures_per_league(league_id, room, username)
+        league_fixtures = footy_live_fixtures_per_league(league_id, league_name, room, username)
         if league_fixtures is not None:
             live_fixtures += league_fixtures + "\n"
     if live_fixtures == "\n\n\n\n":
@@ -36,12 +36,13 @@ def footy_live_fixtures(room: str, username: str) -> str:
 
 
 def footy_live_fixtures_per_league(
-    league_id: int, room: str, username: str
+    league_id: int, league_name: str, room: str, username: str
 ) -> Optional[str]:
     """
     Construct summary of events for all live fixtures in a given league.
 
     :param int league_id: ID of footy league/cup.
+    :param str league_name: Name of league or cup fixtures belong to.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
@@ -51,6 +52,10 @@ def footy_live_fixtures_per_league(
         live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
+            if i == 0 and len(fixture) > 1:
+                live_fixtures += emojize(
+                    f"{league_name}:\n", use_aliases=True
+                )
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
