@@ -11,7 +11,7 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOOTY_TEAMS_PRIORITY
+    FOOTY_TEAMS_PRIORITY,
 )
 from logger import LOGGER
 
@@ -30,9 +30,7 @@ def footy_team_lineups(room: str, username: str) -> str:
     team_fixtures = []
     season = datetime.now().year
     for team_name, team_id in FOOTY_TEAMS_PRIORITY.items():
-        team_fixture = footy_upcoming_fixture_per_team(
-            team_id, room, username, season
-        )
+        team_fixture = footy_upcoming_fixture_per_team(team_id, room, username, season)
         if bool(team_fixture):
             team_fixtures.append(team_fixture)
         else:
@@ -46,7 +44,7 @@ def footy_team_lineups(room: str, username: str) -> str:
     return emojize(
         ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
     )
-    
+
 
 def fetch_fixture_by_team(
     team_id: int, room: str, username: str, season: int
@@ -76,12 +74,14 @@ def fetch_fixture_by_team(
         LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
-    
+
 
 def get_xi_per_fixture_team(fixture_id: str, team_id: str):
     """
     Get team lineup for given fixture.
-    
+
     """
     params = {"id": fixture_id}
-    req = requests.get(￼FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
+    req = requests.get(
+        FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
+    )
