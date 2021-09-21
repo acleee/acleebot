@@ -55,7 +55,9 @@ def footy_live_fixtures_per_league(
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
             if len(fixtures) > 1:
-                live_fixtures += emojize(f"{league_name}:\n--------------------\n", use_aliases=True)
+                live_fixtures += emojize(
+                    f"{league_name}:\n--------------------\n", use_aliases=True
+                )
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]

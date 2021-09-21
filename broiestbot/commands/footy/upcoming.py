@@ -98,7 +98,11 @@ def fetch_upcoming_fixtures(
     :returns: Optional[dict]
     """
     try:
-        params = {"season": season, "league": league_id, "next": 5, "status": "NS"}
+        params = {"season": season, "league": league_id, "status": "NS"}
+        if league_id == FOOTY_LEAGUES.get(":lion: EPL"):
+            params.update({"next": 6})
+        else:
+            params.update({"next": 3})
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
@@ -127,8 +131,18 @@ def add_upcoming_fixture(
 
     :returns: str
     """
-    home_team = fixture["teams"]["home"]["name"].replace(" U23", "").replace("W ", "")
-    away_team = fixture["teams"]["away"]["name"].replace(" U23", "").replace("W ", "")
+    home_team = (
+        fixture["teams"]["home"]["name"]
+        .replace("New York City", "NYC")
+        .replace("New England", "NE")
+        .replace("New York", "NY")
+    )
+    away_team = (
+        fixture["teams"]["away"]["name"]
+        .replace("New England", "NE")
+        .replace("New York City", "NYC")
+        .replace("New York", "NY")
+    )
     display_date, tz = get_preferred_time_format(date, room, username)
     return f"{away_team} @ {home_team} - {display_date}\n"
 
