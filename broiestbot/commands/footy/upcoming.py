@@ -59,8 +59,10 @@ def footy_upcoming_fixtures_per_league(
     try:
         upcoming_fixtures = ""
         fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
-        if fixtures and len(fixtures) > 0:
+        if fixtures:
             for i, fixture in enumerate(fixtures):
+                if i == 0 and len(fixture) > 1:
+                    upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
                 date = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
@@ -68,10 +70,6 @@ def footy_upcoming_fixtures_per_league(
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
                 if date - datetime.now(tz=tz) < timedelta(days=7):
-                    if i == 0 and len(fixture) > 1:
-                        upcoming_fixtures += emojize(
-                            f"{league_name}:\n", use_aliases=True
-                        )
                     upcoming_fixtures += add_upcoming_fixture(
                         fixture, date, room, username
                     )
@@ -100,7 +98,7 @@ def fetch_upcoming_fixtures(
     try:
         params = {"season": season, "league": league_id, "status": "NS"}
         if league_id == FOOTY_LEAGUES.get(":lion: EPL"):
-            params.update({"next": 6})
+            params.update({"next": 8})
         else:
             params.update({"next": 3})
         params.update(get_preferred_timezone(room, username))
@@ -136,12 +134,16 @@ def add_upcoming_fixture(
         .replace("New York City", "NYC")
         .replace("New England", "NE")
         .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester", "Man")
     )
     away_team = (
         fixture["teams"]["away"]["name"]
         .replace("New England", "NE")
         .replace("New York City", "NYC")
         .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester", "Man")
     )
     display_date, tz = get_preferred_time_format(date, room, username)
     return f"{away_team} @ {home_team} - {display_date}\n"
