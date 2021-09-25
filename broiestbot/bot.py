@@ -3,6 +3,7 @@ import re
 from typing import Optional, Tuple
 
 from emoji import emojize
+from logger import LOGGER
 
 from broiestbot.commands import (  # search_youtube_for_video,
     basic_message,
@@ -38,7 +39,6 @@ from broiestbot.commands import (  # search_youtube_for_video,
 from chatango.ch import Message, Room, RoomManager, User
 from clients import db, geo
 from config import CHATANGO_BLACKLISTED_USERS
-from logger import LOGGER
 
 
 class Bot(RoomManager):

@@ -1,17 +1,17 @@
 """Match breakdown of all currently live fixtures."""
-from typing import Optional
+from typing import List, Optional
 
 import requests
 from emoji import emojize
+from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
-    FOOTY_LEAGUES_PRIORITY,
+    FOOTY_LEAGUES_BY_PRIORITY,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
-from logger import LOGGER
 
 from .util import get_preferred_timezone
 
@@ -25,16 +25,42 @@ def footy_live_fixtures(room: str, username: str) -> str:
 
     :returns: str
     """
-    live_fixtures = "\n\n\n\n"
-    for league_name, league_id in FOOTY_LEAGUES_PRIORITY.items():
-        league_fixtures = footy_live_fixtures_per_league(
-            league_id, league_name, room, username
-        )
-        if league_fixtures is not None:
-            live_fixtures += league_fixtures + "\n"
-    if live_fixtures == "\n\n\n\n":
+    live_fixtures = ["\n\n\n\n"]
+    priorities = FOOTY_LEAGUES_BY_PRIORITY.keys()
+    fixtures = fetch_prioritized_fixtures(priorities, room, username)
+    if fixtures is not None:
+        live_fixtures += fixtures
+    if live_fixtures == ["\n\n\n\n"]:
         return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
-    return live_fixtures
+    return "\n\n".join(live_fixtures)
+
+
+def fetch_prioritized_fixtures(
+    priorities: List[str], room: str, username: str
+) -> Optional[List[str]]:
+    """
+    Fetch fixtures by "grouping" of league, depending on priority.
+    If no fixtures are return from top priority league groupings, proceed through groupings
+    until fixtures are found.
+
+    :param List[str] priorities: ID of footy league/cup.
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: Optional[str]
+    """
+    fixtures = []
+    for priority in priorities:
+        priority_leagues = FOOTY_LEAGUES_BY_PRIORITY[priority]
+        for league_name, league_id in priority_leagues.items():
+            league_fixtures = footy_live_fixtures_per_league(
+                league_id, league_name, room, username
+            )
+            if league_fixtures is not None:
+                fixtures.append(league_fixtures)
+    if fixtures:
+        return fixtures
+    return None
 
 
 def footy_live_fixtures_per_league(
@@ -55,7 +81,7 @@ def footy_live_fixtures_per_league(
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
             for i, fixture in enumerate(fixtures):
-                if i < len(fixtures) - 1:
+                if fixture:
                     live_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]

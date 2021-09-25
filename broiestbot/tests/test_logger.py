@@ -1,7 +1,8 @@
 from os import path
 
-from config import BASE_DIR
 from logger import LOGGER
+
+from config import BASE_DIR
 
 
 def test_sms_logger():

@@ -44,7 +44,7 @@ lyricsgenius = "*"
 pytz = "*"
 pandas = "*"
 html5lib = "*"
-google-api-python-client = "^2.18.0"
+google-api-python-client = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
@@ -58,6 +58,10 @@ run = "broiestbot:init_bot"
 issues = "https://github.com/toddbirchard/broiestbot/issues"
 
 [build-system]
-requires = ["poetry>=0.12"]
+requires = ["poetry>=1.18"]
 build-backend = "poetry.masonry.api"
+
+[tool.isort]
+profile = "black"
+src_paths = ["broiestbot", "chatango", "clients", "config"]
 

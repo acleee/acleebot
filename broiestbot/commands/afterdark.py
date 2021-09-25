@@ -6,10 +6,10 @@ from typing import Optional
 import pytz
 import requests
 from emoji import emojize
+from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import GFYCAT_CLIENT_ID, GFYCAT_CLIENT_SECRET, REDGIFS_ACCESS_KEY
-from logger import LOGGER
 
 
 def is_after_dark() -> bool:

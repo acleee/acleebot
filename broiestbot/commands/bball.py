@@ -1,10 +1,10 @@
 """Fetch live basketball scores."""
 import requests
 from emoji import emojize
+from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import RAPID_API_KEY
-from logger import LOGGER
 
 
 def live_nba_games() -> str:

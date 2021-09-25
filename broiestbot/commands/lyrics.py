@@ -1,5 +1,6 @@
-from clients import genius
 from logger import LOGGER
+
+from clients import genius
 
 
 def get_song_lyrics(song_title_query: str) -> str:

@@ -3,10 +3,10 @@ from datetime import datetime
 
 import requests
 from emoji import emojize
+from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import EPL_LEAGUE_ID, FOOTY_HTTP_HEADERS, FOOTY_TOPSCORERS_ENDPOINT
-from logger import LOGGER
 
 
 def epl_golden_boot() -> str:

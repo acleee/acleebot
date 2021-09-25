@@ -3,12 +3,12 @@ from random import randint
 
 import requests
 from emoji import emojize
+from logger import LOGGER
 from praw.exceptions import RedditAPIException
 from requests.exceptions import HTTPError
 
 from clients import gcs, reddit
 from config import GIPHY_API_KEY, GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL
-from logger import LOGGER
 
 
 def fetch_image_from_gcs(subdirectory: str) -> str:
