@@ -58,8 +58,8 @@ def fetch_prioritized_fixtures(
             )
             if league_fixtures is not None:
                 fixtures.append(league_fixtures)
-    if fixtures:
-        return fixtures
+        if fixtures:
+            return fixtures
     return None
 
 
