@@ -29,7 +29,9 @@ def json_formatter(record: dict):
         if bool(chat_data):
             room = chat_data[0]
             user = chat_data[1]
-            ip = chat_data[2]
+            ip = None
+            if len(chat_data) >= 3:
+                ip = chat_data[2]
             subset = {
                 "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                 "message": log["message"].split(": ", 1)[1],
