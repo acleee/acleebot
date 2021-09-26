@@ -34,7 +34,7 @@ def get_footy_odds():
                                 {away_team}: {odds[2]}\n\n"
         if fixture_odds:
             return emojize(
-                f"\n\n\n:soccer: :moneybag: EPL ODDS\n\n{fixture_odds}",
+                f"\n\n\n\n:soccer: :moneybag: EPL ODDS\n\n{fixture_odds}",
                 use_aliases=True,
             )
         return emojize(

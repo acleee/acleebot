@@ -126,7 +126,7 @@ class Bot(RoomManager):
             return get_english_translation(command, args)
         elif cmd_type == "olympics":
             return get_olympic_medals_per_nation()
-        elif cmd_type == "footyodds":
+        elif cmd_type == "eplodds":
             return get_footy_odds()
         elif cmd_type == "twitch":
             return get_all_live_twitch_streams()
