@@ -1,3 +1,5 @@
+from typing import List
+
 import requests
 from emoji import emojize
 from logger import LOGGER
@@ -47,3 +49,9 @@ def get_footy_odds():
         LOGGER.error(f"IndexError while fetching footy odds: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy odds: {e}")
+
+
+'''def get_fixture_odds(fixtures: List[dict]):
+    """
+    :param List[dict] fict
+    """'''

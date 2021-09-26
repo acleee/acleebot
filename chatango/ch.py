@@ -12,8 +12,6 @@ import urllib.request
 
 from logger import LOGGER
 
-from config import CHATANGO_BOT_USERNAME
-
 from . import _ws
 
 _ws_exc_info = sys.exc_info()
