@@ -207,7 +207,7 @@ class Bot(RoomManager):
                 else:
                     LOGGER.error(result)
         else:
-            LOGGER.warn(
+            LOGGER.warning(
                 f"Insufficient permissions to persist metadata in room {room_name}"
             )
 
