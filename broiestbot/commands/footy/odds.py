@@ -1,4 +1,5 @@
 import requests
+from emoji import emojize
 from logger import LOGGER
 from requests.exceptions import HTTPError
 
@@ -20,19 +21,26 @@ def get_footy_odds():
             "x-rapidapi-host": "odds.p.rapidapi.com",
             "x-rapidapi-key": RAPID_API_KEY,
         }
-        req = requests.get(url, headers=headers, params=querystring)
-        res = req.json()
-        if res["success"]:
-            for fixture in req.json().get("data"):
+        resp = requests.get(url, headers=headers, params=querystring)
+        fixtures = resp.json().get("data")[::5]
+        if resp.json().get("success"):
+            for i, fixture in enumerate(fixtures):
                 teams = fixture["teams"]
-                home_team = fixture["home_team"]
+                home_team = f"{teams[0]} (home)"
+                away_team = teams[1]
                 odds = fixture["sites"][1]["odds"]["h2h"]
-                fixture_odds += f"{teams[0]}: {odds[0]}\n \
-                               Draw: {odds[1]}\n \
-                               {teams[1]}: {odds[2]}\n\n".replace(
-                    home_team, f"{home_team} (home)"
-                )
-        return f"\n\n\nEPL ODDS\n\n{fixture_odds}"
+                fixture_odds += f"{home_team}: {odds[0]}\n \
+                                Draw: {odds[1]}\n \
+                                {away_team}: {odds[2]}\n\n"
+        if fixture_odds:
+            return emojize(
+                f"\n\n\n:soccer: :moneybag: EPL ODDS\n\n{fixture_odds}",
+                use_aliases=True,
+            )
+        return emojize(
+            f":yellow_square: idk what happened bot died rip :yellow_square:",
+            use_aliases=True,
+        )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy odds: {e.response.content}")
     except IndexError as e:

@@ -221,7 +221,6 @@ FOOTY_LEAGUES_BY_PRIORITY = {
     },
 }
 
-
 # Footy team IDs
 LIVERPOOL_TEAM_ID = 33
 FOXES_TEAM_ID = 46
