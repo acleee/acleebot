@@ -4,13 +4,7 @@ from typing import List
 from datadog import initialize
 
 from broiestbot.bot import Bot
-from config import (
-    CHATANGO_PATREON_ROOM,
-    CHATANGO_ROOMS,
-    CHATANGO_TEST_ROOM,
-    CHATANGO_USERS,
-    ENVIRONMENT,
-)
+from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS, ENVIRONMENT
 
 
 def join_rooms(rooms: List[str]):
@@ -30,7 +24,7 @@ def start_bot():
     """Initialize bot depending on environment."""
     if ENVIRONMENT == "development":
         print("Starting in dev mode...")
-        join_rooms([CHATANGO_PATREON_ROOM])
+        join_rooms([CHATANGO_TEST_ROOM])
     else:
         options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
         initialize(**options)
