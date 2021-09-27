@@ -1417,12 +1417,9 @@ class Room:
         message(msg, html=False, channels=None)
         Send a message. (Use "\\n" or "\\r" for new line)
 
-        :type msg: str
-        :param msg: message
-        :type html: bool
-        :param html: escape html characters
-        :type channels: tuple
-        :param channels: channels of the message
+        :param str msg: message
+        :param Optional[str] html: escape html characters
+        :param Tuple channels: channels of the message
         """
         if msg is None:
             return
@@ -1503,8 +1500,7 @@ class Room:
         """
         Flag a user.
 
-        :type user: User
-        :param user: user to flag
+        :param User user: User to flag
 
         @rtype: bool
         @return: whether a message to flag was found
@@ -1579,12 +1575,9 @@ class Room:
         Execute the block command using specified arguments.
         (For advanced usage)
 
-        :type name: str
-        :param name: name
-        :type ip: str
-        :param ip: ip address
-        :type unid: str
-        :param unid: unid
+        :param str name: name
+        :param str ip: ip address
+        :param str unid: unid
         """
         self._send_command("block", unid, ip, name)
 
@@ -2038,25 +2031,24 @@ class RoomManager:
         """
         Called when a message gets received.
 
-        :param room: Chatango room which received a message.
-        :type room: Room
-        :param user: Author of message sent to chat.
-        :type user: User
-        :param message: Received chat message
-        :type message: Message
+        :param Room room: Chatango room which received a message.
+        :param User user: Author of message sent to chat.
+        :param Message message: Received chat message
         """
-        LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
+        if message.ip:
+            LOGGER.info(
+                f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}"
+            )
+        else:
+            LOGGER.info(f"[{room.room_name}] [{user.name}]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """
         Called when a message gets received from history.
 
-        :param room: Chatango room where a user message was retrieved from history.
-        :type room: Room
-        :param user: Author of the original chat message.
-        :type user: User
-        :param message: Chat message which was retrieved.
-        :type message: Message
+        :param Room room: Chatango room where a user message was retrieved from history.
+        :param User user: Author of the original chat message.
+        :param Message message: Chat message which was retrieved.
         """
         pass
 
@@ -2065,12 +2057,9 @@ class RoomManager:
         """
         Called when a user joins. Anonymous users get ignored here.
 
-        :param room: Chatango room where a user joined.
-        :type room: Room
-        :param user: Recently joined user.
-        :type user: User
-        :param puid: Personal unique id for a user.
-        :type puid: str
+        :param Room room: Chatango room where a user joined.
+        :param User user: Recently joined user.
+        :param str puid: Personal unique id for a user.
         """
         LOGGER.trace(
             f"[{room.room_name}] [{user.name.title()}]: {user.name} joined {room.room_name}."
@@ -2214,12 +2203,9 @@ class RoomManager:
         """
         Called when connected if a message is received while offline
 
-        :type pm: PM
-        :param pm: the pm
-        :type user: User
-        :param user: owner of message
-        :type body: Message
-        :param body: received message
+        :param PM pm: the pm
+        :param User user: owner of message
+        :param Message body: received message
         """
         pass
 
@@ -2227,8 +2213,7 @@ class RoomManager:
         """
         Called when the contact list is received
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
@@ -2236,8 +2221,7 @@ class RoomManager:
         """
         Called when the block list is received
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
@@ -2245,32 +2229,26 @@ class RoomManager:
         """
         Triggered user is added as a friend from a private message.
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Newly added contact.
-        :type user: User
+        :param PM pm: Private message.
+        :param User user: Newly added contact.
         """
         pass
 
     def on_pm_contact_remove(self, pm, user):
         """
-        Triggered user is removed as a friend from a private message.
+                Triggered user is removed as a friend from a private message.
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Newly removed contact.
-        :type user: User
-        """
+                :param PM pm: Private message.
+                :param User user: Newly removed contact.
+        ="""
         pass
 
-    def on_pm_block(self, pm, user):
+    def on_pm_block(self, pm: PM, user):
         """
         Called when successfully block a user
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Blocked user.
-        :type user: User
+        :param PM pm: Private message.
+        :param User user: Blocked user.
         """
         pass
 

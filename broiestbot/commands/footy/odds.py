@@ -58,4 +58,3 @@ def get_fixture_odds(fixtures: List[dict]):
                 use_aliases=True,
             )
     return None
-

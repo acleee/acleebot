@@ -29,17 +29,16 @@ def json_formatter(record: dict):
         if bool(chat_data):
             room = chat_data[0]
             user = chat_data[1]
-            ip = None
-            if len(chat_data) >= 4:
-                ip = chat_data[2]
             subset = {
                 "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                 "message": log["message"].split(": ", 1)[1],
                 "level": log["level"].name,
                 "room": room,
                 "user": user,
-                "ip": ip,
             }
+            if len(chat_data) >= 4:
+                ip = chat_data[2]
+                subset.update({"ip": ip})
             return json.dumps(subset)
 
     def serialize_event(log: dict) -> str:
@@ -96,8 +95,7 @@ def sms_error_handler(log: dict) -> None:
     """
     Trigger error log SMS notification.
 
-    :param log: Log object containing log metadata & message.
-    :type log: dict
+    :param dict log: Log object containing log metadata & message.
     """
     sms.messages.create(
         body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
