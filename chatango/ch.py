@@ -27,6 +27,8 @@ Number_of_Threads = 1
 
 Use_WebSocket = True
 
+from config import CHATANGO_USERS
+
 Channels = {
     "none": 0,
     "red": 256,
@@ -1985,7 +1987,7 @@ class RoomManager:
         :param message: User message that got deleted.
         :type message: Message
         """
-        if user.name.lower() != CHATANGO_BOT_USERNAME:
+        if user.name.lower() != CHATANGO_USERS.keys():
             LOGGER.trace(
                 f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
             )
