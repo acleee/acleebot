@@ -63,5 +63,5 @@ build-backend = "poetry.masonry.api"
 
 [tool.isort]
 profile = "black"
-src_paths = ["broiestbot", "chatango", "clients", "config"]
+src_paths = ["broiestbot", "chatango", "clients", "config", "logger"]
 

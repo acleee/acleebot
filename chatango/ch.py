@@ -11,6 +11,7 @@ import urllib.parse
 import urllib.request
 
 from logger import LOGGER
+from config import CHATANGO_USERS
 
 from . import _ws
 
@@ -27,7 +28,6 @@ Number_of_Threads = 1
 
 Use_WebSocket = True
 
-from config import CHATANGO_USERS
 
 Channels = {
     "none": 0,
