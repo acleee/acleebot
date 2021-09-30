@@ -5,7 +5,6 @@ from typing import Optional
 import pytz
 import requests
 from emoji import emojize
-from logger import LOGGER
 
 from clients import sms
 from config import (
@@ -14,6 +13,7 @@ from config import (
     TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
 )
+from logger import LOGGER
 
 
 def blaze_time_remaining() -> str:

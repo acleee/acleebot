@@ -3,7 +3,6 @@ from typing import List, Optional
 
 import requests
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import (
@@ -12,6 +11,7 @@ from config import (
     FOOTY_LEAGUES_BY_PRIORITY,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
+from logger import LOGGER
 
 from .util import get_preferred_timezone
 

@@ -3,7 +3,6 @@ from datetime import datetime
 from typing import List, Optional
 
 import requests
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import (
@@ -12,6 +11,7 @@ from config import (
     FOOTY_LEAGUES,
     FOOTY_PREDICTS_ENDPOINT,
 )
+from logger import LOGGER
 
 from .util import get_preferred_time_format, get_preferred_timezone
 

@@ -4,9 +4,9 @@ from typing import Optional
 from emoji import emojize
 from imdb import IMDbError
 from imdb.Movie import Movie
-from logger import LOGGER
 
 from clients import ia
+from logger import LOGGER
 
 
 def find_imdb_movie(movie_title: str) -> Optional[str]:

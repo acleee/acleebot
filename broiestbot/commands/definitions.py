@@ -1,11 +1,11 @@
 """Lookup definitions via Wikipedia, Urban Dictionary, etc"""
 import requests
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from clients import wiki
 from config import RAPID_API_KEY
+from logger import LOGGER
 
 
 def get_urban_definition(term: str) -> str:

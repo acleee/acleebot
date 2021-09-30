@@ -190,7 +190,7 @@ FOOTY_LEAGUES = {
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":England: FA": FA_CUP_ID,
     ":England: EFL": EFL_CUP_ID,
-    ":European_Union: EUROPA": EUROPA_LEAGUE_ID,
+    ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
@@ -201,7 +201,7 @@ FOOTY_LEAGUES = {
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
-    # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
@@ -210,8 +210,9 @@ FOOTY_LEAGUES = {
 
 FOOTY_LEAGUES_BY_PRIORITY = {
     "1": {
-        ":trophy: UCL": UCL_LEAGUE_ID,
         ":lion: EPL": EPL_LEAGUE_ID,
+        ":trophy: UCL": UCL_LEAGUE_ID,
+        ":European_Union: EUROPA": UEFA_EUROPA_ID,
         ":Spain: LIGA": LIGA_LEAGUE_ID,
         ":England: FA": FA_CUP_ID,
         ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
@@ -227,6 +228,7 @@ FOOTY_LEAGUES_BY_PRIORITY = {
         ":United_States: MLS": MLS_LEAGUE_ID,
         ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
         ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+        ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     },
 }
 

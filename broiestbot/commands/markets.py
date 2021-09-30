@@ -1,11 +1,11 @@
 """Fetch crypto or stock market data."""
 import chart_studio
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from clients import cch, sch
 from config import PLOTLY_API_KEY, PLOTLY_USERNAME
+from logger import LOGGER
 
 # Plotly
 chart_studio.tools.set_credentials_file(

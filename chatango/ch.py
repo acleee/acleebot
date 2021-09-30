@@ -10,8 +10,8 @@ import time
 import urllib.parse
 import urllib.request
 
-from logger import LOGGER
 from config import CHATANGO_USERS
+from logger import LOGGER
 
 from . import _ws
 

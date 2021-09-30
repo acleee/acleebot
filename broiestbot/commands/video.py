@@ -3,7 +3,6 @@ from typing import Optional
 
 import requests
 from emoji import emojize
-from logger import LOGGER
 
 # from clients import yt
 # from googleapiclient.errors import HttpError
@@ -15,6 +14,7 @@ from config import (
     TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET,
 )
+from logger import LOGGER
 
 
 def get_all_live_twitch_streams():

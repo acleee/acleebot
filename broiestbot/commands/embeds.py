@@ -3,11 +3,11 @@ from typing import Optional
 
 import requests
 from bs4 import BeautifulSoup
-from logger import LOGGER
 from requests import Response
 from requests.exceptions import HTTPError
 
 from config import INSTAGRAM_APP_ID
+from logger import LOGGER
 
 
 def create_instagram_preview(url: str) -> Optional[str]:

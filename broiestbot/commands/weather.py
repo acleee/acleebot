@@ -1,7 +1,6 @@
 """Fetch weather for a given location."""
 import requests
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from clients import db
@@ -11,6 +10,7 @@ from config import (
     WEATHERSTACK_API_ENDPOINT,
     WEATHERSTACK_API_KEY,
 )
+from logger import LOGGER
 
 
 def weather_by_location(location: str, room: str, user: str) -> str:

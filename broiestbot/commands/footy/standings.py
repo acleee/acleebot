@@ -4,7 +4,6 @@ from typing import Optional
 
 import requests
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import (
@@ -14,6 +13,7 @@ from config import (
     FOOTY_STANDINGS_ENDPOINT,
     LIGA_LEAGUE_ID,
 )
+from logger import LOGGER
 
 
 def epl_standings(endpoint: str) -> Optional[str]:

@@ -4,7 +4,6 @@ from typing import Optional
 
 import requests
 from emoji import emojize
-from logger import LOGGER
 from requests.exceptions import HTTPError
 
 from config import (
@@ -14,6 +13,7 @@ from config import (
     FOOTY_LEAGUES,
     FOOTY_TEAMS_PRIORITY,
 )
+from logger import LOGGER
 
 from .util import get_preferred_time_format, get_preferred_timezone
 
