@@ -21,24 +21,23 @@ def json_formatter(record: dict):
         """
         Construct JSON info log record where user is room admin.
 
-        :param log: Dictionary containing logged message with metadata.
-        :type log: dict
+        :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         chat_data = re.findall(r"\[(\S+)\]", log["message"])
         if bool(chat_data):
             room = chat_data[0]
             user = chat_data[1]
+            ip = chat_data[2]
             subset = {
                 "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                 "message": log["message"].split(": ", 1)[1],
                 "level": log["level"].name,
                 "room": room,
                 "user": user,
+                "ip": ip,
             }
-            if len(chat_data) >= 4:
-                ip = chat_data[2]
-                subset.update({"ip": ip})
             return json.dumps(subset)
 
     def serialize_event(log: dict) -> str:
@@ -66,8 +65,8 @@ def json_formatter(record: dict):
         """
         Construct error log record.
 
-        :param log: Dictionary containing logged message with metadata.
-        :type log: dict
+        :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         subset = {

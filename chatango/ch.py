@@ -1547,15 +1547,13 @@ class Room:
     def raw_clear_user(self, unid, ip, user):
         self._send_command("delallmsg", unid, ip, user)
 
-    def clear_user(self, user):
+    def clear_user(self, user: bool):
         """
         Clear all of a user's messages. (Moderator only)
 
-        :type user: User
-        :param user: user to delete messages of
+        :param User user: user to delete messages of.
 
-        @rtype: bool
-        @return: whether a message to delete was found
+        :return bool: whether a message to delete was found
         """
         if self.get_level(self.user) > 0:
             msg = self.get_last_message(user)
@@ -2037,12 +2035,12 @@ class RoomManager:
         :param User user: Author of message sent to chat.
         :param Message message: Received chat message
         """
-        if message.ip:
+        if bool(message.ip):
             LOGGER.info(
                 f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}"
             )
         else:
-            LOGGER.info(f"[{room.room_name}] [{user.name}]: {message.body}")
+            LOGGER.trace(f"[{room.room_name}] [{user.name}]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """

@@ -1,7 +1,7 @@
 attrs==21.2.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 beautifulsoup4==4.10.0; python_full_version > "3.0.0"
 boto==2.49.0
-botocore==1.21.51; python_version >= "3.6"
+botocore==1.21.53; python_version >= "3.6"
 bs4==0.0.1
 cachetools==4.2.4; python_version >= "3.5" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 certifi==2021.5.30; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
@@ -17,7 +17,7 @@ google-api-python-client==2.23.0; python_version >= "3.6"
 google-auth-httplib2==0.1.0; python_version >= "3.6"
 google-auth==2.2.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 google-cloud-core==2.0.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
-google-cloud-storage==1.42.2; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
+google-cloud-storage==1.42.3; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 google-crc32c==1.2.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 google-resumable-media==2.0.3; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 googleapis-common-protos==1.53.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
@@ -46,7 +46,7 @@ pymysql==1.0.2; python_version >= "3.6"
 pyparsing==2.4.7; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 python-dateutil==2.8.2; python_full_version >= "3.7.1" and python_version >= "3.6"
 python-dotenv==0.19.0; python_version >= "3.5"
-pytz==2021.1
+pytz==2021.3
 requests==2.26.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.6.0")
 retrying==1.3.3
 rsa==4.7.2; python_version >= "3.5" and python_version < "4" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
