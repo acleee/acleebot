@@ -29,11 +29,14 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     """
     upcoming_fixtures = "\n\n\n\n"
     season = datetime.now().year
+    i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
+        i += 1
         league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room, username, season
+            league_id, room, username, season
         )
-        if league_fixtures is not None:
+        if league_fixtures is not None and i < 6:
+            upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
@@ -43,12 +46,11 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
 
 
 def footy_upcoming_fixtures_per_league(
-    league_name: str, league_id: int, room: str, username: str, season: int
+    league_id: int, room: str, username: str, season: int
 ) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
-    :param str league_name: Name of footy league/cup.
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
@@ -59,20 +61,12 @@ def footy_upcoming_fixtures_per_league(
     try:
         upcoming_fixtures = ""
         fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
-        if fixtures:
+        if fixtures is not None:
             for i, fixture in enumerate(fixtures):
-                if i == 0 and len(fixture) > 1:
-                    upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
                 date = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
-                display_date, tz = get_preferred_time_format(date, room, username)
-                if room == CHATANGO_OBI_ROOM:
-                    display_date, tz = get_preferred_time_format(date, room, username)
-                if date - datetime.now(tz=tz) < timedelta(days=7):
-                    upcoming_fixtures += add_upcoming_fixture(
-                        fixture, date, room, username
-                    )
+                upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
             return upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
@@ -96,18 +90,27 @@ def fetch_upcoming_fixtures(
     :returns: Optional[dict]
     """
     try:
-        params = {"season": season, "league": league_id, "status": "NS"}
-        if league_id == FOOTY_LEAGUES.get(":lion: EPL"):
-            params.update({"next": 8})
-        else:
-            params.update({"next": 3})
+        today = datetime.strftime(datetime.now(), "%Y-%m-%d")
+        date_range = datetime.strftime(datetime.now() + timedelta(days=8), "%Y-%m-%d")
+        params = {
+            "season": season,
+            "league": league_id,
+            "status": "NS",
+            "from": today,
+            "to": date_range,
+        }
         params.update(get_preferred_timezone(room, username))
         req = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
-        return req.json().get("response")
+        fixtures = req.json().get("response")
+        if fixtures and league_id == FOOTY_LEAGUES.get(":lion: EPL"):
+            return fixtures[::8]
+        elif fixtures:
+            return fixtures[::3]
+        return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -123,7 +126,7 @@ def add_upcoming_fixture(
     Construct upcoming fixture match-up.
 
     :param dict fixture: Scheduled fixture data.
-    :param datetime date: Fixture start time/date defaulted to UTC time.
+    :param datetime date: Fixture start time/date displayed in preferred timezone.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
