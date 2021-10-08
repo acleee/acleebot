@@ -184,8 +184,6 @@ COMMUNITY_SHIELD_CUP = 528
 FOOTY_LEAGUES = {
     # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
-    # ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
-    ":world_map: WORLD CUP QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":England: FA": FA_CUP_ID,
@@ -199,12 +197,14 @@ FOOTY_LEAGUES = {
     ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
-    # ":world_map: WORLD CUP": WORLD_CUP_ID,
+    ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
     ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-    # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+    ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+    ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
+    ":world_map: WORLD CUP QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
-    # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+    ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
     # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
 }
 
@@ -216,6 +216,7 @@ FOOTY_LEAGUES_BY_PRIORITY = {
         ":Spain: LIGA": LIGA_LEAGUE_ID,
         ":England: FA": FA_CUP_ID,
         ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
+        ":world_map: WORLD CUP QUALIFIERS CONCACAF": WC_QUALIFIERS_CONCACAF,
         ":world_map: WORLD CUP QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     },
     "2": {
@@ -227,8 +228,9 @@ FOOTY_LEAGUES_BY_PRIORITY = {
     "3": {
         ":United_States: MLS": MLS_LEAGUE_ID,
         ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
-        ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
         ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+        ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+        ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
     },
 }
 
