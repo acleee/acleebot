@@ -157,6 +157,8 @@ class Bot(RoomManager):
     ) -> None:
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
+        elif re.match(r"^!ein+", chat_message):
+            return self._get_response("!ein", room, user_name)
         elif re.match(r"^!.+", chat_message):
             return self._get_response(chat_message, room, user_name)
         elif chat_message == "bro?":
@@ -181,6 +183,7 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
+
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
