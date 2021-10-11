@@ -1,6 +1,6 @@
 """Fetch scheduled fixtures across leagues."""
-from datetime import datetime, timedelta
-from typing import Optional
+from datetime import datetime
+from typing import List, Optional
 
 import requests
 from emoji import emojize
@@ -31,11 +31,11 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     season = datetime.now().year
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        i += 1
         league_fixtures = footy_upcoming_fixtures_per_league(
-            league_id, room, username, season
+            league_name, league_id, room, username, season
         )
         if league_fixtures is not None and i < 6:
+            i += 1
             upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
@@ -46,7 +46,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
 
 
 def footy_upcoming_fixtures_per_league(
-    league_id: int, room: str, username: str, season: int
+    league_name, league_id: int, room: str, username: str, season: int
 ) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
@@ -60,8 +60,8 @@ def footy_upcoming_fixtures_per_league(
     """
     try:
         upcoming_fixtures = ""
-        fixtures = fetch_upcoming_fixtures(season, league_id, room, username)
-        if fixtures is not None:
+        fixtures = upcoming_fixture_fetcher(league_name, league_id, room, username)
+        if bool(fixtures) is not False:
             for i, fixture in enumerate(fixtures):
                 date = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
@@ -76,47 +76,49 @@ def footy_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def fetch_upcoming_fixtures(
-    season: int, league_id: int, room: str, username: str
-) -> Optional[dict]:
+def upcoming_fixture_fetcher(
+    league_name: str, league_id: int, room: str, username: str
+) -> Optional[List[dict]]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
-    :param int season: Season year of league/cup.
+    :param str league_name: Name of the league/cup.
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
-    :returns: Optional[dict]
+    :returns: Optional[List[dict]]
     """
     try:
-        today = datetime.strftime(datetime.now(), "%Y-%m-%d")
-        date_range = datetime.strftime(datetime.now() + timedelta(days=8), "%Y-%m-%d")
         params = {
-            "season": season,
+            "next": 5 if "EPL" in league_name else 3,
             "league": league_id,
             "status": "NS",
-            "from": today,
-            "to": date_range,
         }
         params.update(get_preferred_timezone(room, username))
-        req = requests.get(
-            FOOTY_FIXTURES_ENDPOINT,
-            headers=FOOTY_HTTP_HEADERS,
-            params=params,
-        )
-        fixtures = req.json().get("response")
-        if fixtures and league_id == FOOTY_LEAGUES.get(":lion: EPL"):
-            return fixtures[::8]
-        elif fixtures:
-            return fixtures[::3]
-        return None
+        return fetch_upcoming_fixtures(params)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
+
+
+def fetch_upcoming_fixtures(params: dict) -> Optional[List[dict]]:
+    """
+    Makes request to fetch upcoming fixtures with retry in case season is wrong.
+
+    :param dict params: Request parameters for fetching fixtures for a given league or cup.py
+
+    :returns: Optional[List[dict]]
+    """
+    resp = requests.get(
+        FOOTY_FIXTURES_ENDPOINT,
+        headers=FOOTY_HTTP_HEADERS,
+        params=params,
+    )
+    return resp.json().get("response")
 
 
 def add_upcoming_fixture(
