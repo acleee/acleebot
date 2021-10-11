@@ -28,11 +28,10 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     upcoming_fixtures = "\n\n\n\n"
-    season = datetime.now().year
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room, username, season
+            league_name, league_id, room, username
         )
         if league_fixtures is not None and i < 6:
             i += 1
@@ -55,7 +54,6 @@ def footy_upcoming_fixtures_per_league(
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
-    :param int season: Season year of league/cup.
 
     :returns: Optional[str]
     """
@@ -152,7 +150,7 @@ def add_upcoming_fixture(
         .replace("Manchester", "Man")
     )
     display_date, tz = get_preferred_time_format(date, room, username)
-    return f"<b>{away_team} @ {home_team} - {display_date}</b>\n"
+    return f"{away_team} @ {home_team} - {display_date}\n"
 
 
 def fetch_fox_fixtures(room: str, username: str) -> str:
@@ -165,7 +163,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     try:
-        upcoming_foxtures = "\n\n\n:fox: FOXTURES:\n"
+        upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES:</b>\n"
         season = datetime.now().year
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
