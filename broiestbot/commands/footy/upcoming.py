@@ -36,7 +36,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
         )
         if league_fixtures is not None and i < 6:
             i += 1
-            upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
@@ -51,6 +51,7 @@ def footy_upcoming_fixtures_per_league(
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
+    :param str league_name: Name of the league/cup.
     :param int league_id: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
@@ -151,7 +152,7 @@ def add_upcoming_fixture(
         .replace("Manchester", "Man")
     )
     display_date, tz = get_preferred_time_format(date, room, username)
-    return f"{away_team} @ {home_team} - {display_date}\n"
+    return f"<b>{away_team} @ {home_team} - {display_date}</b>\n"
 
 
 def fetch_fox_fixtures(room: str, username: str) -> str:
