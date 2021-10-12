@@ -45,7 +45,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
 
 
 def footy_upcoming_fixtures_per_league(
-    league_name, league_id: int, room: str, username: str, season: int
+    league_name, league_id: int, room: str, username: str
 ) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
