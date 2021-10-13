@@ -1,3 +1,5 @@
+from typing import Union
+
 import pandas as pd
 from ipdata import ipdata
 from ipdata.ipdata import APIKeyNotSet, IncompatibleParameters, IPData
@@ -44,7 +46,9 @@ class GeoIP:
             raise IncompatibleParameters(e)
 
     @staticmethod
-    def save_metadata(room_name: str, user_name: str, ip_metadata: dict) -> DataFrame:
+    def save_metadata(
+        room_name: str, user_name: str, ip_metadata: dict
+    ) -> Union[DataFrame, str]:
         """
         Parse IP metadata into Pandas Dataframe.
 
@@ -54,9 +58,45 @@ class GeoIP:
 
         :returns: DataFrame
         """
-        record = {"username": user_name, "chatango_room": room_name}
-        record.update(ip_metadata)
-        metadata_df = pd.json_normalize([record], sep="_")
-        metadata_df = metadata_df.infer_objects()
-        metadata_df["postal"] = int(metadata_df["postal"])
-        return metadata_df
+        try:
+            record = {"username": user_name, "chatango_room": room_name}
+            record.update(ip_metadata)
+            metadata_df = pd.json_normalize([record], sep="_")
+            metadata_df = metadata_df.infer_objects()
+            metadata_df.astype(
+                {
+                    "username": "string",
+                    "chatango_room": "string",
+                    "city": "string",
+                    "region": "string",
+                    "country_name": "string",
+                    "latitude": "float",
+                    "longitude": "float",
+                    "postal": "Int64",
+                    "emoji_flag": "string",
+                    "status": "Int64",
+                    "time_zone_name": "string",
+                    "time_zone_abbr": "string",
+                    "time_zone_offset": "Int64",
+                    "time_zone_is_dst": "Int8",
+                    "carrier": "string",
+                    "carrier_name": "string",
+                    "carrier_mnc": "string",
+                    "carrier_mcc": "string",
+                    "asn_asn": "string",
+                    "asn_name": "string",
+                    "asn_domain": "string",
+                    "asn_route": "string",
+                    "asn_type": "string",
+                    "threat_is_tor": "Int8",
+                    "threat_is_proxy": "Int8",
+                    "threat_is_anonymous": "Int8",
+                    "threat_is_known_attacker": "Int8",
+                    "threat_is_known_abuser": "Int8",
+                    "threat_is_threat": "Int8",
+                    "threat_is_bogon": "Int8",
+                }
+            )
+            return metadata_df
+        except Exception as e:
+            return f"Could not parse user data for {user_name}: {e}"

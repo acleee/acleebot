@@ -204,11 +204,12 @@ class Bot(RoomManager):
             if existing_user is None:
                 ip_metadata = geo.lookup_user(message.ip)
                 metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
-                result, success = db.insert_data_from_dataframe(metadata_df)
-                if success:
-                    LOGGER.success(result)
-                else:
-                    LOGGER.error(result)
+                if type(metadata_df) != str:
+                    result, success = db.insert_data_from_dataframe(metadata_df)
+                    if success:
+                        LOGGER.success(result)
+                    else:
+                        LOGGER.error(result)
         else:
             LOGGER.warning(
                 f"Insufficient permissions to persist metadata in room {room_name}"
