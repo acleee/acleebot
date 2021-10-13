@@ -1,7 +1,7 @@
 attrs==21.2.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 beautifulsoup4==4.10.0; python_full_version > "3.0.0"
 boto==2.49.0
-botocore==1.21.60; python_version >= "3.6"
+botocore==1.21.61; python_version >= "3.6"
 bs4==0.0.1
 cachetools==4.2.4; python_version >= "3.5" and python_version < "4.0" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
 certifi==2021.10.8; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0"
@@ -10,8 +10,8 @@ chart-studio==1.1.0
 click==8.0.3; python_version >= "3.6"
 colorama==0.4.4; python_version >= "3.6" and python_full_version < "3.0.0" and sys_platform == "win32" and platform_system == "Windows" or sys_platform == "win32" and python_version >= "3.6" and python_full_version >= "3.5.0" and platform_system == "Windows"
 datadog==0.42.0
-ddtrace==0.54.0; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
-emoji==1.6.0
+ddtrace==0.54.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
+emoji==1.6.1
 google-api-core==2.1.0; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 google-api-python-client==2.26.1; python_version >= "3.6"
 google-auth-httplib2==0.1.0; python_version >= "3.6"
@@ -24,7 +24,7 @@ googleapis-common-protos==1.53.0; python_version >= "3.6" and python_full_versio
 greenlet==1.1.2; python_version >= "3" and python_full_version < "3.0.0" and (platform_machine == "aarch64" or platform_machine == "ppc64le" or platform_machine == "x86_64" or platform_machine == "amd64" or platform_machine == "AMD64" or platform_machine == "win32" or platform_machine == "WIN32") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") or python_version >= "3" and (platform_machine == "aarch64" or platform_machine == "ppc64le" or platform_machine == "x86_64" or platform_machine == "amd64" or platform_machine == "AMD64" or platform_machine == "win32" or platform_machine == "WIN32") and (python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.6.0") and python_full_version >= "3.5.0"
 html5lib==1.1; (python_version >= "2.7" and python_full_version < "3.0.0") or (python_full_version >= "3.5.0")
 httplib2==0.20.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.4.0" and python_version >= "3.6"
-idna==3.2; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.5"
+idna==3.3; python_version >= "3.5" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.5"
 imdbpy==2021.4.18
 ipaddress==1.0.23
 ipdata==3.4.3
@@ -58,7 +58,7 @@ tenacity==8.0.1; python_version >= "3.6" and python_full_version < "3.0.0" or py
 tqdm==4.62.3; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.4.0"
 twilio==7.1.0; python_full_version >= "3.6.0"
 update-checker==0.18.0; python_version >= "3.6" and python_version < "4.0"
-uritemplate==4.0.0; python_version >= "3.6"
+uritemplate==4.1.1; python_version >= "3.6"
 urllib3==1.26.7; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version < "4" and python_version >= "3.6"
 uwsgi==2.0.20
 webencodings==0.5.1; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"

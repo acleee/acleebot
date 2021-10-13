@@ -58,4 +58,5 @@ class GeoIP:
         record.update(ip_metadata)
         metadata_df = pd.json_normalize([record], sep="_")
         metadata_df = metadata_df.infer_objects()
+        metadata_df["postal"] = int(metadata_df["postal"])
         return metadata_df

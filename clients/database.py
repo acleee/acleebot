@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 from pandas import DataFrame
 from sqlalchemy import create_engine, text
 from sqlalchemy.engine import Row
-from sqlalchemy.exc import SQLAlchemyError
+from sqlalchemy.exc import SQLAlchemyError, StatementError
 
 
 class Database:
@@ -77,13 +77,25 @@ class Database:
         """
         Insert record into SQL table as a Dataframe consisting of a single row.
 
-        :param Tuple[str, bool] df: Summary of SQL execution result.
+        :param DataFrame df: Table containing a single row of metadata to insert.
+
+        :returns: Tuple[str, bool]
         """
         try:
             df.to_sql("user", self.db, if_exists="append", index=False)
             return (
                 f"Successfully inserted record for {df['username']} in {df['chatango_room']}",
                 True,
+            )
+        except StatementError as e:
+            return (
+                f"Bad data when inserting metadata for user {df['username']} in {df['chatango_room']}: {e}",
+                False,
+            )
+        except SQLAlchemyError as e:
+            return (
+                f"General SQLAlchemyError error when inserting metadata for user {df['username']} in {df['chatango_room']}: {e}",
+                False,
             )
         except ValueError as e:
             return (
