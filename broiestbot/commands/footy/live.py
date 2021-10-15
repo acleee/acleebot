@@ -16,27 +16,28 @@ from logger import LOGGER
 from .util import get_preferred_timezone
 
 
-def footy_live_fixtures(room: str, username: str) -> str:
+def footy_live_fixtures(room: str, username: str, subs=False) -> str:
     """
     Fetch live fixtures for EPL, LIGA, BUND, FA, UCL, EUROPA, etc.
 
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+    :param bool subs: Whether to include substitutions in match summaries.
 
     :returns: str
     """
-    live_fixtures = ["\n\n\n\n"]
+    live_fixtures = ["\n\n\n\n\n"]
     priorities = FOOTY_LEAGUES_BY_PRIORITY.keys()
-    fixtures = fetch_prioritized_fixtures(priorities, room, username)
+    fixtures = fetch_prioritized_fixtures(priorities, room, username, subs=subs)
     if fixtures is not None:
         live_fixtures += fixtures
-    if live_fixtures == ["\n\n\n\n"]:
+    if live_fixtures == ["\n\n\n\n\n"]:
         return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
     return "\n\n".join(live_fixtures)
 
 
 def fetch_prioritized_fixtures(
-    priorities: List[str], room: str, username: str
+    priorities: List[str], room: str, username: str, subs=False
 ) -> Optional[List[str]]:
     """
     Fetch fixtures by "grouping" of league, depending on priority.
@@ -46,6 +47,7 @@ def fetch_prioritized_fixtures(
     :param List[str] priorities: ID of footy league/cup.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+    :param bool subs: Whether to include substitutions in match summaries.
 
     :returns: Optional[str]
     """
@@ -54,7 +56,7 @@ def fetch_prioritized_fixtures(
         priority_leagues = FOOTY_LEAGUES_BY_PRIORITY[priority]
         for league_name, league_id in priority_leagues.items():
             league_fixtures = footy_live_fixtures_per_league(
-                league_id, league_name, room, username
+                league_id, league_name, room, username, subs=subs
             )
             if league_fixtures is not None:
                 fixtures.append(league_fixtures)
@@ -64,7 +66,7 @@ def fetch_prioritized_fixtures(
 
 
 def footy_live_fixtures_per_league(
-    league_id: int, league_name: str, room: str, username: str
+    league_id: int, league_name: str, room: str, username: str, subs=False
 ) -> Optional[str]:
     """
     Construct summary of events for all live fixtures in a given league.
@@ -73,6 +75,7 @@ def footy_live_fixtures_per_league(
     :param str league_name: Name of league or cup fixtures belong to.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
+    :param bool subs: Whether to include substitutions in match summaries.
 
     :returns: Optional[str]
     """
@@ -90,7 +93,9 @@ def footy_live_fixtures_per_league(
                 venue = fixture["fixture"]["venue"]["name"]
                 live_fixture = f'<b>{home_team} {home_score} - {away_team} {away_score}</b>\n{venue}, {elapsed}"'
                 live_fixtures += live_fixture
-                events = get_events_per_live_fixture(fixture["fixture"]["id"])
+                events = get_events_per_live_fixture(
+                    fixture["fixture"]["id"], subs=subs
+                )
                 if events:
                     live_fixtures += events
                 if i < len(fixtures):
@@ -133,11 +138,12 @@ def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[st
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
+def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
     """
     Construct timeline of events for a single live fixture.
 
     :param int fixture_id: ID of a single live fixture.
+    :param bool subs: Whether to include substitutions in match summaries.
 
     :returns: Optional[str]
     """
@@ -182,7 +188,7 @@ def get_events_per_live_fixture(fixture_id: int) -> Optional[str]:
                         f':skull: :soccer_ball: {event["player"]["name"]} (via {event["assist"]["name"]}) {event["time"]["elapsed"]}"\n',
                         use_aliases=True,
                     )
-                elif event["type"] == "subst":
+                elif event["type"] == "subst" and subs is True:
                     event_log = event_log + emojize(
                         f':red_triangle_pointed_down: {event["assist"]["name"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
                         use_aliases=True,
