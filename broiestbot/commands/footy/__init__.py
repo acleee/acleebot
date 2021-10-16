@@ -1,4 +1,4 @@
-from .goldenboot import epl_golden_boot
+from .goldenboot import all_leagues_golden_boot, epl_golden_boot
 from .live import footy_live_fixtures
 from .odds import get_footy_odds
 from .predicts import footy_predicts_today

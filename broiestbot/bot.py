@@ -5,6 +5,7 @@ from typing import Optional, Tuple
 from emoji import emojize
 
 from broiestbot.commands import (  # search_youtube_for_video,
+    all_leagues_golden_boot,
     basic_message,
     blaze_time_remaining,
     bund_standings,
@@ -116,6 +117,8 @@ class Bot(RoomManager):
             return footy_todays_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
+        elif cmd_type == "goldenshoe":
+            return all_leagues_golden_boot()
         elif cmd_type == "eplpredicts":
             return footy_predicts_today(room.room_name.lower(), user_name)
         elif cmd_type == "foxtures":
