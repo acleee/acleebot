@@ -26,12 +26,12 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
 
     :returns: str
     """
-    live_fixtures = ["\n\n\n\n\n"]
+    live_fixtures = ["\n\n\n\n"]
     priorities = FOOTY_LEAGUES_BY_PRIORITY.keys()
     fixtures = fetch_prioritized_fixtures(priorities, room, username, subs=subs)
     if fixtures is not None:
         live_fixtures += fixtures
-    if live_fixtures == ["\n\n\n\n\n"]:
+    if live_fixtures == ["\n\n\n\n"]:
         return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
     return "\n\n".join(live_fixtures)
 
