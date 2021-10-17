@@ -215,10 +215,6 @@ class Bot(RoomManager):
                         LOGGER.success(result)
                     else:
                         LOGGER.error(result)
-        else:
-            LOGGER.warning(
-                f"Insufficient permissions to persist metadata in room {room_name}"
-            )
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
