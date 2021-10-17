@@ -4,7 +4,7 @@ from typing import Optional, Tuple
 
 from emoji import emojize
 
-from broiestbot.commands import (  # search_youtube_for_video,
+from broiestbot.commands import (
     all_leagues_golden_boot,
     basic_message,
     blaze_time_remaining,
@@ -233,9 +233,7 @@ class Bot(RoomManager):
         if " " in user_msg:
             cmd = user_msg.split(" ", 1)[0]
             args = user_msg.split(" ", 1)[1]
-            LOGGER.trace(f"Command `{cmd}` found with args `{args}`.")
             return cmd, args
-        LOGGER.trace(f"Command `{user_msg}` found with no args.")
         return user_msg, None
 
     def _get_response(

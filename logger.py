@@ -13,8 +13,7 @@ def json_formatter(record: dict):
     """
     Format info message logs.
 
-    :param record: Log object containing log metadata & message.
-    :type record: dict
+    :param dict record: Log object containing log metadata & message.
     """
 
     def serialize_as_admin(log: dict) -> str:
@@ -44,8 +43,8 @@ def json_formatter(record: dict):
         """
         Construct warning log.
 
-        :param log: Dictionary containing logged message with metadata.
-        :type log: dict
+        :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         chat_data = re.findall(r"\[(\S+)\]", log["message"])
@@ -76,18 +75,15 @@ def json_formatter(record: dict):
         }
         return json.dumps(subset)
 
-    if record["level"].name in ("WARNING", "SUCCESS", "TRACE"):
+    if record["level"].name in ("WARNING", "SUCCESS", "TRACE", "MESSAGE"):
         record["extra"]["serialized"] = serialize_event(record)
-        return "{extra[serialized]},\n"
-
     elif record["level"].name == "INFO":
         record["extra"]["serialized"] = serialize_as_admin(record)
-        return "{extra[serialized]},\n"
-
     else:
         record["extra"]["serialized"] = serialize_error(record)
         sms_error_handler(record)
-        return "{extra[serialized]},\n"
+
+    return "{extra[serialized]},\n"
 
 
 def sms_error_handler(log: dict) -> None:
@@ -111,7 +107,9 @@ def log_formatter(record: dict) -> str:
     :type record: dict
     :returns: str
     """
-    if record["level"].name == "TRACE":
+    if record["level"].name == "MESSAGE":
+        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
+    elif record["level"].name == "TRACE":
         return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "INFO":
         return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #9cbfdd>{level}</fg #9cbfdd>: <light-white>{message}</light-white>\n"
@@ -129,12 +127,13 @@ def log_formatter(record: dict) -> str:
 def create_logger() -> logger:
     """Customer logger creation."""
     logger.remove()
+    logger.level("MESSAGE", no=1, color="<fg #70acde>", icon="💬")
     logger.add(stdout, colorize=True, catch=True, format=log_formatter)
     if ENVIRONMENT == "production":
         logger.add(
             "/var/log/broiestbot/info.json",
             format=json_formatter,
-            rotation="200 MB",
+            rotation="300 MB",
             compression="zip",
             catch=True,
         )
@@ -143,7 +142,7 @@ def create_logger() -> logger:
             colorize=True,
             catch=True,
             format=log_formatter,
-            rotation="500 MB",
+            rotation="300 MB",
             compression="zip",
         )
         logger.add(
@@ -154,7 +153,7 @@ def create_logger() -> logger:
             format="<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | "
             + "<red>{level}</red>: "
             + "<light-white>{message}</light-white>",
-            rotation="500 MB",
+            rotation="300 MB",
             compression="zip",
         )
     return logger

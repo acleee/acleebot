@@ -1978,16 +1978,14 @@ class RoomManager:
         """
         Listener for when a user message gets deleted.
 
-        :param room: Chatango room where the event occurred
-        :type room: Room
-        :param user: Chatango user who sent deleted message.
-        :type user: User
-        :param message: User message that got deleted.
-        :type message: Message
+        :param Room room: Chatango room where the event occurred
+        :param User user: Chatango user who sent deleted message.
+        :param Message message: User message that got deleted.
         """
         if user.name.lower() != CHATANGO_USERS.keys():
-            LOGGER.trace(
-                f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}"
+            LOGGER.log(
+                "MESSAGE",
+                f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}",
             )
 
     def on_mod_change(self, room):
@@ -2004,12 +2002,11 @@ class RoomManager:
         """
         Logs event when a user gets modded.
 
-        :param room: Chatango room where user was modded.
-        :type room: Room
-        :param user: User promoted to mod.
-        :type user: User
+        :param Room room: Chatango room where user was modded.
+        :param User user: User promoted to mod.
         """
-        LOGGER.trace(
+        LOGGER.log(
+            "MESSAGE"
             f"[{room.room_name}] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
         )
 
@@ -2018,13 +2015,12 @@ class RoomManager:
         """
         Called when a moderator gets removed.
 
-        :param room: Chatango room where user was demodded.
-        :type room: Room
-        :param user: User demoted from mod.
-        :type user: User
+        :param Room room: Chatango room where user was demodded.
+        :param User user: User demoted from mod.
         """
-        LOGGER.trace(
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} was demodded in {room.room_name}."
+        LOGGER.log(
+            "MESSAGE",
+            f"[{room.room_name}] [{user.name.title()}]: {user.name} was demodded in {room.room_name}.",
         )
 
     def on_message(self, room, user, message):
@@ -2040,7 +2036,7 @@ class RoomManager:
                 f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}"
             )
         else:
-            LOGGER.trace(f"[{room.room_name}] [{user.name}]: {message.body}")
+            LOGGER.log("MESSAGE", f"[{room.room_name}] [{user.name}]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """
@@ -2061,8 +2057,9 @@ class RoomManager:
         :param User user: Recently joined user.
         :param str puid: Personal unique id for a user.
         """
-        LOGGER.trace(
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} joined {room.room_name}."
+        LOGGER.log(
+            "MESSAGE",
+            f"[{room.room_name}] [{user.name.title()}]: {user.name} joined {room.room_name}.",
         )
 
     @staticmethod
@@ -2074,8 +2071,9 @@ class RoomManager:
         :param User user: Recently departed user.
         :param str puid: Personal unique id for a user.
         """
-        LOGGER.trace(
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} left {room.room_name}."
+        LOGGER.log(
+            "MESSAGE",
+            f"[{room.room_name}] [{user.name.title()}]: {user.name} left {room.room_name}.",
         )
 
     def on_raw(self, room, raw):
@@ -2116,8 +2114,9 @@ class RoomManager:
         :param User user: Moderator who unbanned user.
         :param User target: User that got unbanned.
         """
-        LOGGER.trace(
-            f"[{room.room_name}] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}."
+        LOGGER.log(
+            "MESSAGE",
+            f"[{room.room_name}] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}.",
         )
 
     @staticmethod
@@ -2129,8 +2128,9 @@ class RoomManager:
         :param User user: Moderator who unbanned user.
         :param User target: User that got unbanned.
         """
-        LOGGER.trace(
-            f"[{room.room_name}] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}."
+        LOGGER.log(
+            "MESSAGE",
+            f"[{room.room_name}] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}.",
         )
 
     def on_banlist_update(self, room: Room):
