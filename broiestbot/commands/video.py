@@ -22,7 +22,7 @@ def get_all_live_twitch_streams():
     i = 0
     for user, broadcaster_id in TWITCH_BROADCASTERS.items():
         stream = get_live_twitch_stream(broadcaster_id)
-        if stream is not None:
+        if bool(stream):
             i += 1
             twitch_streams.append(stream)
             if i == 1:
@@ -52,12 +52,14 @@ def get_live_twitch_stream(broadcaster_id: str) -> Optional[str]:
     }
     try:
         req = requests.get(endpoint, params=params, headers=headers)
-        resp = req.json().get("data")[0]
-        if resp:
-            return format_twitch_response(resp)
+        resp = req.json().get("data")
+        if bool(resp):
+            return format_twitch_response(resp[0])
         return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Twitch channel: {e.response.content}")
+    except IndexError as e:
+        LOGGER.error(f"IndexError when fetching Twitch channel: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch channel: {e}")
 
