@@ -18,13 +18,18 @@ from logger import LOGGER
 
 
 def get_all_live_twitch_streams():
-    twitch_streams = "\n\n\n"
+    twitch_streams = []
+    i = 0
     for user, broadcaster_id in TWITCH_BROADCASTERS.items():
         stream = get_live_twitch_stream(broadcaster_id)
         if stream is not None:
-            twitch_streams += stream + "\n"
-    if twitch_streams != "\n\n\n\n":
-        return twitch_streams
+            i += 1
+            twitch_streams.append(stream)
+            if i == 1:
+                twitch_streams.insert(0, "\n\n\n\n")
+            if len(twitch_streams) > 2:
+                return "\n-----------------------\n".join(twitch_streams)
+            return "".join(twitch_streams)
     return emojize(
         f":frowning: no memers streaming twitch rn :frowning:",
         use_aliases=True,
@@ -77,7 +82,7 @@ def format_twitch_response(stream: dict) -> str:
         stream.get("thumbnail_url").replace("{width}", "550").replace("{height}", "300")
     )
     url = f"https://www.twitch.tv/{broadcaster}"
-    return f"\n\n\n{broadcaster.upper()} is streaming {game}\n{title}\n{viewers} viewers, {int(duration)} minutes\n{url}\n\n{thumbnail}"
+    return f"\n\n\n<b>{broadcaster}</b> is streaming <b>{game}</b>\n<i>{title}</i>\n{viewers} viewers, {int(duration)} minutes\n{url}\n\n{thumbnail}"
 
 
 def get_twitch_auth_token() -> Optional[str]:

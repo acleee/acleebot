@@ -41,7 +41,7 @@ prawcore==2.3.0; python_version >= "3.6" and python_version < "4.0"
 protobuf==3.18.1; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 pyasn1-modules==0.2.8; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6"
 pyasn1==0.4.8; python_version >= "3.6" and python_full_version < "3.0.0" and python_version < "4" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6") or python_full_version >= "3.6.0" and python_version >= "3.6" and python_version < "4" and (python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.6.0" and python_version >= "3.6")
-pyjwt==2.2.0; python_version >= "3.6" and python_full_version >= "3.6.0"
+pyjwt==2.3.0; python_version >= "3.6" and python_full_version >= "3.6.0"
 pymysql==1.0.2; python_version >= "3.6"
 pyparsing==2.4.7; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
 python-dateutil==2.8.2; python_full_version >= "3.7.1" and python_version >= "3.6"
