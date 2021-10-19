@@ -1909,7 +1909,7 @@ class RoomManager:
         """
         Called when reconnected to the room.
 
-        :param Room room: Chatango room where the event occurred
+        :param Room room: Chatango room where the event occurred.
         """
         LOGGER.success(f"Successfully connected to {room.room_name}.")
 
@@ -1958,8 +1958,7 @@ class RoomManager:
         """
         Called when trying to send something when flood-banned.
 
-        :param room: Chatango room where the event occurred
-        :type room: Room
+        :param Room room: Chatango room where the event occurred
         """
         pass
 
@@ -1992,8 +1991,7 @@ class RoomManager:
         """
         Called when the moderator list changes.
 
-        :param room: Chatango room where the event occurred.
-        :type room: Room
+        :param Room room: Chatango room where the event occurred.
         """
         pass
 
