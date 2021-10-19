@@ -9,7 +9,6 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from config import (
-    TWITCH_BROADCASTER_ID,
     TWITCH_BROADCASTERS,
     TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET,
