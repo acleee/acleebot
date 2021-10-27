@@ -8,11 +8,7 @@ from emoji import emojize
 # from googleapiclient.errors import HttpError
 from requests.exceptions import HTTPError
 
-from config import (
-    TWITCH_BROADCASTERS,
-    TWITCH_CLIENT_ID,
-    TWITCH_CLIENT_SECRET,
-)
+from config import TWITCH_BROADCASTERS, TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET
 from logger import LOGGER
 
 

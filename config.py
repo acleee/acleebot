@@ -183,18 +183,20 @@ WC_QUALIFIERS_CONCACAF = 31
 WC_QUALIFIERS_EUROPE = 32
 SERIE_A_LEAGUE_ID = 135
 COMMUNITY_SHIELD_CUP = 528
+CARABOU_CUP_ID = 48
 
 FOOTY_LEAGUES = {
     # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
     # ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
-    ":world_map: WORLD CUP": WORLD_CUP_ID,
+    # ":world_map: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":European_Union: EUROS": EUROS_LEAGUE_ID,
+    ":cow_face: Carabao": CARABOU_CUP_ID,
     ":England: FA": FA_CUP_ID,
     ":England: EFL": EFL_CUP_ID,
     # ":European_Union: EUROPA": UEFA_EUROPA_ID,
@@ -220,6 +222,7 @@ FOOTY_LEAGUES_BY_PRIORITY = {
         ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
         ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
         ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
+        ":cow_face: Carabao": CARABOU_CUP_ID,
     },
     "2": {
         ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -247,10 +250,11 @@ GOLDEN_SHOE_LEAGUES = {
 }
 
 # Footy team IDs
-
+LIVERPOOL_TEAM_ID = 40
 MANU_TEAM_ID = 33
 FOXES_TEAM_ID = 46
 ENGLAND_INT_TEAM_ID = 10
+
 # USA_INT_TEAM_ID
 
 FOOTY_TEAMS_PRIORITY = {"manu": MANU_TEAM_ID, "england": ENGLAND_INT_TEAM_ID}
