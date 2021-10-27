@@ -3,6 +3,7 @@ import re
 from typing import Optional, Tuple
 
 from emoji import emojize
+from ipdata.ipdata import IncompatibleParameters
 
 from broiestbot.commands import (
     all_leagues_golden_boot,
@@ -204,17 +205,26 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        if message.ip:
-            existing_user = db.fetch_user(room_name, user, message)
-            if existing_user is None:
-                ip_metadata = geo.lookup_user(message.ip)
-                metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
-                if type(metadata_df) != str:
-                    result, success = db.insert_data_from_dataframe(metadata_df)
-                    if success:
-                        LOGGER.success(result)
-                    else:
-                        LOGGER.error(result)
+        try:
+            if message.ip:
+                existing_user = db.fetch_user(room_name, user)
+                if existing_user is None:
+                    ip_metadata = geo.lookup_user(message.ip)
+                    metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
+                    if type(metadata_df) != str:
+                        result, success = db.insert_data_from_dataframe(metadata_df)
+                        if success:
+                            LOGGER.success(result)
+                        else:
+                            LOGGER.error(result)
+        except IncompatibleParameters as e:
+            LOGGER.warning(
+                f"Failed to save data for {user.name} due to IncompatibleParameters: {e}"
+            )
+        except Exception as e:
+            LOGGER.warning(
+                f"Unexpected error while attempting to save data for {user.name}: {e}"
+            )
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:

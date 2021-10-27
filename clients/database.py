@@ -53,13 +53,12 @@ class Database:
         except Exception as e:
             print(f"Failed to execute SQL query `{command_query}`: {e}")
 
-    def fetch_user(self, room_name: str, user, message) -> Optional[Row]:
+    def fetch_user(self, room_name: str, user) -> Optional[Row]:
         """
         Run a SELECT query.
 
         :param str room_name: Chatango room.
         :param user: User responsible for triggering command.
-        :param message: User submitted message.
 
         :returns: Optional[Row]
         """

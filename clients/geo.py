@@ -44,6 +44,8 @@ class GeoIP:
             )
         except IncompatibleParameters as e:
             raise IncompatibleParameters(e)
+        except Exception as e:
+            raise Exception(e)
 
     @staticmethod
     def save_metadata(
