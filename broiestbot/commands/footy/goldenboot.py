@@ -1,6 +1,6 @@
 """Top scorers for a given league."""
 from datetime import datetime
-from typing import List
+from typing import List, Tuple
 
 import requests
 from emoji import emojize
@@ -25,8 +25,9 @@ def epl_golden_boot() -> str:
         top_scorers = []
         top_scorers.extend(golden_boot_leaders(league=EPL_LEAGUE_ID))
         if bool(top_scorers):
-            top_scorers.sort(reverse=True)
+            top_scorers.sort(key=lambda x: x[0], reverse=True)
             top_scorers = top_scorers[:20]
+            top_scorers = [scorer[1] for scorer in top_scorers]
             top_scorers.insert(0, "\n\n\n\n")
             return "\n".join(top_scorers)
         return emojize(
@@ -48,8 +49,9 @@ def all_leagues_golden_boot() -> str:
         for league_id in GOLDEN_SHOE_LEAGUES.values():
             top_scorers.extend(golden_boot_leaders(league=league_id))
         if bool(top_scorers):
-            top_scorers.sort(reverse=True)
-            top_scorers = top_scorers[:15]
+            top_scorers.sort(key=lambda x: x[0], reverse=True)
+            top_scorers = top_scorers[:20]
+            top_scorers = [scorer[1] for scorer in top_scorers]
             top_scorers.insert(0, "\n\n\n\n")
             return "\n".join(top_scorers)
         return emojize(
@@ -60,7 +62,7 @@ def all_leagues_golden_boot() -> str:
         LOGGER.error(f"Unexpected error when fetching golden shoe leaders: {e}")
 
 
-def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[str]:
+def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[Tuple[int, str]]:
     """
     Fetch list of top scorers per league.
 
@@ -87,7 +89,10 @@ def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[str]:
                 if assists is None:
                     assists = 0
                 top_scorers.append(
-                    f"{goals} - {name}, {team}  ({assists} assists, {shots_on}/{shots_total} SOG)"
+                    (
+                        goals,
+                        f"{goals} - {name}, {team}  ({assists} assists, {shots_on}/{shots_total} SOG)",
+                    )
                 )
                 if i > 9:
                     break
