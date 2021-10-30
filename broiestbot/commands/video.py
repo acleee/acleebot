@@ -8,15 +8,22 @@ from emoji import emojize
 # from googleapiclient.errors import HttpError
 from requests.exceptions import HTTPError
 
-from config import TWITCH_BROADCASTERS, TWITCH_CLIENT_ID, TWITCH_CLIENT_SECRET
+from config import (
+    TWITCH_BROADCASTERS,
+    TWITCH_CLIENT_ID,
+    TWITCH_CLIENT_SECRET,
+    TWITCH_STREAMS_ENDPOINT,
+    TWITCH_TOKEN_ENDPOINT,
+)
 from logger import LOGGER
 
 
 def get_all_live_twitch_streams():
+    token = get_twitch_auth_token()
     twitch_streams = []
     i = 0
     for user, broadcaster_id in TWITCH_BROADCASTERS.items():
-        stream = get_live_twitch_stream(broadcaster_id)
+        stream = get_live_twitch_stream(broadcaster_id, token)
         if bool(stream):
             i += 1
             twitch_streams.append(stream)
@@ -31,21 +38,24 @@ def get_all_live_twitch_streams():
     )
 
 
-def get_live_twitch_stream(broadcaster_id: str) -> Optional[str]:
+def get_live_twitch_stream(broadcaster_id: str, token: str) -> Optional[str]:
     """
     Check if Twitch user is live streaming and return stream info.
 
+    :param str broadcaster_id: Twitch ID of broadcaster to check for a live stream.
+    :param str token: Bearer token for fetching twitch streams.
+
     :returns: str
     """
-    endpoint = "https://api.twitch.tv/helix/streams"
-    token = get_twitch_auth_token()
-    params = {"user_id": broadcaster_id}
-    headers = {
-        "Authorization": f"Bearer {token}",
-        "client-id": TWITCH_CLIENT_ID,
-        "Accept": "application/vnd.twitchtv.v5+json",
-    }
     try:
+        endpoint = TWITCH_STREAMS_ENDPOINT
+
+        params = {"user_id": broadcaster_id}
+        headers = {
+            "Authorization": f"Bearer {token}",
+            "client-id": TWITCH_CLIENT_ID,
+            "Accept": "application/vnd.twitchtv.v5+json",
+        }
         req = requests.get(endpoint, params=params, headers=headers)
         resp = req.json().get("data")
         if bool(resp):
@@ -84,12 +94,12 @@ def format_twitch_response(stream: dict) -> str:
 
 def get_twitch_auth_token() -> Optional[str]:
     """
-    Generate Twitch auth token.
+    Generate Twitch auth token prior to fetching live streams.
 
     :returns: str
     """
     try:
-        endpoint = "https://id.twitch.tv/oauth2/token"
+        endpoint = TWITCH_TOKEN_ENDPOINT
         params = {
             "client_id": TWITCH_CLIENT_ID,
             "client_secret": TWITCH_CLIENT_SECRET,

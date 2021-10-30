@@ -8,7 +8,14 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import GFYCAT_CLIENT_ID, GFYCAT_CLIENT_SECRET, REDGIFS_ACCESS_KEY
+from config import (
+    GFYCAT_CLIENT_ID,
+    GFYCAT_CLIENT_SECRET,
+    GFYCAT_TOKEN_ENDPOINT,
+    REDGIFS_ACCESS_KEY,
+    REDGIFS_IMAGE_ENDPOINT,
+    REDGIFS_TOKEN_ENDPOINT,
+)
 from logger import LOGGER
 
 
@@ -46,7 +53,7 @@ def get_redgifs_gif(
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
-        endpoint = "https://api.redgifs.com/v1/gfycats/search"
+        endpoint = REDGIFS_IMAGE_ENDPOINT
         params = {"search_text": query, "count": 100, "start": 0, "order": "trending"}
         headers = {"Authorization": f"Bearer {token}"}
         try:
@@ -110,7 +117,7 @@ def gfycat_auth_token() -> Optional[str]:
 
     :returns: Optional[str]
     """
-    endpoint = "https://api.gfycat.com/v1/oauth/token"
+    endpoint = GFYCAT_TOKEN_ENDPOINT
     body = {
         "grant_type": "client_credentials",
         "client_id": GFYCAT_CLIENT_ID,
@@ -133,7 +140,7 @@ def redgifs_auth_token() -> Optional[str]:
 
     :returns: Optional[str]
     """
-    endpoint = "https://weblogin.redgifs.com/oauth/webtoken"
+    endpoint = REDGIFS_TOKEN_ENDPOINT
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {"Content-Type": "application/json"}
     try:

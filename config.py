@@ -72,6 +72,9 @@ GIPHY_API_KEY = getenv("GIPHY_API_KEY")
 GFYCAT_CLIENT_ID = getenv("GFYCAT_CLIENT_ID")
 GFYCAT_CLIENT_SECRET = getenv("GFYCAT_CLIENT_SECRET")
 REDGIFS_ACCESS_KEY = getenv("REDGIFS_ACCESS_KEY")
+GFYCAT_TOKEN_ENDPOINT = "https://api.gfycat.com/v1/oauth/token"
+REDGIFS_TOKEN_ENDPOINT = "https://weblogin.redgifs.com/oauth/webtoken"
+REDGIFS_IMAGE_ENDPOINT = "https://api.redgifs.com/v1/gfycats/search"
 
 # Stock
 IEX_API_TOKEN = getenv("IEX_API_TOKEN")
@@ -127,10 +130,13 @@ GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 # Youtube
 YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
 
+# Twitch auth
 TWITCH_CLIENT_ID = getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = getenv("TWITCH_CLIENT_SECRET")
-TWITCH_BRO_ID = getenv("TWITCH_BRO_ID")
+
+# Twitch users
 TWITCH_BRO_USERNAME = getenv("TWITCH_BRO_USERNAME")
+TWITCH_BRO_ID = getenv("TWITCH_BRO_ID")
 TWITCH_ATLAS_USERNAME = getenv("TWITCH_ATLAS_USERNAME")
 TWITCH_ATLAS_ID = getenv("TWITCH_ATLAS_ID")
 TWITCH_ACLEE_USERNAME = getenv("TWITCH_ACLEE_USERNAME")
@@ -141,6 +147,9 @@ TWITCH_BROADCASTERS = {
     TWITCH_ATLAS_USERNAME: TWITCH_ATLAS_ID,
     TWITCH_ACLEE_USERNAME: TWITCH_ACLEE_ID,
 }
+
+TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
+TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
 # Rapid API Headers to send with every request
 FOOTY_BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
@@ -254,7 +263,6 @@ LIVERPOOL_TEAM_ID = 40
 MANU_TEAM_ID = 33
 FOXES_TEAM_ID = 46
 ENGLAND_INT_TEAM_ID = 10
-
 # USA_INT_TEAM_ID
 
 FOOTY_TEAMS_PRIORITY = {"manu": MANU_TEAM_ID, "england": ENGLAND_INT_TEAM_ID}
