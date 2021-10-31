@@ -1,6 +1,7 @@
 """Commands only available from 12am to 5am EST."""
 from datetime import datetime
 from random import randint
+from time import sleep
 from typing import Optional
 
 import pytz
@@ -67,6 +68,7 @@ def get_redgifs_gif(
                     if image_url is not None:
                         image_status = requests.get(image_url)
                         if image_status.status_code != 200:
+                            sleep(2)
                             for i in range(3):
                                 return get_redgifs_gif(
                                     query, username, after_dark_only=False
@@ -80,6 +82,12 @@ def get_redgifs_gif(
             LOGGER.warning(
                 f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"
             )
+            return emojize(
+                f":warning: yea nah idk wtf ur searching for :warning:",
+                use_aliases=True,
+            )
+        except IndexError as e:
+            LOGGER.warning(f"IndexError while fetching nsfw image for `{query}`: {e}")
             return emojize(
                 f":warning: yea nah idk wtf ur searching for :warning:",
                 use_aliases=True,
