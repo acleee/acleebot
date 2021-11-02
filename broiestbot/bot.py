@@ -25,6 +25,7 @@ from broiestbot.commands import (
     get_crypto,
     get_english_translation,
     get_footy_odds,
+    get_live_nfl_games,
     get_olympic_medals_per_nation,
     get_redgifs_gif,
     get_song_lyrics,
@@ -136,6 +137,8 @@ class Bot(RoomManager):
             return get_footy_odds()
         elif cmd_type == "twitch":
             return get_all_live_twitch_streams()
+        elif cmd_type == "livenfl":
+            return get_live_nfl_games()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")

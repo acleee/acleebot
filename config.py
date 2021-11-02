@@ -151,7 +151,15 @@ TWITCH_BROADCASTERS = {
 TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
 TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
-# Rapid API Headers to send with every request
+# NFL
+NFL_GAMES_URL = "https://sportspage-feeds.p.rapidapi.com/games"
+NFL_HTTP_HEADERS = {
+    "content-type": "application/json",
+    "x-rapidapi-key": RAPID_API_KEY,
+    "x-rapidapi-host": "sportspage-feeds.p.rapidapi.com",
+}
+
+# Footy
 FOOTY_BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
 FOOTY_FIXTURES_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures"
 FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures/events"
