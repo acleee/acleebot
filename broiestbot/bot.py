@@ -235,35 +235,80 @@ class Bot(RoomManager):
                             postal=user_metadata.get("postal"),
                             emoji_flag=user_metadata.get("emoji_flag"),
                             status=user_metadata.get("status"),
-                            time_zone_name=user_metadata.get("time_zone_name"),
-                            time_zone_abbr=user_metadata.get("time_zone_abbr"),
-                            time_zone_offset=user_metadata.get("time_zone_offset"),
-                            time_zone_is_dst=user_metadata.get("time_zone_is_dst"),
-                            carrier=user_metadata.get("carrier"),
-                            carrier_name=user_metadata.get("carrier_name"),
-                            carrier_mnc=user_metadata.get("carrier_mnc"),
-                            carrier_mcc=user_metadata.get("carrier_mcc"),
-                            asn_asn=user_metadata.get("asn_asn"),
-                            asn_name=user_metadata.get("asn_name"),
-                            asn_domain=user_metadata.get("asn_domain"),
-                            asn_route=user_metadata.get("asn_route"),
-                            asn_type=user_metadata.get("asn_type"),
-                            time_zone_current_time=user_metadata.get(
-                                "time_zone_current_time"
-                            ),
-                            threat_is_tor=user_metadata.get("threat_is_tor"),
-                            threat_is_proxy=user_metadata.get("threat_is_proxy"),
-                            threat_is_anonymous=user_metadata.get(
-                                "threat_is_anonymous"
-                            ),
-                            threat_is_known_attacker=user_metadata.get(
-                                "threat_is_known_attacker"
-                            ),
-                            threat_is_known_abuser=user_metadata.get(
-                                "threat_is_known_abuser"
-                            ),
-                            threat_is_threat=user_metadata.get("threat_is_threat"),
-                            threat_is_bogon=user_metadata.get("threat_is_bogon"),
+                            time_zone_name=user_metadata.get("time_zone").get("name")
+                            if user_metadata.get("time_zone")
+                            else None,
+                            time_zone_abbr=user_metadata.get("time_zone").get("abbr")
+                            if user_metadata.get("time_zone")
+                            else None,
+                            time_zone_offset=user_metadata.get("time_zone").get(
+                                "offset"
+                            )
+                            if user_metadata.get("time_zone")
+                            else None,
+                            time_zone_is_dst=user_metadata.get("time_zone").get(
+                                "is_dst"
+                            )
+                            if user_metadata.get("time_zone")
+                            else None,
+                            carrier_name=user_metadata.get("carrier").get("name")
+                            if user_metadata.get("carrier")
+                            else None,
+                            carrier_mnc=user_metadata.get("carrier").get("mnc")
+                            if user_metadata.get("carrier")
+                            else None,
+                            carrier_mcc=user_metadata.get("carrier").get("mcc")
+                            if user_metadata.get("carrier")
+                            else None,
+                            asn_asn=user_metadata.get("asn").get("asn")
+                            if user_metadata.get("asn")
+                            else None,
+                            asn_name=user_metadata.get("asn").get("name")
+                            if user_metadata.get("asn")
+                            else None,
+                            asn_domain=user_metadata.get("asn").get("domain")
+                            if user_metadata.get("asn")
+                            else None,
+                            asn_route=user_metadata.get("asn").get("route")
+                            if user_metadata.get("asn")
+                            else None,
+                            asn_type=user_metadata.get("asn").get("type")
+                            if user_metadata.get("asn")
+                            else None,
+                            time_zone_current_time=user_metadata.get("time_zone").get(
+                                "current_time"
+                            )
+                            if user_metadata.get("time_zone")
+                            else None,
+                            threat_is_tor=user_metadata.get("threat").get("is_tor")
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_proxy=user_metadata.get("threat").get("is_proxy")
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_anonymous=user_metadata.get("threat").get(
+                                "is_anonymous"
+                            )
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_known_attacker=user_metadata.get("threat").get(
+                                "is_known_attacker"
+                            )
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_known_abuser=user_metadata.get("threat").get(
+                                "is_known_abuser"
+                            )
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_threat=user_metadata.get("threat").get(
+                                "is_threat"
+                            )
+                            if user_metadata.get("threat")
+                            else None,
+                            threat_is_bogon=user_metadata.get("threat").get("is_bogon")
+                            if user_metadata.get("threat")
+                            else None,
                         )
                     )
         except IncompatibleParameters as e:
