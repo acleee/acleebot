@@ -39,8 +39,10 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from clients import db, geo
+from clients import geo
 from config import CHATANGO_BLACKLISTED_USERS
+from database import session
+from database.models import Chat, ChatangoUser, Command
 from logger import LOGGER
 
 
@@ -160,6 +162,7 @@ class Bot(RoomManager):
         self.check_blacklisted_users(room, user_name, message)
         self._get_user_data(room_name, user, message)
         self.get_response(chat_message, room, user_name, message)
+        session.add(Chat(username=user_name, room=room_name, message=chat_message))
 
     def get_response(
         self, chat_message: str, room: Room, user_name: str, message: Message
@@ -210,16 +213,59 @@ class Bot(RoomManager):
         """
         try:
             if message.ip:
-                existing_user = db.fetch_user(room_name, user)
+                existing_user = (
+                    session.query(ChatangoUser)
+                    .filter(
+                        ChatangoUser.username == user.name.lower(),
+                        ChatangoUser.chatango_room == room_name,
+                    )
+                    .first()
+                )
                 if existing_user is None:
-                    ip_metadata = geo.lookup_user(message.ip)
-                    metadata_df = geo.save_metadata(room_name, user.name, ip_metadata)
-                    if type(metadata_df) != str:
-                        result, success = db.insert_data_from_dataframe(metadata_df)
-                        if success:
-                            LOGGER.success(result)
-                        else:
-                            LOGGER.error(result)
+                    user_metadata = geo.lookup_user(message.ip)
+                    session.add(
+                        ChatangoUser(
+                            username=user.name.lower(),
+                            chatango_room=room_name,
+                            city=user_metadata.get("city"),
+                            region=user_metadata.get("region"),
+                            country_name=user_metadata.get("country_name"),
+                            latitude=user_metadata.get("latitude"),
+                            longitude=user_metadata.get("longitude"),
+                            postal=user_metadata.get("postal"),
+                            emoji_flag=user_metadata.get("emoji_flag"),
+                            status=user_metadata.get("status"),
+                            time_zone_name=user_metadata.get("time_zone_name"),
+                            time_zone_abbr=user_metadata.get("time_zone_abbr"),
+                            time_zone_offset=user_metadata.get("time_zone_offset"),
+                            time_zone_is_dst=user_metadata.get("time_zone_is_dst"),
+                            carrier=user_metadata.get("carrier"),
+                            carrier_name=user_metadata.get("carrier_name"),
+                            carrier_mnc=user_metadata.get("carrier_mnc"),
+                            carrier_mcc=user_metadata.get("carrier_mcc"),
+                            asn_asn=user_metadata.get("asn_asn"),
+                            asn_name=user_metadata.get("asn_name"),
+                            asn_domain=user_metadata.get("asn_domain"),
+                            asn_route=user_metadata.get("asn_route"),
+                            asn_type=user_metadata.get("asn_type"),
+                            time_zone_current_time=user_metadata.get(
+                                "time_zone_current_time"
+                            ),
+                            threat_is_tor=user_metadata.get("threat_is_tor"),
+                            threat_is_proxy=user_metadata.get("threat_is_proxy"),
+                            threat_is_anonymous=user_metadata.get(
+                                "threat_is_anonymous"
+                            ),
+                            threat_is_known_attacker=user_metadata.get(
+                                "threat_is_known_attacker"
+                            ),
+                            threat_is_known_abuser=user_metadata.get(
+                                "threat_is_known_abuser"
+                            ),
+                            threat_is_threat=user_metadata.get("threat_is_threat"),
+                            threat_is_bogon=user_metadata.get("threat_is_bogon"),
+                        )
+                    )
         except IncompatibleParameters as e:
             LOGGER.warning(
                 f"Failed to save data for {user.name} due to IncompatibleParameters: {e}"
@@ -260,11 +306,11 @@ class Bot(RoomManager):
         cmd, args = self._parse_command(chat_message[1::])
         if cmd == "tune":  # Avoid clashes with Acleebot
             return None
-        command = db.fetch_cmd_response(cmd)
+        command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None:
             response = self.create_message(
-                command["type"],
-                command["response"],
+                command.type,
+                command.response,
                 command=cmd,
                 args=args,
                 room=room,
