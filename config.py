@@ -69,12 +69,10 @@ GOOGLE_BUCKET_URL = getenv("GOOGLE_BUCKET_URL")
 
 # Gifs
 GIPHY_API_KEY = getenv("GIPHY_API_KEY")
-GFYCAT_CLIENT_ID = getenv("GFYCAT_CLIENT_ID")
-GFYCAT_CLIENT_SECRET = getenv("GFYCAT_CLIENT_SECRET")
 REDGIFS_ACCESS_KEY = getenv("REDGIFS_ACCESS_KEY")
 GFYCAT_TOKEN_ENDPOINT = "https://api.gfycat.com/v1/oauth/token"
 REDGIFS_TOKEN_ENDPOINT = "https://weblogin.redgifs.com/oauth/webtoken"
-REDGIFS_IMAGE_ENDPOINT = "https://api.redgifs.com/v1/gfycats/search"
+REDGIFS_IMAGE_ENDPOINT = "https://api.redgifs.com/v2/gifs/search"
 
 # Stock
 IEX_API_TOKEN = getenv("IEX_API_TOKEN")

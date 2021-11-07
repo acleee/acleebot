@@ -10,9 +10,6 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from config import (
-    GFYCAT_CLIENT_ID,
-    GFYCAT_CLIENT_SECRET,
-    GFYCAT_TOKEN_ENDPOINT,
     REDGIFS_ACCESS_KEY,
     REDGIFS_IMAGE_ENDPOINT,
     REDGIFS_TOKEN_ENDPOINT,
@@ -116,30 +113,6 @@ def get_redgifs_gif(
             use_aliases=True,
         )
     return "https://i.imgur.com/oGMHkqT.jpg"
-
-
-@LOGGER.catch
-def gfycat_auth_token() -> Optional[str]:
-    """
-    Get auth token for gfycat.
-
-    :returns: Optional[str]
-    """
-    endpoint = GFYCAT_TOKEN_ENDPOINT
-    body = {
-        "grant_type": "client_credentials",
-        "client_id": GFYCAT_CLIENT_ID,
-        "client_secret": GFYCAT_CLIENT_SECRET,
-    }
-    headers = {"Content-Type": "application/json"}
-    try:
-        req = requests.post(endpoint, json=body, headers=headers)
-        if req.status_code == 200:
-            return req.json().get("access_token")
-    except HTTPError as e:
-        LOGGER.error(f"HTTPError when fetching gfycat auth token: {e.response.content}")
-    except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching gfycat auth token: {e}")
 
 
 def redgifs_auth_token() -> Optional[str]:
