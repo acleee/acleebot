@@ -11,7 +11,7 @@ from requests.exceptions import HTTPError
 
 from config import (
     REDGIFS_ACCESS_KEY,
-    REDGIFS_IMAGE_ENDPOINT,
+    REDGIFS_IMAGE_SEARCH_ENDPOINT,
     REDGIFS_TOKEN_ENDPOINT,
 )
 from logger import LOGGER
@@ -51,17 +51,18 @@ def get_redgifs_gif(
     night_mode = is_after_dark()
     if (after_dark_only and night_mode) or after_dark_only is False:
         token = redgifs_auth_token()
-        endpoint = REDGIFS_IMAGE_ENDPOINT
-        params = {"search_text": query, "count": 100, "start": 0, "order": "trending"}
+        endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
+        params = {"search_text": query, "order": "trending"}
         headers = {"Authorization": f"Bearer {token}"}
         try:
             req = requests.get(endpoint, params=params, headers=headers)
             if req.status_code == 200:
-                results = req.json().get("gfycats")
+                results = req.json().get("gifs")
                 if results:
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
-                    image_url = image_json.get("max2mbGif")
+                    image_url = image_json["urls"].get("gif")
+                    tags = ", #".join(image_json["tags"])
                     if image_url is not None:
                         image_status = requests.get(image_url)
                         if image_status.status_code != 200:
@@ -70,7 +71,7 @@ def get_redgifs_gif(
                                 return get_redgifs_gif(
                                     query, username, after_dark_only=False
                                 )
-                        return image_url
+                        return f"{image_url} \n #{tags}"
             else:
                 LOGGER.error(
                     f"Error {req.status_code} fetching NSFW gif: {req.content}"
@@ -125,9 +126,13 @@ def redgifs_auth_token() -> Optional[str]:
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {"Content-Type": "application/json"}
     try:
-        req = requests.post(endpoint, json=body, headers=headers)
-        if req.status_code == 200:
-            return req.json()["access_token"]
+        resp = requests.post(endpoint, json=body, headers=headers)
+        if resp.status_code == 200:
+            return resp.json().get("access_token")
+        else:
+            LOGGER.error(
+                f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}"
+            )
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError when fetching redgifs auth token: {e.response.content}"

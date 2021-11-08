@@ -72,7 +72,7 @@ GIPHY_API_KEY = getenv("GIPHY_API_KEY")
 REDGIFS_ACCESS_KEY = getenv("REDGIFS_ACCESS_KEY")
 GFYCAT_TOKEN_ENDPOINT = "https://api.gfycat.com/v1/oauth/token"
 REDGIFS_TOKEN_ENDPOINT = "https://weblogin.redgifs.com/oauth/webtoken"
-REDGIFS_IMAGE_ENDPOINT = "https://api.redgifs.com/v2/gifs/search"
+REDGIFS_IMAGE_SEARCH_ENDPOINT = "https://api.redgifs.com/v2/gifs/search"
 
 # Stock
 IEX_API_TOKEN = getenv("IEX_API_TOKEN")
