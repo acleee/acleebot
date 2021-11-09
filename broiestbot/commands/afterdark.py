@@ -48,16 +48,16 @@ def get_redgifs_gif(
 
     :returns: Optional[str]
     """
-    night_mode = is_after_dark()
-    if (after_dark_only and night_mode) or after_dark_only is False:
-        token = redgifs_auth_token()
-        endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
-        params = {"search_text": query, "order": "trending"}
-        headers = {"Authorization": f"Bearer {token}"}
-        try:
-            req = requests.get(endpoint, params=params, headers=headers)
-            if req.status_code == 200:
-                results = req.json().get("gifs")
+    try:
+        night_mode = is_after_dark()
+        if (after_dark_only and night_mode) or after_dark_only is False:
+            token = redgifs_auth_token()
+            endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
+            params = {"search_text": query, "order": "trending"}
+            headers = {"Authorization": f"Bearer {token}"}
+            resp = requests.get(endpoint, params=params, headers=headers)
+            if resp.status_code == 200:
+                results = resp.json().get("gifs")
                 if results:
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
@@ -68,52 +68,47 @@ def get_redgifs_gif(
                         if image_status.status_code != 200:
                             sleep(2)
                             for i in range(3):
+                                LOGGER.warn(
+                                    f"`After dark` failed with status code {resp.status_code}. Retrying {i} time..."
+                                )
                                 return get_redgifs_gif(
                                     query, username, after_dark_only=False
                                 )
                         return f"{image_url} \n #{tags}"
-            else:
+                elif username == "thegreatpizza":
+                    return emojize(
+                        f":pizza: :heart: wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( :heart: :pizza:",
+                        use_aliases=True,
+                    )
+                else:
+                    return emojize(
+                        f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
+                        use_aliases=True,
+                    )
                 LOGGER.error(
-                    f"Error {req.status_code} fetching NSFW gif: {req.content}"
+                    f"Error {resp.status_code} fetching NSFW gif: {resp.content}"
                 )
-        except HTTPError as e:
-            LOGGER.warning(
-                f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"
-            )
-            return emojize(
-                f":warning: yea nah idk wtf ur searching for :warning:",
-                use_aliases=True,
-            )
-        except IndexError as e:
-            LOGGER.warning(f"IndexError while fetching nsfw image for `{query}`: {e}")
-            return emojize(
-                f":warning: yea nah idk wtf ur searching for :warning:",
-                use_aliases=True,
-            )
-        except KeyError as e:
-            LOGGER.warning(f"KeyError while fetching nsfw image for `{query}`: {e}")
-            return emojize(
-                f":warning: yea nah idk wtf ur searching for :warning:",
-                use_aliases=True,
-            )
-        except Exception as e:
-            LOGGER.warning(
-                f"Unexpected error while fetching nsfw image for `{query}`: {e}"
-            )
-            return emojize(
-                f":warning: dude u must b a freak cuz that just broke bot :warning:",
-                use_aliases=True,
-            )
-        if username == "thegreatpizza":
-            return emojize(
-                f":pizza: :heart: wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( :heart: :pizza:",
-                use_aliases=True,
-            )
+            return "https://i.imgur.com/oGMHkqT.jpg"
+    except HTTPError as e:
+        LOGGER.warning(
+            f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"
+        )
         return emojize(
-            f":warning: yo u must b a freak tf r u even searching foughr jfc :warning:",
+            f":warning: yea nah idk wtf ur searching for :warning:",
             use_aliases=True,
         )
-    return "https://i.imgur.com/oGMHkqT.jpg"
+    except IndexError as e:
+        LOGGER.warning(f"IndexError while fetching nsfw image for `{query}`: {e}")
+        return emojize(
+            f":warning: yea nah idk wtf ur searching for :warning:",
+            use_aliases=True,
+        )
+    except Exception as e:
+        LOGGER.warning(f"Unexpected error while fetching nsfw image for `{query}`: {e}")
+        return emojize(
+            f":warning: dude u must b a freak cuz that just broke bot :warning:",
+            use_aliases=True,
+        )
 
 
 def redgifs_auth_token() -> Optional[str]:
