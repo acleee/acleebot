@@ -87,10 +87,9 @@ def get_top_crypto() -> str:
             top_coins = "\n\n\n"
             coins = resp.json().get("data")
             for i, coin in enumerate(coins):
-                top_coins += f"<b>{coin['name']} ({coin['symbol']})</b>\n"
-                top_coins += f"24h change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n "
-                top_coins += f"7d change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
-                top_coins += f"30d change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_30d'])}%\n"
+                top_coins += f"<b>{coin['name']} ({coin['symbol']})</b> ${'{:.3f}'.format(coin['quote']['USD']['price'])}\n"
+                top_coins += f"1d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n"
+                top_coins += f"7d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
                 if i < len(coins):
                     top_coins += "\n"
             return top_coins
