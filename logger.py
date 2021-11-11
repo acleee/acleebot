@@ -24,20 +24,28 @@ def json_formatter(record: dict):
 
         :returns: str
         """
-        chat_data = re.findall(r"\[(\S+)\]", log["message"])
-        if bool(chat_data):
-            room = chat_data[0]
-            user = chat_data[1]
-            ip = chat_data[2]
-            subset = {
-                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                "message": log["message"].split(": ", 1)[1],
-                "level": log["level"].name,
-                "room": room,
-                "user": user,
-                "ip": ip,
-            }
-            return json.dumps(subset)
+        try:
+            chat_data = re.findall(r"\[(\S+)\]", log["message"])
+            if bool(chat_data):
+                room = chat_data[0]
+                user = chat_data[1]
+                ip = chat_data[2]
+                subset = {
+                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                    "message": log["message"].split(": ", 1)[1],
+                    "level": log["level"].name,
+                    "room": room,
+                    "user": user,
+                    "ip": ip,
+                }
+                return json.dumps(subset)
+        except IndexError:
+            chat_data = re.findall(r"\[(\S+)\]", log["message"])
+            if bool(chat_data):
+                LOGGER.warning(
+                    f"Failed to get IP in room {chat_data[0]}; falling back to regular log."
+                )
+                serialize_event(log)
 
     def serialize_event(log: dict) -> str:
         """
