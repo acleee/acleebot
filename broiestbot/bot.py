@@ -30,6 +30,7 @@ from broiestbot.commands import (
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
+    get_top_crypto,
     get_urban_definition,
     giphy_image_search,
     liga_standings,
@@ -79,8 +80,8 @@ class Bot(RoomManager):
         """
         if cmd_type == "basic":
             return basic_message(content)
-        elif cmd_type == "crypto" and not args:
-            return get_crypto(command)
+        elif cmd_type == "crypto":
+            return get_top_crypto()
         elif cmd_type == "random":
             return random_image(content)
         elif cmd_type == "stock" and args:

@@ -1,10 +1,16 @@
 """Fetch crypto or stock market data."""
 import chart_studio
+import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
 from clients import cch, sch
-from config import PLOTLY_API_KEY, PLOTLY_USERNAME
+from config import (
+    COINMARKETCAP_API_KEY,
+    COINMARKETCAP_LATEST_ENDPOINT,
+    PLOTLY_API_KEY,
+    PLOTLY_USERNAME,
+)
 from logger import LOGGER
 
 # Plotly
@@ -59,4 +65,44 @@ def get_stock(symbol: str) -> str:
         LOGGER.error(f"Unexpected error while fetching stock price for `{symbol}`: {e}")
         return emojize(
             f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
+        )
+
+
+def get_top_crypto() -> str:
+    """
+    Fetch top 10 crypto coin performance.
+
+    :returns: str
+    """
+    try:
+        params = {"start": "1", "limit": "10", "convert": "USD"}
+        headers = {
+            "Accepts": "application/json",
+            "X-CMC_PRO_API_KEY": COINMARKETCAP_API_KEY,
+        }
+        resp = requests.get(
+            COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers
+        )
+        if resp.status_code == 200:
+            top_coins = "\n\n\n"
+            coins = resp.json().get("data")
+            for i, coin in enumerate(coins):
+                top_coins += f"<b>{coin['name']} ({coin['symbol']})</b>\n"
+                top_coins += f"24h change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n "
+                top_coins += f"7d change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
+                top_coins += f"30d change of {'{:.3f}'.format(coin['quote']['USD']['percent_change_30d'])}%\n"
+                if i < len(coins):
+                    top_coins += "\n"
+            return top_coins
+    except HTTPError as e:
+        LOGGER.warning(f"HTTPError while fetching top coins: {e.response.content}")
+        return emojize(
+            f":warning: FUCK the bot broke :warning:",
+            use_aliases=True,
+        )
+    except Exception as e:
+        LOGGER.warning(f"Unexpected exception while fetching top coins: {e}")
+        return emojize(
+            f":warning: FUCK the bot broke :warning:",
+            use_aliases=True,
         )
