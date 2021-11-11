@@ -54,7 +54,7 @@ def start_bot_production_mode(user: str, password: str):
         p = Process(
             target=Bot.easy_start,
             kwargs={
-                "rooms": room,
+                "rooms": [room],
                 "name": user,
                 "password": password,
             },
