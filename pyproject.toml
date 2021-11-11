@@ -52,7 +52,7 @@ black = "^21.9b0"
 isort = "^5.9.3"
 
 [tool.poetry.scripts]
-run = "broiestbot:init_bot"
+run = "wsgi:init_bot"
 
 [tool.poetry.urls]
 issues = "https://github.com/toddbirchard/broiestbot/issues"
