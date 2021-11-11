@@ -1,10 +1,11 @@
 """Initialize bot."""
+from multiprocessing import Process
 from typing import List
 
 from datadog import initialize
 
 from broiestbot.bot import Bot
-from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS, ENVIRONMENT
+from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS
 
 
 def join_rooms(rooms: List[str]):
@@ -13,20 +14,45 @@ def join_rooms(rooms: List[str]):
 
     :param List[str] rooms: Chatango rooms to join.
     """
-    Bot.easy_start(
-        rooms=rooms,
-        name=CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
-        password=CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
-    )
+    for room in rooms:
+        p = Process(
+            target=Bot.easy_start,
+            kwargs={
+                "rooms": room,
+                "name": CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
+                "password": CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
+            },
+        )
+        p.start()
+        p.join()
 
 
-def start_bot():
+def start_bot_development_mode():
     """Initialize bot depending on environment."""
-    if ENVIRONMENT == "development":
-        print("Starting in dev mode...")
-        join_rooms([CHATANGO_TEST_ROOM])
-    else:
-        options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
-        initialize(**options)
-        print(f'Joining {", ".join(CHATANGO_ROOMS)}')
-        join_rooms(CHATANGO_ROOMS)
+    p = Process(
+        target=Bot.easy_start,
+        kwargs={
+            "rooms": [CHATANGO_TEST_ROOM],
+            "name": CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
+            "password": CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
+        },
+    )
+    p.start()
+    p.join()
+
+
+def start_bot_production_mode():
+    options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
+    initialize(**options)
+    print(f'Joining {", ".join(CHATANGO_ROOMS)}')
+    for room in CHATANGO_ROOMS:
+        p = Process(
+            target=Bot.easy_start,
+            kwargs={
+                "rooms": room,
+                "name": CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
+                "password": CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
+            },
+        )
+        p.start()
+        p.join()
