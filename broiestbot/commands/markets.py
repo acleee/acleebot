@@ -84,15 +84,8 @@ def get_top_crypto() -> str:
             COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers
         )
         if resp.status_code == 200:
-            top_coins = "\n\n\n"
             coins = resp.json().get("data")
-            for i, coin in enumerate(coins):
-                top_coins += f"<b>{coin['name']} ({coin['symbol']})</b> ${'{:.3f}'.format(coin['quote']['USD']['price'])}\n"
-                top_coins += f"1d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n"
-                top_coins += f"7d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
-                if i < len(coins):
-                    top_coins += "\n"
-            return top_coins
+            return format_crypto_response(coins)
     except HTTPError as e:
         LOGGER.warning(f"HTTPError while fetching top coins: {e.response.content}")
         return emojize(
@@ -105,3 +98,26 @@ def get_top_crypto() -> str:
             f":warning: FUCK the bot broke :warning:",
             use_aliases=True,
         )
+
+
+def format_crypto_response(coins: dict):
+    """
+    Format a response depicting top-10 coin performance by market cap.
+
+    :params dict coins: Performance of top 10 cryptocurrencies.
+
+    :returns: dict
+    """
+    try:
+        top_coins = "\n\n\n"
+        for i, coin in enumerate(coins):
+            top_coins += f"<b>{coin['name']} ({coin['symbol']})</b> ${'{:.3f}'.format(coin['quote']['USD']['price'])}\n"
+            top_coins += f"1d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n"
+            top_coins += f"7d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
+            if i < len(coins):
+                top_coins += "\n"
+        return top_coins
+    except KeyError as e:
+        LOGGER.error(f"KeyError while formatting top cryptocurrencies: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected exception while formatting top cryptocurrencies: {e}")

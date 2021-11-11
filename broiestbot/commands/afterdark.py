@@ -81,14 +81,14 @@ def get_redgifs_gif(
                         use_aliases=True,
                     )
                 else:
+                    LOGGER.error(
+                        f"Error {resp.status_code} fetching NSFW gif: {resp.content}"
+                    )
                     return emojize(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
                         use_aliases=True,
                     )
-                LOGGER.error(
-                    f"Error {resp.status_code} fetching NSFW gif: {resp.content}"
-                )
-            return "https://i.imgur.com/oGMHkqT.jpg"
+        return "https://i.imgur.com/oGMHkqT.jpg"
     except HTTPError as e:
         LOGGER.warning(
             f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"
