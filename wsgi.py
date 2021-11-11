@@ -2,9 +2,11 @@
 from broiestbot import join_rooms
 from config import CHATANGO_USERS, ENVIRONMENT
 
-if __name__ == "__main__":
-    join_rooms(
+init_bot = join_rooms(
         ENVIRONMENT,
         CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
         CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
     )
+
+if __name__ == "__main__":
+    init_bot

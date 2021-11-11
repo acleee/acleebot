@@ -1,6 +1,5 @@
 """Initialize bot."""
 from multiprocessing import Process
-from typing import List
 
 from datadog import initialize
 
