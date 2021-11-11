@@ -31,7 +31,7 @@ def start_bot_development_mode(user: str, password: str):
     p = Process(
         target=Bot.easy_start,
         kwargs={
-            "rooms": [CHATANGO_TEST_ROOM],
+            "rooms": CHATANGO_TEST_ROOM,
             "name": user,
             "password": password,
         },
