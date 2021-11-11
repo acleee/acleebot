@@ -1,9 +1,10 @@
 """Bot application entry point."""
-from broiestbot import start_bot_development_mode, start_bot_production_mode
-from config import ENVIRONMENT
+from broiestbot import join_rooms
+from config import CHATANGO_USERS, ENVIRONMENT
 
 if __name__ == "__main__":
-    if ENVIRONMENT == "development":
-        start_bot_development_mode()
-    else:
-        start_bot_production_mode()
+    join_rooms(
+        ENVIRONMENT,
+        CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
+        CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
+    )
