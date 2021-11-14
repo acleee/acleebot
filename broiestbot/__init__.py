@@ -1,6 +1,4 @@
 """Initialize bot."""
-from multiprocessing import Process
-
 from datadog import initialize
 
 from broiestbot.bot import Bot
@@ -30,16 +28,7 @@ def start_bot_development_mode(user: str, password: str):
     :param str user: Chatango username to authenticate as.
     :param str password: Chatango password for authentication.
     """
-    p = Process(
-        target=Bot.easy_start,
-        kwargs={
-            "rooms": [CHATANGO_TEST_ROOM],
-            "name": user,
-            "password": password,
-        },
-    )
-    p.start()
-    p.join()
+    Bot.easy_start(rooms=[CHATANGO_TEST_ROOM], name=user, password=password)
 
 
 def start_bot_production_mode(user: str, password: str):
@@ -52,14 +41,4 @@ def start_bot_production_mode(user: str, password: str):
     options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
     initialize(**options)
     print(f'Joining {", ".join(CHATANGO_ROOMS)}')
-    for room in CHATANGO_ROOMS:
-        p = Process(
-            target=Bot.easy_start,
-            kwargs={
-                "rooms": [room],
-                "name": user,
-                "password": password,
-            },
-        )
-        p.start()
-        p.join()
+    Bot.easy_start(rooms=[CHATANGO_ROOMS], name=user, password=password)
