@@ -1982,9 +1982,8 @@ class RoomManager:
         :param Message message: User message that got deleted.
         """
         if user.name.lower() != CHATANGO_USERS.keys():
-            LOGGER.log(
-                "MESSAGE",
-                f"[{room.room_name}] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}",
+            LOGGER.info(
+                f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}",
             )
 
     def on_mod_change(self, room):
@@ -2003,9 +2002,8 @@ class RoomManager:
         :param Room room: Chatango room where user was modded.
         :param User user: User promoted to mod.
         """
-        LOGGER.log(
-            "MESSAGE"
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
         )
 
     @staticmethod
@@ -2016,9 +2014,8 @@ class RoomManager:
         :param Room room: Chatango room where user was demodded.
         :param User user: User demoted from mod.
         """
-        LOGGER.log(
-            "MESSAGE",
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} was demodded in {room.room_name}.",
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} was demodded in {room.room_name}.",
         )
 
     def on_message(self, room, user, message):
@@ -2034,7 +2031,9 @@ class RoomManager:
                 f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}"
             )
         else:
-            LOGGER.log("MESSAGE", f"[{room.room_name}] [{user.name}]: {message.body}")
+            LOGGER.info(
+                f"[{room.room_name}] [no IP address] [{user.name}]: {message.body}"
+            )
 
     def on_history_message(self, room, user, message):
         """
@@ -2055,9 +2054,8 @@ class RoomManager:
         :param User user: Recently joined user.
         :param str puid: Personal unique id for a user.
         """
-        LOGGER.log(
-            "MESSAGE",
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} joined {room.room_name}.",
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} joined {room.room_name}.",
         )
 
     @staticmethod
@@ -2069,9 +2067,8 @@ class RoomManager:
         :param User user: Recently departed user.
         :param str puid: Personal unique id for a user.
         """
-        LOGGER.log(
-            "MESSAGE",
-            f"[{room.room_name}] [{user.name.title()}]: {user.name} left {room.room_name}.",
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} left {room.room_name}.",
         )
 
     def on_raw(self, room, raw):
@@ -2112,9 +2109,8 @@ class RoomManager:
         :param User user: Moderator who unbanned user.
         :param User target: User that got unbanned.
         """
-        LOGGER.log(
-            "MESSAGE",
-            f"[{room.room_name}] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}.",
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}.",
         )
 
     @staticmethod
@@ -2126,9 +2122,8 @@ class RoomManager:
         :param User user: Moderator who unbanned user.
         :param User target: User that got unbanned.
         """
-        LOGGER.log(
-            "MESSAGE",
-            f"[{room.room_name}] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}.",
+        LOGGER.info(
+            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}.",
         )
 
     def on_banlist_update(self, room: Room):
@@ -2188,12 +2183,9 @@ class RoomManager:
         """
         Called when a private message is received.
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: User who sent message.
-        :type user: User
-        :param body: Received message.
-        :type body: Message
+        :param PM pm: Private message.
+        :param User user: User who sent message.
+        :param Message body: Received message.
         """
         pass
 
@@ -2234,11 +2226,11 @@ class RoomManager:
 
     def on_pm_contact_remove(self, pm, user):
         """
-                Triggered user is removed as a friend from a private message.
+        Triggered user is removed as a friend from a private message.
 
-                :param PM pm: Private message.
-                :param User user: Newly removed contact.
-        ="""
+        :param PM pm: Private message.
+        :param User user: Newly removed contact.
+        """
         pass
 
     def on_pm_block(self, pm: PM, user):
@@ -2254,10 +2246,8 @@ class RoomManager:
         """
         Called when successfully unblock a user
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Unblocked user.
-        :type user: User
+        :param PM pm: Private message.
+        :param User user: Unblocked user.
         """
         pass
 
@@ -2301,12 +2291,8 @@ class RoomManager:
         """
         Defer a function to a thread and callback the return value.
 
-        :type callback: function
-        :param callback: function to call on completion
-        :type args: tuple or list
-        :param args: arguments to get supplied to the callback
-        :type func: function
-        :param func: function to call
+        :param Callable callback: function to call on completion
+        :param Callable func: function to call
         """
 
         def f(func, callback, *args, **kw):
@@ -2338,13 +2324,10 @@ class RoomManager:
         Call a function after at least timeout seconds with specified
         arguments.
 
-        :type timeout: int
-        :param timeout: timeout
-        :type func: function
-        :param func: function to call
+        :param int timeout: Number of seconds prior to executing a passed function.
+        :param Callable func: Function to call.
 
-        @rtype: _Task
-        @return: object representing the task
+        :returns: Task object wrapping the function.
         """
         task = self._Task()
         task.mgr = self
@@ -2362,13 +2345,10 @@ class RoomManager:
         Call a function at least every timeout seconds with specified
         arguments.
 
-        :type timeout: int
-        :param timeout: timeout
-        :type func: function
-        :param func: function to call
+        :param int timeout: timeout
+        :param Callable func: function to call
 
-        @rtype: _Task
-        @return: object representing the task
+        :returns: Task object wrapping the function.
         """
         task = self._Task()
         task.mgr = self
@@ -2385,8 +2365,7 @@ class RoomManager:
         """
         Cancel a task.
 
-        :type task: _Task
-        :param task: task to cancel
+        :param _Task task: task to cancel
         """
         self._tasks.remove(task)
 
@@ -2446,12 +2425,9 @@ class RoomManager:
         """
         Prompts the user for missing info, then starts.
 
-        :param rooms: rooms to join
-        :type rooms: list
-        :param name: name to join as ("" = None, None = unspecified)
-        :type name: str
-        :param password: password to join with ("" = None, None = unspecified)
-        :type password: str
+        :param List[Room] rooms: rooms to join
+        :param str name: Username to join as ("" = None, None = unspecified)
+        :param str password: User's password to join with ("" = None, None = unspecified)
         """
         if not rooms:
             rooms = input("Room names separated by semicolons: ").split(";")
@@ -2505,8 +2481,7 @@ class RoomManager:
         """
         Set name color.
 
-        :type color3x: str
-        :param color3x: a 3-char RGB hex code for the color
+        :param str color3x: a 3-char RGB hex code for the color
         """
         self.user._name_color = color3x
 
@@ -2514,8 +2489,7 @@ class RoomManager:
         """
         Set font color.
 
-        :type color3x: str
-        :param color3x: a 3-char RGB hex code for the color
+        :param str color3x: a 3-char RGB hex code for the color
         """
         self.user._font_color = color3x
 
@@ -2523,8 +2497,7 @@ class RoomManager:
         """
         Set font face/family.
 
-        :type face: str
-        :param face: the font face
+        :param str face: the font face
         """
         self.user._font_face = face
 
@@ -2664,10 +2637,8 @@ class Message:
         """
         Attach the Message to a message id.
 
-        :param room: Chatango room to attach message to.
-        :type room: Room
-        :param msgid: message id
-        :type msgid: str
+        :param Room room: Chatango room to attach message to.
+        :param str msgid: message id
         """
         if self._msgid is None:
             self._room = room
