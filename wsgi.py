@@ -1,8 +1,7 @@
 """Bot application entry point."""
-from broiestbot import join_rooms
+from broiestbot import start_bot
 
-init_bot = join_rooms()
-
+init_bot = start_bot()
 
 if __name__ == "__main__":
-    join_rooms()
+    start_bot()

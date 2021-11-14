@@ -1811,11 +1811,9 @@ class RoomManager:
         """
         Join a room or return None if already joined.
 
-        :type room: str
-        :param room: room to join
+        :param str room: Name of Chatango room to join.
 
-        @rtype: Room or None
-        @return: True or nothing
+        :returns: True or None depending on if Room is joined
         """
         if room not in self._rooms:
             self._rooms_queue.put(room)
