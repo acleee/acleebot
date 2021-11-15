@@ -85,7 +85,7 @@ def get_top_crypto() -> str:
         )
         if resp.status_code == 200:
             coins = resp.json().get("data")
-            return format_crypto_response(coins)
+            return format_top_crypto_response(coins)
     except HTTPError as e:
         LOGGER.warning(f"HTTPError while fetching top coins: {e.response.content}")
         return emojize(
@@ -100,7 +100,7 @@ def get_top_crypto() -> str:
         )
 
 
-def format_crypto_response(coins: dict):
+def format_top_crypto_response(coins: dict):
     """
     Format a response depicting top-10 coin performance by market cap.
 

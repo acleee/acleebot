@@ -80,14 +80,14 @@ class Bot(RoomManager):
         """
         if cmd_type == "basic":
             return basic_message(content)
-        elif cmd_type == "crypto":
-            return get_top_crypto()
         elif cmd_type == "random":
             return random_image(content)
         elif cmd_type == "stock" and args:
             return get_stock(args)
         elif cmd_type == "storage":
             return fetch_image_from_gcs(content)
+        elif cmd_type == "crypto":
+            get_crypto(content)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
@@ -142,6 +142,8 @@ class Bot(RoomManager):
             return get_all_live_twitch_streams()
         elif cmd_type == "livenfl":
             return get_live_nfl_games()
+        elif cmd_type == "topcrypto":
+            return get_top_crypto()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
