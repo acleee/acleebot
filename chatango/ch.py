@@ -1981,7 +1981,7 @@ class RoomManager:
         """
         if user.name.lower() != CHATANGO_USERS.keys():
             LOGGER.info(
-                f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} had message deleted from {room.room_name}: {message.body}",
+                f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} had message deleted from {room.room_name}: {message.body}",
             )
 
     def on_mod_change(self, room):
@@ -2001,7 +2001,7 @@ class RoomManager:
         :param User user: User promoted to mod.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} was modded in {room.room_name}."
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}."
         )
 
     @staticmethod
@@ -2013,7 +2013,7 @@ class RoomManager:
         :param User user: User demoted from mod.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} was demodded in {room.room_name}.",
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was demodded in {room.room_name}.",
         )
 
     def on_message(self, room, user, message):
@@ -2030,7 +2030,7 @@ class RoomManager:
             )
         else:
             LOGGER.info(
-                f"[{room.room_name}] [no IP address] [{user.name}]: {message.body}"
+                f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}"
             )
 
     def on_history_message(self, room, user, message):
@@ -2053,7 +2053,7 @@ class RoomManager:
         :param str puid: Personal unique id for a user.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} joined {room.room_name}.",
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} joined {room.room_name}.",
         )
 
     @staticmethod
@@ -2066,17 +2066,15 @@ class RoomManager:
         :param str puid: Personal unique id for a user.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {user.name} left {room.room_name}.",
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} left {room.room_name}.",
         )
 
-    def on_raw(self, room, raw):
+    def on_raw(self, room: Room, raw):
         """
         Called before any command parsing occurs.
 
-        :param room: Chatango room where the event occurred
-        :type room: Room
-        :param raw: Raw message data
-        :type raw: str
+        :param Room room: Chatango room where the event occurred.
+        :param str raw: Raw message data
         """
         pass
 
@@ -2108,7 +2106,7 @@ class RoomManager:
         :param User target: User that got unbanned.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {target.name} was banned from {room.room_name} by {user.name}.",
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {target.name} was banned from {room.room_name} by {user.name}.",
         )
 
     @staticmethod
@@ -2121,7 +2119,7 @@ class RoomManager:
         :param User target: User that got unbanned.
         """
         LOGGER.info(
-            f"[{room.room_name}] [no IP address] [{user.name.title()}]: {target.name} was unbanned from {room.room_name} by {user.name}.",
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {target.name} was unbanned from {room.room_name} by {user.name}.",
         )
 
     def on_banlist_update(self, room: Room):
@@ -2141,12 +2139,11 @@ class RoomManager:
         """
         pass
 
-    def on_pm_connect(self, pm):
+    def on_pm_connect(self, pm: PM):
         """
         Triggered when a direct message is received.
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
@@ -2154,8 +2151,7 @@ class RoomManager:
         """
         Called when disconnected from the pm
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
@@ -2163,8 +2159,7 @@ class RoomManager:
         """
         Called when disconnected from the pm
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
@@ -2172,8 +2167,7 @@ class RoomManager:
         """
         Called when sending a ping to the pm
 
-        :param pm: Private message.
-        :type pm: PM
+        :param PM pm: Private message.
         """
         pass
 
