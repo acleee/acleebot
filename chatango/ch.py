@@ -2247,10 +2247,8 @@ class RoomManager:
         """
         Called when a user from the contact come online
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Contact that came online.
-        :type user: User
+        :param PM pm: Private message.
+        :param User user: Contact that came online.
         """
         pass
 
@@ -2258,10 +2256,8 @@ class RoomManager:
         """
         Called when a user from the contact go offline
 
-        :param pm: Private message.
-        :type pm: PM
-        :param user: Contact that went offline.
-        :type user: User
+        :param PM pm: Private message.
+        :param User user: Contact that went offline.
         """
         pass
 
@@ -2269,10 +2265,8 @@ class RoomManager:
         """
         Called on every room-based event.
 
-        :param room: Chatango room where the event occurred.
-        :type room: Room
-        :param evt: Any given event.
-        :type evt: str
+        :param Room room: Chatango room where the event occurred.
+        :param str evt: Any given event.
         """
         pass
 
