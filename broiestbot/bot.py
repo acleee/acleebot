@@ -87,7 +87,7 @@ class Bot(RoomManager):
         elif cmd_type == "storage":
             return fetch_image_from_gcs(content)
         elif cmd_type == "crypto":
-            get_crypto(content)
+            return get_crypto(content)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
@@ -162,12 +162,12 @@ class Bot(RoomManager):
         chat_message = message.body.lower()
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
-        self.check_blacklisted_users(room, user_name, message)
+        self._check_blacklisted_users(room, user_name, message)
         self._get_user_data(room_name, user, message)
-        self.get_response(chat_message, room, user_name, message)
+        self._process_command(chat_message, room, user_name, message)
         session.add(Chat(username=user_name, room=room_name, message=chat_message))
 
-    def get_response(
+    def _process_command(
         self, chat_message: str, room: Room, user_name: str, message: Message
     ) -> None:
         if re.match(r"^!!.+", chat_message):
@@ -226,6 +226,7 @@ class Bot(RoomManager):
                 )
                 if existing_user is None:
                     user_metadata = geo.lookup_user(message.ip)
+                    # fmt: off
                     session.add(
                         ChatangoUser(
                             username=user.name.lower(),
@@ -238,82 +239,29 @@ class Bot(RoomManager):
                             postal=user_metadata.get("postal"),
                             emoji_flag=user_metadata.get("emoji_flag"),
                             status=user_metadata.get("status"),
-                            time_zone_name=user_metadata.get("time_zone").get("name")
-                            if user_metadata.get("time_zone")
-                            else None,
-                            time_zone_abbr=user_metadata.get("time_zone").get("abbr")
-                            if user_metadata.get("time_zone")
-                            else None,
-                            time_zone_offset=user_metadata.get("time_zone").get(
-                                "offset"
-                            )
-                            if user_metadata.get("time_zone")
-                            else None,
-                            time_zone_is_dst=user_metadata.get("time_zone").get(
-                                "is_dst"
-                            )
-                            if user_metadata.get("time_zone")
-                            else None,
-                            carrier_name=user_metadata.get("carrier").get("name")
-                            if user_metadata.get("carrier")
-                            else None,
-                            carrier_mnc=user_metadata.get("carrier").get("mnc")
-                            if user_metadata.get("carrier")
-                            else None,
-                            carrier_mcc=user_metadata.get("carrier").get("mcc")
-                            if user_metadata.get("carrier")
-                            else None,
-                            asn_asn=user_metadata.get("asn").get("asn")
-                            if user_metadata.get("asn")
-                            else None,
-                            asn_name=user_metadata.get("asn").get("name")
-                            if user_metadata.get("asn")
-                            else None,
-                            asn_domain=user_metadata.get("asn").get("domain")
-                            if user_metadata.get("asn")
-                            else None,
-                            asn_route=user_metadata.get("asn").get("route")
-                            if user_metadata.get("asn")
-                            else None,
-                            asn_type=user_metadata.get("asn").get("type")
-                            if user_metadata.get("asn")
-                            else None,
-                            time_zone_current_time=user_metadata.get("time_zone").get(
-                                "current_time"
-                            )
-                            if user_metadata.get("time_zone")
-                            else None,
-                            threat_is_tor=user_metadata.get("threat").get("is_tor")
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_proxy=user_metadata.get("threat").get("is_proxy")
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_anonymous=user_metadata.get("threat").get(
-                                "is_anonymous"
-                            )
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_known_attacker=user_metadata.get("threat").get(
-                                "is_known_attacker"
-                            )
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_known_abuser=user_metadata.get("threat").get(
-                                "is_known_abuser"
-                            )
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_threat=user_metadata.get("threat").get(
-                                "is_threat"
-                            )
-                            if user_metadata.get("threat")
-                            else None,
-                            threat_is_bogon=user_metadata.get("threat").get("is_bogon")
-                            if user_metadata.get("threat")
-                            else None,
+                            time_zone_name=user_metadata.get("time_zone").get("name") if user_metadata.get("time_zone") else None,
+                            time_zone_abbr=user_metadata.get("time_zone").get("abbr") if user_metadata.get("time_zone") else None,
+                            time_zone_offset=user_metadata.get("time_zone").get("offset") if user_metadata.get("time_zone") else None,
+                            time_zone_is_dst=user_metadata.get("time_zone").get("is_dst") if user_metadata.get("time_zone") else None,
+                            carrier_name=user_metadata.get("carrier").get("name") if user_metadata.get("carrier") else None,
+                            carrier_mnc=user_metadata.get("carrier").get("mnc") if user_metadata.get("carrier") else None,
+                            carrier_mcc=user_metadata.get("carrier").get("mcc") if user_metadata.get("carrier") else None,
+                            asn_asn=user_metadata.get("asn").get("asn") if user_metadata.get("asn") else None,
+                            asn_name=user_metadata.get("asn").get("name") if user_metadata.get("asn") else None,
+                            asn_domain=user_metadata.get("asn").get("domain") if user_metadata.get("asn") else None,
+                            asn_route=user_metadata.get("asn").get("route") if user_metadata.get("asn") else None,
+                            asn_type=user_metadata.get("asn").get("type") if user_metadata.get("asn") else None,
+                            time_zone_current_time=user_metadata.get("time_zone").get("current_time") if user_metadata.get("time_zone") else None,
+                            threat_is_tor=user_metadata.get("threat").get("is_tor") if user_metadata.get("threat") else None,
+                            threat_is_proxy=user_metadata.get("threat").get("is_proxy") if user_metadata.get("threat") else None,
+                            threat_is_anonymous=user_metadata.get("threat").get( "is_anonymous") if user_metadata.get("threat") else None,
+                            threat_is_known_attacker=user_metadata.get("threat").get("is_known_attacker") if user_metadata.get("threat") else None,
+                            threat_is_known_abuser=user_metadata.get("threat").get("is_known_abuser") if user_metadata.get("threat") else None,
+                            threat_is_threat=user_metadata.get("threat").get("is_threat") if user_metadata.get("threat") else None,
+                            threat_is_bogon=user_metadata.get("threat").get("is_bogon") if user_metadata.get("threat") else None,
                         )
                     )
+                    # fmt: on
         except IncompatibleParameters as e:
             LOGGER.warning(
                 f"Failed to save data for {user.name} due to IncompatibleParameters: {e}"
@@ -404,7 +352,7 @@ class Bot(RoomManager):
         """
         if user_name == "broiestbro":
             room.message(
-                f"lol stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
+                f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
             )
         else:
             room.message(f"@{user_name} *waves*")
@@ -454,7 +402,7 @@ class Bot(RoomManager):
         room.message("™")
 
     @staticmethod
-    def check_blacklisted_users(room: Room, user_name: str, message: Message) -> None:
+    def _check_blacklisted_users(room: Room, user_name: str, message: Message) -> None:
         """
         Ban and delete chat history of blacklisted user.
 
