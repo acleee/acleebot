@@ -53,7 +53,7 @@ def get_redgifs_gif(
         if (after_dark_only and night_mode) or after_dark_only is False:
             token = redgifs_auth_token()
             endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
-            params = {"search_text": query, "order": "trending"}
+            params = {"search_text": query, "order": "trending", "count": 25}
             headers = {"Authorization": f"Bearer {token}"}
             resp = requests.get(endpoint, params=params, headers=headers)
             if resp.status_code == 200:
@@ -61,20 +61,8 @@ def get_redgifs_gif(
                 if results:
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
-                    image_url = image_json["urls"].get("gif")
-                    tags = ", #".join(image_json["tags"])
-                    if image_url is not None:
-                        image_status = requests.get(image_url)
-                        if image_status.status_code != 200:
-                            sleep(2)
-                            for i in range(3):
-                                LOGGER.warn(
-                                    f"`After dark` failed with status code {resp.status_code}. Retrying {i} time..."
-                                )
-                                return get_redgifs_gif(
-                                    query, username, after_dark_only=False
-                                )
-                        return f"{image_url} \n #{tags}"
+                    image_id = image_json["id"]
+                    return get_full_gif_metadata(image_id, token)
                 elif username == "thegreatpizza":
                     return emojize(
                         f":pizza: :heart: wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( :heart: :pizza:",
@@ -105,6 +93,27 @@ def get_redgifs_gif(
         )
     except Exception as e:
         LOGGER.warning(f"Unexpected error while fetching nsfw image for `{query}`: {e}")
+        return emojize(
+            f":warning: dude u must b a freak cuz that just broke bot :warning:",
+            use_aliases=True,
+        )
+
+
+def get_full_gif_metadata(image_id: str, token):
+    try:
+        endpoint = f"https://api.redgifs.com/v2/gifs/{image_id}"
+        headers = {"Authorization": f"Bearer {token}"}
+        resp = requests.get(endpoint, headers=headers)
+        if resp.status_code == 200:
+            image = resp.json().get("gif")
+            likes = image["likes"]
+            views = image["views"]
+            duration = image["duration"]
+            gif = image["urls"].get("gif")
+            tags = ", #".join(image["tags"])
+            return emojize(f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}\n#{tags}", use_aliases=True)
+    except Exception as e:
+        LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}")
         return emojize(
             f":warning: dude u must b a freak cuz that just broke bot :warning:",
             use_aliases=True,
