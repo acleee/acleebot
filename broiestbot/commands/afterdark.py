@@ -59,6 +59,7 @@ def get_redgifs_gif(
             if resp.status_code == 200:
                 results = resp.json().get("gifs")
                 if results:
+                    results = [result for result in results if "TikTok" not in result["tags"]]
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
                     image_id = image_json["id"]
