@@ -1,7 +1,6 @@
 """Commands only available from 12am to 5am EST."""
 from datetime import datetime
 from random import randint
-from time import sleep
 from typing import Optional
 
 import pytz
@@ -59,7 +58,9 @@ def get_redgifs_gif(
             if resp.status_code == 200:
                 results = resp.json().get("gifs")
                 if results:
-                    results = [result for result in results if "TikTok" not in result["tags"]]
+                    results = [
+                        result for result in results if "TikTok" not in result["tags"]
+                    ]
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
                     image_id = image_json["id"]
@@ -112,9 +113,14 @@ def get_full_gif_metadata(image_id: str, token):
             duration = image["duration"]
             gif = image["urls"].get("gif")
             tags = ", #".join(image["tags"])
-            return emojize(f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}\n#{tags}", use_aliases=True)
+            return emojize(
+                f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}\n#{tags}",
+                use_aliases=True,
+            )
     except Exception as e:
-        LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}")
+        LOGGER.warning(
+            f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}"
+        )
         return emojize(
             f":warning: dude u must b a freak cuz that just broke bot :warning:",
             use_aliases=True,
