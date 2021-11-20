@@ -101,7 +101,15 @@ def get_redgifs_gif(
         )
 
 
-def get_full_gif_metadata(image_id: str, token):
+def get_full_gif_metadata(image_id: str, token: str) -> str:
+    """
+    Fetches additional metadata for a randomly selected gif.
+
+    :param str image_id: Unique string serving as the image ID.
+    :param str token: Authorization token
+
+    :returns: str
+    """
     try:
         endpoint = f"https://api.redgifs.com/v2/gifs/{image_id}"
         headers = {"Authorization": f"Bearer {token}"}
@@ -114,7 +122,7 @@ def get_full_gif_metadata(image_id: str, token):
             gif = image["urls"].get("gif")
             tags = ", #".join(image["tags"])
             return emojize(
-                f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}\n#{tags}",
+                f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}s\n#{tags}",
                 use_aliases=True,
             )
     except Exception as e:
