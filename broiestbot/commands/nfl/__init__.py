@@ -24,7 +24,7 @@ def get_live_nfl_games() -> str:
             for i, game in enumerate(games):
                 summary = f"{game['teams']['away']['team']} <b>({game['scoreboard']['score']['away']})</b> @ {game['teams']['home']['team']} <b>({game['scoreboard']['score']['home']})</b>\n"
                 summary += f"Period {game['scoreboard']['currentPeriod']}, {game['scoreboard']['periodTimeRemaining']}\n"
-                summary += f"Spread {game['odds'][i]['spread']['open']['home']} {game['teams']['home']['abbreviation']}, {game['odds'][i]['spread']['open']['away']} {game['teams']['away']['abbreviation']}\n\n"
+                summary += f"Spread {game['odds'][0]['spread']['open']['home']} {game['teams']['home']['abbreviation']}, {game['odds'][0]['spread']['open']['away']} {game['teams']['away']['abbreviation']}\n\n"
                 game_summaries += summary
             return game_summaries
         return emojize(":warning: No live NFL games atm :( :warning:", use_aliases=True)
@@ -33,4 +33,4 @@ def get_live_nfl_games() -> str:
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching live NFL games: {e}")
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetchinglive NFL games: {e}")
+        LOGGER.error(f"Unexpected error when fetching live NFL games: {e}")
