@@ -96,8 +96,8 @@ class Bot(RoomManager):
             return wiki_summary(args)
         elif cmd_type == "imdb" and args:
             return find_imdb_movie(args)
-        elif cmd_type == "nsfw" and args is None:
-            return get_redgifs_gif("lesbians", user_name, after_dark_only=False)
+        elif cmd_type == "lesbians":
+            return get_redgifs_gif("lesbians", user_name)
         elif cmd_type == "nsfw" and args:
             return get_redgifs_gif(args, user_name, after_dark_only=True)
         elif cmd_type == "urban" and args:

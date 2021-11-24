@@ -154,7 +154,7 @@ def redgifs_auth_token() -> Optional[str]:
             )
     except HTTPError as e:
         LOGGER.error(
-            f"HTTPError when fetching redgifs auth token: {e.response.content}"
+            f"HTTPError when fetching Redgifs auth token: {e.response.content}"
         )
     except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching redgifs auth token: {e}")
+        LOGGER.error(f"Unexpected error when fetching Redgifs auth token: {e}")
