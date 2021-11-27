@@ -1,7 +1,6 @@
-SRCPATH := $(shell pwd)
-PROJECT_NAME := $(shell basename $(CURDIR))
-VIRTUAL_ENVIRONMENT := $(PROJECT_NAME)/.venv
-LOCAL_PYTHON := .venv/bin/python3
+PROJECT_NAME := $(shell basename $CURDIR)
+VIRTUAL_ENVIRONMENT := $(CURDIR)/.venv
+LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 
 define HELP
 Manage $(PROJECT_NAME). Usage:
@@ -11,8 +10,8 @@ make restart    - Restart systemd service (if exists).
 make install    - Build environment & install dependencies.
 make update     - Update depenencies with Poetry & outout new requirements.txt.
 make format     - Format source code and sort imports.
-make clean      - Remove cached files, lockfiles, and other unnessecary junk.
 make lint       - Check code formatting with flake8.
+make clean      - Remove cached files, lockfiles, and other unnessecary junk.
 
 endef
 export HELP
@@ -27,10 +26,6 @@ env: .venv/bin/activate
 
 .requirements.txt: requirements.txt
 	$(shell . .venv/bin/activate && pip install -r requirements.txt)
-
-
-.venv/bin/activate:
-	python3 -m venv .venv
 
 
 all help:
@@ -82,11 +77,10 @@ lint:
 
 .PHONY: clean
 clean:
-	find . -name '*.pyc' -delete
-	find . -name '__pycache__' -delete
+	find . -name '**/*.pyc' -delete
 	find . -name 'poetry.lock' -delete
-	find . -name '*.log' -delete
+	find . -name '**/*.log' -delete
 	find . -wholename './logs/*.log' -delete
 	find . -wholename 'logs/*.json' -delete
-	find . -wholename '.pytest_cache' -delete
-	find . -wholename '*/.pytest_cache' -delete
+	find . -wholename '**/__pycache__' -delete
+	find . -wholename '**/.pytest_cache' -delete
