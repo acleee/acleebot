@@ -125,27 +125,27 @@ def add_upcoming_fixture(
 
     :returns: str
     """
-    home_team = (
-        fixture["teams"]["home"]["name"]
-        .replace("New York City", "NYC")
-        .replace("New England", "NE")
-        .replace("New York", "NY")
-        .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester United", "ManU")
-        .replace("Manchester City", "Man City")
-        .replace("Liverpool", "LFC")
-        .replace("Philadelphia", "PHI")
-    )
-    away_team = (
-        fixture["teams"]["away"]["name"]
-        .replace("New England", "NE")
-        .replace("New York City", "NYC")
-        .replace("New York", "NY")
-        .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester United", "ManU")
-        .replace("Manchester City", "Man City")
-        .replace("Liverpool", "LFC")
-        .replace("Philadelphia", "PHI")
-    )
+    home_team = abbreviate_team_name(fixture["teams"]["home"]["name"])
+    away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
     display_date, tz = get_preferred_time_format(date, room, username)
     return f"{away_team} @ {home_team} - {display_date}\n"
+
+
+def abbreviate_team_name(team_name: str) -> str:
+    """
+    Abbreviate long team names to make schedules readable.
+
+    :param str team_name: Full team name.
+
+    :returns: str
+    """
+    return (
+        team_name.replace("New England", "NE")
+        .replace("New York City", "NYC")
+        .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+    )
