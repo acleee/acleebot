@@ -119,13 +119,33 @@ def add_upcoming_fixture(
     Construct upcoming fixture match-up.
 
     :param dict fixture: Scheduled fixture data.
-    :param datetime date: Fixture start time/date defaulted to UTC time.
+    :param datetime date: Fixture start time/date displayed in preferred timezone.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
     :returns: str
     """
-    home_team = fixture["teams"]["home"]["name"].replace(" U23", "").replace("W ", "")
-    away_team = fixture["teams"]["away"]["name"].replace(" U23", "").replace("W ", "")
+    home_team = (
+        fixture["teams"]["home"]["name"]
+        .replace("New York City", "NYC")
+        .replace("New England", "NE")
+        .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+    )
+    away_team = (
+        fixture["teams"]["away"]["name"]
+        .replace("New England", "NE")
+        .replace("New York City", "NYC")
+        .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+    )
     display_date, tz = get_preferred_time_format(date, room, username)
     return f"{away_team} @ {home_team} - {display_date}\n"

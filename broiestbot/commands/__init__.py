@@ -8,6 +8,7 @@ from .footy import (
     epl_golden_boot,
     epl_standings,
     fetch_fox_fixtures,
+    footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
     footy_todays_upcoming_fixtures,

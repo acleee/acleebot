@@ -17,6 +17,7 @@ from broiestbot.commands import (
     fetch_fox_fixtures,
     fetch_image_from_gcs,
     find_imdb_movie,
+    footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
     footy_todays_upcoming_fixtures,
@@ -114,6 +115,8 @@ class Bot(RoomManager):
             return bund_standings(content)
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(room.room_name.lower(), user_name)
+        elif cmd_type == "allfixtures":
+            return footy_all_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "livefixtures":
             return footy_live_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "livefixtureswithsubs":

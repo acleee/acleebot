@@ -20,7 +20,7 @@ from .util import get_preferred_time_format, get_preferred_timezone
 
 def footy_upcoming_fixtures(room: str, username: str) -> str:
     """
-    Fetch upcoming fixtures within 1 week for EPL, LIGA, BUND, FA, UCL, EUROPA, etc.
+    Fetch upcoming fixtures within 1 week for in order of priority.
 
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
@@ -35,6 +35,30 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
         )
         if league_fixtures is not None and i < 5:
             i += 1
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
+            upcoming_fixtures += league_fixtures + "\n"
+    if upcoming_fixtures != "\n\n\n\n":
+        return upcoming_fixtures
+    return emojize(
+        ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
+    )
+
+
+def footy_all_upcoming_fixtures(room: str, username: str) -> str:
+    """
+    Fetch upcoming fixtures within 1 week for ALL leagues.
+
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: str
+    """
+    upcoming_fixtures = "\n\n\n\n"
+    for league_name, league_id in FOOTY_LEAGUES.items():
+        league_fixtures = footy_upcoming_fixtures_per_league(
+            league_name, league_id, room, username
+        )
+        if league_fixtures is not None:
             upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
@@ -95,7 +119,7 @@ def upcoming_fixture_fetcher(
             "status": "NS",
         }
         params.update(get_preferred_timezone(room, username))
-        return fetch_upcoming_fixtures(params)
+        return fetch_upcoming_fixtures_by_league(params)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -104,9 +128,9 @@ def upcoming_fixture_fetcher(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def fetch_upcoming_fixtures(params: dict) -> Optional[List[dict]]:
+def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
     """
-    Makes request to fetch upcoming fixtures with retry in case season is wrong.
+    Fetches upcoming fixtures for a single league.
 
     :param dict params: Request parameters for fetching fixtures for a given league or cup.py
 
@@ -139,7 +163,11 @@ def add_upcoming_fixture(
         .replace("New England", "NE")
         .replace("New York", "NY")
         .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester", "Man")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+        .replace("Barcelona", "Barca")
     )
     away_team = (
         fixture["teams"]["away"]["name"]
@@ -147,7 +175,11 @@ def add_upcoming_fixture(
         .replace("New York City", "NYC")
         .replace("New York", "NY")
         .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester", "Man")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+        .replace("Barcelona", "Barca")
     )
     display_date, tz = get_preferred_time_format(date, room, username)
     return f"{away_team} @ {home_team} - {display_date}\n"
