@@ -1,5 +1,5 @@
-from datetime import datetime
-from typing import Tuple
+from datetime import datetime, timedelta, tzinfo
+from typing import Tuple, Union
 
 import pytz
 from pytz import BaseTzInfo
@@ -39,3 +39,45 @@ def get_preferred_time_format(
         start_time.strftime("%b %d, %l:%M%p").replace("AM", "am").replace("PM", "pm"),
         pytz.timezone("America/New_York"),
     )
+
+
+def abbreviate_team_name(team_name: str) -> str:
+    """
+    Abbreviate long team names to make schedules readable.
+
+    :param str team_name: Full team name.
+
+    :returns: str
+    """
+    return (
+        team_name.replace("New England", "NE")
+        .replace("New York City", "NYC")
+        .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester United", "ManU")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "PHI")
+        .replace("Borussia Dortmund", "Dortmund")
+    )
+
+
+def check_fixture_start_date(
+    fixture_start_date: datetime, tz: tzinfo, display_date: str
+) -> Union[str, datetime]:
+    """
+    Simplify fixture date if fixture occurs `Today` or `Tomorrow`.'
+
+    :param datetime fixture_start_date: Datetime of fixture start time.
+    :param tzinfo tz: Timezone of fixture start time.
+    :param str display_date: Fallback string of fixture start time.
+
+    :returns: Union[str, datetime]
+    """
+    if fixture_start_date.date() == datetime.date(datetime.now(tz)):
+        return f"Today, {display_date.split(', ')[1]}"
+    elif fixture_start_date.date() == datetime.date(datetime.now(tz)) + timedelta(
+        days=1
+    ):
+        return f"Tomorrow, {display_date.split(', ')[1]}"
+    return display_date

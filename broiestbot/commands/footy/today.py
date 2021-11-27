@@ -14,7 +14,12 @@ from config import (
 )
 from logger import LOGGER
 
-from .util import get_preferred_time_format, get_preferred_timezone
+from .util import (
+    abbreviate_team_name,
+    check_fixture_start_date,
+    get_preferred_time_format,
+    get_preferred_timezone,
+)
 
 
 def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
@@ -128,24 +133,5 @@ def add_upcoming_fixture(
     home_team = abbreviate_team_name(fixture["teams"]["home"]["name"])
     away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
     display_date, tz = get_preferred_time_format(date, room, username)
+    display_date = check_fixture_start_date(date, tz, display_date)
     return f"{away_team} @ {home_team} - {display_date}\n"
-
-
-def abbreviate_team_name(team_name: str) -> str:
-    """
-    Abbreviate long team names to make schedules readable.
-
-    :param str team_name: Full team name.
-
-    :returns: str
-    """
-    return (
-        team_name.replace("New England", "NE")
-        .replace("New York City", "NYC")
-        .replace("New York", "NY")
-        .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester United", "ManU")
-        .replace("Manchester City", "Man City")
-        .replace("Liverpool", "LFC")
-        .replace("Philadelphia", "PHI")
-    )
