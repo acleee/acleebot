@@ -12,7 +12,7 @@ class Chat(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255), nullable=False)
-    room = Column(String(255), nullable=False)
+    room = Column(String(255), nullable=False, index=True)
     message = Column(Text, nullable=False)
     created_at = Column(DateTime, server_default=func.now())
 
@@ -26,7 +26,7 @@ class Command(Base):
     id = Column(Integer, primary_key=True, index=True)
     command = Column(String(255), nullable=False, unique=True, index=True)
     type = Column(String(255), nullable=False)
-    response = Column(Text, nullable=False)
+    response = Column(Text, nullable=True)
     created_at = Column(DateTime, server_default=func.now())
 
     def __repr__(self):

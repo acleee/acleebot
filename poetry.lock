@@ -1016,7 +1016,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "ad8d55812cb2798de7979de7ecf3806d39bbcf9edebb0cfabbf34d3944628c95"
+content-hash = "eaa7fab12e3d5f6eb9791442da31504a0864432a2220370a158604f8d6b16be1"
 
 [metadata.files]
 atomicwrites = [
