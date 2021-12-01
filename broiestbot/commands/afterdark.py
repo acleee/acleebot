@@ -52,10 +52,10 @@ def get_redgifs_gif(
         if (after_dark_only and night_mode) or after_dark_only is False:
             token = redgifs_auth_token()
             endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
-            params = {"search_text": query, "order": "trending", "count": 25}
+            params = {"search_text": query.title(), "order": "trending", "count": 25}
             headers = {"Authorization": f"Bearer {token}"}
             resp = requests.get(endpoint, params=params, headers=headers)
-            if resp.status_code == 200:
+            if resp.status_code == 200 and resp.json().get("gifs", None) is not None:
                 results = resp.json().get("gifs")
                 if results:
                     results = [
@@ -67,7 +67,12 @@ def get_redgifs_gif(
                     return get_full_gif_metadata(image_id, token)
                 elif username == "thegreatpizza":
                     return emojize(
-                        f":pizza: :heart: wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( :heart: :pizza:",
+                        f":pizza: *h* wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( *h* :pizza:",
+                        use_aliases=True,
+                    )
+                elif username == "broiestbro":
+                    return emojize(
+                        f":@ bro u fgt wot r u searching 4 go2bed :@",
                         use_aliases=True,
                     )
                 else:
@@ -78,6 +83,11 @@ def get_redgifs_gif(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
                         use_aliases=True,
                     )
+            elif resp.json().get("gifs", None) is None:
+                return emojize(
+                    f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
+                    use_aliases=True,
+                )
         return "https://i.imgur.com/oGMHkqT.jpg"
     except HTTPError as e:
         LOGGER.warning(

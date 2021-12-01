@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "broiestbot"
 version = "0.1.0"
-description = "Chatbot for the Chatango messaging platform."
+description = "Chat bot for the Chatango chat platform."
 authors = ["Todd Birchard <toddbirchard@gmail.com>"]
 maintainers = ["Todd Birchard <toddbirchard@gmail.com>"]
 license = "MIT"
