@@ -51,7 +51,6 @@ class ChatangoUser(Base):
     time_zone_abbr = Column(String(255))
     time_zone_offset = Column(Integer)
     time_zone_is_dst = Column(Integer)
-    carrier = Column(Text)
     carrier_name = Column(String(255))
     carrier_mnc = Column(Text)
     carrier_mcc = Column(Text)

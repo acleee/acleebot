@@ -81,7 +81,6 @@ class GeoIP:
                     "time_zone_abbr": "string",
                     "time_zone_offset": "Int64",
                     "time_zone_is_dst": "Int8",
-                    "carrier": "string",
                     "carrier_name": "string",
                     "carrier_mnc": "string",
                     "carrier_mcc": "string",
@@ -90,13 +89,7 @@ class GeoIP:
                     "asn_domain": "string",
                     "asn_route": "string",
                     "asn_type": "string",
-                    "threat_is_tor": "Int8",
-                    "threat_is_proxy": "Int8",
-                    "threat_is_anonymous": "Int8",
-                    "threat_is_known_attacker": "Int8",
-                    "threat_is_known_abuser": "Int8",
-                    "threat_is_threat": "Int8",
-                    "threat_is_bogon": "Int8",
+                    "ip": "string",
                 }
             )
             return metadata_df
