@@ -9,6 +9,18 @@ load_dotenv(path.join(BASE_DIR, ".env"))
 # Environment
 ENVIRONMENT = getenv("ENVIRONMENT")
 
+# Chatango credentials
+CHATANGO_USERS = {
+    "BROIESTBOT": {
+        "USERNAME": getenv("CHATANGO_BOT_USERNAME"),
+        "PASSWORD": getenv("CHATANGO_BOT_PASSWORD"),
+    },
+    "BROIESTBRO": {
+        "USERNAME": getenv("CHATANGO_BRO_USERNAME"),
+        "PASSWORD": getenv("CHATANGO_BRO_PASSWORD"),
+    },
+}
+
 # Chatango rooms
 CHATANGO_TEST_ROOM = getenv("CHATANGO_TEST_ROOM")
 CHATANGO_ACLEE_ROOM = getenv("CHATANGO_ACLEE_ROOM")
@@ -33,19 +45,6 @@ CHATANGO_ROOMS = [
     # CHATANGO_PATREON_ROOM,
     # CHATANGO_UFC_ROOM,
 ]
-
-# Chatango credentials
-CHATANGO_USERS = {
-    "BROIESTBOT": {
-        "USERNAME": getenv("CHATANGO_BOT_USERNAME"),
-        "PASSWORD": getenv("CHATANGO_BOT_PASSWORD"),
-    },
-    "BROIESTBRO": {
-        "USERNAME": getenv("CHATANGO_BRO_USERNAME"),
-        "PASSWORD": getenv("CHATANGO_BRO_PASSWORD"),
-    },
-}
-
 
 # Chatango users with additional features
 CHATANGO_SPECIAL_USERS = getenv("CHATANGO_SPECIAL_USERS")
@@ -129,9 +128,11 @@ GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 # Youtube
 YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
 
-# Twitch auth
+# Twitch API
 TWITCH_CLIENT_ID = getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = getenv("TWITCH_CLIENT_SECRET")
+TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
+TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
 # Twitch users
 TWITCH_BRO_USERNAME = getenv("TWITCH_BRO_USERNAME")
@@ -144,8 +145,6 @@ TWITCH_PANDA_USERNAME = getenv("TWITCH_PANDA_USERNAME")
 TWITCH_PANDA_ID = getenv("TWITCH_PANDA_ID")
 TWITCH_RANGER_USERNAME = getenv("TWITCH_RANGER_USERNAME")
 TWITCH_RANGER_ID = getenv("TWITCH_RANGER_USERNAME")
-TWITCH_PRIMEVIDEO_USERNAME = getenv("TWITCH_PRIMEVIDEO_USERNAME")
-TWITCH_PRIMEVIDEO_ID = getenv("TWITCH_PRIMEVIDEO_ID")
 
 TWITCH_BROADCASTERS = {
     TWITCH_BRO_USERNAME: TWITCH_BRO_ID,
@@ -153,11 +152,7 @@ TWITCH_BROADCASTERS = {
     TWITCH_ACLEE_USERNAME: TWITCH_ACLEE_ID,
     TWITCH_PANDA_USERNAME: TWITCH_PANDA_ID,
     TWITCH_RANGER_USERNAME: TWITCH_RANGER_ID,
-    TWITCH_PRIMEVIDEO_USERNAME: TWITCH_PRIMEVIDEO_ID,
 }
-
-TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
-TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
 # NFL
 NFL_GAMES_URL = "https://sportspage-feeds.p.rapidapi.com/games"
@@ -222,9 +217,9 @@ FOOTY_LEAGUES = {
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
-    ":European_Union: EUROS": EUROS_LEAGUE_ID,
-    ":cow_face: Carabao": CARABOU_CUP_ID,
-    # ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    # ":European_Union: EUROS": EUROS_LEAGUE_ID,
+    # ":cow_face: Carabao": CARABOU_CUP_ID,
+    ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":England: EFL": EFL_CUP_ID,
     ":England: FA": FA_CUP_ID,

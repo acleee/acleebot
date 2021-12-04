@@ -20,17 +20,10 @@ export HELP
 .PHONY: run restart install update format clean lint help
 
 
-requirements: .requirements.txt
-env: .venv/bin/activate
-
-
-.requirements.txt: requirements.txt
-	$(shell . .venv/bin/activate && pip install -r requirements.txt)
-
-
 all help:
 	@echo "$$HELP"
 
+env: .venv/bin/activate
 
 .PHONY: run
 run: env

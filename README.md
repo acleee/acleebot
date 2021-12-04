@@ -57,7 +57,7 @@ These variables are optional to enable different services, such as pulling image
 GOOGLE_broiestbot_CREDENTIALS=/path/to/credentials.json
 GOOGLE_BUCKET_NAME=nameOfStorageBucket
 
-# Fetching .gifs
+# Fetching .gifs from Giphy
 GIPHY_API_KEY=yourGiphyAPIKey
 
 # Stock market & crypto price data
@@ -83,4 +83,8 @@ RAPID_API_KEY=yourRapidApiKey
 # Song Lyrics
 GENIUS_KEY_ID=yourLyricsGeniusKey
 GENIUS_ACCESS_TOKEN=yourLyricsGeniusToken
+
+# Twitch API
+TWITCH_CLIENT_ID=yourTwitchClientId
+TWITCH_CLIENT_SECRET=yourTwitchClientSecret
 ```

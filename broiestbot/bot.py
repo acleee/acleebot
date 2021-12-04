@@ -154,7 +154,7 @@ class Bot(RoomManager):
 
     def on_message(self, room: Room, user: User, message: Message) -> None:
         """
-        Boilerplate function trigger on message.
+        Triggers upon every chat message to parse commands, validate users, and save chat logs.
 
         :param Room room: Chatango room.
         :param User user: User responsible for triggering command.
@@ -173,6 +173,7 @@ class Bot(RoomManager):
     def _process_command(
         self, chat_message: str, room: Room, user_name: str, message: Message
     ) -> None:
+        """Determines if message is a bot command."""
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+", chat_message):
