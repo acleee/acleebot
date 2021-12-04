@@ -37,7 +37,7 @@ class ChatangoUser(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(255))
+    username = Column(String(255), index=True)
     chatango_room = Column(String(255))
     city = Column(String(255))
     region = Column(String(255))
@@ -61,16 +61,10 @@ class ChatangoUser(Base):
     asn_route = Column(String(255))
     asn_type = Column(String(255))
     time_zone_current_time = Column(DateTime)
-    threat_is_tor = Column(Integer)
-    threat_is_proxy = Column(Integer)
-    threat_is_anonymous = Column(Integer)
-    threat_is_known_attacker = Column(Integer)
-    threat_is_known_abuser = Column(Integer)
-    threat_is_threat = Column(Integer)
-    threat_is_bogon = Column(Integer)
+    ip = Column(String(255), index=True)
 
     def __repr__(self):
-        return f"username={self.username}, chatango_room={self.chatango_room}, city={self.city}, region={self.region}, country_name={self.country_name}"
+        return f"username={self.username}, chatango_room={self.chatango_room}, city={self.city}, region={self.ip}"
 
 
 Base.metadata.create_all(engine)

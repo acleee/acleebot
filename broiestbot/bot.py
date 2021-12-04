@@ -255,13 +255,7 @@ class Bot(RoomManager):
                             asn_route=user_metadata.get("asn").get("route") if user_metadata.get("asn") else None,
                             asn_type=user_metadata.get("asn").get("type") if user_metadata.get("asn") else None,
                             time_zone_current_time=user_metadata.get("time_zone").get("current_time") if user_metadata.get("time_zone") else None,
-                            threat_is_tor=user_metadata.get("threat").get("is_tor") if user_metadata.get("threat") else None,
-                            threat_is_proxy=user_metadata.get("threat").get("is_proxy") if user_metadata.get("threat") else None,
-                            threat_is_anonymous=user_metadata.get("threat").get( "is_anonymous") if user_metadata.get("threat") else None,
-                            threat_is_known_attacker=user_metadata.get("threat").get("is_known_attacker") if user_metadata.get("threat") else None,
-                            threat_is_known_abuser=user_metadata.get("threat").get("is_known_abuser") if user_metadata.get("threat") else None,
-                            threat_is_threat=user_metadata.get("threat").get("is_threat") if user_metadata.get("threat") else None,
-                            threat_is_bogon=user_metadata.get("threat").get("is_bogon") if user_metadata.get("threat") else None,
+                            ip=message.ip
                         )
                     )
                     # fmt: on
