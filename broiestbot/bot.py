@@ -232,7 +232,7 @@ class Bot(RoomManager):
                     # fmt: off
                     session.add(
                         ChatangoUser(
-                            username=user.name.lower(),
+                            username=user.name.lower().replace("!anon", "anon"),
                             chatango_room=room_name,
                             city=user_metadata.get("city"),
                             region=user_metadata.get("region"),
