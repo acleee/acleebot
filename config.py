@@ -169,7 +169,7 @@ FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures/events"
 FOOTY_PREDICTS_ENDPOINT = f"{FOOTY_BASE_URL}/predictions"
 FOOTY_TOPSCORERS_ENDPOINT = f"{FOOTY_BASE_URL}/players/topscorers"
 FOOTY_STANDINGS_ENDPOINT = f"{FOOTY_BASE_URL}/standings"
-
+FOOTY_XI_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures/lineups"
 
 FOOTY_HTTP_HEADERS = {
     "content-type": "application/json",
