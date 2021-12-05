@@ -86,9 +86,7 @@ def get_frames(buff):
 
 def check_msg(buff):
     """
-    returns True  if the buffer starts with a full fragmented message, or a
-    unfragmented frame
-    returns where the last frame ends
+    :returns: True if buffer starts with fragmented message, or a unfragmented frame where the last frame ends.
     """
     r = check_frame(buff)
     s = 0
@@ -102,7 +100,7 @@ def check_msg(buff):
 def mask_buff(buff):
     """
     masks buff with a random mask
-    returns mask + masked buff
+    :returns: mask + masked buff
     """
     buff = bytearray(buff)
     mask = bytearray(os.urandom(4))
@@ -110,9 +108,7 @@ def mask_buff(buff):
 
 
 def unmask_buff(buff):
-    """
-    unmask buff, using the firsts 4 bytes as the mask
-    """
+    """Unmask buffer using the firsts 4 bytes as the mask."""
     buff = bytearray(buff)
     mask = buff[:4]
     return bytes(bytearray(x ^ mask[i % 4] for i, x in enumerate(buff[4:])))
@@ -203,8 +199,7 @@ def get_payload(buff):
 
 def check_headers(headers):
     """
-    returns False if the headers are invalid for a websocket handshake
-    returns the key
+    :returns: False if headers are invalid; otherwise returns the key.
     """
     version = None
 

@@ -13,11 +13,18 @@ def join_rooms(rooms: List[str]):
 
     :param List[str] rooms: Chatango rooms to join.
     """
-    Bot.easy_start(
-        rooms=rooms,
-        name=CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
-        password=CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
-    )
+    while True:
+        broiestbot = Bot(
+            CHATANGO_USERS["BROIESTBRO"]["USERNAME"],
+            CHATANGO_USERS["BROIESTBRO"]["PASSWORD"],
+        )
+        try:
+            for room in rooms:
+                broiestbot.join_room(room)
+            broiestbot.main()
+        except KeyboardInterrupt:
+            broiestbot.stop()
+            break
 
 
 def start_bot():
