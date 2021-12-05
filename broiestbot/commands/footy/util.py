@@ -94,3 +94,23 @@ def check_fixture_start_date(
     ):
         return f"Tomorrow, {display_date.split(', ')[1]}"
     return display_date
+
+
+def add_upcoming_fixture(
+    fixture: dict, date: datetime, room: str, username: str
+) -> str:
+    """
+    Construct upcoming fixture match-up.
+
+    :param dict fixture: Scheduled fixture data.
+    :param datetime date: Fixture start time/date displayed in preferred timezone.
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: str
+    """
+    home_team = abbreviate_team_name(fixture["teams"]["home"]["name"])
+    away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
+    display_date, tz = get_preferred_time_format(date, room, username)
+    display_date = check_fixture_start_date(date, tz, display_date)
+    return f"{away_team} @ {home_team} - {display_date}\n"

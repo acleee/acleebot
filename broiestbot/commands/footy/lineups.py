@@ -1,20 +1,10 @@
 """Fetch lineups before kickoff or during the match."""
-from datetime import date
-from typing import Optional
-
 import requests
 from emoji import emojize
-from requests.exceptions import HTTPError
 
-from config import (
-    FOOTY_FIXTURES_ENDPOINT,
-    FOOTY_HTTP_HEADERS,
-    FOOTY_TEAMS_PRIORITY,
-    FOOTY_XI_ENDPOINT,
-)
-from logger import LOGGER
+from config import FOOTY_HTTP_HEADERS, FOOTY_LEAGUES_LINEUPS, FOOTY_XI_ENDPOINT
 
-from .util import get_preferred_timezone
+from .today import todays_upcoming_fixtures_by_league
 
 
 def footy_team_lineups(room: str, username: str) -> str:
@@ -26,47 +16,16 @@ def footy_team_lineups(room: str, username: str) -> str:
 
     :returns: str
     """
-    team_fixtures = "\n\n\n\n"
-    for team_name, team_id in FOOTY_TEAMS_PRIORITY.items():
-        team_fixture = fetch_fixture_by_team(team_id, room, username)
-        if bool(team_fixture):
-            team_fixtures.append(team_fixture)
-        else:
-            team_fixture = fetch_fixture_by_team(team_id, room, username)
-            team_fixtures += team_fixtures + "\n"
-    if team_fixtures != "\n\n\n\n":
-        pass  # TODO: Finish logic
+    todays_fixture_lineups = "\n\n\n\n"
+    for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
+        todays_fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
+        if bool(todays_fixtures):
+            for fixture in todays_fixtures:
+                todays_fixture_lineups += get_xi_per_fixture_team(fixture["id"])
+            return todays_fixture_lineups
     return emojize(
         ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
     )
-
-
-def fetch_fixture_by_team(team_id: int, room: str, username: str) -> Optional[dict]:
-    """
-    Get team's fixture scheduled for today.
-
-    :param int team_id: ID of team.
-    :param str room: Chatango room in which command was triggered.
-    :param str username: Name of user who triggered the command.
-
-    :returns: Optional[dict]
-    """
-    try:
-        today = date.strftime("%y-%m-%d")
-        params = {"team": team_id, "date": today, "next": 1}
-        params.update(get_preferred_timezone(room, username))
-        req = requests.get(
-            FOOTY_FIXTURES_ENDPOINT,
-            headers=FOOTY_HTTP_HEADERS,
-            params=params,
-        )
-        return req.json().get("response")
-    except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
-    except KeyError as e:
-        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
-    except Exception as e:
-        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
 def get_xi_per_fixture_team(fixture_id: str) -> str:

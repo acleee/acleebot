@@ -264,6 +264,11 @@ FOOTY_LEAGUES_BY_PRIORITY = {
     },
 }
 
+FOOTY_LEAGUES_LINEUPS = {
+    ":lion: EPL": EPL_LEAGUE_ID,
+    ":trophy: UCL": UCL_LEAGUE_ID,
+}
+
 GOLDEN_SHOE_LEAGUES = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
