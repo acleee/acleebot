@@ -41,6 +41,19 @@ def get_preferred_time_format(
     )
 
 
+def get_current_day(room: str) -> datetime:
+    """
+    Get current date depending on Chatango room.
+
+    :param room: Chatango room in which command was triggered.
+
+    :returns: datetime
+    """
+    if room == CHATANGO_OBI_ROOM:
+        return datetime.now(tz=pytz.timezone("Europe/London"))
+    return datetime.now(pytz.timezone("America/New_York"))
+
+
 def abbreviate_team_name(team_name: str) -> str:
     """
     Abbreviate long team names to make schedules readable.

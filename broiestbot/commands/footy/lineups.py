@@ -1,5 +1,5 @@
 """Fetch lineups before kickoff or during the match."""
-from datetime import date, datetime, timedelta
+from datetime import date
 from typing import Optional
 
 import requests
@@ -7,16 +7,14 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from config import (
-    CHATANGO_OBI_ROOM,
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
-    FOOTY_LEAGUES,
     FOOTY_TEAMS_PRIORITY,
     FOOTY_XI_ENDPOINT,
 )
 from logger import LOGGER
 
-from .util import get_preferred_time_format, get_preferred_timezone
+from .util import get_preferred_timezone
 
 
 def footy_team_lineups(room: str, username: str) -> str:
@@ -28,29 +26,24 @@ def footy_team_lineups(room: str, username: str) -> str:
 
     :returns: str
     """
-    team_fixtures = []
+    team_fixtures = "\n\n\n\n"
     for team_name, team_id in FOOTY_TEAMS_PRIORITY.items():
-        team_fixture = footy_upcoming_fixture_per_team(team_id, room, username, season)
+        team_fixture = fetch_fixture_by_team(team_id, room, username)
         if bool(team_fixture):
             team_fixtures.append(team_fixture)
         else:
-            season - 1
-            team_fixture = footy_upcoming_fixture_per_team(
-                team_id, room, username
-            )
+            team_fixture = fetch_fixture_by_team(team_id, room, username)
             team_fixtures += team_fixtures + "\n"
-    if bool(team_fixture):
+    if team_fixtures != "\n\n\n\n":
         pass  # TODO: Finish logic
     return emojize(
         ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
     )
 
 
-def fetch_fixture_by_team(
-    team_id: int, room: str, username: str
-) -> Optional[dict]:
+def fetch_fixture_by_team(team_id: int, room: str, username: str) -> Optional[dict]:
     """
-    Get team's fixture acheduled for today.
+    Get team's fixture scheduled for today.
 
     :param int team_id: ID of team.
     :param str room: Chatango room in which command was triggered.
@@ -76,12 +69,30 @@ def fetch_fixture_by_team(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def get_xi_per_fixture_team(fixture_id: str, team_id: str):
+def get_xi_per_fixture_team(fixture_id: str) -> str:
     """
     Get team lineup for given fixture.
 
+    :param str fixture_id: ID of an upcoming fixture.
+
+    :returns: str
     """
-    params = {"fixture":fixture_id,"team":team_id}
-    req = requests.get(
-        FOOTY_XI_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
+    lineups = "\n\n\n\n"
+    params = {"fixture": fixture_id}
+    resp = requests.get(FOOTY_XI_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
+    team_lineups = resp.json().get("response")
+    if bool(team_lineups) is not False:
+        for lineup in team_lineups:
+            lineups += format_team_lineup(lineup)
+    if lineups != "\n\n\n\n":
+        return lineups
+    return emojize(
+        f":soccer_ball: :cross_mark: sry no fixtures today :( :cross_mark: :soccer_ball:",
+        use_aliases=True,
     )
+
+
+def format_team_lineup(lineup):
+    formation = lineup.get("formation")
+    for player in lineup["startXI"]:
+        pass

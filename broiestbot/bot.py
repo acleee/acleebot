@@ -225,7 +225,7 @@ class Bot(RoomManager):
                     .filter(
                         ChatangoUser.username == user.name.lower(),
                         ChatangoUser.chatango_room == room_name,
-                        ChatangoUser.ip == message.ip
+                        ChatangoUser.ip == message.ip,
                     )
                     .first()
                 )
