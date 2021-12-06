@@ -202,7 +202,10 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-
+        elif chat_message.lower().replace("'", "") == "anyway heres wonderwall":
+            room.message(
+                "https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84"
+            )
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
