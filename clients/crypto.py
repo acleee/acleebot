@@ -3,6 +3,7 @@ from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
+import pandas as pd
 import plotly.graph_objects as go
 import requests
 from emoji import emojize
@@ -18,28 +19,53 @@ class CryptoChartHandler:
         self.chart_endpoint = chart_endpoint
 
     def get_chart(self, symbol: str) -> str:
-        """Get crypto data and generate Plotly chart."""
+        """
+        Get crypto data and generate Plotly chart.
+
+        :param str symbol: Symbol for a crypto coin.
+
+        :returns: str
+        """
         message = self._get_price(symbol)
         if message:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
     def get_chart_old(self, symbol: str) -> str:
-        """Get crypto data and generate Plotly chart."""
+        """
+        Get crypto data and generate Plotly chart.
+
+        :param str symbol: Symbol for a crypto coin.
+
+        :returns: Optional[str]
+        """
         message = self._get_price(symbol)
         chart = self._create_chart(symbol)
-        if message and chart:
+        if "http" not in chart:
+            return chart
+        elif message and chart:
             return f"{message} \n {chart}"
         elif message:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
     def _get_price(self, symbol) -> Optional[str]:
-        """Get crypto price for provided ticker label."""
+        """
+        Get crypto price for provided ticker label.
+
+        :param str symbol: Symbol for a crypto coin.
+
+        :returns: Optional[str]
+        """
         endpoint = f"{self.price_endpoint}{symbol.lower()}usd/summary"
         try:
-            req = requests.get(url=endpoint)
-            prices = req.json()["result"]["price"]
+            resp = requests.get(url=endpoint)
+            if resp.status_code == 429:
+                return emojize(
+                    f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
+                    use_aliases=True,
+                )
+            prices = resp.json()["result"]["price"]
             percentage = prices["change"]["percentage"] * 100
             if prices["last"] > 1:
                 return (
@@ -55,13 +81,19 @@ class CryptoChartHandler:
                 )
         except HTTPError as e:
             raise HTTPError(
-                f"Failed to fetch crypto price for `{symbol}`: {e.response.content}"
+                f"HTTPError error {e.response.status_code} while fetching crypto price for `{symbol}`: {e.response.content}"
             )
         except Exception as e:
             raise Exception(f"Unexpected error while crypto price for `{symbol}`: {e}")
 
     def _get_chart_data(self, symbol: str) -> Optional[dict]:
-        """Fetch 60-day crypto prices."""
+        """
+        Fetch 60-day crypto prices.
+
+        :param str symbol: Symbol for a crypto coin.
+
+        :returns: Optional[dict]
+        """
         params = {
             "function": "DIGITAL_CURRENCY_DAILY",
             "symbol": symbol,
@@ -69,9 +101,9 @@ class CryptoChartHandler:
             "apikey": self.token,
         }
         try:
-            req = requests.get(self.chart_endpoint, params=params)
-            if req.status_code == 200 and req.json():
-                return req.json()
+            resp = requests.get(self.chart_endpoint, params=params)
+            if resp.status_code == 200 and resp.json():
+                return resp.json()
         except HTTPError as e:
             raise HTTPError(
                 f"Failed to fetch crypto data for `{symbol}`: {e.response.content}"
@@ -79,18 +111,32 @@ class CryptoChartHandler:
         except Exception as e:
             raise Exception(f"Unexpected error while crypto data for `{symbol}`: {e}")
 
-    '''@staticmethod
-    def _parse_chart_data(data: dict) -> Optional[pd.DataFrame]:
-        """Parse JSON response into Pandas DataFrame."""
+    @staticmethod
+    def _parse_chart_data(coin_data: dict) -> Optional[pd.DataFrame]:
+        """
+        Parse JSON response into Pandas DataFrame.
+
+        :param dict coin_data: Time series data of prices for a given coin.
+
+        :returns: Optional[pd.DataFrame]
+        """
         df = pd.DataFrame.from_dict(
-            data["Time Series (Digital Currency Daily)"], orient="index"
+            coin_data["Time Series (Digital Currency Daily)"], orient="index"
         )[:60]
         return df
 
     def _create_chart(self, symbol: str) -> Optional[str]:
-        """Create Plotly chart for given crypto symbol."""
+        """
+        Create Plotly chart for given crypto symbol.
+
+        :param str symbol: Symbol for a crypto coin.
+
+        :returns: Optional[str]
+        """
         data = self._get_chart_data(symbol)
-        if bool(data):
+        if type(data) == str:
+            return data
+        elif bool(data) and type(data) == dict:
             crypto_df = self._parse_chart_data(data)
             crypto_df = crypto_df.apply(pd.to_numeric)
             fig = go.Figure(
@@ -154,4 +200,4 @@ class CryptoChartHandler:
                 )[:-1]
                 + ".png"
             )
-        return None'''
+        return None

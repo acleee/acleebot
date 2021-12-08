@@ -31,7 +31,9 @@ def get_crypto(symbol: str) -> str:
         chart = cch.get_chart(symbol)
         return chart
     except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching crypto price for `{symbol}`: {e}")
+        LOGGER.error(
+            f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}"
+        )
         return emojize(
             f":warning: omg the internet died AAAAA :warning:", use_aliases=True
         )
@@ -40,7 +42,8 @@ def get_crypto(symbol: str) -> str:
             f"Unexpected error while fetching crypto price for `{symbol}`: {e}"
         )
         return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:", use_aliases=True
+            f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
+            use_aliases=True,
         )
 
 
