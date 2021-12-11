@@ -8,7 +8,7 @@ from requests.exceptions import HTTPError
 from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
-    FOOTY_LEAGUES_BY_PRIORITY,
+    FOOTY_LEAGUES,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
 )
 from logger import LOGGER
@@ -26,43 +26,18 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
 
     :returns: str
     """
-    live_fixtures = ["\n\n\n\n"]
-    priorities = FOOTY_LEAGUES_BY_PRIORITY.keys()
-    fixtures = fetch_prioritized_fixtures(priorities, room, username, subs=subs)
-    if fixtures is not None:
-        live_fixtures += fixtures
-    if live_fixtures == ["\n\n\n\n"]:
+    live_fixtures = "\n\n\n\n"
+    i = 0
+    for league_name, league_id in FOOTY_LEAGUES.items():
+        live_league_fixtures = footy_live_fixtures_per_league(
+            league_id, league_name, room, username, subs=subs
+        )
+        if live_league_fixtures is not None and i < 4:
+            i += 1
+            live_fixtures += live_league_fixtures + "\n"
+    if live_fixtures == "\n\n\n\n":
         return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
-    return "\n\n".join(live_fixtures)
-
-
-def fetch_prioritized_fixtures(
-    priorities: List[str], room: str, username: str, subs=False
-) -> Optional[List[str]]:
-    """
-    Fetch fixtures by "grouping" of league, depending on priority.
-    If no fixtures are return from top priority league groupings, proceed through groupings
-    until fixtures are found.
-
-    :param List[str] priorities: ID of footy league/cup.
-    :param str room: Chatango room in which command was triggered.
-    :param str username: Name of user who triggered the command.
-    :param bool subs: Whether to include substitutions in match summaries.
-
-    :returns: Optional[str]
-    """
-    fixtures = []
-    for priority in priorities:
-        priority_leagues = FOOTY_LEAGUES_BY_PRIORITY[priority]
-        for league_name, league_id in priority_leagues.items():
-            league_fixtures = footy_live_fixtures_per_league(
-                league_id, league_name, room, username, subs=subs
-            )
-            if league_fixtures is not None:
-                fixtures.append(league_fixtures)
-        if fixtures:
-            return fixtures
-    return None
+    return live_fixtures
 
 
 def footy_live_fixtures_per_league(

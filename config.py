@@ -182,6 +182,7 @@ EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2
 FA_CUP_ID = 45
 EFL_CUP_ID = 46
+EFL_LEAGUE_ID = 40
 LEAGUE_ONE_ID = 41
 EUROPA_LEAGUE_ID = 2777
 UEFA_EUROPA_ID = 3
@@ -214,6 +215,7 @@ FOOTY_LEAGUES = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    ":England: EFL": EFL_LEAGUE_ID,
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
@@ -221,7 +223,6 @@ FOOTY_LEAGUES = {
     # ":cow_face: Carabao": CARABOU_CUP_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
-    ":England: EFL": EFL_CUP_ID,
     ":England: FA": FA_CUP_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
