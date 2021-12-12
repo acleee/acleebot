@@ -98,9 +98,7 @@ def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[Tuple[int, str]]:
                     break
         return top_scorers
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching golden boot leaders: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while fetching golden boot leaders: {e.response.content}")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching golden boot leaders: {e}")
     except Exception as e:

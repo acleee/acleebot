@@ -28,9 +28,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
         standings_table = "\n\n\n\n"
         season = datetime.now().year
         params = {"league": EPL_LEAGUE_ID, "season": season}
-        req = requests.get(
-            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
-        )
+        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -40,15 +38,10 @@ def epl_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table
-                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(
-            ":warning: Couldn't fetch standings :( :warning:", use_aliases=True
-        )
+        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EPL standings: {e.response.content}")
     except KeyError as e:
@@ -69,9 +62,7 @@ def liga_standings(endpoint: str) -> Optional[str]:
         standings_table = "\n\n\n\n"
         season = datetime.now().year
         params = {"league": LIGA_LEAGUE_ID, "season": season}
-        req = requests.get(
-            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
-        )
+        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -81,15 +72,10 @@ def liga_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table
-                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(
-            ":warning: Couldn't fetch standings :( :warning:", use_aliases=True
-        )
+        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching LIGA standings: {e.response.content}")
     except KeyError as e:
@@ -110,9 +96,7 @@ def bund_standings(endpoint: str) -> Optional[str]:
         standings_table = "\n\n]\n"
         season = datetime.now().year
         params = {"league": BUND_LEAGUE_ID, "season": season}
-        req = requests.get(
-            FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params
-        )
+        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -122,15 +106,10 @@ def bund_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table
-                + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(
-            ":warning: Couldn't fetch standings :( :warning:", use_aliases=True
-        )
+        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching BUND standings: {e.response.content}")
     except KeyError as e:

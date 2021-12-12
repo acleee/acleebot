@@ -27,9 +27,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                 art = movie.data.get("cover url", None)
                 director = movie.data.get("director")
                 if director:
-                    director = (
-                        f"DIRECTED by {movie.data.get('director')[0].get('name')}."
-                    )
+                    director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
                 year = movie.data.get("year")
                 genres = f"({', '.join(movie.data.get('genres'))}, {year})."
                 title = f"{movie.data.get('title').upper()},"
@@ -41,9 +39,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                         synopsis = synopsis[0]
                         synopsis = " ".join(synopsis[0].split(". ")[:2])
                     except KeyError as e:
-                        LOGGER.error(
-                            f"IMDB movie `{title}` does not have a synopsis: {e}"
-                        )
+                        LOGGER.error(f"IMDB movie `{title}` does not have a synopsis: {e}")
                 response = " ".join(
                     filter(
                         None,
@@ -61,19 +57,13 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                 )
                 return response
             LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
-            return emojize(
-                f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True
-            )
+            return emojize(f":warning: wtf kind of movie is {movie} :warning:", use_aliases=True)
     except IMDbError as e:
         LOGGER.warning(f"IMDB failed to find `{movie_title}`: {e}")
-        return emojize(
-            f":warning: wtf kind of movie is {movie_title} :warning:", use_aliases=True
-        )
+        return emojize(f":warning: wtf kind of movie is {movie_title} :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
-        return emojize(
-            f":warning: omfg u broke me with ur shit movie :warning:", use_aliases=True
-        )
+        return emojize(f":warning: omfg u broke me with ur shit movie :warning:", use_aliases=True)
 
 
 def get_boxoffice_data(movie: Movie) -> Optional[str]:
@@ -88,9 +78,7 @@ def get_boxoffice_data(movie: Movie) -> Optional[str]:
         response = []
         if movie.data.get("box office", None):
             budget = movie.data["box office"].get("Budget", None)
-            opening_week = movie.data["box office"].get(
-                "Opening Weekend United States", None
-            )
+            opening_week = movie.data["box office"].get("Opening Weekend United States", None)
             gross = movie.data["box office"].get("Cumulative Worldwide Gross", None)
             if budget:
                 response.append(f"BUDGET {budget}.")
@@ -103,6 +91,4 @@ def get_boxoffice_data(movie: Movie) -> Optional[str]:
     except KeyError as e:
         LOGGER.warning(f"KeyError when fetching box office info for `{movie}`: {e}")
     except Exception as e:
-        LOGGER.error(
-            f"Unexpected error when fetching box office info for `{movie}`: {e}"
-        )
+        LOGGER.error(f"Unexpected error when fetching box office info for `{movie}`: {e}")

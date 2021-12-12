@@ -1,5 +1,5 @@
 """Match breakdown of all currently live fixtures."""
-from typing import List, Optional
+from typing import Optional
 
 import requests
 from emoji import emojize
@@ -29,9 +29,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
     live_fixtures = "\n\n\n\n"
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        live_league_fixtures = footy_live_fixtures_per_league(
-            league_id, league_name, room, username, subs=subs
-        )
+        live_league_fixtures = footy_live_fixtures_per_league(league_id, league_name, room, username, subs=subs)
         if live_league_fixtures is not None and i < 4:
             i += 1
             live_fixtures += live_league_fixtures + "\n"
@@ -40,9 +38,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
     return live_fixtures
 
 
-def footy_live_fixtures_per_league(
-    league_id: int, league_name: str, room: str, username: str, subs=False
-) -> Optional[str]:
+def footy_live_fixtures_per_league(league_id: int, league_name: str, room: str, username: str, subs=False) -> Optional[str]:
     """
     Construct summary of events for all live fixtures in a given league.
 
@@ -68,9 +64,7 @@ def footy_live_fixtures_per_league(
                 venue = fixture["fixture"]["venue"]["name"]
                 live_fixture = f'<b>{home_team} {home_score} - {away_team} {away_score}</b>\n{venue}, {elapsed}"'
                 live_fixtures += live_fixture
-                events = get_events_per_live_fixture(
-                    fixture["fixture"]["id"], subs=subs
-                )
+                events = get_events_per_live_fixture(fixture["fixture"]["id"], subs=subs)
                 if events:
                     live_fixtures += events
                 if i < len(fixtures):

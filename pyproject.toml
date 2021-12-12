@@ -65,3 +65,6 @@ build-backend = "poetry.masonry.api"
 profile = "black"
 src_paths = ["broiestbot", "chatango", "clients", "config", "logger"]
 
+[tool.black]
+line-length = 160
+

@@ -21,9 +21,7 @@ def get_preferred_timezone(room: str, username: str) -> dict:
     return {"timezone": "America/New_York"}
 
 
-def get_preferred_time_format(
-    start_time: datetime, room: str, username: str
-) -> Tuple[str, BaseTzInfo]:
+def get_preferred_time_format(start_time: datetime, room: str, username: str) -> Tuple[str, BaseTzInfo]:
     """
     Display fixture times depending on preferred timezone of requesting user/room.
 
@@ -75,9 +73,7 @@ def abbreviate_team_name(team_name: str) -> str:
     )
 
 
-def check_fixture_start_date(
-    fixture_start_date: datetime, tz: tzinfo, display_date: str
-) -> Union[str, datetime]:
+def check_fixture_start_date(fixture_start_date: datetime, tz: tzinfo, display_date: str) -> Union[str, datetime]:
     """
     Simplify fixture date if fixture occurs `Today` or `Tomorrow`.'
 
@@ -89,16 +85,12 @@ def check_fixture_start_date(
     """
     if fixture_start_date.date() == datetime.date(datetime.now(tz)):
         return f"Today, {display_date.split(', ')[1]}"
-    elif fixture_start_date.date() == datetime.date(datetime.now(tz)) + timedelta(
-        days=1
-    ):
+    elif fixture_start_date.date() == datetime.date(datetime.now(tz)) + timedelta(days=1):
         return f"Tomorrow, {display_date.split(', ')[1]}"
     return display_date
 
 
-def add_upcoming_fixture(
-    fixture: dict, date: datetime, room: str, username: str
-) -> str:
+def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str) -> str:
     """
     Construct upcoming fixture match-up.
 

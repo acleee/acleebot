@@ -24,20 +24,14 @@ def is_after_dark() -> bool:
     """
     tz = pytz.timezone("America/New_York")
     now = datetime.now(tz=tz)
-    start_time = datetime(
-        year=now.year, month=now.month, day=now.day, hour=22, tzinfo=now.tzinfo
-    )
-    end_time = datetime(
-        year=now.year, month=now.month, day=now.day, hour=5, tzinfo=now.tzinfo
-    )
+    start_time = datetime(year=now.year, month=now.month, day=now.day, hour=22, tzinfo=now.tzinfo)
+    end_time = datetime(year=now.year, month=now.month, day=now.day, hour=5, tzinfo=now.tzinfo)
     if start_time > now or end_time < now:
         return True
     return False
 
 
-def get_redgifs_gif(
-    query: str, username: str, after_dark_only: bool = False
-) -> Optional[str]:
+def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) -> Optional[str]:
     """
     Fetch a special kind of gif, if you know what I mean ;).
 
@@ -58,9 +52,7 @@ def get_redgifs_gif(
             if resp.status_code == 200 and resp.json().get("gifs", None) is not None:
                 results = resp.json().get("gifs")
                 if results:
-                    results = [
-                        result for result in results if "TikTok" not in result["tags"]
-                    ]
+                    results = [result for result in results if "TikTok" not in result["tags"]]
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
                     image_id = image_json["id"]
@@ -76,9 +68,7 @@ def get_redgifs_gif(
                         use_aliases=True,
                     )
                 else:
-                    LOGGER.error(
-                        f"Error {resp.status_code} fetching NSFW gif: {resp.content}"
-                    )
+                    LOGGER.error(f"Error {resp.status_code} fetching NSFW gif: {resp.content}")
                     return emojize(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
                         use_aliases=True,
@@ -90,9 +80,7 @@ def get_redgifs_gif(
                 )
         return "https://i.imgur.com/oGMHkqT.jpg"
     except HTTPError as e:
-        LOGGER.warning(
-            f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}"
-        )
+        LOGGER.warning(f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}")
         return emojize(
             f":warning: yea nah idk wtf ur searching for :warning:",
             use_aliases=True,
@@ -136,9 +124,7 @@ def get_full_gif_metadata(image_id: str, token: str) -> str:
                 use_aliases=True,
             )
     except Exception as e:
-        LOGGER.warning(
-            f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}"
-        )
+        LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}")
         return emojize(
             f":warning: dude u must b a freak cuz that just broke bot :warning:",
             use_aliases=True,
@@ -159,12 +145,8 @@ def redgifs_auth_token() -> Optional[str]:
         if resp.status_code == 200:
             return resp.json().get("access_token")
         else:
-            LOGGER.error(
-                f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}"
-            )
+            LOGGER.error(f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}")
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError when fetching Redgifs auth token: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError when fetching Redgifs auth token: {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Redgifs auth token: {e}")

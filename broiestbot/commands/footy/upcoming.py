@@ -35,18 +35,14 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     upcoming_fixtures = "\n\n\n\n"
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room, username
-        )
+        league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None and i < 5:
             i += 1
             upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(
-        ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
-    )
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
 
 
 def footy_all_upcoming_fixtures(room: str, username: str) -> str:
@@ -60,22 +56,16 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
     """
     upcoming_fixtures = "\n\n\n\n"
     for league_name, league_id in FOOTY_LEAGUES.items():
-        league_fixtures = footy_upcoming_fixtures_per_league(
-            league_name, league_id, room, username
-        )
+        league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None:
             upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(
-        ":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True
-    )
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
 
 
-def footy_upcoming_fixtures_per_league(
-    league_name, league_id: int, room: str, username: str
-) -> Optional[str]:
+def footy_upcoming_fixtures_per_league(league_name, league_id: int, room: str, username: str) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -91,9 +81,7 @@ def footy_upcoming_fixtures_per_league(
         fixtures = upcoming_fixture_fetcher(league_name, league_id, room, username)
         if bool(fixtures) is not False:
             for i, fixture in enumerate(fixtures):
-                date = datetime.strptime(
-                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
-                )
+                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
             return upcoming_fixtures
     except HTTPError as e:
@@ -104,9 +92,7 @@ def footy_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def upcoming_fixture_fetcher(
-    league_name: str, league_id: int, room: str, username: str
-) -> Optional[List[dict]]:
+def upcoming_fixture_fetcher(league_name: str, league_id: int, room: str, username: str) -> Optional[List[dict]]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
@@ -149,9 +135,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
     return resp.json().get("response")
 
 
-def add_upcoming_fixture(
-    fixture: dict, date: datetime, room: str, username: str
-) -> str:
+def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str) -> str:
     """
     Construct upcoming fixture match-up.
 
@@ -193,15 +177,11 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
             for fixture in fixtures:
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
-                date = datetime.strptime(
-                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
-                )
+                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 display_date, tz = get_preferred_time_format(date, room, username)
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
-                upcoming_foxtures = (
-                    upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
-                )
+                upcoming_foxtures = upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
             return emojize(upcoming_foxtures, use_aliases=True)
         return emojize(
             f":warning: Couldn't find fixtures, has season started yet? :warning:",

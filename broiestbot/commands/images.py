@@ -51,9 +51,7 @@ def giphy_image_search(query: str) -> str:
         return image
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
-        return emojize(
-            f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True
-        )
+        return emojize(f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True)
     except KeyError as e:
         LOGGER.error(f"Giphy KeyError for `{query}`: {e}")
         return emojize(
@@ -68,9 +66,7 @@ def giphy_image_search(query: str) -> str:
         )
     except Exception as e:
         LOGGER.error(f"Giphy unexpected error for `{query}`: {e}")
-        return emojize(
-            f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", use_aliases=True
-        )
+        return emojize(f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", use_aliases=True)
 
 
 def random_image(message: str) -> str:
@@ -88,19 +84,13 @@ def random_image(message: str) -> str:
         return random_pic
     except KeyError as e:
         LOGGER.warning(f"KeyError when fetching random image: {e}")
-        return emojize(
-            f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True
-        )
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except IndexError as e:
         LOGGER.warning(f"IndexError when fetching random image: {e}")
-        return emojize(
-            f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True
-        )
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.warning(f"Unexpected error when fetching random image: {e}")
-        return emojize(
-            f":warning: o shit i broke im a trash bot :warning:", use_aliases=True
-        )
+        return emojize(f":warning: o shit i broke im a trash bot :warning:", use_aliases=True)
 
 
 def subreddit_image(subreddit: str) -> str:
@@ -117,11 +107,7 @@ def subreddit_image(subreddit: str) -> str:
             return images[0]
     except RedditAPIException as e:
         LOGGER.error(f"Reddit image search failed for subreddit `{subreddit}`: {e}")
-        return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
-        )
+        return emojize(f":warning: i broke bc im a shitty bot :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.error(f"Unexpected error when Reddit searching for `{subreddit}`: {e}")
-        return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
-        )
+        return emojize(f":warning: i broke bc im a shitty bot :warning:", use_aliases=True)

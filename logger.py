@@ -151,9 +151,7 @@ def create_logger() -> logger:
             colorize=True,
             catch=True,
             level="ERROR",
-            format="<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | "
-            + "<red>{level}</red>: "
-            + "<light-white>{message}</light-white>",
+            format="<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | " + "<red>{level}</red>: " + "<light-white>{message}</light-white>",
             rotation="300 MB",
             compression="zip",
         )

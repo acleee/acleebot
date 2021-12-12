@@ -14,9 +14,7 @@ from config import (
 from logger import LOGGER
 
 # Plotly
-chart_studio.tools.set_credentials_file(
-    username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY
-)
+chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY)
 
 
 def get_crypto(symbol: str) -> str:
@@ -31,16 +29,10 @@ def get_crypto(symbol: str) -> str:
         chart = cch.get_chart(symbol)
         return chart
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}"
-        )
-        return emojize(
-            f":warning: omg the internet died AAAAA :warning:", use_aliases=True
-        )
+        LOGGER.error(f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}")
+        return emojize(f":warning: omg the internet died AAAAA :warning:", use_aliases=True)
     except Exception as e:
-        LOGGER.error(
-            f"Unexpected error while fetching crypto price for `{symbol}`: {e}"
-        )
+        LOGGER.error(f"Unexpected error while fetching crypto price for `{symbol}`: {e}")
         return emojize(
             f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
             use_aliases=True,
@@ -66,9 +58,7 @@ def get_stock(symbol: str) -> str:
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching stock price for `{symbol}`: {e}")
-        return emojize(
-            f":warning: i broke bc im a shitty bot :warning:", use_aliases=True
-        )
+        return emojize(f":warning: i broke bc im a shitty bot :warning:", use_aliases=True)
 
 
 def get_top_crypto() -> str:
@@ -83,9 +73,7 @@ def get_top_crypto() -> str:
             "Accepts": "application/json",
             "X-CMC_PRO_API_KEY": COINMARKETCAP_API_KEY,
         }
-        resp = requests.get(
-            COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers
-        )
+        resp = requests.get(COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers)
         if resp.status_code == 200:
             coins = resp.json().get("data")
             return format_top_crypto_response(coins)

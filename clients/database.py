@@ -47,9 +47,7 @@ class Database:
             if response is not None:
                 return dict(response)
         except SQLAlchemyError as e:
-            print(
-                f"SQLAlchemyError occurred when executing SQL query `{command_query}`: {e}"
-            )
+            print(f"SQLAlchemyError occurred when executing SQL query `{command_query}`: {e}")
         except Exception as e:
             print(f"Failed to execute SQL query `{command_query}`: {e}")
 
@@ -63,9 +61,7 @@ class Database:
         :returns: Optional[Row]
         """
         try:
-            query = text(
-                f"SELECT * FROM user WHERE username = '{user.name}' AND chatango_room = '{room_name}';"
-            )
+            query = text(f"SELECT * FROM user WHERE username = '{user.name}' AND chatango_room = '{room_name}';")
             return self.db.execute(query).fetchone()
         except SQLAlchemyError as e:
             print(f"SQLAlchemyError occurred while fetching user {user.name}: {e}")

@@ -30,9 +30,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     upcoming_fixtures = "\n\n\n\n"
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        league_fixtures = footy_todays_upcoming_fixtures_per_league(
-            league_name, league_id, room, username
-        )
+        league_fixtures = footy_todays_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None and i < 5:
             i += 1
             upcoming_fixtures += league_fixtures + "\n"
@@ -44,9 +42,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     )
 
 
-def footy_todays_upcoming_fixtures_per_league(
-    league_name: str, league_id: int, room: str, username: str
-) -> Optional[str]:
+def footy_todays_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str, username: str) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -62,16 +58,10 @@ def footy_todays_upcoming_fixtures_per_league(
         fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
         if bool(fixtures) is not False:
             for i, fixture in enumerate(fixtures):
-                date = datetime.strptime(
-                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
-                )
+                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 if i == 0 and len(fixture) > 1:
-                    league_upcoming_fixtures += emojize(
-                        f"{league_name}:\n", use_aliases=True
-                    )
-                league_upcoming_fixtures += add_upcoming_fixture(
-                    fixture, date, room, username
-                )
+                    league_upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
+                league_upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
             return league_upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
@@ -81,9 +71,7 @@ def footy_todays_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def todays_upcoming_fixtures_by_league(
-    league_id: int, room: str, username: str
-) -> List[Optional[dict]]:
+def todays_upcoming_fixtures_by_league(league_id: int, room: str, username: str) -> List[Optional[dict]]:
     """
     Fetch all upcoming fixtures for the current date.
 
@@ -116,9 +104,7 @@ def todays_upcoming_fixtures_by_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def add_upcoming_fixture(
-    fixture: dict, date: datetime, room: str, username: str
-) -> str:
+def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str) -> str:
     """
     Construct upcoming fixture match-up.
 

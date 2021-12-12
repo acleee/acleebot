@@ -25,9 +25,7 @@ def live_nba_games() -> str:
                     use_aliases=True,
                 )
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching squeekfloor games: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while fetching squeekfloor games: {e.response.content}")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching squeekfloor games: {e}")
     except Exception as e:

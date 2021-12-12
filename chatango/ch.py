@@ -275,10 +275,7 @@ def _get_anon_id(n, ssid):
     if n is None:
         n = "5504"
     try:
-        return "".join(
-            str(x + y)[-1]
-            for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:]))
-        )
+        return "".join(str(x + y)[-1] for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:])))
     except ValueError:
         return "NNNN"
 
@@ -440,9 +437,7 @@ class ANON_PM:
         self._persons[name]._sock = sock
         if not self._persons[name]._auth():
             return
-        self._persons[name]._pingTask = self._mgr.set_internal(
-            self._mgr._ping_delay, self._persons[name].ping
-        )
+        self._persons[name]._pingTask = self._mgr.set_internal(self._mgr._ping_delay, self._persons[name].ping)
         self._persons[name]._connected = True
 
     def message(self, user, msg):
@@ -858,9 +853,7 @@ class Room:
         self._headers_parsed = False
         if Use_WebSocket:
             self._wbuf = (
-                b"GET / HTTP/1.1\r\n"
-                + "Host: {}:{}\r\n".format(self._server, self._port).encode()
-                + b"Origin: http://st.chatango.com\r\n"
+                b"GET / HTTP/1.1\r\n" + "Host: {}:{}\r\n".format(self._server, self._port).encode() + b"Origin: http://st.chatango.com\r\n"
                 b"Connection: Upgrade\r\n"
                 b"Upgrade: websocket\r\n"
                 b"Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n"
@@ -905,9 +898,7 @@ class Room:
         """Authenticate."""
         # login as name with password
         if self.mgr.name and self.mgr.password:
-            self._send_command(
-                "bauth", self.room_name, self._uid, self.mgr.name, self.mgr.password
-            )
+            self._send_command("bauth", self.room_name, self._uid, self.mgr.name, self.mgr.password)
             self._currentname = self.mgr.name
         # login as anon
         else:
@@ -988,9 +979,7 @@ class Room:
         return list(self._ban_list.keys())
 
     def _get_unban_list(self):
-        return [
-            [record["target"], record["src"]] for record in self._unban_list.values()
-        ]
+        return [[record["target"], record["src"]] for record in self._unban_list.values()]
 
     room_name = property(_get_room_name)
     botname = property(_get_bot_name)
@@ -1042,12 +1031,7 @@ class Room:
                     elif info.opcode == _ws.TEXT:
                         self._process(payload)
                     elif debug:
-                        print(
-                            "unhandled frame: "
-                            + repr(info)
-                            + " with payload "
-                            + repr(payload)
-                        )
+                        print("unhandled frame: " + repr(info) + " with payload " + repr(payload))
                     r = _ws.check_frame(self._rbuf)
         else:
             while b"\0" in self._rbuf:
@@ -1805,6 +1789,7 @@ class RoomManager:
         """
         if room not in self._rooms:
             self._rooms_queue.put(room)
+            LOGGER.success(f"Joined Chatango room {room}.")
             return True
         return None
 
@@ -1884,9 +1869,7 @@ class RoomManager:
         :type room: Room
         """
         room.message("Beep boop I'm dead inside 🤖")
-        LOGGER.success(
-            f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}"
-        )
+        LOGGER.success(f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}")
 
     def on_reconnect(self, room: Room):
         """
@@ -1981,9 +1964,7 @@ class RoomManager:
         :param Room room: Chatango room where user was modded.
         :param User user: User promoted to mod.
         """
-        LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}."
-        )
+        LOGGER.info(f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}.")
 
     @staticmethod
     def on_mod_remove(room: Room, user):
@@ -2006,13 +1987,9 @@ class RoomManager:
         :param Message message: Received chat message
         """
         if bool(message.ip):
-            LOGGER.info(
-                f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}"
-            )
+            LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
         else:
-            LOGGER.info(
-                f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}"
-            )
+            LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
     def on_history_message(self, room, user, message):
         """

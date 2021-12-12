@@ -170,9 +170,7 @@ class Bot(RoomManager):
         self._process_command(chat_message, room, user_name, message)
         session.add(Chat(username=user_name, room=room_name, message=chat_message))
 
-    def _process_command(
-        self, chat_message: str, room: Room, user_name: str, message: Message
-    ) -> None:
+    def _process_command(self, chat_message: str, room: Room, user_name: str, message: Message) -> None:
         """Determines if message is a bot command."""
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
@@ -182,17 +180,11 @@ class Bot(RoomManager):
             return self._get_response(chat_message, room, user_name)
         elif chat_message == "bro?":
             self._bot_status_check(room)
-        elif (
-            "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower()
-        ):
+        elif "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower():
             self._wave_back(room, user_name)
         elif chat_message.replace("!", "").strip() == "no u":
             self._ban_word(room, message, user_name, silent=True)
-        elif (
-            "petition" in chat_message
-            and "competition" not in chat_message
-            and user_name != "broiestbro"
-        ):
+        elif "petition" in chat_message and "competition" not in chat_message and user_name != "broiestbro":
             room.message(
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
@@ -203,9 +195,7 @@ class Bot(RoomManager):
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
         elif chat_message.lower().replace("'", "") == "anyway heres wonderwall":
-            room.message(
-                "https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84"
-            )
+            room.message("https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84")
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
@@ -265,13 +255,9 @@ class Bot(RoomManager):
                     )
                     # fmt: on
         except IncompatibleParameters as e:
-            LOGGER.warning(
-                f"Failed to save data for {user.name} due to IncompatibleParameters: {e}"
-            )
+            LOGGER.warning(f"Failed to save data for {user.name} due to IncompatibleParameters: {e}")
         except Exception as e:
-            LOGGER.warning(
-                f"Unexpected error while attempting to save data for {user.name}: {e}"
-            )
+            LOGGER.warning(f"Unexpected error while attempting to save data for {user.name}: {e}")
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
@@ -289,9 +275,7 @@ class Bot(RoomManager):
             return cmd, args
         return user_msg, None
 
-    def _get_response(
-        self, chat_message: str, room: Room, user_name: str
-    ) -> Optional[str]:
+    def _get_response(self, chat_message: str, room: Room, user_name: str) -> Optional[str]:
         """
         Fetch response from database to send to chat.
 
@@ -353,9 +337,7 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name == "broiestbro":
-            room.message(
-                f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
-            )
+            room.message(f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro")
         else:
             room.message(f"@{user_name} *waves*")
 

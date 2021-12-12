@@ -35,9 +35,7 @@ def create_instagram_preview(url: str) -> Optional[str]:
             return f"{img} {description}"
         return None
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching Instagram URL `{url}`: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while fetching Instagram URL `{url}`: {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Unexpected error while creating Instagram embed: {e}")
 

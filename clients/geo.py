@@ -48,9 +48,7 @@ class GeoIP:
             raise Exception(e)
 
     @staticmethod
-    def save_metadata(
-        room_name: str, user_name: str, ip_metadata: dict
-    ) -> Union[DataFrame, str]:
+    def save_metadata(room_name: str, user_name: str, ip_metadata: dict) -> Union[DataFrame, str]:
         """
         Parse IP metadata into Pandas Dataframe.
 

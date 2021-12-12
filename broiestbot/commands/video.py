@@ -82,12 +82,8 @@ def format_twitch_response(stream: dict) -> str:
     title = stream.get("title")
     viewers = stream.get("viewer_count")
     start_time = stream.get("started_at").replace("Z", "")
-    duration = (
-        datetime.utcnow() - datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S")
-    ).seconds / 60
-    thumbnail = (
-        stream.get("thumbnail_url").replace("{width}", "550").replace("{height}", "300")
-    )
+    duration = (datetime.utcnow() - datetime.strptime(start_time, "%Y-%m-%dT%H:%M:%S")).seconds / 60
+    thumbnail = stream.get("thumbnail_url").replace("{width}", "550").replace("{height}", "300")
     url = f"https://www.twitch.tv/{broadcaster}"
     return f"\n\n\n<b>{broadcaster}</b> is streaming <b>{game}</b>\n<i>{title}</i>\n{viewers} viewers, {int(duration)} minutes\n{url}\n\n{thumbnail}"
 

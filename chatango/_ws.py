@@ -11,9 +11,7 @@ PONG = 10
 
 GUID = "258EAFA5-E914-47DA-95CA-C5AB0DC85B11"
 
-FrameInfo = collections.namedtuple(
-    "FrameInfo", ["fin", "opcode", "masked", "payload_length"]
-)
+FrameInfo = collections.namedtuple("FrameInfo", ["fin", "opcode", "masked", "payload_length"])
 
 
 def check_frame(buff):
@@ -66,9 +64,7 @@ def frame_info(buff):
     elif (buff[1] & 127) == 127:
         payload_length += struct.unpack_from(">Q", buff, 2)[0]
 
-    return FrameInfo(
-        bool(buff[0] & 128), buff[0] & 15, bool(buff[1] & 128), payload_length
-    )
+    return FrameInfo(bool(buff[0] & 128), buff[0] & 15, bool(buff[1] & 128), payload_length)
 
 
 def get_frames(buff):
@@ -180,9 +176,7 @@ def get_payload(buff):
         start_payload = 10
 
     if info.masked:
-        payload = unmask_buff(
-            buff[start_payload : info.payload_length + start_payload + 4]
-        )
+        payload = unmask_buff(buff[start_payload : info.payload_length + start_payload + 4])
     else:
         payload = buff[start_payload : info.payload_length + start_payload]
 
