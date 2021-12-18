@@ -398,6 +398,7 @@ class Bot(RoomManager):
         """
         if user_name in CHATANGO_BLACKLISTED_USERS:
             room.ban(message)
+            room.
             reply = emojize(
                 f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,

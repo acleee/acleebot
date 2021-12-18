@@ -1565,11 +1565,9 @@ class Room:
         """
         Ban the author of a given message. (Moderator only)
 
-        :param msg: message to ban sender of
-        :type msg: Message
+        :param Message msg: message to ban sender of
         """
-        if self.get_level(self.user) > 0:
-            self.raw_ban(msg.user.name, msg.ip, msg.unid)
+        self.raw_ban(msg.user.name, msg.ip, msg.unid)
 
     def ban_user(self, user):
         """
