@@ -46,37 +46,36 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
         if (after_dark_only and night_mode) or after_dark_only is False:
             token = redgifs_auth_token()
             endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
-            params = {"search_text": query.title(), "order": "trending", "count": 25}
+            params = {"search_text": query.title(), "order": "trending", "count": 80}
             headers = {"Authorization": f"Bearer {token}"}
             resp = requests.get(endpoint, params=params, headers=headers)
-            if resp.status_code == 200 and resp.json().get("gifs", None) is not None:
-                results = resp.json().get("gifs")
-                if results:
-                    results = [result for result in results if "TikTok" not in result["tags"] and result["urls"].get("gif") is not None]
-                    if bool(results):
-                        rand = randint(0, len(results) - 1)
-                        image_json = results[rand]
-                        image_id = image_json["id"]
-                        return get_full_gif_metadata(image_id, token)
-                    elif username == "thegreatpizza":
-                        return emojize(
-                            f":pizza: *h* wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( *h* :pizza:",
-                            use_aliases=True,
-                        )
-                    elif username == "broiestbro":
-                        return emojize(
-                            f":@ bro u fgt wot r u searching 4 go2bed :@",
-                            use_aliases=True,
-                        )
+            results = resp.json().get("gifs", None)
+            if resp.status_code == 200 and results is not None:
+                results = [result for result in results if result["urls"].get("gif") is not None]
+                if bool(results):
+                    rand = randint(0, len(results) - 1)
+                    image_json = results[rand]
+                    image_id = image_json["id"]
+                    return get_full_gif_metadata(image_id, token)
+                elif username == "thegreatpizza":
+                    return emojize(
+                        f":pizza: *h* wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( *h* :pizza:",
+                        use_aliases=True,
+                    )
+                elif username == "broiestbro":
+                    return emojize(
+                        f":@ bro u fgt wot r u searching 4 go2bed :@",
+                        use_aliases=True,
+                    )
                 else:
-                    LOGGER.error(f"Error {resp.status_code} fetching NSFW gif: {resp.content}")
                     return emojize(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
                         use_aliases=True,
                     )
-            elif resp.json().get("gifs", None) is None:
+            else:
+                LOGGER.error(f"Error {resp.status_code} fetching NSFW gif: {resp.content}")
                 return emojize(
-                    f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
+                    f":warning: omfg @{username} u broke bot with ur kinky ass bs smfh :warning:",
                     use_aliases=True,
                 )
         return "https://i.imgur.com/oGMHkqT.jpg"
