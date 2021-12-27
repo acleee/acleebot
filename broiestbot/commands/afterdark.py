@@ -51,12 +51,11 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
             resp = requests.get(endpoint, params=params, headers=headers)
             results = resp.json().get("gifs", None)
             if resp.status_code == 200 and results is not None:
-                results = [result for result in results if result["urls"].get("gif") is not None]
+                results = [result for result in results if result["urls"].get("sd") is not None]
                 if bool(results):
                     rand = randint(0, len(results) - 1)
                     image_json = results[rand]
-                    image_id = image_json["id"]
-                    return get_full_gif_metadata(image_id, token)
+                    return get_full_gif_metadata(image_json)
                 elif username == "thegreatpizza":
                     return emojize(
                         f":pizza: *h* wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( *h* :pizza:",
@@ -99,32 +98,25 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
         )
 
 
-def get_full_gif_metadata(image_id: str, token: str) -> str:
+def get_full_gif_metadata(image: dict) -> str:
     """
-    Fetches additional metadata for a randomly selected gif.
+    Parses additional metadata for a randomly selected gif.
 
-    :param str image_id: Unique string serving as the image ID.
-    :param str token: Authorization token
+    :param dict image: Dictionary containing a single gif response.
 
     :returns: str
     """
     try:
-        endpoint = f"https://api.redgifs.com/v2/gifs/{image_id}"
-        headers = {"Authorization": f"Bearer {token}"}
-        resp = requests.get(endpoint, headers=headers)
-        if resp.status_code == 200:
-            image = resp.json().get("gif")
-            likes = image["likes"]
-            views = image["views"]
-            duration = image["duration"]
-            gif = image["urls"].get("gif")
-            tags = ", #".join(image["tags"])
-            return emojize(
-                f"\n\n\n{gif}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n:five_o’clock: Duration {duration}s\n#{tags}",
-                use_aliases=True,
-            )
+        image_url = image["urls"]["sd"].replace("-mobile", "").replace(".mp4", "-small.gif")
+        likes = image["likes"]
+        views = image["views"]
+        tags = ", #".join(image["tags"])
+        return emojize(
+            f"\n\n\n{image_url}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n#{tags}",
+            use_aliases=True,
+        )
     except Exception as e:
-        LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image_id}`: {e}")
+        LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image['id']}`: {e}")
         return emojize(
             f":warning: dude u must b a freak cuz that just broke bot :warning:",
             use_aliases=True,
