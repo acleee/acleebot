@@ -1,5 +1,5 @@
 from datetime import datetime, timedelta, tzinfo
-from typing import Tuple, Union
+from typing import Optional, Tuple, Union
 
 import pytz
 from pytz import BaseTzInfo
@@ -106,3 +106,17 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
     display_date, tz = get_preferred_time_format(date, room, username)
     display_date = check_fixture_start_date(date, tz, display_date)
     return f"{away_team} @ {home_team} - {display_date}\n"
+
+
+def get_season_year() -> Optional[int]:
+    """
+    Determine season year based on current month; returns None if season is over.
+
+    :returns:  Optional[int]
+    """
+    now = datetime.now()
+    if now.month >= 8:
+        return now.year
+    elif now.month <= 5:
+        return now.year - 1
+    return None

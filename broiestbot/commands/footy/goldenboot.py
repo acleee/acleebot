@@ -14,6 +14,8 @@ from config import (
 )
 from logger import LOGGER
 
+from .util import get_season_year
+
 
 def epl_golden_boot() -> str:
     """
@@ -70,7 +72,7 @@ def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[Tuple[int, str]]:
     """
     try:
         top_scorers = []
-        season = datetime.now().year
+        season = get_season_year()
         params = {"season": season, "league": league}
         req = requests.get(
             FOOTY_TOPSCORERS_ENDPOINT,

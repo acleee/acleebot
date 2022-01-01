@@ -15,6 +15,7 @@ from .util import (
     get_current_day,
     get_preferred_time_format,
     get_preferred_timezone,
+    get_season_year,
 )
 
 
@@ -87,7 +88,7 @@ def todays_upcoming_fixtures_by_league(league_id: int, room: str, username: str)
             "date": today.strftime("%Y-%m-%d"),
             "league": league_id,
             "status": "NS",
-            "season": datetime.now().year,
+            "season": get_season_year(),
         }
         params.update(get_preferred_timezone(room, username))
         req = requests.get(

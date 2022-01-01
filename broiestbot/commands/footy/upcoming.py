@@ -20,6 +20,7 @@ from .util import (
     check_fixture_start_date,
     get_preferred_time_format,
     get_preferred_timezone,
+    get_season_year,
 )
 
 
@@ -164,7 +165,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     """
     try:
         upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES:</b>\n"
-        season = datetime.now().year
+        season = get_season_year()
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(

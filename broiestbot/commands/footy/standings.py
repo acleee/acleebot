@@ -15,6 +15,8 @@ from config import (
 )
 from logger import LOGGER
 
+from .util import get_season_year
+
 
 def epl_standings(endpoint: str) -> Optional[str]:
     """
@@ -26,7 +28,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        season = datetime.now().year
+        season = get_season_year()
         params = {"league": EPL_LEAGUE_ID, "season": season}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
@@ -60,7 +62,7 @@ def liga_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        season = datetime.now().year
+        season = get_season_year()
         params = {"league": LIGA_LEAGUE_ID, "season": season}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
@@ -94,7 +96,7 @@ def bund_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n]\n"
-        season = datetime.now().year
+        season = get_season_year()
         params = {"league": BUND_LEAGUE_ID, "season": season}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
