@@ -48,10 +48,10 @@ def weather_by_location(location: str, room: str, user: str) -> str:
             f'\n\n{data["request"]["query"]}\n \
                         {weather_emoji} {data["current"]["weather_descriptions"][0]}\n \
                         Temp: {data["current"]["temperature"]}°{"c" if params["units"] == "m" else "f"} (feels like: {data["current"]["feelslike"]}{"c" if params["units"] == "m" else "f"}°)\n \
-                        Precipitation: {data["current"]["precip"]}%\n \
+                        Precipitation: {data["current"]["precip"] * 10}%\n \
                         Humidity: {data["current"]["humidity"]}%\n \
                         Cloud cover: {data["current"]["cloudcover"]}%\n \
-                        Wind speed: {data["current"]["wind_speed"]}',
+                        Wind speed: {data["current"]["wind_speed"]}{"km/h" if params["units"] == "m" else "mph"}',
             use_aliases=True,
         )
         return response
