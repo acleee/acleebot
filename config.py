@@ -218,7 +218,7 @@ FOOTY_LEAGUES = {
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":European_Union: EUROS": EUROS_LEAGUE_ID,
-    # ":cow_face: Carabao": CARABOU_CUP_ID,
+    ":cow_face: Carabao": CARABOU_CUP_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":England: FA": FA_CUP_ID,
@@ -245,7 +245,7 @@ FOOTY_LEAGUES_BY_PRIORITY = {
         ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
         ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
         ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
-        # ":cow_face: Carabao": CARABOU_CUP_ID,
+        ":cow_face: Carabao": CARABOU_CUP_ID,
     },
     "2": {
         ":England: FA": FA_CUP_ID,
