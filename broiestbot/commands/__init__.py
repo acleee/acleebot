@@ -1,6 +1,11 @@
 """Construct responses to bot commands from third-party APIs."""
 from .afterdark import get_redgifs_gif
-from .definitions import get_english_translation, get_urban_definition, wiki_summary
+from .definitions import (
+    get_english_definition,
+    get_english_translation,
+    get_urban_definition,
+    wiki_summary,
+)
 from .embeds import create_instagram_preview
 from .footy import (
     all_leagues_golden_boot,

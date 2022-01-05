@@ -45,6 +45,7 @@ pytz = "*"
 pandas = "*"
 html5lib = "*"
 google-api-python-client = "*"
+PyMultiDictionary = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

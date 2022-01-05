@@ -1,11 +1,36 @@
 """Lookup definitions via Wikipedia, Urban Dictionary, etc"""
 import requests
 from emoji import emojize
+from PyMultiDictionary import MultiDictionary
 from requests.exceptions import HTTPError
 
 from clients import wiki
 from config import RAPID_API_KEY
 from logger import LOGGER
+
+
+def get_english_definition(word: str) -> str:
+    """
+    Fetch English Dictionary definition for a given phrase or word.
+
+    :param str word: Word or phrase to fetch English definition for.
+
+    :returns: str
+    """
+    try:
+        response = "\n\n\n"
+        dictionary = MultiDictionary()
+        word_definitions = dictionary.meaning("en", word)
+        for i, word_type in enumerate(word_definitions[0]):
+            definition = emojize(f":bookmark: {word_type}\n", use_aliases=True)
+            definition += emojize(f":left_speech_bubble: {word_definitions[i + 1]}\n", use_aliases=True)
+            if i < len(word_definitions[0]):
+                definition += "\n"
+            response += definition
+        return response
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching English definition for `{word}`: {e}")
+        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
 
 
 def get_urban_definition(term: str) -> str:

@@ -71,7 +71,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.23.28"
+version = "1.23.29"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -197,6 +197,14 @@ python-versions = "*"
 dev = ["pytest", "coverage", "coveralls"]
 
 [[package]]
+name = "futures"
+version = "3.1.1"
+description = "Backport of the concurrent.futures package from Python 3.2"
+category = "main"
+optional = false
+python-versions = "*"
+
+[[package]]
 name = "google-api-core"
 version = "2.3.2"
 description = "Google API client core library"
@@ -279,7 +287,7 @@ grpc = ["grpcio (>=1.8.2,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-storage"
-version = "1.43.0"
+version = "1.44.0"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
@@ -333,6 +341,17 @@ protobuf = ">=3.12.0"
 
 [package.extras]
 grpc = ["grpcio (>=1.0.0)"]
+
+[[package]]
+name = "goslate"
+version = "1.5.2"
+description = "Goslate: Free Google Translate API"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+futures = "*"
 
 [[package]]
 name = "greenlet"
@@ -428,6 +447,14 @@ click = "*"
 ipaddress = "*"
 requests = "*"
 tqdm = "*"
+
+[[package]]
+name = "iso639-lang"
+version = "2.0.0"
+description = "A lightweight library for the ISO 639 standard."
+category = "main"
+optional = false
+python-versions = ">=3.6"
 
 [[package]]
 name = "isort"
@@ -674,6 +701,24 @@ crypto = ["cryptography (>=3.3.1)"]
 dev = ["sphinx", "sphinx-rtd-theme", "zope.interface", "cryptography (>=3.3.1)", "pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)", "mypy", "pre-commit"]
 docs = ["sphinx", "sphinx-rtd-theme", "zope.interface"]
 tests = ["pytest (>=6.0.0,<7.0.0)", "coverage[toml] (==5.0.4)"]
+
+[[package]]
+name = "pymultidictionary"
+version = "1.1.1"
+description = "PyMultiDictionary is a Dictionary Module for Python 2 to get meanings, translations, synonyms and antonyms of words in 20 different languages"
+category = "main"
+optional = false
+python-versions = ">=3.6, <4"
+
+[package.dependencies]
+bs4 = "*"
+goslate = "*"
+iso639-lang = "*"
+requests = "*"
+
+[package.extras]
+docs = ["bs4", "goslate", "iso639-lang", "requests", "sphinx", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
+test = ["bs4", "goslate", "iso639-lang", "requests", "codecov", "nose"]
 
 [[package]]
 name = "pymysql"
@@ -1000,7 +1045,7 @@ dev = ["pytest (>=4.6.2)", "black (>=19.3b0)"]
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "eaa7fab12e3d5f6eb9791442da31504a0864432a2220370a158604f8d6b16be1"
+content-hash = "d2136d7820622766301827d3dddaa6b62e38623f616d870a290b175537270c65"
 
 [metadata.files]
 atomicwrites = [
@@ -1024,8 +1069,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.23.28-py3-none-any.whl", hash = "sha256:d04b0839de63929d7326e14a4680e7c46e7d32b2870c1031088bae5ba2850896"},
-    {file = "botocore-1.23.28.tar.gz", hash = "sha256:3a6e589486d1a269ea9c970da73f88e82fdfa6cb2ab4bb2a4b3010610adbde46"},
+    {file = "botocore-1.23.29-py3-none-any.whl", hash = "sha256:d6706a8e72df56c5b25291cf5175b790bf1c71c740bdf8cb57f258b97ed39e2c"},
+    {file = "botocore-1.23.29.tar.gz", hash = "sha256:6ba08e8738b38b1c3cb11cd4d4ee1b4aa557511271071bdd7a9c41bc0b212eeb"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -1122,6 +1167,11 @@ ddtrace = [
 emoji = [
     {file = "emoji-1.6.1.tar.gz", hash = "sha256:53d61a8e4c025f6c295ab99c842302c66d47952199c4fde66dd060dee3ad4324"},
 ]
+futures = [
+    {file = "futures-3.1.1-py2-none-any.whl", hash = "sha256:c4884a65654a7c45435063e14ae85280eb1f111d94e542396717ba9828c4337f"},
+    {file = "futures-3.1.1-py3-none-any.whl", hash = "sha256:3a44f286998ae64f0cc083682fcfec16c406134a81a589a5de445d7bb7c2751b"},
+    {file = "futures-3.1.1.tar.gz", hash = "sha256:51ecb45f0add83c806c68e4b06106f90db260585b25ef2abfcda0bd95c0132fd"},
+]
 google-api-core = [
     {file = "google-api-core-2.3.2.tar.gz", hash = "sha256:c8889f45cf58deca522888ae1d39b2a25e93e7d1b019ae8cee6456d5c726a40c"},
     {file = "google_api_core-2.3.2-py2.py3-none-any.whl", hash = "sha256:3c562d393aed7e3d2011fcd1f103b490c411dcf5644b6312ca11a166a6ea8faf"},
@@ -1143,8 +1193,8 @@ google-cloud-core = [
     {file = "google_cloud_core-2.2.1-py2.py3-none-any.whl", hash = "sha256:ab6cee07791afe4e210807ceeab749da6a076ab16d496ac734bf7e6ffea27486"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-1.43.0.tar.gz", hash = "sha256:f3b4f4be5c8a1b5727a8f7136c94d3bacdd4b7bf11f9553f51ae4c1d876529d3"},
-    {file = "google_cloud_storage-1.43.0-py2.py3-none-any.whl", hash = "sha256:bb3e4088054d50616bd57e4b81bb158db804c91faed39279d666e2fd07d2c118"},
+    {file = "google-cloud-storage-1.44.0.tar.gz", hash = "sha256:29edbfeedd157d853049302bf5d104055c6f0cb7ef283537da3ce3f730073001"},
+    {file = "google_cloud_storage-1.44.0-py2.py3-none-any.whl", hash = "sha256:cd4a223e9c18d771721a85c98a9c01b97d257edddff833ba63b7b1f0b9b4d6e9"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.3.0.tar.gz", hash = "sha256:276de6273eb074a35bc598f8efbc00c7869c5cf2e29c90748fccc8c898c244df"},
@@ -1198,6 +1248,12 @@ google-resumable-media = [
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.54.0.tar.gz", hash = "sha256:a4031d6ec6c2b1b6dc3e0be7e10a1bd72fb0b18b07ef9be7b51f2c1004ce2437"},
     {file = "googleapis_common_protos-1.54.0-py2.py3-none-any.whl", hash = "sha256:e54345a2add15dc5e1a7891c27731ff347b4c33765d79b5ed7026a6c0c7cbcae"},
+]
+goslate = [
+    {file = "goslate-1.5.2-py2.7.egg", hash = "sha256:ad1127a0a76942032aacdc1b93556babd2b5100cc32be5101ecaceb4cd0e8c7f"},
+    {file = "goslate-1.5.2-py3.7.egg", hash = "sha256:6e97ef89705eab8edbafa78f4c20984e52a61942c01bac52c593bf0698fd8ee6"},
+    {file = "goslate-1.5.2-py3.8.egg", hash = "sha256:a237aff39b05927fd94cf5f0a5ef1e82cc0cb0cee344aa97f67331aab5ecf446"},
+    {file = "goslate-1.5.2.tar.gz", hash = "sha256:658faceecd38fa46e8ef5dc345f2b2d328fe0a45464a11316e9fb2283b820c41"},
 ]
 greenlet = [
     {file = "greenlet-1.1.2-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:58df5c2a0e293bf665a51f8a100d3e9956febfbf1d9aaf8c0677cf70218910c6"},
@@ -1283,6 +1339,10 @@ ipaddress = [
 ipdata = [
     {file = "ipdata-3.4.3-py3-none-any.whl", hash = "sha256:e8de39340d6c9c186ac7a515a575ba44be7dc7f46bd8fb221296237c57cb06ba"},
     {file = "ipdata-3.4.3.tar.gz", hash = "sha256:2a4a57cd058a9dc45f29c027d94e334063ef5610ccdf588794f323d20836f599"},
+]
+iso639-lang = [
+    {file = "iso639-lang-2.0.0.tar.gz", hash = "sha256:079d11a5557ebd76aba5e2f7e69e266498f7f285ce9fff047ba84f7d2c7cd502"},
+    {file = "iso639_lang-2.0.0-py3-none-any.whl", hash = "sha256:01b84b75b22871c66d23f5291954a86086ecfbe8e79d0a574ffa02ccb0519e4d"},
 ]
 isort = [
     {file = "isort-5.10.1-py3-none-any.whl", hash = "sha256:6f62d78e2f89b4500b080fe3a81690850cd254227f27f75c3a0c491a1f351ba7"},
@@ -1508,6 +1568,10 @@ pyasn1-modules = [
 pyjwt = [
     {file = "PyJWT-2.3.0-py3-none-any.whl", hash = "sha256:e0c4bb8d9f0af0c7f5b1ec4c5036309617d03d56932877f2f7a0beeb5318322f"},
     {file = "PyJWT-2.3.0.tar.gz", hash = "sha256:b888b4d56f06f6dcd777210c334e69c737be74755d3e5e9ee3fe67dc18a0ee41"},
+]
+pymultidictionary = [
+    {file = "PyMultiDictionary-1.1.1-py3-none-any.whl", hash = "sha256:4209b582b987c140e760487dd7590bfe1ccd359d1055285ef141992ac4e19ebb"},
+    {file = "PyMultiDictionary-1.1.1.tar.gz", hash = "sha256:063b9f4c801f38b09e7282a4d8a276c6f4c91f9199453d937e71287737962f44"},
 ]
 pymysql = [
     {file = "PyMySQL-1.0.2-py3-none-any.whl", hash = "sha256:41fc3a0c5013d5f039639442321185532e3e2c8924687abe6537de157d403641"},
