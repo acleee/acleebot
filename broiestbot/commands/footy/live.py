@@ -30,7 +30,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         live_league_fixtures = footy_live_fixtures_per_league(league_id, league_name, room, username, subs=subs)
-        if live_league_fixtures is not None and i < 4:
+        if live_league_fixtures is not None and i < 6:
             i += 1
             live_fixtures += live_league_fixtures + "\n"
     if live_fixtures == "\n\n\n\n":
