@@ -204,6 +204,7 @@ WC_QUALIFIERS_SOUTHAMERICA = 34
 SERIE_A_LEAGUE_ID = 135
 COMMUNITY_SHIELD_CUP = 528
 CARABOU_CUP_ID = 48
+AFRICA_CUP_ID = 6
 
 FOOTY_LEAGUES = {
     # ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
@@ -212,6 +213,7 @@ FOOTY_LEAGUES = {
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":cow_face: Carabao": FA_CUP_ID,
+    ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     ":England: EFL": EFL_LEAGUE_ID,
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
