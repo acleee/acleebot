@@ -38,6 +38,7 @@ from broiestbot.commands import (
     liga_standings,
     random_image,
     send_text_message,
+    tuner,
     weather_by_location,
     wiki_summary,
 )
@@ -150,6 +151,8 @@ class Bot(RoomManager):
             return get_top_crypto()
         elif cmd_type == "define" and args:
             return get_english_definition(args)
+        elif cmd_type == "tune" and args:
+            return tuner(args, user_name)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -289,8 +292,8 @@ class Bot(RoomManager):
         :returns: Optional[str]
         """
         cmd, args = self._parse_command(chat_message[1::])
-        if cmd == "tune":  # Avoid clashes with Acleebot
-            return None
+#        if cmd == "tune":  # Avoid clashes with Acleebot
+#            return None
         command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None:
             response = self.create_message(
