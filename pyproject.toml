@@ -1,0 +1,71 @@
+[tool.poetry]
+name = "broiestbot"
+version = "0.1.0"
+description = "Chat bot for the Chatango chat platform."
+authors = ["Todd Birchard <toddbirchard@gmail.com>"]
+maintainers = ["Todd Birchard <toddbirchard@gmail.com>"]
+license = "MIT"
+readme = "README.md"
+homepage = "https://github.com/toddbirchard/broiestbot/"
+repository = "https://github.com/toddbirchard/broiestbot/"
+documentation = "https://github.com/toddbirchard/broiestbot/blob/master/README.md"
+keywords = [
+    "Chatbot",
+    "Chat",
+    "Chatango",
+    "Bot",
+    "Python",
+]
+
+[tool.poetry.dependencies]
+python = "^3.8"
+requests = "*"
+sqlalchemy = "*"
+pymysql = "*"
+google-cloud-storage = "*"
+loguru = "*"
+plotly = "*"
+chart-studio = "*"
+emoji = "*"
+bs4 = "*"
+wikipedia-api = "*"
+imdbpy = "*"
+simplejson = "*"
+ipdata = "*"
+boto = "*"
+botocore = "*"
+praw = "*"
+ddtrace = "*"
+uWSGI = "*"
+python-dotenv = "*"
+twilio = "*"
+datadog = "*"
+lyricsgenius = "*"
+pytz = "*"
+pandas = "*"
+html5lib = "*"
+google-api-python-client = "*"
+PyMultiDictionary = "*"
+
+[tool.poetry.dev-dependencies]
+pytest = "*"
+black = "^21.11b1"
+isort = "^5.10.1"
+
+[tool.poetry.scripts]
+run = "wsgi:init_bot"
+
+[tool.poetry.urls]
+issues = "https://github.com/toddbirchard/broiestbot/issues"
+
+[build-system]
+requires = ["poetry>=1.1.11"]
+build-backend = "poetry.masonry.api"
+
+[tool.isort]
+profile = "black"
+src_paths = ["broiestbot", "chatango", "clients", "config", "logger"]
+
+[tool.black]
+line-length = 160
+
