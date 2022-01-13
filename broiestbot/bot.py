@@ -3,7 +3,6 @@ import re
 from typing import Optional, Tuple
 
 from emoji import emojize
-from ipdata.ipdata import IncompatibleParameters
 
 from broiestbot.commands import (
     all_leagues_golden_boot,
@@ -38,15 +37,17 @@ from broiestbot.commands import (
     liga_standings,
     random_image,
     send_text_message,
+    tuner,
     weather_by_location,
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from clients import geo
 from config import CHATANGO_BLACKLISTED_USERS
 from database import session
-from database.models import Chat, ChatangoUser, Command
+from database.models import Command
 from logger import LOGGER
+
+from .data import persist_chat_data, persist_user_data
 
 
 class Bot(RoomManager):
@@ -150,6 +151,8 @@ class Bot(RoomManager):
             return get_top_crypto()
         elif cmd_type == "define" and args:
             return get_english_definition(args)
+        elif cmd_type == "tune" and args:
+            return tuner(args, user_name)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -169,12 +172,21 @@ class Bot(RoomManager):
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
         self._check_blacklisted_users(room, user_name, message)
-        self._get_user_data(room_name, user, message)
+        persist_user_data(room_name, user, message)
+        persist_chat_data(user_name, room_name, chat_message)
         self._process_command(chat_message, room, user_name, message)
-        session.add(Chat(username=user_name, room=room_name, message=chat_message))
 
     def _process_command(self, chat_message: str, room: Room, user_name: str, message: Message) -> None:
-        """Determines if message is a bot command."""
+        """
+        Determines if message is a bot command.
+
+        :param str chat_message: Raw message sent by user.
+        :param Room room: Chatango room object.
+        :param str user_name: User responsible for triggering command.
+        :param Message message: Chatango message object to be parsed.
+
+        :returns: None
+        """
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+", chat_message):
@@ -204,65 +216,6 @@ class Bot(RoomManager):
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
 
     @staticmethod
-    def _get_user_data(room_name: str, user: User, message: Message) -> None:
-        """
-        Persist metadata regarding message history.
-
-        :param str room_name: Chatango room.
-        :param User user: User responsible for triggering command.
-        :param Message message: User submitted message.
-
-        :returns: None
-        """
-        try:
-            if message.ip:
-                existing_user = (
-                    session.query(ChatangoUser)
-                    .filter(
-                        ChatangoUser.username == user.name.lower(),
-                        ChatangoUser.chatango_room == room_name,
-                        ChatangoUser.ip == message.ip,
-                    )
-                    .first()
-                )
-                if existing_user is None:
-                    user_metadata = geo.lookup_user(message.ip)
-                    # fmt: off
-                    session.add(
-                        ChatangoUser(
-                            username=user.name.lower().replace("!anon", "anon"),
-                            chatango_room=room_name,
-                            city=user_metadata.get("city"),
-                            region=user_metadata.get("region"),
-                            country_name=user_metadata.get("country_name"),
-                            latitude=user_metadata.get("latitude"),
-                            longitude=user_metadata.get("longitude"),
-                            postal=user_metadata.get("postal"),
-                            emoji_flag=user_metadata.get("emoji_flag"),
-                            status=user_metadata.get("status"),
-                            time_zone_name=user_metadata.get("time_zone").get("name") if user_metadata.get("time_zone") else None,
-                            time_zone_abbr=user_metadata.get("time_zone").get("abbr") if user_metadata.get("time_zone") else None,
-                            time_zone_offset=user_metadata.get("time_zone").get("offset") if user_metadata.get("time_zone") else None,
-                            time_zone_is_dst=user_metadata.get("time_zone").get("is_dst") if user_metadata.get("time_zone") else None,
-                            carrier_name=user_metadata.get("carrier").get("name") if user_metadata.get("carrier") else None,
-                            carrier_mnc=user_metadata.get("carrier").get("mnc") if user_metadata.get("carrier") else None,
-                            carrier_mcc=user_metadata.get("carrier").get("mcc") if user_metadata.get("carrier") else None,
-                            asn_asn=user_metadata.get("asn").get("asn") if user_metadata.get("asn") else None,
-                            asn_name=user_metadata.get("asn").get("name") if user_metadata.get("asn") else None,
-                            asn_domain=user_metadata.get("asn").get("domain") if user_metadata.get("asn") else None,
-                            asn_route=user_metadata.get("asn").get("route") if user_metadata.get("asn") else None,
-                            asn_type=user_metadata.get("asn").get("type") if user_metadata.get("asn") else None,
-                            time_zone_current_time=user_metadata.get("time_zone").get("current_time") if user_metadata.get("time_zone") else None,
-                            ip=message.ip
-                        )
-                    )
-                    # fmt: on
-        except IncompatibleParameters as e:
-            LOGGER.warning(f"Failed to save data for {user.name} due to IncompatibleParameters: {e}")
-        except Exception as e:
-            LOGGER.warning(f"Unexpected error while attempting to save data for {user.name}: {e}")
-
-    @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
         """
         Parse user message into command & arguments.
@@ -278,19 +231,15 @@ class Bot(RoomManager):
             return cmd, args
         return user_msg, None
 
-    def _get_response(self, chat_message: str, room: Room, user_name: str) -> Optional[str]:
+    def _get_response(self, chat_message: str, room: Room, user_name: str):
         """
         Fetch response from database to send to chat.
 
         :param str chat_message: Raw message sent by user.
         :param Room room: Chatango room.
         :param str user_name: User responsible for triggering command.
-
-        :returns: Optional[str]
         """
         cmd, args = self._parse_command(chat_message[1::])
-        if cmd == "tune":  # Avoid clashes with Acleebot
-            return None
         command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None:
             response = self.create_message(
@@ -335,7 +284,7 @@ class Bot(RoomManager):
         Wave back at user.
 
         :param Room room: Chatango room.
-        :param str user_name: User name of Chatango user who waved.
+        :param str user_name: Username of Chatango user who waved.
 
         :returns: None
         """
@@ -367,7 +316,7 @@ class Bot(RoomManager):
         :param Room room: Chatango room.
         :param Message message: Message sent by user.
         :param str user_name: User responsible for triggering command.
-        :param bool silent: Whether or not offending user should be warned.
+        :param bool silent: Whether offending user should be warned.
 
         :returns: None
         """
