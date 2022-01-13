@@ -5,11 +5,11 @@ import time
 import requests
 from emoji import emojize
 
-from config import CHANNEL_AUTH, CHANNEL_HOST, CHATANGO_SPECIAL_USERS
+from config import CHANNEL_AUTH, CHANNEL_HOST, CHATANGO_SPECIAL_USERS, BASE_DIR
 
 
 def open_json():
-    with open("./channels.json.txt") as fp:
+    with open(f"{BASE_DIR}/channels.json.txt") as fp:
         channel_data = json.load(fp)
     return channel_data["result"]["channels"]
 
