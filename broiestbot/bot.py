@@ -41,12 +41,13 @@ from broiestbot.commands import (
     weather_by_location,
     wiki_summary,
 )
-from broiestbot.data import persist_chat_data, persist_user_metadata
 from chatango.ch import Message, Room, RoomManager, User
 from config import CHATANGO_BLACKLISTED_USERS
 from database import session
 from database.models import Command
 from logger import LOGGER
+
+from .data import persist_chat_data, persist_user_data
 
 
 class Bot(RoomManager):
@@ -171,7 +172,7 @@ class Bot(RoomManager):
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
         self._check_blacklisted_users(room, user_name, message)
-        persist_user_metadata(room_name, user, message)
+        persist_user_data(room_name, user, message)
         persist_chat_data(user_name, room_name, chat_message)
         self._process_command(chat_message, room, user_name, message)
 

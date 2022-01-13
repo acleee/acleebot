@@ -5,7 +5,7 @@ import time
 import requests
 from emoji import emojize
 
-from config import CHANNEL_AUTH, CHANNEL_HOST, CHATANGO_SPECIAL_USERS, BASE_DIR
+from config import BASE_DIR, CHANNEL_AUTH, CHANNEL_HOST, CHATANGO_SPECIAL_USERS
 
 
 def open_json():
