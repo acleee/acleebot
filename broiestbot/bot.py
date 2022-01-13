@@ -292,8 +292,6 @@ class Bot(RoomManager):
         :returns: Optional[str]
         """
         cmd, args = self._parse_command(chat_message[1::])
-#        if cmd == "tune":  # Avoid clashes with Acleebot
-#            return None
         command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None:
             response = self.create_message(
