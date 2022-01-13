@@ -40,7 +40,7 @@ def get_number(name: str):
 # name goes here, ex: tuner("Cartoon Network")
 def tuner(name, user):
     if user.lower() in CHATANGO_SPECIAL_USERS:
-        if name == "gumball":
+        if name in ("gumball", "gumbol"):
             name = "Cartoon Network"
         if name == "joop":
             name = "ABC"
