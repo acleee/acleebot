@@ -77,11 +77,15 @@ def fetch_existing_user(room_name: str, user: User, message: Message) -> Optiona
     """
     try:
         if message.ip:
-            return session.query(ChatangoUser).filter(
-                ChatangoUser.username == user.name.lower(),
-                ChatangoUser.chatango_room == room_name,
-                ChatangoUser.ip == message.ip,
-            ).first()
+            return (
+                session.query(ChatangoUser)
+                .filter(
+                    ChatangoUser.username == user.name.lower(),
+                    ChatangoUser.chatango_room == room_name,
+                    ChatangoUser.ip == message.ip,
+                )
+                .first()
+            )
     except SQLAlchemyError as e:
         LOGGER.warning(f"SQLAlchemyError occurred while fetching metadata for {user.name}: {e}")
     except Exception as e:

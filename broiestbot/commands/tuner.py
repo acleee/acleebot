@@ -5,79 +5,82 @@ import time
 import requests
 from emoji import emojize
 
-from config import BASE_DIR, CHANNEL_AUTH, CHANNEL_HOST, CHATANGO_SPECIAL_USERS
+from config import (
+    CHANNEL_HOST,
+    CHANNEL_LIST_FILEPATH,
+    CHANNEL_TUNER_HEADERS,
+    CHATANGO_SPECIAL_USERS,
+)
+from logger import LOGGER
 
 
-def open_json():
-    with open(f"{BASE_DIR}/channels.json.txt") as fp:
+def parse_channel_json():
+    """Parse JSON file containing channel information for tuner."""
+    with open(CHANNEL_LIST_FILEPATH) as fp:
         channel_data = json.load(fp)
     return channel_data["result"]["channels"]
+
+
+CHANNEL_DATA = parse_channel_json()
 
 
 def current_milli_time():
     return str(round(time.time() * 1000))
 
 
-def get_proper_caps(name):
-    channels = open_json()
-    channel = [channel for channel in channels if channel["channel"].lower() == name.lower()]
+def get_proper_caps(channel_name: str):
+    channel = [channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name]
     return str(channel[0]["channel"])
 
 
-def get_number(name: str):
-    channels = open_json()
+def get_number(channel_name: str):
     try:
-        channel = [channel for channel in channels if channel["channel"].lower() == name.lower()]
+        channel = [channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name]
         return str(channel[0]["channelid"])
     except IndexError:
-        err_msg = "{} wasn't found, but I found the following channels: \n".format(name)
-        channel = [channel for channel in channels if name.lower() in channel["channel"].lower()]
+        err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
+        channel = [channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()]
         for name in channel:
             err_msg += name["channel"] + "\n"
         return err_msg
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when getting channel number: {e}")
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
 
 
 # name goes here, ex: tuner("Cartoon Network")
-def tuner(name, user):
-    if user.lower() in CHATANGO_SPECIAL_USERS:
-        if name in ("gumball", "gumbol"):
-            name = "Cartoon Network"
-        if name == "joop":
-            name = "ABC"
-        num = get_number(name)
-        try:
+def tuner(channel_name: str, username: str):
+    try:
+        if username in CHATANGO_SPECIAL_USERS:
+            if channel_name in ("gumball", "gumbol"):
+                channel_name = "Cartoon Network"
+            if channel_name == "joop":
+                channel_name = "ABC"
+            num = get_number(channel_name)
             number = int(num)
-        except ValueError:
-            return num
-        number = str(number)
-        capped = get_proper_caps(name)
-        headers = {
-            "Connection": "keep-alive",
-            "Authorization": CHANNEL_AUTH,
-            "Accept": "application/json, text/javascript, */*; q=0.01",
-            "DNT": "1",
-            "X-Requested-With": "XMLHttpRequest",
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
-            "Content-Type": "application/json",
-            "Origin": CHANNEL_HOST,
-            "Referer": CHANNEL_HOST,
-            "Accept-Language": "en-US,en;q=0.9",
-            "sec-gpc": "1",
-        }
-
-        # some of this has to use ugly plus signs because format() breaks due to all the curlies
-        data = '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"channelid":' + number + '}},"id":' + current_milli_time() + "}"
-        response = requests.post(f"{CHANNEL_HOST}jsonrpc", headers=headers, data=data, verify=False)
-        data2 = (
-            '{"id":752,"jsonrpc":"2.0","method":"PVR.GetBroadcasts","params":{"channelid":'
-            + number
-            + ',"properties":["isactive","starttime","endtime","title"], "limits":{ "end": 2}}}'
+            number = str(number)
+            capped = get_proper_caps(channel_name)
+            # some of this has to use ugly plus signs because format() breaks due to all the curlies
+            data = '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"channelid":' + number + '}},"id":' + current_milli_time() + "}"
+            requests.post(f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False)
+            on_now = get_current_show(number)
+            return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
+        return emojize(
+            f":warning: u don't have the poughwer to change da channol :warning:",
+            use_aliases=True,
         )
-        response2 = requests.post(f"{CHANNEL_HOST}jsonrpc", headers=headers, data=data2, verify=False)
-        data3 = json.loads(response2.content)
-        onnow = data3["result"]["broadcasts"][0]["title"]
-        return emojize(f":tv: Tuning to {capped}. On now: {onnow}", use_aliases=True)
-    return emojize(
-        f":warning: u don't have the poughwer to change da channol :warning:",
-        use_aliases=True,
+    except ValueError as e:
+        LOGGER.info(f"ValueError occurred when fetching tuner channel; defaulting to {get_number(channel_name)}: {e}")
+        return get_number(channel_name)
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when changing channel: {e}")
+
+
+def get_current_show(number: str):
+    data = (
+        '{"id":752,"jsonrpc":"2.0","method":"PVR.GetBroadcasts","params":{"channelid":'
+        + str(number)
+        + ',"properties":["isactive","starttime","endtime","title"], "limits":{ "end": 2}}}'
     )
+    resp = requests.post(f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False)
+    return resp.json()["result"]["broadcasts"][0]["title"]

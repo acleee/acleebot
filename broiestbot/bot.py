@@ -152,7 +152,7 @@ class Bot(RoomManager):
         elif cmd_type == "define" and args:
             return get_english_definition(args)
         elif cmd_type == "tune" and args:
-            return tuner(args, user_name)
+            return tuner(args.lower(), user_name)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")

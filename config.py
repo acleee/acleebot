@@ -262,5 +262,19 @@ ENGLAND_INT_TEAM_ID = 10
 FOOTY_TEAMS_PRIORITY = {"manu": MANU_TEAM_ID, "england": ENGLAND_INT_TEAM_ID}
 
 # Remote tuner control
+CHANNEL_LIST_FILEPATH = f"{BASE_DIR}/channels.json.txt"
 CHANNEL_HOST = getenv("CHANNEL_HOST")
 CHANNEL_AUTH = getenv("CHANNEL_AUTH")
+CHANNEL_TUNER_HEADERS = {
+    "Connection": "keep-alive",
+    "Authorization": CHANNEL_AUTH,
+    "Accept": "application/json, text/javascript, */*; q=0.01",
+    "DNT": "1",
+    "X-Requested-With": "XMLHttpRequest",
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.141 Safari/537.36",
+    "Content-Type": "application/json",
+    "Origin": CHANNEL_HOST,
+    "Referer": CHANNEL_HOST,
+    "Accept-Language": "en-US,en;q=0.9",
+    "sec-gpc": "1",
+}
