@@ -8,6 +8,8 @@ Base = declarative_base()
 
 
 class Chat(Base):
+    """Chatango user chat to persist in logs."""
+
     __tablename__ = "chat"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -21,6 +23,8 @@ class Chat(Base):
 
 
 class Command(Base):
+    """Bot commands triggered by `!` prefix upon chat."""
+
     __tablename__ = "commands"
 
     id = Column(Integer, primary_key=True, index=True)
@@ -33,7 +37,23 @@ class Command(Base):
         return f"command={self.command}, type={self.type}, response={self.response}"
 
 
+class Phrase(Base):
+    """Reserved phrases which prompt a response (no `!` required)."""
+
+    __tablename__ = "phrases"
+
+    id = Column(Integer, primary_key=True, index=True)
+    phrase = Column(String(255), nullable=False, unique=True, index=True)
+    response = Column(Text, nullable=False)
+    created_at = Column(DateTime, server_default=func.now())
+
+    def __repr__(self):
+        return f"command={self.phrase}, type={self.response}"
+
+
 class ChatangoUser(Base):
+    """Chatango user metadata for anon auditing purposes."""
+
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)

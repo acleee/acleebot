@@ -44,7 +44,7 @@ from broiestbot.commands import (
 from chatango.ch import Message, Room, RoomManager, User
 from config import CHATANGO_BLACKLISTED_USERS
 from database import session
-from database.models import Command
+from database.models import Command, Phrase
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -173,8 +173,11 @@ class Bot(RoomManager):
         room_name = room.room_name.lower()
         self._check_blacklisted_users(room, user_name, message)
         persist_user_data(room_name, user, message, room.user.name.lower())
-        persist_chat_data(user_name, room_name, chat_message)
-        self._process_command(chat_message, room, user_name, message)
+        persist_chat_data(user_name, room_name, chat_message, room.user.name.lower())
+        if chat_message.startswith("!"):
+            self._process_command(chat_message, room, user_name, message)
+        else:
+            self._process_phrase(chat_message, room)
 
     def _process_command(
         self, chat_message: str, room: Room, user_name: str, message: Message
@@ -195,11 +198,9 @@ class Bot(RoomManager):
             return self._get_response("!ein", room, user_name)
         elif re.match(r"^!.+", chat_message):
             return self._get_response(chat_message, room, user_name)
-        elif chat_message == "bro?":
-            self._bot_status_check(room)
         elif "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower():
             self._wave_back(room, user_name)
-        elif chat_message.replace("!", "").strip() == "no u":
+        elif chat_message == "no u":
             self._ban_word(room, message, user_name, silent=True)
         elif (
             "petition" in chat_message
@@ -215,13 +216,23 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-        elif chat_message.lower().replace("'", "") == "anyway heres wonderwall":
-            room.message(
-                "https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84"
-            )
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
+
+    @staticmethod
+    def _process_phrase(phrase: str, room: Room) -> None:
+        """
+        Search database for non-command phrases which elicit a response.
+
+        :param str phrase: A non-command chat which may prompt a response.
+        :param Room room: Current chatango room object.
+
+        :returns: None
+        """
+        fetched_phrase = session.query(Phrase).filter(Phrase.phrase == phrase).one_or_none()
+        if fetched_phrase is not None:
+            room.message(fetched_phrase.response)
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
@@ -276,17 +287,6 @@ class Bot(RoomManager):
         room.message(preview)
 
     @staticmethod
-    def _bot_status_check(room: Room) -> None:
-        """
-        Check bot status.
-
-        :param Room room: Chatango room.
-
-        :returns: None
-        """
-        room.message("hellouughhgughhg?")
-
-    @staticmethod
     def _wave_back(room: Room, user_name: str) -> None:
         """
         Wave back at user.
@@ -331,7 +331,7 @@ class Bot(RoomManager):
         :returns: None
         """
         message.delete()
-        if silent is False:
+        if silent is not True:
             room.message(f"DO NOT SAY THAT WORD @{user_name.upper()} :@")
 
     @staticmethod
@@ -359,9 +359,10 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name in CHATANGO_BLACKLISTED_USERS:
-            room.ban(message)
             reply = emojize(
                 f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
             )
             room.message(reply)
+            room.ban_user(message.user)
+
