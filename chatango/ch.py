@@ -275,7 +275,9 @@ def _get_anon_id(n, ssid):
     if n is None:
         n = "5504"
     try:
-        return "".join(str(x + y)[-1] for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:])))
+        return "".join(
+            str(x + y)[-1] for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:]))
+        )
     except ValueError:
         return "NNNN"
 
@@ -437,7 +439,9 @@ class ANON_PM:
         self._persons[name]._sock = sock
         if not self._persons[name]._auth():
             return
-        self._persons[name]._pingTask = self._mgr.set_internal(self._mgr._ping_delay, self._persons[name].ping)
+        self._persons[name]._pingTask = self._mgr.set_internal(
+            self._mgr._ping_delay, self._persons[name].ping
+        )
         self._persons[name]._connected = True
 
     def message(self, user, msg):
@@ -853,7 +857,9 @@ class Room:
         self._headers_parsed = False
         if Use_WebSocket:
             self._wbuf = (
-                b"GET / HTTP/1.1\r\n" + "Host: {}:{}\r\n".format(self._server, self._port).encode() + b"Origin: http://st.chatango.com\r\n"
+                b"GET / HTTP/1.1\r\n"
+                + "Host: {}:{}\r\n".format(self._server, self._port).encode()
+                + b"Origin: http://st.chatango.com\r\n"
                 b"Connection: Upgrade\r\n"
                 b"Upgrade: websocket\r\n"
                 b"Sec-WebSocket-Key: dGhlIHNhbXBsZSBub25jZQ==\r\n"
@@ -1867,7 +1873,9 @@ class RoomManager:
         :type room: Room
         """
         room.message("Beep boop I'm dead inside 🤖")
-        LOGGER.success(f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}")
+        LOGGER.success(
+            f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}"
+        )
 
     def on_reconnect(self, room: Room):
         """
@@ -1962,7 +1970,9 @@ class RoomManager:
         :param Room room: Chatango room where user was modded.
         :param User user: User promoted to mod.
         """
-        LOGGER.info(f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}.")
+        LOGGER.info(
+            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}."
+        )
 
     @staticmethod
     def on_mod_remove(room: Room, user):

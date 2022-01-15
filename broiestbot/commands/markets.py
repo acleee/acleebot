@@ -29,7 +29,9 @@ def get_crypto(symbol: str) -> str:
         chart = cch.get_chart(symbol)
         return chart
     except HTTPError as e:
-        LOGGER.error(f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}")
+        LOGGER.error(
+            f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}"
+        )
         return emojize(f":warning: omg the internet died AAAAA :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching crypto price for `{symbol}`: {e}")
@@ -103,8 +105,12 @@ def format_top_crypto_response(coins: dict):
         top_coins = "\n\n\n"
         for i, coin in enumerate(coins):
             top_coins += f"<b>{coin['name']} ({coin['symbol']})</b> ${'{:.3f}'.format(coin['quote']['USD']['price'])}\n"
-            top_coins += f"1d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n"
-            top_coins += f"7d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
+            top_coins += (
+                f"1d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_24h'])}%\n"
+            )
+            top_coins += (
+                f"7d change of {'{:.2f}'.format(coin['quote']['USD']['percent_change_7d'])}%\n"
+            )
             if i < len(coins):
                 top_coins += "\n"
         return top_coins

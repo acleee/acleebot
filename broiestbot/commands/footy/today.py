@@ -31,7 +31,9 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     upcoming_fixtures = "\n\n\n\n"
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        league_fixtures = footy_todays_upcoming_fixtures_per_league(league_name, league_id, room, username)
+        league_fixtures = footy_todays_upcoming_fixtures_per_league(
+            league_name, league_id, room, username
+        )
         if league_fixtures is not None and i < 5:
             i += 1
             upcoming_fixtures += league_fixtures + "\n"
@@ -43,7 +45,9 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     )
 
 
-def footy_todays_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str, username: str) -> Optional[str]:
+def footy_todays_upcoming_fixtures_per_league(
+    league_name: str, league_id: int, room: str, username: str
+) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -72,7 +76,9 @@ def footy_todays_upcoming_fixtures_per_league(league_name: str, league_id: int, 
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def todays_upcoming_fixtures_by_league(league_id: int, room: str, username: str) -> List[Optional[dict]]:
+def todays_upcoming_fixtures_by_league(
+    league_id: int, room: str, username: str
+) -> List[Optional[dict]]:
     """
     Fetch all upcoming fixtures for the current date.
 

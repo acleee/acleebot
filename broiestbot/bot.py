@@ -172,11 +172,13 @@ class Bot(RoomManager):
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
         self._check_blacklisted_users(room, user_name, message)
-        persist_user_data(room_name, user, message)
+        persist_user_data(room_name, user, message, room.user.name.lower())
         persist_chat_data(user_name, room_name, chat_message)
         self._process_command(chat_message, room, user_name, message)
 
-    def _process_command(self, chat_message: str, room: Room, user_name: str, message: Message) -> None:
+    def _process_command(
+        self, chat_message: str, room: Room, user_name: str, message: Message
+    ) -> None:
         """
         Determines if message is a bot command.
 
@@ -199,7 +201,11 @@ class Bot(RoomManager):
             self._wave_back(room, user_name)
         elif chat_message.replace("!", "").strip() == "no u":
             self._ban_word(room, message, user_name, silent=True)
-        elif "petition" in chat_message and "competition" not in chat_message and user_name != "broiestbro":
+        elif (
+            "petition" in chat_message
+            and "competition" not in chat_message
+            and user_name != "broiestbro"
+        ):
             room.message(
                 "SIGN THE PETITION: \
                                 https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
@@ -210,7 +216,9 @@ class Bot(RoomManager):
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
         elif chat_message.lower().replace("'", "") == "anyway heres wonderwall":
-            room.message("https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84")
+            room.message(
+                "https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84"
+            )
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
         # self._create_link_preview(room, message.body)
         LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
@@ -289,7 +297,9 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name == "broiestbro":
-            room.message(f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro")
+            room.message(
+                f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
+            )
         else:
             room.message(f"@{user_name} *waves*")
 

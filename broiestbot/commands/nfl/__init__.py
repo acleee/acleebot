@@ -17,7 +17,9 @@ def get_live_nfl_games() -> str:
         resp = requests.get(NFL_GAMES_URL, headers=NFL_HTTP_HEADERS, params=params)
         games = resp.json().get("results")
         if resp.status_code == 429:
-            return emojize(f":warning: y'all used the command too much now they tryna charge me smh :warning:")
+            return emojize(
+                f":warning: y'all used the command too much now they tryna charge me smh :warning:"
+            )
         if games:
             game_summaries = "\n\n\n\n"
             for i, game in enumerate(games):

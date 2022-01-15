@@ -137,7 +137,9 @@ def redgifs_auth_token() -> Optional[str]:
         if resp.status_code == 200:
             return resp.json().get("access_token")
         else:
-            LOGGER.error(f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}")
+            LOGGER.error(
+                f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}"
+            )
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Redgifs auth token: {e.response.content}")
     except Exception as e:

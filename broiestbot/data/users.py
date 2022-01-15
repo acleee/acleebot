@@ -12,18 +12,23 @@ from database.models import ChatangoUser
 from logger import LOGGER
 
 
-def persist_user_data(room_name: str, user: User, message: Message) -> None:
+def persist_user_data(room_name: str, user: User, message: Message, bot_username: str) -> None:
     """
     Persist user metadata.
 
     :param str room_name: Chatango room.
     :param User user: User responsible for triggering command.
     :param Message message: User submitted message.
+    :param str bot_username: Name of the currently run bot.
 
     :returns: None
     """
     try:
-        if message.ip and PERSIST_USER_DATA == "true":
+        if (
+            message.ip
+            and PERSIST_USER_DATA == "true"
+            and bot_username in ("broiestbro", "broiestbot")
+        ):
             existing_user = fetch_existing_user(room_name, user, message)
             if existing_user is None:
                 user_metadata = geo.lookup_user(message.ip)

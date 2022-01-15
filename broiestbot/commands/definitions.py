@@ -23,7 +23,9 @@ def get_english_definition(word: str) -> str:
         word_definitions = dictionary.meaning("en", word)
         for i, word_type in enumerate(word_definitions[0]):
             definition = emojize(f":bookmark: {word_type}\n", use_aliases=True)
-            definition += emojize(f":left_speech_bubble: {word_definitions[i + 1]}\n", use_aliases=True)
+            definition += emojize(
+                f":left_speech_bubble: {word_definitions[i + 1]}\n", use_aliases=True
+            )
             if i < len(word_definitions[0]):
                 definition += "\n"
             response += definition
@@ -44,12 +46,16 @@ def get_urban_definition(term: str) -> str:
     params = {"term": term}
     headers = {"Content-Type": "application/json"}
     try:
-        req = requests.get("http://api.urbandictionary.com/v0/define", params=params, headers=headers)
+        req = requests.get(
+            "http://api.urbandictionary.com/v0/define", params=params, headers=headers
+        )
         results = req.json().get("list")
         if results:
             word = term.upper()
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
-            definition = (str(results[0].get("definition")).replace("[", "").replace("]", ""))[0:1500]
+            definition = (str(results[0].get("definition")).replace("[", "").replace("]", ""))[
+                0:1500
+            ]
             example = results[0].get("example")
             if example:
                 example = str(example).replace("[", "").replace("]", "")[0:250]
@@ -57,7 +63,9 @@ def get_urban_definition(term: str) -> str:
             return f"{word}:\n\n {definition}"
         return emojize(":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True)
     except HTTPError as e:
-        LOGGER.error(f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}")
+        LOGGER.error(
+            f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}"
+        )
         return emojize(f":warning: wtf urban dictionary is down :warning:", use_aliases=True)
     except KeyError as e:
         LOGGER.error(f"KeyError error when fetching Urban definition for `{term}`: {e}")
@@ -82,7 +90,9 @@ def wiki_summary(query: str) -> str:
         wiki_page = wiki.page(query)
         if wiki_page.exists():
             title = wiki_page.title.upper()
-            main_category = list(wiki_page.categories.values())[0].title.replace("Category:", "Category: ")
+            main_category = list(wiki_page.categories.values())[0].title.replace(
+                "Category:", "Category: "
+            )
             text = wiki_page.text
             if "disambiguation" in main_category and "Other uses" in text:
                 text = text.split("Other uses")[0]
@@ -123,7 +133,9 @@ def get_english_translation(language: str, phrase: str):
         }
         res = requests.request("POST", url, data=data, headers=headers)
         if res.status_code == 429:
-            return emojize(f":warning: yall translated too much shit this month now google tryna charge me smh :warning:")
+            return emojize(
+                f":warning: yall translated too much shit this month now google tryna charge me smh :warning:"
+            )
         return f'TRANSLATION: `{res.json()["data"]["translations"][0]["translatedText"]}`'
     except HTTPError as e:
         LOGGER.error(f"HTTPError while translating `{phrase}`: {e.response.content}")

@@ -62,9 +62,13 @@ class StockChartHandler:
             if req.status_code == 200 and req.content:
                 return req.content
         except HTTPError as e:
-            raise HTTPError(f"Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}")
+            raise HTTPError(
+                f"Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}"
+            )
         except Exception as e:
-            raise Exception(f"Unexpected error while fetching stock timeseries data for `{symbol}`: {e}")
+            raise Exception(
+                f"Unexpected error while fetching stock timeseries data for `{symbol}`: {e}"
+            )
         return None
 
     '''@staticmethod

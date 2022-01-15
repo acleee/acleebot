@@ -61,7 +61,9 @@ class Database:
         :returns: Optional[Row]
         """
         try:
-            query = text(f"SELECT * FROM user WHERE username = '{user.name}' AND chatango_room = '{room_name}';")
+            query = text(
+                f"SELECT * FROM user WHERE username = '{user.name}' AND chatango_room = '{room_name}';"
+            )
             return self.db.execute(query).fetchone()
         except SQLAlchemyError as e:
             print(f"SQLAlchemyError occurred while fetching user {user.name}: {e}")

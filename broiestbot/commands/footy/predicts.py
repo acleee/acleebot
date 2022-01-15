@@ -40,7 +40,10 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
                 draw_chance = prediction["winning_percent"]["draws"]
                 home_name = prediction["teams"]["home"]["team_name"]
                 away_name = prediction["teams"]["away"]["team_name"]
-                todays_predicts = todays_predicts + f"{away_name} {away_chance} @ {home_name} {home_chance} (draw {draw_chance})\n"
+                todays_predicts = (
+                    todays_predicts
+                    + f"{away_name} {away_chance} @ {home_name} {home_chance} (draw {draw_chance})\n"
+                )
         return todays_predicts
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching today's footy predicts: {e.response.content}")
@@ -67,7 +70,11 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
         res = requests.get(FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         fixtures = res.json().get("response")
         if bool(fixtures):
-            return [fixture["fixture"]["id"] for fixture in fixtures if fixture["league"]["id"] in FOOTY_LEAGUES.values()]
+            return [
+                fixture["fixture"]["id"]
+                for fixture in fixtures
+                if fixture["league"]["id"] in FOOTY_LEAGUES.values()
+            ]
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching today's footy fixtures: {e.response.content}")
     except KeyError as e:

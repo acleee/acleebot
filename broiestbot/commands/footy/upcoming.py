@@ -66,7 +66,9 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
     return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
 
 
-def footy_upcoming_fixtures_per_league(league_name, league_id: int, room: str, username: str) -> Optional[str]:
+def footy_upcoming_fixtures_per_league(
+    league_name, league_id: int, room: str, username: str
+) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -93,7 +95,9 @@ def footy_upcoming_fixtures_per_league(league_name, league_id: int, room: str, u
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def upcoming_fixture_fetcher(league_name: str, league_id: int, room: str, username: str) -> Optional[List[dict]]:
+def upcoming_fixture_fetcher(
+    league_name: str, league_id: int, room: str, username: str
+) -> Optional[List[dict]]:
     """
     Fetch next 5 upcoming fixtures for a given league.
 
@@ -182,7 +186,9 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 display_date, tz = get_preferred_time_format(date, room, username)
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
-                upcoming_foxtures = upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
+                upcoming_foxtures = (
+                    upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
+                )
             return emojize(upcoming_foxtures, use_aliases=True)
         return emojize(
             f":warning: Couldn't find fixtures, has season started yet? :warning:",

@@ -80,7 +80,9 @@ class CryptoChartHandler:
                     f"(change of {percentage:.2f}%)."
                 )
         except HTTPError as e:
-            raise HTTPError(f"HTTPError error {e.response.status_code} while fetching crypto price for `{symbol}`: {e.response.content}")
+            raise HTTPError(
+                f"HTTPError error {e.response.status_code} while fetching crypto price for `{symbol}`: {e.response.content}"
+            )
         except Exception as e:
             raise Exception(f"Unexpected error while crypto price for `{symbol}`: {e}")
 
@@ -116,7 +118,9 @@ class CryptoChartHandler:
 
         :returns: Optional[pd.DataFrame]
         """
-        df = pd.DataFrame.from_dict(coin_data["Time Series (Digital Currency Daily)"], orient="index")[:60]
+        df = pd.DataFrame.from_dict(
+            coin_data["Time Series (Digital Currency Daily)"], orient="index"
+        )[:60]
         return df
 
     def _create_chart(self, symbol: str) -> Optional[str]:
@@ -188,5 +192,8 @@ class CryptoChartHandler:
                 sharing="public",
                 auto_open=False,
             )
-            return chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1] + ".png"
+            return (
+                chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1]
+                + ".png"
+            )
         return None

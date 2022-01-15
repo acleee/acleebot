@@ -40,7 +40,9 @@ def epl_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            standings_table = (
+                standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
@@ -74,7 +76,9 @@ def liga_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            standings_table = (
+                standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
@@ -108,7 +112,9 @@ def bund_standings(endpoint: str) -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            standings_table = (
+                standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+            )
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
