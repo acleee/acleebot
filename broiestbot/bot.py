@@ -177,7 +177,7 @@ class Bot(RoomManager):
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name, message)
         else:
-            self._process_phrase(chat_message, room)
+            self._process_phrase(chat_message, room, user_name, message)
 
     def _process_command(
         self, chat_message: str, room: Room, user_name: str, message: Message
@@ -210,6 +210,8 @@ class Bot(RoomManager):
 
         :param str chat_message: A non-command chat which may prompt a response.
         :param Room room: Current chatango room object.
+        :param str user_name: User responsible for triggering command.
+        :param Message message: Chatango message object to be parsed.
 
         :returns: None
         """
