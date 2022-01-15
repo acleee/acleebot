@@ -193,12 +193,27 @@ class Bot(RoomManager):
         :returns: None
         """
         if re.match(r"^!!.+", chat_message):
-            return self._giphy_fallback(chat_message[2::], room)
+            self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+", chat_message):
-            return self._get_response("!ein", room, user_name)
+            self._get_response("!ein", room, user_name)
         elif re.match(r"^!.+", chat_message):
-            return self._get_response(chat_message, room, user_name)
-        elif "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower():
+            self._get_response(chat_message, room, user_name)
+        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
+        # self._create_link_preview(room, message.body)
+        LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
+
+    def _process_phrase(
+        self, chat_message: str, room: Room, user_name: str, message: Message
+    ) -> None:
+        """
+        Search database for non-command phrases which elicit a response.
+
+        :param str chat_message: A non-command chat which may prompt a response.
+        :param Room room: Current chatango room object.
+
+        :returns: None
+        """
+        if "@broiestbro" in chat_message and "*waves*" in chat_message:
             self._wave_back(room, user_name)
         elif chat_message == "no u":
             self._ban_word(room, message, user_name, silent=True)
@@ -216,23 +231,12 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
-        # self._create_link_preview(room, message.body)
-        LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
-
-    @staticmethod
-    def _process_phrase(phrase: str, room: Room) -> None:
-        """
-        Search database for non-command phrases which elicit a response.
-
-        :param str phrase: A non-command chat which may prompt a response.
-        :param Room room: Current chatango room object.
-
-        :returns: None
-        """
-        fetched_phrase = session.query(Phrase).filter(Phrase.phrase == phrase).one_or_none()
-        if fetched_phrase is not None:
-            room.message(fetched_phrase.response)
+        else:
+            fetched_phrase = (
+                session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
+            )
+            if fetched_phrase is not None:
+                room.message(fetched_phrase.response)
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
@@ -365,4 +369,3 @@ class Bot(RoomManager):
             )
             room.message(reply)
             room.ban_user(message.user)
-
