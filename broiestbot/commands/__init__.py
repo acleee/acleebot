@@ -35,6 +35,8 @@ from .nfl import get_live_nfl_games
 from .olympics import get_olympic_medals_per_nation
 from .tuner import tuner
 
+from .tuner import tuner
+
 # from .video import search_youtube_for_video
 from .video import get_all_live_twitch_streams
 from .weather import weather_by_location
