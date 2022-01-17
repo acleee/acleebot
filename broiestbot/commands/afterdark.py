@@ -24,7 +24,7 @@ def is_after_dark() -> bool:
     """
     tz = pytz.timezone("America/New_York")
     now = datetime.now(tz=tz)
-    start_time = datetime(year=now.year, month=now.month, day=now.day, hour=22, tzinfo=now.tzinfo)
+    start_time = datetime(year=now.year, month=now.month, day=now.day, hour=0, tzinfo=now.tzinfo)
     end_time = datetime(year=now.year, month=now.month, day=now.day, hour=5, tzinfo=now.tzinfo)
     if start_time > now or end_time < now:
         return True
