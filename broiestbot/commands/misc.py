@@ -92,7 +92,7 @@ def time_until_wayne() -> str:
             else:
                 time_remaining = wayne_start_time - now
                 return emojize(
-                    f":dollar: {time_remaining.seconds / 60} minutes left before WAYNE :dollar:",
+                    f":dollar: {int(time_remaining.seconds / 60)} minutes left before WAYNE :dollar:",
                     use_aliases=True,
                 )
         else:
