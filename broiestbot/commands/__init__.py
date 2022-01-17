@@ -29,7 +29,12 @@ from .images import (
 )
 from .lyrics import get_song_lyrics
 from .markets import get_crypto, get_stock, get_top_crypto
-from .misc import blaze_time_remaining, covid_cases_usa, send_text_message
+from .misc import (
+    blaze_time_remaining,
+    covid_cases_usa,
+    send_text_message,
+    time_until_wayne,
+)
 from .movies import find_imdb_movie
 from .nfl import get_live_nfl_games
 from .olympics import get_olympic_medals_per_nation

@@ -71,6 +71,40 @@ def send_text_message(message: str, user: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
 
+def time_until_wayne() -> str:
+    """
+    Fetch number of minutes until LMAD if current day is a weekday.
+
+    :returns: str
+    """
+    try:
+        if datetime.today().isoweekday() < 6:
+            tz = pytz.timezone("America/New_York")
+            now = datetime.now(tz=tz)
+            wayne_start_time = datetime(
+                day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=tz
+            )
+            if wayne_start_time < now < wayne_start_time + timedelta(hours=1):
+                return emojize(
+                    f":dollar: Wayne is already on rn MORAN!!! CHANGE THE CHANNOL!!! :dollar:",
+                    use_aliases=True,
+                )
+            else:
+                time_remaining = wayne_start_time - now
+                return emojize(
+                    f":dollar: {time_remaining.seconds / 60} minutes left before WAYNE :dollar:",
+                    use_aliases=True,
+                )
+        else:
+            return emojize(
+                f":warning: bruh it's {datetime.today().weekday()} there's no wayne today :warning:",
+                use_aliases=True,
+            )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while determining time until wayne: {e}")
+        return ":warning: idk wtf you did but your lack of wayne knowledge broke bot :warning:"
+
+
 def covid_cases_usa() -> str:
     """
     Retrieve reported COVID-19 cases and deaths in the US.

@@ -39,6 +39,7 @@ from broiestbot.commands import (
     liga_standings,
     random_image,
     send_text_message,
+    time_until_wayne,
     tuner,
     weather_by_location,
     wiki_summary,
@@ -153,6 +154,8 @@ class Bot(RoomManager):
             return get_english_definition(args)
         elif cmd_type == "tune" and args:
             return tuner(args, user_name)
+        elif cmd_type == "wayne":
+            return time_until_wayne()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
