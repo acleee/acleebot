@@ -1,4 +1,4 @@
-"""External clients."""
+"""Clients & SDKs for interacting with third-party services."""
 import lyricsgenius
 import praw
 import wikipediaapi
@@ -11,8 +11,6 @@ from config import (
     ALPHA_VANTAGE_API_KEY,
     ALPHA_VANTAGE_CHART_BASE_URL,
     ALPHA_VANTAGE_PRICE_BASE_URL,
-    DATABASE_ARGS,
-    DATABASE_USERS_TABLE,
     GOOGLE_BUCKET_NAME,
     GOOGLE_BUCKET_URL,
     IEX_API_BASE_URL,
@@ -21,20 +19,15 @@ from config import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
-    SQLALCHEMY_DATABASE_URI,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
     YOUTUBE_API_KEY,
 )
 
 from .crypto import CryptoChartHandler
-from .database import Database
 from .gcs import GCS
 from .geo import GeoIP
 from .stock import StockChartHandler
-
-# Bot Database
-db = Database(SQLALCHEMY_DATABASE_URI, DATABASE_ARGS, DATABASE_USERS_TABLE)
 
 # Google Cloud Storage
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)

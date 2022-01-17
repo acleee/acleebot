@@ -2,6 +2,8 @@
 import re
 from typing import Optional, Tuple
 
+from database import session
+from database.models import Command, Phrase
 from emoji import emojize
 
 from broiestbot.commands import (
@@ -43,8 +45,6 @@ from broiestbot.commands import (
 )
 from chatango.ch import Message, Room, RoomManager, User
 from config import CHATANGO_BLACKLISTED_USERS
-from database import session
-from database.models import Command
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -76,7 +76,7 @@ class Bot(RoomManager):
         :param str content: Content to be used in response.
         :param Optional[str] command: Name of command triggered by user.
         :param Optional[str] args: Additional arguments passed with user command.
-        :param Optional[Room] room: Chatango room.
+        :param Optional[Room] room: Current Chatango room object.
         :param Optional[str] user_name: User who triggered command.
 
         :returns: Optional[str]
@@ -152,7 +152,7 @@ class Bot(RoomManager):
         elif cmd_type == "define" and args:
             return get_english_definition(args)
         elif cmd_type == "tune" and args:
-            return tuner(args.lower(), user_name)
+            return tuner(args, user_name)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -162,7 +162,7 @@ class Bot(RoomManager):
         """
         Triggers upon every chat message to parse commands, validate users, and save chat logs.
 
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param User user: User responsible for triggering command.
         :param Message message: Raw chat message submitted by a user.
 
@@ -171,21 +171,22 @@ class Bot(RoomManager):
         chat_message = message.body.lower()
         user_name = user.name.title().lower()
         room_name = room.room_name.lower()
+        bot_username = room.user.name.lower()
         self._check_blacklisted_users(room, user_name, message)
-        persist_user_data(room_name, user, message, room.user.name.lower())
-        persist_chat_data(user_name, room_name, chat_message)
-        self._process_command(chat_message, room, user_name, message)
+        persist_user_data(room_name, user, message, bot_username)
+        persist_chat_data(user_name, room_name, chat_message, bot_username)
+        if chat_message.startswith("!"):
+            self._process_command(chat_message, room, user_name)
+        else:
+            self._process_phrase(chat_message, room, user_name, message, bot_username)
 
-    def _process_command(
-        self, chat_message: str, room: Room, user_name: str, message: Message
-    ) -> None:
+    def _process_command(self, chat_message: str, room: Room, user_name: str) -> None:
         """
         Determines if message is a bot command.
 
         :param str chat_message: Raw message sent by user.
         :param Room room: Chatango room object.
         :param str user_name: User responsible for triggering command.
-        :param Message message: Chatango message object to be parsed.
 
         :returns: None
         """
@@ -195,16 +196,31 @@ class Bot(RoomManager):
             return self._get_response("!ein", room, user_name)
         elif re.match(r"^!.+", chat_message):
             return self._get_response(chat_message, room, user_name)
-        elif chat_message == "bro?":
-            self._bot_status_check(room)
-        elif "@broiestbro" in chat_message.lower() and "*waves*" in chat_message.lower():
-            self._wave_back(room, user_name)
-        elif chat_message.replace("!", "").strip() == "no u":
+        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
+        # self._create_link_preview(room, message.body)
+
+    def _process_phrase(
+        self, chat_message: str, room: Room, user_name: str, message: Message, bot_username: str
+    ) -> None:
+        """
+        Search database for non-command phrases which elicit a response.
+
+        :param str chat_message: A non-command chat which may prompt a response.
+        :param Room room: Current chatango room object.
+        :param str user_name: User responsible for triggering command.
+        :param Message message: Chatango message object to be parsed.
+        :param str bot_username: Username of the currently-running bot.
+
+        :returns: None
+        """
+        if f"@{bot_username}" in chat_message and "*waves*" in chat_message:
+            self._wave_back(room, user_name, bot_username)
+        elif chat_message == "no u":
             self._ban_word(room, message, user_name, silent=True)
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
-            and user_name != "broiestbro"
+            and user_name != bot_username
         ):
             room.message(
                 "SIGN THE PETITION: \
@@ -215,13 +231,12 @@ class Bot(RoomManager):
             room.message("™")
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
-        elif chat_message.lower().replace("'", "") == "anyway heres wonderwall":
-            room.message(
-                "https://i.imgur.com/Z64dNAn.jpg https://www.youtube.com/watch?v=bx1Bh8ZvH84"
+        else:
+            fetched_phrase = (
+                session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
             )
-        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
-        # self._create_link_preview(room, message.body)
-        LOGGER.info(f"[{room.room_name}] [{user_name}] [{message.ip}]: {message.body}")
+            if fetched_phrase is not None:
+                room.message(fetched_phrase.response)
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:
@@ -244,7 +259,7 @@ class Bot(RoomManager):
         Fetch response from database to send to chat.
 
         :param str chat_message: Raw message sent by user.
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         """
         cmd, args = self._parse_command(chat_message[1::])
@@ -267,7 +282,7 @@ class Bot(RoomManager):
         """
         Generate link preview for Instagram post URL.
 
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param str url: URL of an Instagram post.
 
         :returns: None
@@ -276,29 +291,18 @@ class Bot(RoomManager):
         room.message(preview)
 
     @staticmethod
-    def _bot_status_check(room: Room) -> None:
-        """
-        Check bot status.
-
-        :param Room room: Chatango room.
-
-        :returns: None
-        """
-        room.message("hellouughhgughhg?")
-
-    @staticmethod
-    def _wave_back(room: Room, user_name: str) -> None:
+    def _wave_back(room: Room, user_name: str, bot_username) -> None:
         """
         Wave back at user.
 
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param str user_name: Username of Chatango user who waved.
 
         :returns: None
         """
-        if user_name == "broiestbro":
+        if user_name == bot_username:
             room.message(
-                f"stop talking to urself and get some friends u fuckin loser jfc kys @broiestbro"
+                f"stop talking to urself and get some friends u fuckin loser jfc kys @{bot_username}"
             )
         else:
             room.message(f"@{user_name} *waves*")
@@ -309,7 +313,7 @@ class Bot(RoomManager):
         Default to Giphy for non-existent commands.
 
         :param str message: Command triggered by a user.
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
 
         :returns: None
         """
@@ -323,7 +327,7 @@ class Bot(RoomManager):
         """
         Remove banned word and warn offending user.
 
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param Message message: Message sent by user.
         :param str user_name: User responsible for triggering command.
         :param bool silent: Whether offending user should be warned.
@@ -331,7 +335,7 @@ class Bot(RoomManager):
         :returns: None
         """
         message.delete()
-        if silent is False:
+        if silent is not True:
             room.message(f"DO NOT SAY THAT WORD @{user_name.upper()} :@")
 
     @staticmethod
@@ -339,7 +343,7 @@ class Bot(RoomManager):
         """
         Trademark symbol helper.
 
-        :param Room room: Chatango room.
+        :param Room room: Current Chatango room object.
         :param Message message: User submitted `tm` to be replaced.
 
         :returns: None
@@ -359,9 +363,9 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name in CHATANGO_BLACKLISTED_USERS:
-            room.ban(message)
             reply = emojize(
                 f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
             )
             room.message(reply)
+            room.ban_user(message.user)

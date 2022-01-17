@@ -187,7 +187,7 @@ opentracing = ["opentracing (>=2.0.0)"]
 
 [[package]]
 name = "emoji"
-version = "1.6.1"
+version = "1.6.3"
 description = "Emoji for Python"
 category = "main"
 optional = false
@@ -1164,7 +1164,7 @@ ddtrace = [
     {file = "ddtrace-0.57.1.tar.gz", hash = "sha256:11e20e1fbb6ce6a4765376287172e3d2ba4f9b436a584a4241bb9cf4679b0134"},
 ]
 emoji = [
-    {file = "emoji-1.6.1.tar.gz", hash = "sha256:53d61a8e4c025f6c295ab99c842302c66d47952199c4fde66dd060dee3ad4324"},
+    {file = "emoji-1.6.3.tar.gz", hash = "sha256:cc28bdc1010b1c03c241f69c7af1e8715144ef45a273bfadc14dc89319ba26d0"},
 ]
 futures = [
     {file = "futures-3.1.1-py2-none-any.whl", hash = "sha256:c4884a65654a7c45435063e14ae85280eb1f111d94e542396717ba9828c4337f"},

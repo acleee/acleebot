@@ -1,9 +1,10 @@
 """Fetch weather for a given location."""
 import requests
+from database import session
+from database.models import Weather
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from clients import db
 from config import (
     CHATANGO_OBI_ROOM,
     METRIC_SYSTEM_USERS,
@@ -95,14 +96,14 @@ def get_weather_emoji(weather_code: int, is_day: str) -> str:
 
     :returns: str
     """
-    weather_emoji_response = db.fetch_weather_icon(weather_code)
-    if weather_emoji_response.get("icon") and is_day == "yes":
-        return weather_emoji_response.get("icon")
-    elif is_day == "no" and weather_emoji_response.get("group") in [
+    weather_emoji = session.query(Weather).filter(Weather.code == weather_code).one_or_none()
+    if weather_emoji is not None:
+        return weather_emoji.icon
+    elif is_day == "no" and weather_emoji.group in [
         "sun",
         None,
     ]:
         return emojize(":night_with_stars:")
-    elif weather_emoji_response.get("icon") and is_day == "no":
-        return weather_emoji_response.get("icon")
+    elif weather_emoji.icon and is_day == "no":
+        return weather_emoji.icon
     return ":sun:"

@@ -1,14 +1,14 @@
 """Persist user metadata."""
 from typing import Optional
 
+from database import session
+from database.models import ChatangoUser
 from ipdata.ipdata import IncompatibleParameters
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from chatango.ch import Message, User
 from clients import geo
 from config import PERSIST_USER_DATA
-from database import session
-from database.models import ChatangoUser
 from logger import LOGGER
 
 
