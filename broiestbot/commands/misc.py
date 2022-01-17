@@ -25,7 +25,7 @@ def blaze_time_remaining() -> str:
     now = datetime.now(tz=pytz.timezone("America/New_York"))
     am_time = now.replace(hour=4, minute=20, second=0)
     pm_time = now.replace(hour=16, minute=20, second=0)
-    if am_time == now or pm_time == now:
+    if am_time == now + timedelta(seconds=59) or pm_time == now + timedelta(seconds=59):
         return emojize(
             f":herb: :fire: HOLY FUCK IT'S EXACTLY 420!!! BLAZE IT BITCHHHHHHHCAWWHHHHHH :smoking: :kissing_closed_eyes: :dash:",
             use_aliases=True,

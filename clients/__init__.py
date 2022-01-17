@@ -7,7 +7,7 @@ import wikipediaapi
 from imdb import IMDb
 from twilio.rest import Client
 
-from config import (
+from config import (  # YOUTUBE_API_KEY,
     ALPHA_VANTAGE_API_KEY,
     ALPHA_VANTAGE_CHART_BASE_URL,
     ALPHA_VANTAGE_PRICE_BASE_URL,
@@ -19,9 +19,9 @@ from config import (
     REDDIT_CLIENT_ID,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
+    REDDIT_USERNAME,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
-    YOUTUBE_API_KEY,
 )
 
 from .crypto import CryptoChartHandler
@@ -55,7 +55,7 @@ ia = IMDb()
 reddit = praw.Reddit(
     client_id=REDDIT_CLIENT_ID,
     client_secret=REDDIT_CLIENT_SECRET,
-    username="broiestbro",
+    username=REDDIT_USERNAME,
     password=REDDIT_PASSWORD,
     user_agent="bot",
 )
