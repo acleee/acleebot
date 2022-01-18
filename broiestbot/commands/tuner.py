@@ -70,10 +70,12 @@ def tuner(channel_name: str, username: str) -> str:
     """
     try:
         if username in CHATANGO_SPECIAL_USERS:
+            if channel_name in ("paramount", "bar rescue"):
+                channel_name = "paramount network"
             if channel_name in ("gumball", "gumbol"):
-                channel_name = "Cartoon Network"
+                channel_name = "cartoon network"
             if channel_name == "joop":
-                channel_name = "ABC"
+                channel_name = "abc"
             num = get_channel_number(channel_name)
             number = int(num)
             number = str(number)
@@ -89,7 +91,8 @@ def tuner(channel_name: str, username: str) -> str:
             requests.post(
                 f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
             )
-            on_now = get_current_show(number)
+            time.sleep(2)
+            on_now = get_current_show()
             return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
         return emojize(
             f":warning: u don't have the poughwer to change da channol :warning:",
@@ -104,20 +107,14 @@ def tuner(channel_name: str, username: str) -> str:
         LOGGER.error(f"Unexpected error when changing channel: {e}")
 
 
-def get_current_show(number: str) -> str:
+def get_current_show() -> str:
     """
     Fetch title of show currently on stream.
 
-    :param str number: Channel number.
-
     :returns: str
     """
-    data = (
-        '{"id":752,"jsonrpc":"2.0","method":"PVR.GetBroadcasts","params":{"channelid":'
-        + str(number)
-        + ',"properties":["isactive","starttime","endtime","title"], "limits":{ "end": 2}}}'
-    )
+    data = '{"id":685,"jsonrpc":"2.0","method":"Player.GetItem","params":{"properties":["title"],"playerid":1}}'
     resp = requests.post(
         f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
     )
-    return resp.json()["result"]["broadcasts"][0]["title"]
+    return resp.json()["result"]["item"]["title"]
