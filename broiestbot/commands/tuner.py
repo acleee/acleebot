@@ -96,7 +96,7 @@ def tuner(channel_name: str, username: str) -> str:
             use_aliases=True,
         )
     except ValueError as e:
-        LOGGER.info(
+        LOGGER.error(
             f"ValueError occurred when fetching tuner channel; defaulting to {get_channel_number(channel_name)}: {e}"
         )
         return get_channel_number(channel_name)

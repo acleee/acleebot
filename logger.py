@@ -26,7 +26,7 @@ def json_formatter(record: dict):
         """
         try:
             chat_data = re.findall(r"\[(\S+)\]", log["message"])
-            if bool(chat_data):
+            if bool(chat_data) and len(chat_data) == 3:
                 room = chat_data[0]
                 user = chat_data[1]
                 ip = chat_data[2]
