@@ -176,12 +176,29 @@ class Bot(RoomManager):
         room_name = room.room_name.lower()
         bot_username = room.user.name.lower()
         self._check_blacklisted_users(room, user_name, message)
+        self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_data(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
+
+    @staticmethod
+    def _log_message(room: Room, user: User, message: Message):
+        """
+        Log chat message.
+
+        :param Room room: Current Chatango room object.
+        :param User user: User responsible for triggering command.
+        :param Message message: Raw chat message submitted by a user.
+
+        :returns: None
+        """
+        if bool(message.ip) and message.body:
+            LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
+        else:
+            LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
     def _process_command(self, chat_message: str, room: Room, user_name: str) -> None:
         """
