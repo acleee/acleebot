@@ -99,11 +99,14 @@ def tuner(channel_name: str, username: str) -> str:
             f":warning: u don't have the poughwer to change da channol :warning:",
             use_aliases=True,
         )
-    except ValueError as e:
+    except LookupError as e:
         LOGGER.error(
-            f"ValueError occurred when fetching tuner channel; defaulting to {get_channel_number(channel_name)}: {e}"
+            f"LookupError occurred when fetching tuner channel; defaulting to {channel_name}: {e}"
         )
-        return get_channel_number(channel_name)
+        return emojize(
+            f":warning: idk wtf `{channel_name}` is :warning:",
+            use_aliases=True,
+        )
     except Exception as e:
         LOGGER.error(f"Unexpected error when changing channel: {e}")
 
