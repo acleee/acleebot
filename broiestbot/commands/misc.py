@@ -86,13 +86,19 @@ def time_until_wayne() -> str:
             )
             if wayne_start_time < now < wayne_start_time + timedelta(hours=1):
                 return emojize(
-                    f":dollar: Wayne is already on rn MORAN!!! CHANGE THE CHANNOL!!! :dollar:",
+                    f":dollar: Wayne is on NOW!!! CHANGE THE CHANNOL!!! :dollar:",
+                    use_aliases=True,
+                )
+            elif wayne_start_time + timedelta(hours=1) < wayne_start_time:
+                return emojize(
+                    f":( Wayne is oughver already :(",
                     use_aliases=True,
                 )
             else:
                 time_remaining = wayne_start_time - now
+                minutes_remaining = round(time_remaining.seconds / 60)
                 return emojize(
-                    f":dollar: {time_remaining.minutes()} minutes left before WAYNE :dollar:",
+                    f":raising_hands_dark_skin_tone: :money_bag:  {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                     use_aliases=True,
                 )
         else:

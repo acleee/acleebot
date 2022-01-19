@@ -46,13 +46,13 @@ def get_channel_number(channel_name: str) -> str:
             channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name
         ]
         return str(channel[0]["channelid"])
-    except IndexError:
+    except LookupError:
         err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
-        channel = [
+        other_channels = [
             channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()
         ]
-        for name in channel:
-            f"{err_msg} {name['channel']}\n"
+        for name in other_channels:
+            err_msg += f"{err_msg} {name['channel']}\n"
         return err_msg
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting channel number: {e}")
