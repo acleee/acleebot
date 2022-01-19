@@ -46,7 +46,8 @@ def get_channel_number(channel_name: str) -> str:
             channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name
         ]
         return str(channel[0]["channelid"])
-    except LookupError:
+    except LookupError as e:
+        LOGGER.error(f"LookupError when getting channel number: {e}")
         err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
         other_channels = [
             channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()
