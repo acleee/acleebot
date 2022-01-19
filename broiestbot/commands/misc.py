@@ -91,7 +91,7 @@ def time_until_wayne() -> str:
                 )
             elif wayne_start_time + timedelta(hours=1) < now:
                 return emojize(
-                    f":( Wayne is oughver already :(",
+                    f":( Wayne is oughver already today :(",
                     use_aliases=True,
                 )
             else:
