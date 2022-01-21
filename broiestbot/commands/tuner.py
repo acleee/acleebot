@@ -42,18 +42,15 @@ def get_channel_number(channel_name: str) -> str:
     :returns: str
     """
     try:
-        channel = [
-            channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name
-        ]
+        channel = [channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name]
         return str(channel[0]["channelid"])
-    except LookupError as e:
-        LOGGER.error(f"LookupError when getting channel number: {e}")
+    except LookupError:
         err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
-        other_channels = [
+        channel = [
             channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()
         ]
-        for name in other_channels:
-            err_msg += f"{err_msg} {name['channel']}\n"
+        for name in channel:
+            err_msg += f"{name['channel']}\n"
         return err_msg
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting channel number: {e}")
@@ -92,33 +89,54 @@ def tuner(channel_name: str, username: str) -> str:
             requests.post(
                 f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
             )
-            time.sleep(2)
-            on_now = get_current_show()
+            time.sleep(3)
+            on_now = get_current_show(0)
             return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
         return emojize(
             f":warning: u don't have the poughwer to change da channol :warning:",
             use_aliases=True,
         )
-    except LookupError as e:
+    except ValueError as e:
         LOGGER.error(
-            f"LookupError occurred when fetching tuner channel; defaulting to {channel_name}: {e}"
+            f"ValueError occurred when fetching tuner channel; defaulting to {channel_name}: {e}"
         )
-        return emojize(
-            f":warning: idk wtf `{channel_name}` is :warning:",
-            use_aliases=True,
-        )
+        return get_channel_number(channel_name)
     except Exception as e:
         LOGGER.error(f"Unexpected error when changing channel: {e}")
 
-
-def get_current_show() -> str:
+def get_current_show(detailed : bool) -> str:
     """
-    Fetch title of show currently on stream.
+    Fetch all information of show currently on stream.
+
+    :param bool detailed: If true, return more information about currently playing item.
 
     :returns: str
     """
-    data = '{"id":685,"jsonrpc":"2.0","method":"Player.GetItem","params":{"properties":["title"],"playerid":1}}'
-    resp = requests.post(
-        f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
-    )
-    return resp.json()["result"]["item"]["title"]
+    try:
+        data = (
+            '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
+        )
+        resp = requests.post(
+            f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
+        )
+        json = resp.json()["result"]
+        title = json["VideoPlayer.Title"]
+        season = json["VideoPlayer.Season"]
+        episode = json["VideoPlayer.Episode"]
+        episode_name = json["VideoPlayer.EpisodeName"]
+        genre = json["VideoPlayer.Genre"]
+        plot = json["VideoPlayer.Plot"]
+        icon = json["Pvr.EPGEventIcon"]
+        if not detailed:
+            return title
+        if season and episode:
+            return emojize(
+                f":tv: On now: <b>{title.upper()}</b> - S{season}E{episode}: {episode_name} \n \n <i>{plot}</i> \n {icon}",
+                use_aliases=True
+            )
+        return emojize(
+            f":tv: On now: <b>{title.upper()}</b> - {episode_name} \n \n <i>{plot}</i> \n {icon}",
+            use_aliases=True
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when getting current show info: {e}")
