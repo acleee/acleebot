@@ -1883,7 +1883,7 @@ class RoomManager:
 
         :param Room room: Chatango room where the event occurred.
         """
-        LOGGER.success(f"Successfully connected to {room.room_name}.")
+        LOGGER.success(f"Successfully reconnected to {room.room_name}.")
 
     def on_connect_fail(self, room: Room):
         """
@@ -1951,7 +1951,7 @@ class RoomManager:
         """
         if user.name.lower() != CHATANGO_USERS.keys():
             LOGGER.info(
-                f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} had message deleted from {room.room_name}: {message.body}",
+                f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {user.name} had message deleted from {room.room_name}: {message.body}",
             )
 
     def on_mod_change(self, room):
@@ -1971,7 +1971,7 @@ class RoomManager:
         :param User user: User promoted to mod.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was modded in {room.room_name}."
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {user.name} was modded in {room.room_name}."
         )
 
     @staticmethod
@@ -1983,7 +1983,7 @@ class RoomManager:
         :param User user: User demoted from mod.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} was demodded in {room.room_name}.",
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {user.name} was demodded in {room.room_name}.",
         )
 
     def on_message(self, room, user, message):
@@ -2019,7 +2019,7 @@ class RoomManager:
         :param str puid: Personal unique id for a user.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} joined {room.room_name}.",
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {user.name} joined {room.room_name}.",
         )
 
     @staticmethod
@@ -2032,7 +2032,7 @@ class RoomManager:
         :param str puid: Personal unique id for a user.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {user.name} left {room.room_name}.",
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {user.name} left {room.room_name}.",
         )
 
     def on_raw(self, room: Room, raw):
@@ -2072,7 +2072,7 @@ class RoomManager:
         :param User target: User that got unbanned.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {target.name} was banned from {room.room_name} by {user.name}.",
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {target.name} was banned from {room.room_name} by {user.name}.",
         )
 
     @staticmethod
@@ -2085,7 +2085,7 @@ class RoomManager:
         :param User target: User that got unbanned.
         """
         LOGGER.info(
-            f"[{room.room_name}] [{user.name.title()}] [no IP address]: {target.name} was unbanned from {room.room_name} by {user.name}.",
+            f"[{room.room_name}] [{user.name.lower()}] [no IP address]: {target.name} was unbanned from {room.room_name} by {user.name}.",
         )
 
     def on_ban_list_update(self, room: Room):

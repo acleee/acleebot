@@ -159,7 +159,7 @@ class Bot(RoomManager):
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
-        return None
+        return emojize(f":warning: idk wtf u did but bot is ded now, thanks @{user_name} :warning:")
 
     def on_message(self, room: Room, user: User, message: Message) -> None:
         """
@@ -172,7 +172,7 @@ class Bot(RoomManager):
         :returns: None
         """
         chat_message = message.body.lower()
-        user_name = user.name.title().lower()
+        user_name = user.name.lower()
         room_name = room.room_name.lower()
         bot_username = room.user.name.lower()
         self._check_blacklisted_users(room, user_name, message)
@@ -195,7 +195,7 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        if bool(message.ip) and message.body:
+        if bool(message.ip) is True and message.body is not None:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
         else:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")

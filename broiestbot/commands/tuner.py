@@ -42,7 +42,9 @@ def get_channel_number(channel_name: str) -> str:
     :returns: str
     """
     try:
-        channel = [channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name]
+        channel = [
+            channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name
+        ]
         return str(channel[0]["channelid"])
     except LookupError:
         err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
@@ -104,7 +106,8 @@ def tuner(channel_name: str, username: str) -> str:
     except Exception as e:
         LOGGER.error(f"Unexpected error when changing channel: {e}")
 
-def get_current_show(detailed : bool) -> str:
+
+def get_current_show(detailed: bool) -> str:
     """
     Fetch all information of show currently on stream.
 
@@ -113,9 +116,7 @@ def get_current_show(detailed : bool) -> str:
     :returns: str
     """
     try:
-        data = (
-            '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
-        )
+        data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
         resp = requests.post(
             f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
         )
@@ -132,11 +133,11 @@ def get_current_show(detailed : bool) -> str:
         if season and episode:
             return emojize(
                 f":tv: On now: <b>{title.upper()}</b> - S{season}E{episode}: {episode_name} \n \n <i>{plot}</i> \n {icon}",
-                use_aliases=True
+                use_aliases=True,
             )
         return emojize(
             f":tv: On now: <b>{title.upper()}</b> - {episode_name} \n \n <i>{plot}</i> \n {icon}",
-            use_aliases=True
+            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting current show info: {e}")
