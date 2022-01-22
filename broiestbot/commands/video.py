@@ -40,7 +40,7 @@ def get_all_live_twitch_streams():
 
 def get_live_twitch_stream(broadcaster_id: str, token: str) -> Optional[str]:
     """
-    Check if Twitch user is live streaming and return stream info.
+    Check if Twitch user is live-streaming and return stream info.
 
     :param str broadcaster_id: Twitch ID of broadcaster to check for a live stream.
     :param str token: Bearer token for fetching twitch streams.

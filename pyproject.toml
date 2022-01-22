@@ -51,6 +51,8 @@ PyMultiDictionary = "*"
 pytest = "*"
 black = "^21.11b1"
 isort = "^5.10.1"
+flake8 = "*"
+pylint = "*"
 
 [tool.poetry.scripts]
 run = "wsgi:init_bot"
@@ -68,4 +70,7 @@ src_paths = ["broiestbot", "chatango", "clients", "config", "logger"]
 
 [tool.black]
 line-length = 100
+
+[tool.pylint.'MESSAGES CONTROL']
+disable="C0103,C0301,W0703,W0621"
 

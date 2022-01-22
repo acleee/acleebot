@@ -5,6 +5,7 @@ import requests
 from emoji import emojize
 from praw.exceptions import RedditAPIException
 from requests.exceptions import HTTPError
+from google.cloud.exceptions import NotFound, GoogleCloudError
 
 from clients import gcs, reddit
 from config import GIPHY_API_KEY, GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL
@@ -19,11 +20,24 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
 
     :returns: str
     """
-    images = gcs.bucket.list_blobs(prefix=subdirectory)
-    image_list = [image.name for image in images if "." in image.name]
-    rand = randint(0, len(image_list) - 1)
-    image = GOOGLE_BUCKET_URL + GOOGLE_BUCKET_NAME + "/" + image_list[rand]
-    return image.lower()
+    try:
+        images = gcs.bucket.list_blobs(prefix=subdirectory)
+        image_list = [image.name for image in images if "." in image.name]
+        rand = randint(0, len(image_list) - 1)
+        image = GOOGLE_BUCKET_URL + GOOGLE_BUCKET_NAME + "/" + image_list[rand]
+        return image.lower()
+    except NotFound as e:
+        LOGGER.warning(f"GCS `NotFound` error when fetching image for `{subdirectory}`: {e}")
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
+    except GoogleCloudError as e:
+        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
+    except ValueError as e:
+        LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
+    except Exception as e:
+        LOGGER.warning(f"Unexpected error when fetching random GCS image for `{subdirectory}`: {e}")
+        return emojize(f":warning: o shit i broke im a trash bot :warning:", use_aliases=True)
 
 
 def giphy_image_search(query: str) -> str:
@@ -82,14 +96,11 @@ def random_image(message: str) -> str:
         image_list = message.replace(" ", "").split(";")
         random_pic = image_list[randint(0, len(image_list) - 1)]
         return random_pic
-    except KeyError as e:
-        LOGGER.warning(f"KeyError when fetching random image: {e}")
-        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
-    except IndexError as e:
-        LOGGER.warning(f"IndexError when fetching random image: {e}")
+    except ValueError as e:
+        LOGGER.warning(f"ValueError when fetching random image for `{message}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except Exception as e:
-        LOGGER.warning(f"Unexpected error when fetching random image: {e}")
+        LOGGER.warning(f"Unexpected error when fetching random image for `{message}`: {e}")
         return emojize(f":warning: o shit i broke im a trash bot :warning:", use_aliases=True)
 
 
