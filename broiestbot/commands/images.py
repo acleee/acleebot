@@ -3,9 +3,9 @@ from random import randint
 
 import requests
 from emoji import emojize
+from google.cloud.exceptions import GoogleCloudError, NotFound
 from praw.exceptions import RedditAPIException
 from requests.exceptions import HTTPError
-from google.cloud.exceptions import NotFound, GoogleCloudError
 
 from clients import gcs, reddit
 from config import GIPHY_API_KEY, GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL
@@ -30,7 +30,7 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
         LOGGER.warning(f"GCS `NotFound` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except GoogleCloudError as e:
-        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
+        LOGGER.warning(f"GoogleCloudError error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")
@@ -48,7 +48,7 @@ def giphy_image_search(query: str) -> str:
 
     :returns: str
     """
-    rand = randint(0, 20)
+    rand = randint(0, 15)
     params = {
         "api_key": GIPHY_API_KEY,
         "q": query,
