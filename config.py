@@ -196,6 +196,7 @@ BUND_LEAGUE_ID = 78
 LIGA_LEAGUE_ID = 140
 EUROS_LEAGUE_ID = 4
 COPA_LEAGUE_ID = 9
+COUPE_DE_FRANCE = 66
 LIGUE_ONE_LEAGUE_ID = 61
 FRIENDLIES_LEAGUE_ID = 667
 WORLDCUP_LEAGUE_ID = 15
@@ -222,10 +223,11 @@ FOOTY_LEAGUES = {
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":cow_face: Carabao": FA_CUP_ID,
     ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
-    ":England: EFL": EFL_LEAGUE_ID,
+    ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
+    ":England: EFL": EFL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
@@ -260,9 +262,16 @@ LIVERPOOL_TEAM_ID = 40
 MANU_TEAM_ID = 33
 FOXES_TEAM_ID = 46
 ENGLAND_INT_TEAM_ID = 10
-# USA_INT_TEAM_ID
+# USA_INT_TEAM_ID = 0
 
-FOOTY_TEAMS_PRIORITY = {"manu": MANU_TEAM_ID, "england": ENGLAND_INT_TEAM_ID}
+# Specify team IDs to be prioritized whe fetching starting XIs
+FOOTY_TEAMS_PRIORITY = {
+    "Pool": LIVERPOOL_TEAM_ID,
+    "ManU": MANU_TEAM_ID,
+    "England": ENGLAND_INT_TEAM_ID,
+    "Foxes": FOXES_TEAM_ID,
+    # "USMNT": USA_INT_TEAM_ID
+}
 
 # Remote tuner control
 CHANNEL_LIST_FILEPATH = f"{BASE_DIR}/channels.json.txt"

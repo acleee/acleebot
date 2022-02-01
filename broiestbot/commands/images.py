@@ -51,7 +51,7 @@ def giphy_image_search(query: str, retry=False) -> str:
 
     :returns: str
     """
-    rand = randint(0, 20)
+    rand = randint(0, 15)
     params = {
         "api_key": GIPHY_API_KEY,
         "q": query,
