@@ -3,9 +3,9 @@ from random import randint
 
 import requests
 from emoji import emojize
+from google.cloud.exceptions import GoogleCloudError, NotFound
 from praw.exceptions import RedditAPIException
 from requests.exceptions import HTTPError
-from google.cloud.exceptions import NotFound, GoogleCloudError
 
 from clients import gcs, reddit
 from config import GIPHY_API_KEY, GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL
@@ -30,7 +30,9 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
         LOGGER.warning(f"GCS `NotFound` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except GoogleCloudError as e:
-        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
+        LOGGER.warning(
+            f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}"
+        )
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")
@@ -40,11 +42,12 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
         return emojize(f":warning: o shit i broke im a trash bot :warning:", use_aliases=True)
 
 
-def giphy_image_search(query: str) -> str:
+def giphy_image_search(query: str, retry=False) -> str:
     """
     Perform a gif image and return a random result from the top-20 images.
 
     :param str query: Query passed to Giphy to find gif.
+    :param bool retry: Whether the image fetch is a retry from a previous attempt.
 
     :returns: str
     """
@@ -58,11 +61,19 @@ def giphy_image_search(query: str) -> str:
         "lang": "en",
     }
     try:
-        req = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        if len(req.json()["data"]) == 0:
+        resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
+        num_images = len(resp.json()["data"])
+        if num_images == 0:
             return "image not found :("
-        image = req.json()["data"][0]["images"]["downsized"]["url"]
-        return image
+        image = resp.json()["data"][0]["images"]["downsized"].get("url")
+        if image is not None:
+            return image
+        elif retry is False:
+            return giphy_image_search(query, retry=True)
+        return emojize(
+            f":warning: holy sht u broke the bot im telling bro :warning:",
+            use_aliases=True,
+        )
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
         return emojize(f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True)
