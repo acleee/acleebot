@@ -18,7 +18,7 @@ from logger import LOGGER
 
 def is_after_dark() -> bool:
     """
-    Determine if current time is in threshold for `After Dark` mode.
+    Determine if current time is within threshold for `After Dark` mode.
 
     :return: Boolean
     """
@@ -26,7 +26,7 @@ def is_after_dark() -> bool:
     now = datetime.now(tz=tz)
     start_time = datetime(year=now.year, month=now.month, day=now.day, hour=0, tzinfo=now.tzinfo)
     end_time = datetime(year=now.year, month=now.month, day=now.day, hour=5, tzinfo=now.tzinfo)
-    if start_time > now or end_time < now:
+    if start_time > now and now < end_time:
         return True
     return False
 
