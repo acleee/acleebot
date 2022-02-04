@@ -35,6 +35,7 @@ from broiestbot.commands import (
     get_stock,
     get_top_crypto,
     get_urban_definition,
+    get_winter_olympic_medals_per_nation,
     giphy_image_search,
     liga_standings,
     random_image,
@@ -142,6 +143,8 @@ class Bot(RoomManager):
             return get_english_translation(command, args)
         elif cmd_type == "olympics":
             return get_olympic_medals_per_nation()
+        elif cmd_type in ("wolympics", "winterolympics"):
+            return get_winter_olympic_medals_per_nation()
         elif cmd_type == "eplodds":
             return get_footy_odds()
         elif cmd_type == "twitch":

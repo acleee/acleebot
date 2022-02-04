@@ -37,7 +37,10 @@ from .misc import (
 )
 from .movies import find_imdb_movie
 from .nfl import get_live_nfl_games
-from .olympics import get_olympic_medals_per_nation
+from .olympics import (
+    get_olympic_medals_per_nation,
+    get_winter_olympic_medals_per_nation,
+)
 from .tuner import tuner
 
 # from .video import search_youtube_for_video

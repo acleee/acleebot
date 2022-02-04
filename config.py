@@ -290,3 +290,11 @@ CHANNEL_TUNER_HEADERS = {
     "Accept-Language": "en-US,en;q=0.9",
     "sec-gpc": "1",
 }
+
+# Olympics
+OLYMPICS_LEADERBOARD_ENDPOINT = (
+    "https://www.espn.com/olympics/summer/2020/medals/_/view/overall/sort/gold"
+)
+WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = (
+    "https://www.espn.com/olympics/winter/2022/medals/_/view/overall/sort/gold"
+)
