@@ -110,7 +110,9 @@ def upcoming_fixture_fetcher(
     """
     try:
         params = {
-            "next": 6 if "EPL" in league_name or "UCL" in league_name else 3,
+            "next": 6
+            if "EPL" in league_name or "UCL" in league_name or "FA Cup" in league_name
+            else 3,
             "league": league_id,
             "status": "NS",
         }
