@@ -17,7 +17,9 @@ def get_song_lyrics(song_title_query: str) -> str:
         if song is not None and song.lyrics is not None:
             lyrics = song.lyrics[:1800].replace("Embed", "")
             return f"{song.full_title} \n\n {lyrics}..."
-        return f"wtf kind of song is `{song_title_query}`"
+        return emojize(
+            f":warning: wtf kind of song is `{song_title_query}` :warning:", use_aliases=True
+        )
     except LookupError as e:
         LOGGER.error(f"LookupError error while searching for song: `{e}`")
         return emojize(
