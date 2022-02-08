@@ -79,7 +79,7 @@ def tuner(channel_name: str, username: str) -> str:
             # some of this has to use ugly plus signs because format() breaks due to all the curlies
             data = (
                 '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"channelid":'
-                + number
+                + channel_number
                 + '}},"id":'
                 + current_milli_time()
                 + "}"
