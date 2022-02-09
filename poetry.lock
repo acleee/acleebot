@@ -84,7 +84,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.23.49"
+version = "1.23.51"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -340,7 +340,7 @@ testing = ["pytest"]
 
 [[package]]
 name = "google-resumable-media"
-version = "2.1.0"
+version = "2.2.0"
 description = "Utilities for Google Media Downloads and Resumable Uploads"
 category = "main"
 optional = false
@@ -564,6 +564,23 @@ description = "McCabe checker, plugin for flake8"
 category = "dev"
 optional = false
 python-versions = "*"
+
+[[package]]
+name = "metadata-parser"
+version = "0.10.5"
+description = "A module to parse metadata out of urls and html documents"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+BeautifulSoup4 = "*"
+requests = ">=2.19.1"
+requests-toolbelt = ">=0.8.0"
+six = "*"
+
+[package.extras]
+testing = ["httpbin", "pytest", "pytest-httpbin", "responses", "tldextract"]
 
 [[package]]
 name = "mypy-extensions"
@@ -887,6 +904,17 @@ socks = ["PySocks (>=1.5.6,!=1.5.7)", "win-inet-pton"]
 use_chardet_on_py3 = ["chardet (>=3.0.2,<5)"]
 
 [[package]]
+name = "requests-toolbelt"
+version = "0.9.1"
+description = "A utility belt for advanced users of python-requests"
+category = "main"
+optional = false
+python-versions = "*"
+
+[package.dependencies]
+requests = ">=2.0.1,<3.0.0"
+
+[[package]]
 name = "retrying"
 version = "1.3.3"
 description = "Retrying"
@@ -1127,7 +1155,7 @@ python-versions = "!=3.0.*,!=3.1.*,!=3.2.*,!=3.3.*,!=3.4.*,>=2.7"
 [metadata]
 lock-version = "1.1"
 python-versions = "^3.8"
-content-hash = "abfcbf34bcfa0302047a691f584952c3fc8289dcd91045fd12869a5847183a28"
+content-hash = "572f40270011aa730632d666a536097c99eb5e05694ebb54b7b6482ceb15c681"
 
 [metadata.files]
 astroid = [
@@ -1155,8 +1183,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.23.49-py3-none-any.whl", hash = "sha256:3f72d20c65c89b694d9c7d164eb499877331783577f0207739088d11eaf315e7"},
-    {file = "botocore-1.23.49.tar.gz", hash = "sha256:b013b2911379d1de896eb6ef375126bb2fc2b77b3e0af75821661b7ea817d029"},
+    {file = "botocore-1.23.51-py3-none-any.whl", hash = "sha256:372428fb18ba813431b2301c9306b97c0bc0a888127725b427f227734e370c7e"},
+    {file = "botocore-1.23.51.tar.gz", hash = "sha256:f715fba22d1d2ecf995d3168ddd9adca63979a6cddd35534ccc8550c690f1c88"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -1332,8 +1360,8 @@ google-crc32c = [
     {file = "google_crc32c-1.3.0-pp37-pypy37_pp73-win_amd64.whl", hash = "sha256:7f6fe42536d9dcd3e2ffb9d3053f5d05221ae3bbcefbe472bdf2c71c793e3183"},
 ]
 google-resumable-media = [
-    {file = "google-resumable-media-2.1.0.tar.gz", hash = "sha256:725b989e0dd387ef2703d1cc8e86217474217f4549593c477fd94f4024a0f911"},
-    {file = "google_resumable_media-2.1.0-py2.py3-none-any.whl", hash = "sha256:cdc75ea0361e39704dc7df7da59fbd419e73c8bc92eac94d8a020d36baa9944b"},
+    {file = "google-resumable-media-2.2.0.tar.gz", hash = "sha256:9f30ce7fcd13b8ef159b2cb9583d4a9bb99e7f7b85816b112059b032f2f084a0"},
+    {file = "google_resumable_media-2.2.0-py2.py3-none-any.whl", hash = "sha256:9142a7600eba233645eedad863f78173123f374e50e1bc0eaf4f358ce08aa757"},
 ]
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.54.0.tar.gz", hash = "sha256:a4031d6ec6c2b1b6dc3e0be7e10a1bd72fb0b18b07ef9be7b51f2c1004ce2437"},
@@ -1555,6 +1583,9 @@ mccabe = [
     {file = "mccabe-0.6.1-py2.py3-none-any.whl", hash = "sha256:ab8a6258860da4b6677da4bd2fe5dc2c659cff31b3ee4f7f5d64e79735b80d42"},
     {file = "mccabe-0.6.1.tar.gz", hash = "sha256:dd8d182285a0fe56bace7f45b5e7d1a6ebcbf524e8f3bd87eb0f125271b8831f"},
 ]
+metadata-parser = [
+    {file = "metadata_parser-0.10.5.tar.gz", hash = "sha256:1e96eae95cdbe8f14215883e9226dfd3915b948b4479bad2fb559f59cec101d7"},
+]
 mypy-extensions = [
     {file = "mypy_extensions-0.4.3-py2.py3-none-any.whl", hash = "sha256:090fedd75945a69ae91ce1303b5824f428daf5a028d2f6ab8a299250a846f15d"},
     {file = "mypy_extensions-0.4.3.tar.gz", hash = "sha256:2d82818f5bb3e369420cb3c4060a7970edba416647068eb4c5343488a6c604a8"},
@@ -1740,6 +1771,10 @@ pytz = [
 requests = [
     {file = "requests-2.27.1-py2.py3-none-any.whl", hash = "sha256:f22fa1e554c9ddfd16e6e41ac79759e17be9e492b3587efa038054674760e72d"},
     {file = "requests-2.27.1.tar.gz", hash = "sha256:68d7c56fd5a8999887728ef304a6d12edc7be74f1cfa47714fc8b414525c9a61"},
+]
+requests-toolbelt = [
+    {file = "requests-toolbelt-0.9.1.tar.gz", hash = "sha256:968089d4584ad4ad7c171454f0a5c6dac23971e9472521ea3b6d49d610aa6fc0"},
+    {file = "requests_toolbelt-0.9.1-py2.py3-none-any.whl", hash = "sha256:380606e1d10dc85c3bd47bf5a6095f815ec007be7a8b69c878507068df059e6f"},
 ]
 retrying = [
     {file = "retrying-1.3.3.tar.gz", hash = "sha256:08c039560a6da2fe4f2c426d0766e284d3b736e355f8dd24b37367b0bb41973b"},

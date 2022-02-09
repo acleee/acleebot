@@ -15,6 +15,7 @@ from broiestbot.commands import (
     create_instagram_preview,
     epl_golden_boot,
     epl_standings,
+    extract_url,
     fetch_fox_fixtures,
     fetch_image_from_gcs,
     find_imdb_movie,
@@ -184,6 +185,8 @@ class Bot(RoomManager):
         persist_chat_data(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
+        elif message.body.startswith("http"):
+            self._create_link_preview(room, message.body)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
@@ -220,7 +223,6 @@ class Bot(RoomManager):
         elif re.match(r"^!.+", chat_message):
             return self._get_response(chat_message, room, user_name)
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
-        # self._create_link_preview(room, message.body)
 
     def _process_phrase(
         self, chat_message: str, room: Room, user_name: str, message: Message, bot_username: str
@@ -301,17 +303,18 @@ class Bot(RoomManager):
             self._giphy_fallback(chat_message, room)
 
     @staticmethod
-    def _create_link_preview(room: Room, url: str) -> None:
+    def _create_link_preview(room: Room, chat_message: str) -> None:
         """
-        Generate link preview for Instagram post URL.
+        Generate link preview for URL.
 
         :param Room room: Current Chatango room object.
-        :param str url: URL of an Instagram post.
+        :param str chat_message: URL of an Instagram post.
 
         :returns: None
         """
-        preview = create_instagram_preview(url)
-        room.message(preview)
+        link_preview = extract_url(chat_message)
+        if link_preview:
+            room.message(link_preview, html=True)
 
     @staticmethod
     def _wave_back(room: Room, user_name: str, bot_username) -> None:

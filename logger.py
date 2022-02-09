@@ -25,18 +25,18 @@ def json_formatter(record: dict):
         :returns: str
         """
         try:
-            chat_data = re.findall(r"\[(\S+)\]", log["message"])
-            if bool(chat_data) and len(chat_data) == 3:
-                room = chat_data[0]
-                user = chat_data[1]
-                ip = chat_data[2]
+            chat_data = re.search(
+                r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log["message"]
+            )
+            chat_dict = chat_data.groupdict()
+            if bool(chat_data) and len(chat_data.groupdict().values()) == 3:
                 subset = {
                     "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
-                    "room": room,
-                    "user": user,
-                    "ip": ip,
+                    "room": chat_dict["room"],
+                    "user": chat_dict["user"],
+                    "ip": chat_dict["ip"],
                 }
                 return json.dumps(subset)
         except Exception as e:
@@ -56,16 +56,15 @@ def json_formatter(record: dict):
         :returns: str
         """
         try:
-            chat_data = re.findall(r"\[(\S+)\]", log["message"])
-            if bool(chat_data):
-                room = chat_data[0]
-                user = chat_data[1]
+            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
+            chat_dict = chat_data.groupdict()
+            if bool(chat_data) and len(chat_data.groupdict().values()) == 2:
                 subset = {
                     "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
-                    "room": room,
-                    "user": user,
+                    "room": chat_dict["room"],
+                    "user": chat_dict["user"],
                 }
                 return json.dumps(subset)
         except Exception as e:
