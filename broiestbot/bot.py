@@ -312,9 +312,10 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        link_preview = extract_url(chat_message)
-        if link_preview:
-            room.message(link_preview, html=True)
+        if "twitter" not in chat_message and "youtube" not in chat_message:
+            link_preview = extract_url(chat_message)
+            if link_preview:
+                room.message(link_preview, html=True)
 
     @staticmethod
     def _wave_back(room: Room, user_name: str, bot_username) -> None:

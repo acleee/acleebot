@@ -56,10 +56,7 @@ def get_channel_number(channel_name: str) -> int:
         return err_msg
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting channel number: {e}")
-        return emojize(
-            f":warning: omfg bot just broke wtf did u do :warning:",
-            use_aliases=True
-        )
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
 
 
 def tuner(channel_name: str, username: str) -> str:
@@ -85,17 +82,11 @@ def tuner(channel_name: str, username: str) -> str:
                 + "}"
             )
             requests.post(
-                f"{CHANNEL_HOST}jsonrpc",
-                headers=CHANNEL_TUNER_HEADERS,
-                data=data,
-                verify=False
+                f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
             )
             time.sleep(2)
             on_now = get_current_show(0)
-            return emojize(
-                f":tv: Tuning to {capped}. On now: {on_now}",
-                use_aliases=True
-            )
+            return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
         return emojize(
             f":warning: u don't have the poughwer to change da channol :warning:",
             use_aliases=True,
@@ -114,19 +105,19 @@ def tuner(channel_name: str, username: str) -> str:
         return emojize(
             f":warning: this breaks broughbert idfk :warning:",
             use_aliases=True,
-          )
-        
+        )
+
 
 def resolve_requested_channel_name(channel_name: str) -> str:
     """
     Map reserved slang/channels/shows to their apporiate channel name.
-    
+
     :param str channel_name: Name of channel to tune stream to.
-    
+
     :returns: str
     """
     if channel_name in ("paramount", "bar rescue"):
-       return "paramount network"
+        return "paramount network"
     elif channel_name in ("gumball", "gumbol"):
         return "cartoon network"
     elif channel_name == "joop":
@@ -145,10 +136,7 @@ def get_current_show(detailed: bool) -> str:
     try:
         data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
         resp = requests.post(
-            f"{CHANNEL_HOST}jsonrpc",
-            headers=CHANNEL_TUNER_HEADERS,
-            data=data,
-            verify=False
+            f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
         )
         json = resp.json()["result"]
         title = json["VideoPlayer.Title"]
@@ -170,18 +158,14 @@ def get_current_show(detailed: bool) -> str:
             use_aliases=True,
         )
     except LookupError as e:
-          LOGGER.error(
-              f"LookupError error when getting current show info: {e}"
-          )
-          return emojize(
-            f":warning: this breaks broughbert idfk :warning:",
-            use_aliases=True,
-          )
-    except Exception as e:
-        LOGGER.error(
-            f"Unexpected error when getting current show info: {e}"
-        )
+        LOGGER.error(f"LookupError error when getting current show info: {e}")
         return emojize(
             f":warning: this breaks broughbert idfk :warning:",
             use_aliases=True,
-          )
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when getting current show info: {e}")
+        return emojize(
+            f":warning: this breaks broughbert idfk :warning:",
+            use_aliases=True,
+        )
