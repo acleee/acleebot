@@ -30,13 +30,13 @@ from broiestbot.commands import (
     get_english_translation,
     get_footy_odds,
     get_live_nfl_games,
-    get_olympic_medals_per_nation,
     get_redgifs_gif,
     get_song_lyrics,
     get_stock,
+    get_summer_olympic_medals,
     get_top_crypto,
     get_urban_definition,
-    get_winter_olympic_medals_per_nation,
+    get_winter_olympic_medals,
     giphy_image_search,
     liga_standings,
     random_image,
@@ -143,9 +143,9 @@ class Bot(RoomManager):
         elif cmd_type == "entranslation" and args:
             return get_english_translation(command, args)
         elif cmd_type == "olympics":
-            return get_olympic_medals_per_nation()
+            return get_summer_olympic_medals()
         elif cmd_type in ("wolympics", "winterolympics"):
-            return get_winter_olympic_medals_per_nation()
+            return get_winter_olympic_medals()
         elif cmd_type == "eplodds":
             return get_footy_odds()
         elif cmd_type == "twitch":
