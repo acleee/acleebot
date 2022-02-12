@@ -32,13 +32,13 @@ def extract_url(chat_message: str) -> Optional[str]:
             return scrape_metadata_from_url(url)
 
 
-def scrape_metadata_from_url(url: str) -> str:
+def scrape_metadata_from_url(url: str) -> Optional[str]:
     """
     Fetch metadata for a given URL.
 
     :param str url: Link to third-party content, for which to create a link preview.
 
-    :returns: Optional[List[dict]]
+    :returns: Optional[str]
     """
     try:
         # Parse page metadata as dict
@@ -51,7 +51,7 @@ def scrape_metadata_from_url(url: str) -> str:
         LOGGER.error(f"Unexpected error while scraping metadata for URL `{url}`: {e}")
 
 
-def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> str:
+def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> Optional[str]:
     """
     Create a preview bookmark card from a URL.
 
@@ -59,7 +59,7 @@ def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> str:
     :param dict page_meta: Page metadata parsed from the head of the target URL.
     :param str url: URL of the linked third-party post/article.
 
-    :returns: str
+    :returns: Optional[str]
     """
     try:
         title = page_meta.get("og:title")
@@ -69,11 +69,12 @@ def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> str:
         publisher = page_meta.get("publisher")
         icons = page.soup.select("link[rel=icon]")
         page_type = page_meta.get("og:type")
-        preview = f"\n\n<b>{title}</b>\n{description}\n{url}"
-        if page_type:
-            preview += f"\n\n({page_type.title()})"
-        if image:
-            preview += f"\n\n{image}"
-        return preview
+        if title is not None and description is not None:
+            preview = f"\n\n<b>{title}</b>\n{description}\n{url}"
+            if page_type:
+                preview += f"\n\n({page_type.title()})"
+            if image:
+                preview += f"\n\n{image}"
+            return preview
     except Exception as e:
         LOGGER.error(f"Unexpected error while generating link preview card: {e}")
