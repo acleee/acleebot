@@ -396,6 +396,3 @@ class Bot(RoomManager):
             )
             room.message(reply)
             room.ban_user(message.user)
-
-    @staticmethod
-    def _(room: Room, user_name: str, message: Message) -> None:
