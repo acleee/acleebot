@@ -289,7 +289,7 @@ class Bot(RoomManager):
         """
         cmd, args = self._parse_command(chat_message[1::])
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None:
+        if command is not None and command.response != "reserved":
             response = self.create_message(
                 command.type,
                 command.response,
@@ -396,3 +396,6 @@ class Bot(RoomManager):
             )
             room.message(reply)
             room.ban_user(message.user)
+
+    @staticmethod
+    def _(room: Room, user_name: str, message: Message) -> None:
