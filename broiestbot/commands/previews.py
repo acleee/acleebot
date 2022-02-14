@@ -72,9 +72,9 @@ def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> Opti
         if title is not None and description is not None:
             preview = f"\n\n<b>{title}</b>\n{description}\n{url}"
             if page_type:
-                preview += f"\n\n({page_type.title()})"
+                preview += f"\n{page_type.title()}"
             if image:
-                preview += f"\n\n{image}"
+                preview += f"\n{image}"
             return preview
     except Exception as e:
         LOGGER.error(f"Unexpected error while generating link preview card: {e}")

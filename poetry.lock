@@ -223,14 +223,6 @@ pycodestyle = ">=2.8.0,<2.9.0"
 pyflakes = ">=2.4.0,<2.5.0"
 
 [[package]]
-name = "futures"
-version = "3.1.1"
-description = "Backport of the concurrent.futures package from Python 3.2"
-category = "main"
-optional = false
-python-versions = "*"
-
-[[package]]
 name = "google-api-core"
 version = "2.5.0"
 description = "Google API client core library"
@@ -366,17 +358,6 @@ protobuf = ">=3.12.0"
 
 [package.extras]
 grpc = ["grpcio (>=1.0.0)"]
-
-[[package]]
-name = "goslate"
-version = "1.5.2"
-description = "Goslate: Free Google Translate API"
-category = "main"
-optional = false
-python-versions = "*"
-
-[package.dependencies]
-futures = "*"
 
 [[package]]
 name = "greenlet"
@@ -795,7 +776,7 @@ typing-extensions = {version = ">=3.10.0", markers = "python_version < \"3.10\""
 
 [[package]]
 name = "pymultidictionary"
-version = "1.1.1"
+version = "1.2.0"
 description = "PyMultiDictionary is a Dictionary Module for Python 2 to get meanings, translations, synonyms and antonyms of words in 20 different languages"
 category = "main"
 optional = false
@@ -803,13 +784,12 @@ python-versions = ">=3.6, <4"
 
 [package.dependencies]
 bs4 = "*"
-goslate = "*"
 iso639-lang = "*"
 requests = "*"
 
 [package.extras]
-docs = ["bs4", "goslate", "iso639-lang", "requests", "sphinx", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
-test = ["bs4", "goslate", "iso639-lang", "requests", "codecov", "nose"]
+docs = ["bs4", "iso639-lang", "requests", "sphinx", "sphinx-autodoc-typehints (>=1.2.0)", "sphinx-rtd-theme"]
+test = ["bs4", "iso639-lang", "requests", "codecov", "nose"]
 
 [[package]]
 name = "pymysql"
@@ -1050,7 +1030,7 @@ requests = ">=2.0.0"
 
 [[package]]
 name = "typing-extensions"
-version = "4.1.0"
+version = "4.1.1"
 description = "Backported and Experimental Type Hints for Python 3.6+"
 category = "dev"
 optional = false
@@ -1285,11 +1265,6 @@ flake8 = [
     {file = "flake8-4.0.1-py2.py3-none-any.whl", hash = "sha256:479b1304f72536a55948cb40a32dce8bb0ffe3501e26eaf292c7e60eb5e0428d"},
     {file = "flake8-4.0.1.tar.gz", hash = "sha256:806e034dda44114815e23c16ef92f95c91e4c71100ff52813adf7132a6ad870d"},
 ]
-futures = [
-    {file = "futures-3.1.1-py2-none-any.whl", hash = "sha256:c4884a65654a7c45435063e14ae85280eb1f111d94e542396717ba9828c4337f"},
-    {file = "futures-3.1.1-py3-none-any.whl", hash = "sha256:3a44f286998ae64f0cc083682fcfec16c406134a81a589a5de445d7bb7c2751b"},
-    {file = "futures-3.1.1.tar.gz", hash = "sha256:51ecb45f0add83c806c68e4b06106f90db260585b25ef2abfcda0bd95c0132fd"},
-]
 google-api-core = [
     {file = "google-api-core-2.5.0.tar.gz", hash = "sha256:f33863a6709651703b8b18b67093514838c79f2b04d02aa501203079f24b8018"},
     {file = "google_api_core-2.5.0-py2.py3-none-any.whl", hash = "sha256:7d030edbd3a0e994d796e62716022752684e863a6df9864b6ca82a1616c2a5a6"},
@@ -1366,12 +1341,6 @@ google-resumable-media = [
 googleapis-common-protos = [
     {file = "googleapis-common-protos-1.54.0.tar.gz", hash = "sha256:a4031d6ec6c2b1b6dc3e0be7e10a1bd72fb0b18b07ef9be7b51f2c1004ce2437"},
     {file = "googleapis_common_protos-1.54.0-py2.py3-none-any.whl", hash = "sha256:e54345a2add15dc5e1a7891c27731ff347b4c33765d79b5ed7026a6c0c7cbcae"},
-]
-goslate = [
-    {file = "goslate-1.5.2-py2.7.egg", hash = "sha256:ad1127a0a76942032aacdc1b93556babd2b5100cc32be5101ecaceb4cd0e8c7f"},
-    {file = "goslate-1.5.2-py3.7.egg", hash = "sha256:6e97ef89705eab8edbafa78f4c20984e52a61942c01bac52c593bf0698fd8ee6"},
-    {file = "goslate-1.5.2-py3.8.egg", hash = "sha256:a237aff39b05927fd94cf5f0a5ef1e82cc0cb0cee344aa97f67331aab5ecf446"},
-    {file = "goslate-1.5.2.tar.gz", hash = "sha256:658faceecd38fa46e8ef5dc345f2b2d328fe0a45464a11316e9fb2283b820c41"},
 ]
 greenlet = [
     {file = "greenlet-1.1.2-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:58df5c2a0e293bf665a51f8a100d3e9956febfbf1d9aaf8c0677cf70218910c6"},
@@ -1741,8 +1710,8 @@ pylint = [
     {file = "pylint-2.12.2.tar.gz", hash = "sha256:9d945a73640e1fec07ee34b42f5669b770c759acd536ec7b16d7e4b87a9c9ff9"},
 ]
 pymultidictionary = [
-    {file = "PyMultiDictionary-1.1.1-py3-none-any.whl", hash = "sha256:4209b582b987c140e760487dd7590bfe1ccd359d1055285ef141992ac4e19ebb"},
-    {file = "PyMultiDictionary-1.1.1.tar.gz", hash = "sha256:063b9f4c801f38b09e7282a4d8a276c6f4c91f9199453d937e71287737962f44"},
+    {file = "PyMultiDictionary-1.2.0-py3-none-any.whl", hash = "sha256:74c6111ee4c59f84d4d09e0cebaaaac8987bf9077048cad486e73d65f878c233"},
+    {file = "PyMultiDictionary-1.2.0.tar.gz", hash = "sha256:7a6670c11a6f26587c49cbb5344dcf80f1bfd99fa1c400e8bc76570727a56c00"},
 ]
 pymysql = [
     {file = "PyMySQL-1.0.2-py3-none-any.whl", hash = "sha256:41fc3a0c5013d5f039639442321185532e3e2c8924687abe6537de157d403641"},
@@ -1913,8 +1882,8 @@ twilio = [
     {file = "twilio-7.6.0.tar.gz", hash = "sha256:df136f5ef8fd03a8c9d196cd2acd3c64afc8b9747f7576faf444d02c0fbabede"},
 ]
 typing-extensions = [
-    {file = "typing_extensions-4.1.0-py3-none-any.whl", hash = "sha256:c13180fbaa7cd97065a4915ceba012bdb31dc34743e63ddee16360161d358414"},
-    {file = "typing_extensions-4.1.0.tar.gz", hash = "sha256:ba97c5143e5bb067b57793c726dd857b1671d4b02ced273ca0538e71ff009095"},
+    {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},
+    {file = "typing_extensions-4.1.1.tar.gz", hash = "sha256:1a9462dcc3347a79b1f1c0271fbe79e844580bb598bafa1ed208b94da3cdcd42"},
 ]
 update-checker = [
     {file = "update_checker-0.18.0-py3-none-any.whl", hash = "sha256:cbba64760a36fe2640d80d85306e8fe82b6816659190993b7bdabadee4d4bbfd"},

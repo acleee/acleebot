@@ -28,8 +28,8 @@ def json_formatter(record: dict):
             chat_data = re.search(
                 r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log["message"]
             )
-            chat_dict = chat_data.groupdict()
-            if bool(chat_data) and len(chat_data.groupdict().values()) == 3:
+            if chat_data:
+                chat_dict = chat_data.groupdict()
                 subset = {
                     "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log["message"].split(": ", 1)[1],
@@ -40,12 +40,8 @@ def json_formatter(record: dict):
                 }
                 return json.dumps(subset)
         except Exception as e:
-            subset = {
-                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                "level": "ERROR",
-                "message": f"Logging error occurred: {e}",
-            }
-            return json.dumps(subset)
+            log["error"] = f"Logging error occurred: {e}"
+            return serialize_error(log)
 
     def serialize_event(log: dict) -> str:
         """
@@ -68,12 +64,8 @@ def json_formatter(record: dict):
                 }
                 return json.dumps(subset)
         except Exception as e:
-            subset = {
-                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                "level": "ERROR",
-                "message": f"Logging error occurred: {e}",
-            }
-            return json.dumps(subset)
+            log["error"] = f"Logging error occurred: {e}"
+            return serialize_error(log)
 
     def serialize_error(log: dict) -> str:
         """
@@ -118,8 +110,7 @@ def log_formatter(record: dict) -> str:
     """
     Formatter for .log records
 
-    :param record: Log object containing log metadata & message.
-    :type record: dict
+    :param dict record: Log object containing log metadata & message.
 
     :returns: str
     """

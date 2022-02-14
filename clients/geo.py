@@ -1,3 +1,4 @@
+"""Geo data client to identify bad actors."""
 from typing import Union
 
 import pandas as pd
@@ -12,6 +13,11 @@ class GeoIP:
 
     @property
     def client(self) -> IPData:
+        """
+        Return instantiated IP Data client.
+
+        :returns: IPData
+        """
         try:
             return ipdata.IPData(self.api_key)
         except APIKeyNotSet as e:

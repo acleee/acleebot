@@ -160,6 +160,8 @@ class Bot(RoomManager):
             return tuner(args, user_name)
         elif cmd_type == "wayne":
             return time_until_wayne()
+        elif cmd_type == "reserved":
+            pass
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -289,7 +291,7 @@ class Bot(RoomManager):
         """
         cmd, args = self._parse_command(chat_message[1::])
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None and command.response != "reserved":
+        if command is not None and command.type != "reserved":
             response = self.create_message(
                 command.type,
                 command.response,
@@ -299,6 +301,8 @@ class Bot(RoomManager):
                 user_name=user_name,
             )
             room.message(response, html=True)
+        elif command.type == "reserved":
+            return None
         else:
             self._giphy_fallback(chat_message, room)
 
