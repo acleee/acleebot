@@ -200,7 +200,7 @@ def _genUid():
     """
     generate a uid
     """
-    return str(random.randrange(10 ** 15, 10 ** 16))
+    return str(random.randrange(10**15, 10**16))
 
 
 ################################################################

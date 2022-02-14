@@ -1,8 +1,8 @@
 """Extract URL from user chat message."""
 import re
-from typing import Optional
+from typing import Optional, Tuple
 
-from metadata_parser import MetadataParser
+from metadata_parser import InvalidDocument, MetadataParser
 from requests.exceptions import HTTPError
 
 from logger import LOGGER
@@ -34,6 +34,11 @@ def extract_url(chat_message: str) -> Optional[str]:
             and ".gif" not in url
             and ".jpeg" not in url
             and ".mp4" not in url
+            and ".JPG" not in url
+            and ".PNG" not in url
+            and ".GIF" not in url
+            and ".JPEG" not in url
+            and ".MP4" not in url
         ):
             return scrape_metadata_from_url(url)
 
@@ -48,11 +53,20 @@ def scrape_metadata_from_url(url: str) -> Optional[str]:
     """
     try:
         # Parse page metadata as dict
-        page = MetadataParser(url=url, url_headers=headers, search_head_only=True)
-        page_meta = page.metadata["meta"]
+        page = MetadataParser(
+            url=url,
+            url_headers=headers,
+            search_head_only=True,
+            only_parse_http_ok=True,
+            raise_on_invalid=True,
+        )
+        page_meta = page.parsed_result.metadata
+        LOGGER.info(f"page_meta = {page_meta}")
         return create_link_preview(page, page_meta, url)
     except HTTPError as e:
         LOGGER.warning(f"Failed to fetch metadata for URL `{url}`: {e}")
+    except InvalidDocument as e:
+        LOGGER.warning(f"InvalidDocument encountered while fetching metadata for URL `{url}`: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error while scraping metadata for URL `{url}`: {e}")
 
@@ -68,13 +82,8 @@ def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> Opti
     :returns: Optional[str]
     """
     try:
-        title = page_meta.get("og:title")
-        description = page_meta.get("og:description")
+        title, description, page_type = parse_scraped_metadata(page_meta)
         image = page.get_metadata_link("image", allow_encoded_uri=True, require_public_global=True)
-        author = page_meta.get("author")
-        publisher = page_meta.get("publisher")
-        icons = page.soup.select("link[rel=icon]")
-        page_type = page_meta.get("og:type")
         if title is not None and description is not None:
             preview = f"\n\n<b>{title}</b>\n{description}\n{url}"
             if page_type:
@@ -84,3 +93,27 @@ def create_link_preview(page: MetadataParser, page_meta: dict, url: str) -> Opti
             return preview
     except Exception as e:
         LOGGER.error(f"Unexpected error while generating link preview card: {e}")
+
+
+def parse_scraped_metadata(page_meta: dict) -> Tuple[Optional[str], Optional[str], Optional[str]]:
+    """
+    Parse HTML metadata with added redundancy.
+
+    :param dict page_meta: Metadata stored as dictionary of `og`, `twitter`, `meta`, and `page`.
+
+    :returns: Tuple[Optional[str], Optional[str], Optional[str]]
+    """
+    title = None
+    description = None
+    page_type = None
+    if page_meta.get("meta") is not None:
+        title = page_meta["meta"].get("og:title")
+        description = page_meta["meta"].get("og:description")
+        page_type = page_meta["meta"].get("og:type")
+    if page_meta.get("og") is not None:
+        title = page_meta["og"].get("title") if title is None else None
+        description = page_meta["og"].get("description") if description is None else None
+    if page_meta.get("twitter") is not None:
+        title = page_meta["twitter"].get("title") if title is None else None
+        description = page_meta["twitter"].get("description") if description is None else None
+    return title, description, page_type
