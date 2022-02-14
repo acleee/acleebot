@@ -291,7 +291,7 @@ class Bot(RoomManager):
         """
         cmd, args = self._parse_command(chat_message[1::])
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None and command.type != "reserved":
+        if command is not None and command.type != "reserved" and command.type != "reddit":
             response = self.create_message(
                 command.type,
                 command.response,
