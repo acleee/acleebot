@@ -28,7 +28,13 @@ def extract_url(chat_message: str) -> Optional[str]:
     url_match = re.match(pattern, chat_message)
     if url_match is not None:
         url = url_match.group(0)
-        if ".jpg" not in url and ".png" not in url and ".gif" not in url:
+        if (
+            ".jpg" not in url
+            and ".png" not in url
+            and ".gif" not in url
+            and ".jpeg" not in url
+            and ".mp4" not in url
+        ):
             return scrape_metadata_from_url(url)
 
 
