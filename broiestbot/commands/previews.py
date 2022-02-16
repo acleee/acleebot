@@ -3,7 +3,7 @@ import re
 from typing import Optional, Tuple
 
 from metadata_parser import InvalidDocument, MetadataParser
-from requests.exceptions import HTTPError
+from requests.exceptions import HTTPError, RequestException
 
 from logger import LOGGER
 
@@ -53,9 +53,11 @@ def scrape_metadata_from_url(url: str) -> Optional[str]:
         if page_meta:
             return create_link_preview(page, page_meta, url)
     except HTTPError as e:
-        LOGGER.warning(f"Failed to fetch metadata for URL `{url}`: {e}")
+        LOGGER.error(f"Failed to fetch metadata for URL `{url}`: {e}")
+    except RequestException as e:
+        LOGGER.error(f"RequestException error while scraping metadata for URL `{url}`: {e}")
     except InvalidDocument as e:
-        LOGGER.warning(f"InvalidDocument encountered while fetching metadata for URL `{url}`: {e}")
+        LOGGER.error(f"InvalidDocument encountered while fetching metadata for URL `{url}`: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error while scraping metadata for URL `{url}`: {e}")
 
