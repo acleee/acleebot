@@ -28,18 +28,7 @@ def extract_url(chat_message: str) -> Optional[str]:
     url_match = re.match(pattern, chat_message)
     if url_match is not None:
         url = url_match.group(0)
-        if (
-            ".jpg" not in url
-            and ".png" not in url
-            and ".gif" not in url
-            and ".jpeg" not in url
-            and ".mp4" not in url
-            and ".JPG" not in url
-            and ".PNG" not in url
-            and ".GIF" not in url
-            and ".JPEG" not in url
-            and ".MP4" not in url
-        ):
+        if url:
             return scrape_metadata_from_url(url)
 
 
@@ -61,8 +50,8 @@ def scrape_metadata_from_url(url: str) -> Optional[str]:
             raise_on_invalid=True,
         )
         page_meta = page.parsed_result.metadata
-        LOGGER.info(f"page_meta = {page_meta}")
-        return create_link_preview(page, page_meta, url)
+        if page_meta:
+            return create_link_preview(page, page_meta, url)
     except HTTPError as e:
         LOGGER.warning(f"Failed to fetch metadata for URL `{url}`: {e}")
     except InvalidDocument as e:

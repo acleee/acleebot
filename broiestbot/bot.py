@@ -316,7 +316,20 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        if "twitter" not in chat_message and "youtube" not in chat_message:
+        if (
+            ".jpg" not in chat_message
+            and ".png" not in chat_message
+            and ".gif" not in chat_message
+            and ".jpeg" not in chat_message
+            and ".mp4" not in chat_message
+            and ".JPG" not in chat_message
+            and ".PNG" not in chat_message
+            and ".GIF" not in chat_message
+            and ".JPEG" not in chat_message
+            and ".MP4" not in chat_message
+            and "twitter" not in chat_message
+            and "youtube" not in chat_message
+        ):
             link_preview = extract_url(chat_message)
             if link_preview:
                 room.message(link_preview, html=True)
