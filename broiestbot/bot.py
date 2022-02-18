@@ -186,8 +186,8 @@ class Bot(RoomManager):
         persist_chat_data(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
-        elif message.body.startswith("http"):
-            self._create_link_preview(room, message.body)
+        # elif message.body.startswith("http"):
+            # self._create_link_preview(room, message.body)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
