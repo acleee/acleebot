@@ -300,8 +300,8 @@ class Bot(RoomManager):
                 user_name=user_name,
             )
             room.message(response, html=True)
-        elif command.type == "reserved":
-            pass  # Ignore reserved command
+        # elif command.type == "reserved":
+            # pass
         else:
             self._giphy_fallback(chat_message, room)
 
