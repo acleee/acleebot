@@ -12,7 +12,6 @@ from broiestbot.commands import (
     blaze_time_remaining,
     bund_standings,
     covid_cases_usa,
-    create_instagram_preview,
     epl_golden_boot,
     epl_standings,
     extract_url,
@@ -47,7 +46,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS
+from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_USERS
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -220,7 +219,7 @@ class Bot(RoomManager):
         """
         if re.match(r"^!!.+", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
-        elif re.match(r"^!ein+", chat_message):
+        elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
         elif re.match(r"^!.+", chat_message):
             return self._get_response(chat_message, room, user_name)
@@ -291,7 +290,7 @@ class Bot(RoomManager):
         """
         cmd, args = self._parse_command(chat_message[1::])
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None and command.type != "reserved" and command.type != "reddit":
+        if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
                 command.type,
                 command.response,
@@ -302,7 +301,7 @@ class Bot(RoomManager):
             )
             room.message(response, html=True)
         elif command.type == "reserved":
-            return None
+            pass  # Ignore reserved command
         else:
             self._giphy_fallback(chat_message, room)
 
