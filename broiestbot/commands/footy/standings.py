@@ -41,7 +41,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
             standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}-{draws}-{losses})\n"
+                standings_table + f"{rank}. {team}: {points}pts ({wins}W-{draws}D-{losses}L)\n"
             )
         if standings_table != "\n\n\n\n":
             return standings_table
