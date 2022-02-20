@@ -124,3 +124,6 @@ def get_season_year() -> Optional[int]:
     elif now.month <= 5:
         return now.year - 1
     return None
+
+
+SEASON_YEAR = get_season_year()
