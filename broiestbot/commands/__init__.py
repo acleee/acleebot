@@ -39,7 +39,7 @@ from .movies import find_imdb_movie
 from .nfl import get_live_nfl_games
 from .olympics import get_summer_olympic_medals, get_winter_olympic_medals
 from .previews import extract_url
-from .tuner import tuner
+from .tuner import get_current_show, tuner
 
 # from .video import search_youtube_for_video
 from .video import get_all_live_twitch_streams

@@ -86,7 +86,7 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
                 f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
             )
             time.sleep(2)
-            on_now = get_current_show(0)
+            on_now = get_current_show(True, bot_username)
             return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
         return emojize(
             f":warning: u don't have the poughwer to change da channol :warning:",
@@ -111,7 +111,7 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
 
 def resolve_requested_channel_name(channel_name: str) -> str:
     """
-    Map reserved slang/channels/shows to their apporiate channel name.
+    Map reserved slang/channels/shows to their appropriate channel name.
 
     :param str channel_name: Name of channel to tune stream to.
 
@@ -126,38 +126,41 @@ def resolve_requested_channel_name(channel_name: str) -> str:
     return channel_name
 
 
-def get_current_show(detailed: bool) -> str:
+def get_current_show(detailed: bool, bot_username: str) -> str:
     """
     Fetch all information of show currently on stream.
 
     :param bool detailed: Flag to return metadata for currently playing show.
+    :param str bot_username: Name of Chatango user currently running bot.
+
 
     :returns: str
     """
     try:
-        data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
-        resp = requests.post(
-            f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
-        )
-        json = resp.json()["result"]
-        title = json["VideoPlayer.Title"]
-        season = json["VideoPlayer.Season"]
-        episode = json["VideoPlayer.Episode"]
-        episode_name = json["VideoPlayer.EpisodeName"]
-        genre = json["VideoPlayer.Genre"]
-        plot = json["VideoPlayer.Plot"]
-        icon = json["Pvr.EPGEventIcon"]
-        if not detailed:
-            return title
-        if season and episode:
+        if bot_username != "broiestbot":
+            data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
+            resp = requests.post(
+                f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
+            )
+            json = resp.json()["result"]
+            title = json["VideoPlayer.Title"]
+            season = json["VideoPlayer.Season"]
+            episode = json["VideoPlayer.Episode"]
+            episode_name = json["VideoPlayer.EpisodeName"]
+            genre = json["VideoPlayer.Genre"]
+            plot = json["VideoPlayer.Plot"]
+            icon = json["Pvr.EPGEventIcon"]
+            if not detailed:
+                return title
+            if season and episode:
+                return emojize(
+                    f":tv: On now: <b>{title.upper()}</b> - S{season}E{episode}: {episode_name} \n \n <i>{plot}</i> \n {icon}",
+                    use_aliases=True,
+                )
             return emojize(
-                f":tv: On now: <b>{title.upper()}</b> - S{season}E{episode}: {episode_name} \n \n <i>{plot}</i> \n {icon}",
+                f":tv: On now: <b>{title.upper()}</b> - {episode_name} \n\n <i>{plot}</i> \n {icon}",
                 use_aliases=True,
             )
-        return emojize(
-            f":tv: On now: <b>{title.upper()}</b> - {episode_name} \n\n <i>{plot}</i> \n {icon}",
-            use_aliases=True,
-        )
     except LookupError as e:
         LOGGER.error(f"LookupError error when getting current show info: {e}")
         return emojize(

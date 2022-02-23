@@ -25,6 +25,7 @@ from broiestbot.commands import (
     footy_upcoming_fixtures,
     get_all_live_twitch_streams,
     get_crypto,
+    get_current_show,
     get_english_definition,
     get_english_translation,
     get_footy_odds,
@@ -159,6 +160,8 @@ class Bot(RoomManager):
             return tuner(args, user_name, room.user.name.lower())
         elif cmd_type == "wayne":
             return time_until_wayne()
+        elif cmd_type == "np":
+            return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
             pass
         # elif cmd_type == "youtube" and args:
