@@ -46,7 +46,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_USERS
+from config import CHATANGO_BLACKLISTED_USERS
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -156,7 +156,7 @@ class Bot(RoomManager):
         elif cmd_type == "define" and args:
             return get_english_definition(args)
         elif cmd_type == "tune" and args:
-            return tuner(args, user_name)
+            return tuner(args, user_name, room.user.name.lower())
         elif cmd_type == "wayne":
             return time_until_wayne()
         elif cmd_type == "reserved":
@@ -187,7 +187,7 @@ class Bot(RoomManager):
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
         # elif message.body.startswith("http"):
-            # self._create_link_preview(room, message.body)
+        # self._create_link_preview(room, message.body)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
@@ -301,7 +301,7 @@ class Bot(RoomManager):
             )
             room.message(response, html=True)
         # elif command.type == "reserved":
-            # pass
+        # pass
         else:
             self._giphy_fallback(chat_message, room)
 

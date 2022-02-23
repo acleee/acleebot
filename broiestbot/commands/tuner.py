@@ -59,17 +59,18 @@ def get_channel_number(channel_name: str) -> int:
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
 
 
-def tuner(channel_name: str, username: str) -> str:
+def tuner(channel_name: str, username: str, bot_username: str) -> str:
     """
     Fetch channel by name and tune stream if user is whitelisted.
 
     :param str channel_name: Name of channel to tune stream to.
     :param str username: Chatango user requesting to change the channel.
+    :param str bot_username: Name of Chatango user currently running bot.
 
     :returns: str
     """
     try:
-        if username in CHATANGO_SPECIAL_USERS:
+        if username in CHATANGO_SPECIAL_USERS and bot_username != "broiestbot":
             channel_name = resolve_requested_channel_name(channel_name)
             channel_number = get_channel_number(channel_name)
             capped = get_proper_caps(channel_name)
