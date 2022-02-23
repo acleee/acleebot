@@ -70,7 +70,7 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
     :returns: str
     """
     try:
-        if username in CHATANGO_SPECIAL_USERS and bot_username != "broiestbot":
+        if username in CHATANGO_SPECIAL_USERS and bot_username != "broiestbro":
             channel_name = resolve_requested_channel_name(channel_name)
             channel_number = get_channel_number(channel_name)
             capped = get_proper_caps(channel_name)
@@ -137,7 +137,7 @@ def get_current_show(detailed: bool, bot_username: str) -> str:
     :returns: str
     """
     try:
-        if bot_username != "broiestbot":
+        if bot_username != "broiestbro":
             data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
             resp = requests.post(
                 f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
