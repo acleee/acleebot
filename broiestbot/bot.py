@@ -47,7 +47,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS
+from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_EGGSER_IP
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -191,8 +191,8 @@ class Bot(RoomManager):
             self._process_command(chat_message, room, user_name)
         # elif message.body.startswith("http"):
         # self._create_link_preview(room, message.body)
-        elif re.match(r"bl/S+b", chat_message):
-            self._ban_word(room, message, user_name, silent=False)
+        # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
+            # self._ban_word(room, message, user_name, silent=False)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
@@ -416,4 +416,6 @@ class Bot(RoomManager):
                 use_aliases=True,
             )
             room.message(reply)
+            room.ban_user(message.user)
+        elif message.ip and CHATANGO_EGGSER_IP in message.ip:
             room.ban_user(message.user)
