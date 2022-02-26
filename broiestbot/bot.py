@@ -192,7 +192,7 @@ class Bot(RoomManager):
         # elif message.body.startswith("http"):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
-            # self._ban_word(room, message, user_name, silent=False)
+        # self._ban_word(room, message, user_name, silent=False)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
