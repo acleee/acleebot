@@ -1,6 +1,7 @@
 """Channel tuner/remote."""
 import json
 import time
+from typing import Optional
 
 import requests
 from emoji import emojize
@@ -70,43 +71,36 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
     :returns: str
     """
     try:
-        if username in CHATANGO_SPECIAL_USERS and bot_username != "broiestbro":
-            channel_name = resolve_requested_channel_name(channel_name)
-            channel_number = get_channel_number(channel_name)
-            capped = get_proper_caps(channel_name)
-            # some of this has to use ugly plus signs because format() breaks due to all the curlies
-            data = (
-                '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"channelid":'
-                + channel_number
-                + '}},"id":'
-                + current_milli_time()
-                + "}"
+        if bot_username != "broiestbro":
+            if username in CHATANGO_SPECIAL_USERS:
+                channel_name = resolve_requested_channel_name(channel_name)
+                channel_number = get_channel_number(channel_name)
+                capped = get_proper_caps(channel_name)
+                # some of this has to use ugly plus signs because format() breaks due to all the curlies
+                data = (
+                    '{"jsonrpc":"2.0","method":"Player.Open","params":{"item":{"channelid":'
+                    + str(channel_number)
+                    + '}},"id":'
+                    + current_milli_time()
+                    + "}"
+                )
+                requests.post(
+                    f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
+                )
+                time.sleep(2)
+                on_now = get_current_show(True, bot_username)
+                return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
+            return emojize(
+                f":warning: u don't have the poughwer to change da channol :warning:",
+                use_aliases=True,
             )
-            requests.post(
-                f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
-            )
-            time.sleep(2)
-            on_now = get_current_show(True, bot_username)
-            return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
-        return emojize(
-            f":warning: u don't have the poughwer to change da channol :warning:",
-            use_aliases=True,
-        )
     except LookupError as e:
         LOGGER.error(
             f"LookupError occurred when fetching tuner channel; defaulting to {channel_name}: {e}"
         )
-        return emojize(
-            f":warning: uh yea broughbert sucks at changing channol :warning:",
-            use_aliases=True,
-        )
         # return get_channel_number(channel_name)
     except Exception as e:
         LOGGER.error(f"Unexpected error when changing channel: {e}")
-        return emojize(
-            f":warning: this breaks broughbert idfk :warning:",
-            use_aliases=True,
-        )
 
 
 def resolve_requested_channel_name(channel_name: str) -> str:
@@ -126,7 +120,7 @@ def resolve_requested_channel_name(channel_name: str) -> str:
     return channel_name
 
 
-def get_current_show(detailed: bool, bot_username: str) -> str:
+def get_current_show(detailed: bool, bot_username: str) -> Optional[str]:
     """
     Fetch all information of show currently on stream.
 
@@ -163,13 +157,5 @@ def get_current_show(detailed: bool, bot_username: str) -> str:
             )
     except LookupError as e:
         LOGGER.error(f"LookupError error when getting current show info: {e}")
-        return emojize(
-            f":warning: this breaks broughbert idfk :warning:",
-            use_aliases=True,
-        )
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting current show info: {e}")
-        return emojize(
-            f":warning: this breaks broughbert idfk :warning:",
-            use_aliases=True,
-        )
