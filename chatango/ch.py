@@ -1575,15 +1575,14 @@ class Room:
         """
         self.raw_ban(msg.user.name, msg.ip, msg.unid)
 
-    def ban_user(self, user):
+    def ban_user(self, user) -> bool:
         """
         Ban a user. (Moderator only)
 
+        TODO: Determine the data type of `user` parameter (is not `User`).
         :param user: Chatango user to ban from room.
-        :type user: User
 
-        @rtype: bool
-        @return: whether a message to ban the user was found
+        :returns: bool
         """
         msg = self.get_last_message(user)
         if msg:
@@ -1865,12 +1864,11 @@ class RoomManager:
             except UnicodeError as ex:
                 text = text[0 : ex.start] + "(unicode)" + text[ex.end :]
 
-    def on_connect(self, room):
+    def on_connect(self, room: Room):
         """
         Called when connected to the room.
 
-        :param room: Chatango room recently joined by bot.
-        :type room: Room
+        :param Room room: Chatango room recently joined by bot.
         """
         room.message("Beep boop I'm dead inside 🤖")
         LOGGER.success(
@@ -1994,10 +1992,7 @@ class RoomManager:
         :param User user: Author of message sent to chat.
         :param Message message: Received chat message
         """
-        if bool(message.ip):
-            LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
-        else:
-            LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
+        pass
 
     def on_history_message(self, room, user, message):
         """

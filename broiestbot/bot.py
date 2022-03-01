@@ -417,5 +417,5 @@ class Bot(RoomManager):
             )
             room.message(reply)
             room.ban_user(message.user)
-        elif message.ip and CHATANGO_EGGSER_IP in message.ip:
+        elif message.ip is not None and message.ip.startswith(CHATANGO_EGGSER_IP):
             room.ban_user(message.user)
