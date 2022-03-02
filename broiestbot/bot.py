@@ -251,7 +251,7 @@ class Bot(RoomManager):
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
-            and user_name not in CHATANGO_BOTS
+            and user_name.upper() not in CHATANGO_BOTS
         ):
             room.message(
                 "SIGN THE PETITION: \
