@@ -47,7 +47,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_EGGSER_IP
+from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_BOTS, CHATANGO_EGGSER_IP
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -163,7 +163,7 @@ class Bot(RoomManager):
         elif cmd_type == "np":
             return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
-            pass
+            return None
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -251,7 +251,7 @@ class Bot(RoomManager):
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
-            and user_name != bot_username
+            and user_name not in CHATANGO_BOTS
         ):
             room.message(
                 "SIGN THE PETITION: \
