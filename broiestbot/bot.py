@@ -389,7 +389,7 @@ class Bot(RoomManager):
     @staticmethod
     def _trademark(room: Room, message: Message) -> None:
         """
-        Trademark symbol helper.
+        Replace "TM" chats with a trademark symbol.
 
         :param Room room: Current Chatango room object.
         :param Message message: User submitted `tm` to be replaced.
@@ -415,7 +415,9 @@ class Bot(RoomManager):
                 f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
             )
+            LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
             room.message(reply)
             room.ban_user(message.user)
         elif message.ip is not None and message.ip.startswith(CHATANGO_EGGSER_IP):
+            LOGGER.warning(f"BANNED eggser: username={message.user.name} ip={message.ip}")
             room.ban_user(message.user)
