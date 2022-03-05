@@ -300,3 +300,7 @@ OLYMPICS_LEADERBOARD_ENDPOINT = (
 WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = (
     "https://www.espn.com/olympics/winter/2022/medals/_/view/overall/sort/gold"
 )
+
+# NBA
+NBA_API_KEY = getenv("NBA_API_KEY")
+NBA_CONFERENCE_NAMES = ["Eastern Conference", "Western Conference"]

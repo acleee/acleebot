@@ -1,5 +1,6 @@
 """Construct responses to bot commands from third-party APIs."""
 from .afterdark import get_redgifs_gif
+from .bball import nba_standings
 from .definitions import (
     get_english_definition,
     get_english_translation,

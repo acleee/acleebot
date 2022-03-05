@@ -39,6 +39,7 @@ from broiestbot.commands import (
     get_winter_olympic_medals,
     giphy_image_search,
     liga_standings,
+    nba_standings,
     random_image,
     send_text_message,
     time_until_wayne,
@@ -164,6 +165,8 @@ class Bot(RoomManager):
             return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
             pass
+        elif cmd_type == "nbastandings":
+            return nba_standings()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
