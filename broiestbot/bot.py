@@ -48,7 +48,7 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_EGGSER_IP
+from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_BOTS, CHATANGO_EGGSER_IP
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -164,7 +164,7 @@ class Bot(RoomManager):
         elif cmd_type == "np":
             return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
-            pass
+            return None
         elif cmd_type == "nbastandings":
             return nba_standings()
         # elif cmd_type == "youtube" and args:
@@ -254,7 +254,7 @@ class Bot(RoomManager):
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
-            and user_name != bot_username
+            and user_name.upper() not in CHATANGO_BOTS
         ):
             room.message(
                 "SIGN THE PETITION: \
@@ -392,7 +392,7 @@ class Bot(RoomManager):
     @staticmethod
     def _trademark(room: Room, message: Message) -> None:
         """
-        Trademark symbol helper.
+        Replace "TM" chats with a trademark symbol.
 
         :param Room room: Current Chatango room object.
         :param Message message: User submitted `tm` to be replaced.
@@ -418,7 +418,9 @@ class Bot(RoomManager):
                 f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
                 use_aliases=True,
             )
+            LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
             room.message(reply)
             room.ban_user(message.user)
-        elif message.ip and CHATANGO_EGGSER_IP in message.ip:
+        elif message.ip is not None and message.ip.startswith(CHATANGO_EGGSER_IP):
+            LOGGER.warning(f"BANNED eggser: username={message.user.name} ip={message.ip}")
             room.ban_user(message.user)

@@ -21,6 +21,13 @@ CHATANGO_USERS = {
     },
 }
 
+# Known Chatango bot usernames
+CHATANGO_BOTS = {
+    "BROIESTBRO",
+    "BROIESTBOT",
+    "ACLEEBOT",
+}
+
 # Chatango rooms
 CHATANGO_TEST_ROOM = getenv("CHATANGO_TEST_ROOM")
 CHATANGO_ACLEE_ROOM = getenv("CHATANGO_ACLEE_ROOM")
