@@ -48,7 +48,12 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_BOTS, CHATANGO_EGGSER_IP
+from config import (
+    CHATANGO_BLACKLISTED_USERS,
+    CHATANGO_BOTS,
+    CHATANGO_EGGSER_IP,
+    CHATANGO_EGGSER_USERNAME_WHITELIST,
+)
 from logger import LOGGER
 
 from .data import persist_chat_data, persist_user_data
@@ -421,6 +426,10 @@ class Bot(RoomManager):
             LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
             room.message(reply)
             room.ban_user(message.user)
-        elif message.ip is not None and message.ip.startswith(CHATANGO_EGGSER_IP):
-            LOGGER.warning(f"BANNED eggser: username={message.user.name} ip={message.ip}")
+        elif (
+            message.ip is not None
+            and message.ip.startswith(CHATANGO_EGGSER_IP)
+            and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
+        ):
+            LOGGER.warning(f"BANNED Eggser: username={message.user.name} ip={message.ip}")
             room.ban_user(message.user)
