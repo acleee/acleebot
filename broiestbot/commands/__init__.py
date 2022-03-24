@@ -24,6 +24,7 @@ from .footy import (
 )
 from .images import (
     fetch_image_from_gcs,
+    gcs_random_image_spam,
     giphy_image_search,
     random_image,
     subreddit_image,

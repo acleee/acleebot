@@ -23,6 +23,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
+    gcs_random_image_spam,
     get_all_live_twitch_streams,
     get_crypto,
     get_current_show,
@@ -56,7 +57,7 @@ from config import (
 )
 from logger import LOGGER
 
-from .data import persist_chat_data, persist_user_data
+from .data import persist_chat_logs, persist_user_data
 
 
 class Bot(RoomManager):
@@ -98,6 +99,8 @@ class Bot(RoomManager):
             return get_stock(args)
         elif cmd_type == "storage":
             return fetch_image_from_gcs(content)
+        elif cmd_type == "randomspam":
+            return gcs_random_image_spam(content)
         elif cmd_type == "crypto":
             return get_crypto(content)
         elif cmd_type == "giphy":
@@ -194,7 +197,7 @@ class Bot(RoomManager):
         self._check_blacklisted_users(room, user_name, message)
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
-        persist_chat_data(user_name, room_name, chat_message, bot_username)
+        persist_chat_logs(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
         # elif message.body.startswith("http"):
@@ -230,7 +233,7 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        if re.match(r"^!!.+", chat_message):
+        if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
@@ -301,7 +304,7 @@ class Bot(RoomManager):
         :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         """
-        cmd, args = self._parse_command(chat_message[1::])
+        cmd, args = self._parse_command(chat_message[1::].strip())
         command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
