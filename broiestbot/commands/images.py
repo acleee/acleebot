@@ -51,11 +51,14 @@ def gcs_random_image_spam(subdirectory: str) -> str:
     :returns: str
     """
     try:
+        response = []
         images = gcs.bucket.list_blobs(prefix=subdirectory)
         image_list = [image.name for image in images if "." in image.name]
-        rand = randint(0, len(image_list) - 1)
-        image = f"{GOOGLE_BUCKET_URL}{GOOGLE_BUCKET_NAME}/{image_list[rand]}"
-        return f"{image.lower()} {image.lower()} {image.lower()}"
+        for i in range(3):
+            response.append(
+                f"{GOOGLE_BUCKET_URL}{GOOGLE_BUCKET_NAME}/{image_list[randint(0, len(image_list) - 1)]}"
+            )
+        return " ".join(response)
     except NotFound as e:
         LOGGER.warning(f"GCS `NotFound` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
