@@ -23,6 +23,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
+    gcs_random_image_spam,
     get_all_live_twitch_streams,
     get_crypto,
     get_current_show,
@@ -39,18 +40,25 @@ from broiestbot.commands import (
     get_winter_olympic_medals,
     giphy_image_search,
     liga_standings,
+    nba_standings,
     random_image,
     send_text_message,
     time_until_wayne,
+    tovala_counter,
     tuner,
     weather_by_location,
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BLACKLISTED_USERS, CHATANGO_BOTS, CHATANGO_EGGSER_IP
+from config import (
+    CHATANGO_BLACKLISTED_USERS,
+    CHATANGO_BOTS,
+    CHATANGO_EGGSER_IP,
+    CHATANGO_EGGSER_USERNAME_WHITELIST,
+)
 from logger import LOGGER
 
-from .data import persist_chat_data, persist_user_data
+from .data import persist_chat_logs, persist_user_data
 
 
 class Bot(RoomManager):
@@ -92,6 +100,8 @@ class Bot(RoomManager):
             return get_stock(args)
         elif cmd_type == "storage":
             return fetch_image_from_gcs(content)
+        elif cmd_type == "randomspam":
+            return gcs_random_image_spam(content)
         elif cmd_type == "crypto":
             return get_crypto(content)
         elif cmd_type == "giphy":
@@ -164,6 +174,10 @@ class Bot(RoomManager):
             return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
             return None
+        elif cmd_type == "nbastandings":
+            return nba_standings()
+        elif cmd_type == "tovala":
+            return tovala_counter("boop")
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -186,7 +200,7 @@ class Bot(RoomManager):
         self._check_blacklisted_users(room, user_name, message)
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
-        persist_chat_data(user_name, room_name, chat_message, bot_username)
+        persist_chat_logs(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name)
         # elif message.body.startswith("http"):
@@ -222,7 +236,7 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        if re.match(r"^!!.+", chat_message):
+        if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
@@ -293,7 +307,7 @@ class Bot(RoomManager):
         :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         """
-        cmd, args = self._parse_command(chat_message[1::])
+        cmd, args = self._parse_command(chat_message[1::].strip())
         command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
@@ -418,6 +432,10 @@ class Bot(RoomManager):
             LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
             room.message(reply)
             room.ban_user(message.user)
-        elif message.ip is not None and message.ip.startswith(CHATANGO_EGGSER_IP):
-            LOGGER.warning(f"BANNED eggser: username={message.user.name} ip={message.ip}")
+        elif (
+            message.ip is not None
+            and message.ip.startswith(CHATANGO_EGGSER_IP)
+            and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
+        ):
+            LOGGER.warning(f"BANNED Eggser: username={message.user.name} ip={message.ip}")
             room.ban_user(message.user)

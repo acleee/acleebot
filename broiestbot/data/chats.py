@@ -7,7 +7,7 @@ from config import PERSIST_CHAT_DATA
 from logger import LOGGER
 
 
-def persist_chat_data(user_name: str, room_name: str, chat_message: str, bot_username: str) -> None:
+def persist_chat_logs(user_name: str, room_name: str, chat_message: str, bot_username: str) -> None:
     """
     Save chat log record.
 

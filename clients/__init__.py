@@ -1,6 +1,7 @@
 """Clients & SDKs for interacting with third-party services."""
 import lyricsgenius
 import praw
+import redis
 import wikipediaapi
 
 # from googleapiclient.discovery import build
@@ -20,6 +21,9 @@ from config import (  # YOUTUBE_API_KEY,
     REDDIT_CLIENT_SECRET,
     REDDIT_PASSWORD,
     REDDIT_USERNAME,
+    REDIS_DB,
+    REDIS_HOST,
+    REDIS_PORT,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
 )
@@ -66,6 +70,9 @@ geo = GeoIP(IP_DATA_KEY)
 # Rap Genius
 genius = lyricsgenius.Genius()
 genius.remove_section_headers = True
+
+# Redis
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
 
 # Youtube
 # yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
