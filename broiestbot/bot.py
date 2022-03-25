@@ -44,6 +44,7 @@ from broiestbot.commands import (
     random_image,
     send_text_message,
     time_until_wayne,
+    tovala_counter,
     tuner,
     weather_by_location,
     wiki_summary,
@@ -175,6 +176,8 @@ class Bot(RoomManager):
             return None
         elif cmd_type == "nbastandings":
             return nba_standings()
+        elif cmd_type == "tovala":
+            return tovala_counter("boop")
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")

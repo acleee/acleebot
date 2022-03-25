@@ -40,6 +40,7 @@ from .misc import (
 from .movies import find_imdb_movie
 from .nfl import get_live_nfl_games
 from .olympics import get_summer_olympic_medals, get_winter_olympic_medals
+from .polls import tovala_counter
 from .previews import extract_url
 from .tuner import get_current_show, tuner
 
