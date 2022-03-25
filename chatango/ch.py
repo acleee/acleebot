@@ -1556,22 +1556,24 @@ class Room:
         if self.get_level(self.user) == 2:
             self._send_command("clearall")
 
-    def raw_ban(self, name, ip, unid):
+    def raw_ban(self, username, ip, unid):
         """
         Execute the block command using specified arguments.
-        (For advanced usage)
 
-        :param str name: name
-        :param str ip: ip address
-        :param str unid: unid
+        :param str username: Name of user to ban (not applicable to anons).
+        :param str ip: IP address of user to ban.
+        :param str unid: Unique ID assigned to user.
         """
+        name = username
+        if "!anon" in username:
+            name = ""
         self._send_command("block", unid, ip, name)
 
     def ban(self, msg):
         """
         Ban the author of a given message. (Moderator only)
 
-        :param Message msg: message to ban sender of
+        :param Message msg: Message to ban sender of.
         """
         self.raw_ban(msg.user.name, msg.ip, msg.unid)
 
@@ -1687,7 +1689,7 @@ class Room:
                 return None
         else:
             try:
-                return self._history[-1]
+                return self._hiraw_banstory[-1]
             except IndexError:
                 return None
 
