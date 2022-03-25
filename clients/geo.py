@@ -51,7 +51,7 @@ class GeoIP:
         except IncompatibleParameters as e:
             raise IncompatibleParameters(e)
         except Exception as e:
-            raise Exception(e)
+            raise Exception(f"Failed user lookup for `{ip_address}`: {e}")
 
     @staticmethod
     def save_metadata(room_name: str, user_name: str, ip_metadata: dict) -> Union[DataFrame, str]:
@@ -73,6 +73,7 @@ class GeoIP:
                 {
                     "username": "string",
                     "chatango_room": "string",
+                    "ip": "string",
                     "city": "string",
                     "region": "string",
                     "country_name": "string",
@@ -93,7 +94,12 @@ class GeoIP:
                     "asn_domain": "string",
                     "asn_route": "string",
                     "asn_type": "string",
-                    "ip": "string",
+                    "is_proxy": "boolean",
+                    "is_anonymous": "boolean",
+                    "is_tor": "boolean",
+                    "is_known_attacker": "boolean",
+                    "is_known_abuser": "boolean",
+                    "is_bogon": "boolean",
                 }
             )
             return metadata_df
