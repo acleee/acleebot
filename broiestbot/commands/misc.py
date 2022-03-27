@@ -84,7 +84,7 @@ def time_until_wayne() -> str:
     try:
         tz = pytz.timezone("US/Eastern")
         now = datetime.now(tz=tz)
-        weekday = datetime.today().isoweekday()
+        weekday = datetime.today().weekday()
         if weekday < 6:
             wayne_start_time = datetime(
                 day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=tz
