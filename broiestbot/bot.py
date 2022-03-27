@@ -40,6 +40,7 @@ from broiestbot.commands import (
     get_winter_olympic_medals,
     giphy_image_search,
     liga_standings,
+    live_nba_games,
     nba_standings,
     random_image,
     send_text_message,
@@ -179,6 +180,8 @@ class Bot(RoomManager):
             return nba_standings()
         elif cmd_type == "nbagames":
             return today_upcoming_nba_games()
+        elif cmd_type == "nbalive":
+            return live_nba_games()
         elif cmd_type == "tovala":
             return tovala_counter("boop")
         # elif cmd_type == "youtube" and args:

@@ -37,7 +37,7 @@ from .misc import (
     time_until_wayne,
 )
 from .movies import find_imdb_movie
-from .nba import nba_standings, today_upcoming_nba_games
+from .nba import live_nba_games, nba_standings, today_upcoming_nba_games
 from .nfl import get_live_nfl_games
 from .olympics import get_summer_olympic_medals, get_winter_olympic_medals
 from .polls import tovala_counter

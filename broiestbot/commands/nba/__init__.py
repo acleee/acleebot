@@ -1,2 +1,2 @@
 from .standings import nba_standings
-from .upcoming import today_upcoming_nba_games
+from .upcoming import live_nba_games, today_upcoming_nba_games

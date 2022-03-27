@@ -315,5 +315,6 @@ WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = (
 )
 
 # NBA
+NBA_BASE_URL = "https://api-basketball.p.rapidapi.com"
 NBA_API_KEY = getenv("NBA_API_KEY")
 NBA_CONFERENCE_NAMES = ["Eastern Conference", "Western Conference"]

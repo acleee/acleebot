@@ -2,7 +2,7 @@
 import requests
 from requests.exceptions import HTTPError
 
-from config import NBA_API_KEY, NBA_CONFERENCE_NAMES
+from config import NBA_API_KEY, NBA_BASE_URL, NBA_CONFERENCE_NAMES
 from logger import LOGGER
 
 
@@ -17,12 +17,12 @@ def nba_standings() -> str:
                 "group": conference,
                 "stage": "NBA - Regular Season",
             }
-            endpoint = "https://api-basketball.p.rapidapi.com/standings"
+            endpoint = f"{NBA_BASE_URL}/standings"
             headers = {
                 "x-rapidapi-host": "api-basketball.p.rapidapi.com",
                 "x-rapidapi-key": NBA_API_KEY,
             }
-            resp = requests.request("GET", endpoint, headers=headers, params=params)
+            resp = requests.get(endpoint, headers=headers, params=params)
             if resp.status_code == 200:
                 standings += f"{conference.upper()}\n"
                 for team_info in resp.json()["response"][0]:
