@@ -1,4 +1,5 @@
 """Miscellaneous utility/novelty commands."""
+from calendar import day_name
 from datetime import datetime, timedelta
 from typing import Optional
 
@@ -75,39 +76,41 @@ def send_text_message(message: str, user: str) -> Optional[str]:
 
 def time_until_wayne() -> str:
     """
-    Fetch number of minutes until LMAD if current day is a weekday.
+    Determine amount of time remaining until LMAD.
+    Only applicable to weekdays before 10am EST.
 
     :returns: str
     """
     try:
-        if datetime.today().isoweekday() < 6:
-            tz = pytz.timezone("America/New_York")
-            now = datetime.now(tz=tz)
+        tz = pytz.timezone("US/Eastern")
+        now = datetime.now(tz=tz)
+        weekday = datetime.today().isoweekday()
+        if weekday < 6:
             wayne_start_time = datetime(
                 day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=tz
             )
-            if wayne_start_time < now < wayne_start_time + timedelta(hours=1):
+            wayne_end_time = wayne_start_time + timedelta(hours=1)
+            if wayne_start_time < now < wayne_end_time:
                 return emojize(
-                    f":dollar: Wayne is on NOW!!! CHANGE THE CHANNOL!!! :dollar:",
+                    f":red_exclamation_mark: :dollar: omfg Wayne is on NOW!!! CHANGE THE CHANNOL!!! :dollar: :red_exclamation_mark:",
                     use_aliases=True,
                 )
-            elif wayne_start_time + timedelta(hours=1) < now:
+            elif wayne_end_time < now:
                 return emojize(
                     f":( Wayne is oughver already today :(",
                     use_aliases=True,
                 )
             else:
                 time_remaining = wayne_start_time - now
-                minutes_remaining = round(time_remaining.seconds / 60)
+                minutes_remaining = round(time_remaining.total_seconds() / 60)
                 return emojize(
                     f":raising_hands_dark_skin_tone: :money_bag:  {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                     use_aliases=True,
                 )
-        else:
-            return emojize(
-                f":warning: bruh it's {datetime.today().weekday()} there's no wayne today :warning:",
-                use_aliases=True,
-            )
+        return emojize(
+            f":warning: bruh it's {day_name[weekday]} there's no wayne today :warning:",
+            use_aliases=True,
+        )
     except Exception as e:
         LOGGER.error(f"Unexpected error while determining time until wayne: {e}")
         return ":warning: idk wtf you did but your lack of wayne knowledge broke bot :warning:"
