@@ -23,7 +23,9 @@ from config import (  # YOUTUBE_API_KEY,
     REDDIT_USERNAME,
     REDIS_DB,
     REDIS_HOST,
+    REDIS_PASSWORD,
     REDIS_PORT,
+    REDIS_USERNAME,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
 )
@@ -72,7 +74,9 @@ genius = lyricsgenius.Genius()
 genius.remove_section_headers = True
 
 # Redis
-r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, db=REDIS_DB)
+r = redis.Redis(
+    host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB, decode_responses=True
+)
 
 # Youtube
 # yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)

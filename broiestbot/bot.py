@@ -183,7 +183,7 @@ class Bot(RoomManager):
         elif cmd_type == "nbalive":
             return live_nba_games()
         elif cmd_type == "tovala":
-            return tovala_counter("boop")
+            return tovala_counter(user_name)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
