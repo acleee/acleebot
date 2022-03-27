@@ -1,6 +1,6 @@
 """Define data models for chat commands, phrases, user logs, etc."""
 from database import engine
-from sqlalchemy import Column, DateTime, Float, Integer, String, Text
+from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 
@@ -59,6 +59,7 @@ class ChatangoUser(Base):
     id = Column(Integer, primary_key=True, index=True)
     username = Column(String(255), index=True)
     chatango_room = Column(String(255))
+    ip = Column(String(255), index=True)
     city = Column(String(255))
     region = Column(String(255))
     country_name = Column(String(255))
@@ -80,7 +81,12 @@ class ChatangoUser(Base):
     asn_route = Column(String(255))
     asn_type = Column(String(255))
     time_zone_current_time = Column(DateTime)
-    ip = Column(String(255), index=True)
+    is_proxy = Column(Boolean)
+    is_anonymous = Column(Boolean)
+    is_tor = Column(Boolean)
+    is_known_attacker = Column(Boolean)
+    is_known_abuser = Column(Boolean)
+    is_bogon = Column(Boolean)
 
     def __repr__(self):
         return f"username={self.username}, chatango_room={self.chatango_room}, city={self.city}, region={self.ip}"

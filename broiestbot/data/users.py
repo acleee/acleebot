@@ -24,11 +24,7 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
     :returns: None
     """
     try:
-        if (
-            message.ip
-            and PERSIST_USER_DATA == "true"
-            and bot_username in ("broiestbro", "broiestbot")
-        ):
+        if message.ip and PERSIST_USER_DATA and bot_username in ("broiestbro", "broiestbot"):
             existing_user = fetch_existing_user(room_name, user, message)
             if existing_user is None:
                 user_metadata = geo.lookup_user(message.ip)
@@ -38,6 +34,7 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
                         username=user.name.lower().replace("!anon", "anon"),
                         chatango_room=room_name,
                         city=user_metadata.get("city"),
+                        ip=message.ip,
                         region=user_metadata.get("region"),
                         country_name=user_metadata.get("country_name"),
                         latitude=user_metadata.get("latitude"),
@@ -58,7 +55,12 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
                         asn_route=user_metadata.get("asn").get("route") if user_metadata.get("asn") else None,
                         asn_type=user_metadata.get("asn").get("type") if user_metadata.get("asn") else None,
                         time_zone_current_time=user_metadata.get("time_zone").get("current_time") if user_metadata.get("time_zone") else None,
-                        ip=message.ip
+                        is_proxy=user_metadata.get("threat").get("is_proxy"),
+                        is_anonymous=user_metadata.get("threat").get("is_anonymous"),
+                        is_tor=user_metadata.get("threat").get("is_tor"),
+                        is_known_attacker=user_metadata.get("threat").get("is_known_attacker"),
+                        is_known_abuser=user_metadata.get("threat").get("is_known_abuser"),
+                        is_bogon=user_metadata.get("threat").get("is_bogon"),
                     )
                 )
                 # fmt: on
