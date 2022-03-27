@@ -1,6 +1,5 @@
 """Construct responses to bot commands from third-party APIs."""
 from .afterdark import get_redgifs_gif
-from .bball import nba_standings
 from .definitions import (
     get_english_definition,
     get_english_translation,
@@ -38,6 +37,7 @@ from .misc import (
     time_until_wayne,
 )
 from .movies import find_imdb_movie
+from .nba import nba_standings, today_upcoming_nba_games
 from .nfl import get_live_nfl_games
 from .olympics import get_summer_olympic_medals, get_winter_olympic_medals
 from .polls import tovala_counter
