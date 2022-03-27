@@ -149,13 +149,12 @@ GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 # Youtube
 YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
 
-# Twitch API
+# Twitch
 TWITCH_CLIENT_ID = getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = getenv("TWITCH_CLIENT_SECRET")
 TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
 TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
-# Twitch users
 TWITCH_BRO_USERNAME = getenv("TWITCH_BRO_USERNAME")
 TWITCH_BRO_ID = getenv("TWITCH_BRO_ID")
 TWITCH_ATLAS_USERNAME = getenv("TWITCH_ATLAS_USERNAME")
@@ -237,12 +236,12 @@ FOOTY_LEAGUES = {
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
     ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
-    ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
+    # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
+    # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
     ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
-    ":cow: Carabou Cup": CARABOU_CUP_ID,
+    # ":cow: Carabou Cup": CARABOU_CUP_ID,
     ":England: EFL": EFL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,

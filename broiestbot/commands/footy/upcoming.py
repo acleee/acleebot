@@ -8,6 +8,7 @@ from requests.exceptions import HTTPError
 
 from config import (
     CHATANGO_OBI_ROOM,
+    EPL_LEAGUE_ID,
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
@@ -171,7 +172,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     """
     try:
         upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES:</b>\n"
-        season = get_season_year()
+        season = get_season_year(EPL_LEAGUE_ID)
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
         req = requests.get(

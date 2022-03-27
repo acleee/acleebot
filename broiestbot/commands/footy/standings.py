@@ -14,7 +14,7 @@ from config import (
 )
 from logger import LOGGER
 
-from .util import SEASON_YEAR
+from .util import get_season_year
 
 
 def epl_standings(endpoint: str) -> Optional[str]:
@@ -27,7 +27,7 @@ def epl_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        params = {"league": EPL_LEAGUE_ID, "season": SEASON_YEAR}
+        params = {"league": EPL_LEAGUE_ID, "season": get_season_year(EPL_LEAGUE_ID)}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
@@ -62,7 +62,7 @@ def liga_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        params = {"league": LIGA_LEAGUE_ID, "season": SEASON_YEAR}
+        params = {"league": LIGA_LEAGUE_ID, "season": get_season_year(LIGA_LEAGUE_ID)}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
@@ -97,7 +97,7 @@ def bund_standings(endpoint: str) -> Optional[str]:
     """
     try:
         standings_table = "\n\n]\n"
-        params = {"league": BUND_LEAGUE_ID, "season": SEASON_YEAR}
+        params = {"league": BUND_LEAGUE_ID, "season": get_season_year(BUND_LEAGUE_ID)}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]

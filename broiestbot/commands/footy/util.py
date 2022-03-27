@@ -4,7 +4,13 @@ from typing import Optional, Tuple, Union
 import pytz
 from pytz import BaseTzInfo
 
-from config import CHATANGO_OBI_ROOM, METRIC_SYSTEM_USERS
+from config import (
+    CHATANGO_OBI_ROOM,
+    METRIC_SYSTEM_USERS,
+    WC_QUALIFIERS_CONCACAF,
+    WC_QUALIFIERS_EUROPE,
+    WC_QUALIFIERS_SOUTHAMERICA,
+)
 
 
 def get_preferred_timezone(room: str, username: str) -> dict:
@@ -112,18 +118,17 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
     return f"{away_team} @ {home_team} - {display_date}\n"
 
 
-def get_season_year() -> Optional[int]:
+def get_season_year(league_id: int) -> Optional[int]:
     """
     Determine season year based on current month; returns None if season is over.
 
     :returns:  Optional[int]
     """
     now = datetime.now()
+    if league_id in (WC_QUALIFIERS_CONCACAF, WC_QUALIFIERS_EUROPE, WC_QUALIFIERS_SOUTHAMERICA):
+        return now.year
     if now.month >= 8:
         return now.year
     elif now.month <= 5:
         return now.year - 1
     return None
-
-
-SEASON_YEAR = get_season_year()

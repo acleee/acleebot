@@ -94,7 +94,7 @@ def todays_upcoming_fixtures_by_league(
             "date": today.strftime("%Y-%m-%d"),
             "league": league_id,
             "status": "NS",
-            "season": get_season_year(),
+            "season": get_season_year(league_id),
         }
         params.update(get_preferred_timezone(room, username))
         req = requests.get(

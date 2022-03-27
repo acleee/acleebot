@@ -72,7 +72,7 @@ def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[Tuple[int, str]]:
     """
     try:
         top_scorers = []
-        season = get_season_year()
+        season = get_season_year(EPL_LEAGUE_ID)
         params = {"season": season, "league": league}
         req = requests.get(
             FOOTY_TOPSCORERS_ENDPOINT,
