@@ -2,7 +2,7 @@
 import re
 from sys import stdout
 
-import simplejson as json
+import json
 from loguru import logger
 
 from clients import sms
