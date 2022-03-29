@@ -5,7 +5,6 @@ from emoji import emojize
 from redis.exceptions import RedisError
 
 from clients import r
-from config import TIMEZONE_US_EASTERN
 from logger import LOGGER
 
 
@@ -18,12 +17,11 @@ def tovala_counter(user_name: str) -> str:
     :returns: str
     """
     try:
-        now_string = datetime.now(tz=TIMEZONE_US_EASTERN).strftime("%Y-%m-%dT%I:%M")
-        r.lpush(now_string, user_name)
-        r.expire(now_string, 60)
-        tovala_users = r.lrange(now_string, 0, -1)
-        number_tovalas = r.llen(now_string)
-        LOGGER.success(f"Saved Tovala sighting to Redis: ({now_string}, {user_name})")
+        r.hincrby("tovala", user_name, 1)
+        r.expire("tovala", 60)
+        tovala_users = r.hkeys("tovala")
+        number_tovalas = r.hlen("tovala")
+        LOGGER.success(f"Saved Tovala sighting to Redis: (tovala, {user_name})")
         return emojize(
             f"\n\n<b>:shallow_pan_of_food: {number_tovalas} CONSECUTIVE TOVALAS!</b>\n:bust_in_silhouette: Contributors: {', '.join(tovala_users)}\n:keycap_#: Highest streak: 3",
             use_aliases=True,
