@@ -1,10 +1,11 @@
-"""Utilize Redis cache for recoding consecutive Tovalas."""
+"""Allow users to track consecutive Tovala streaks via Redis cache."""
 from datetime import datetime
 
+from emoji import emojize
 from redis.exceptions import RedisError
 
-from config import TIMEZONE_US_EASTERN
 from clients import r
+from config import TIMEZONE_US_EASTERN
 from logger import LOGGER
 
 
@@ -23,8 +24,19 @@ def tovala_counter(user_name: str) -> str:
         tovala_users = r.lrange(now_string, 0, -1)
         number_tovalas = r.llen(now_string)
         LOGGER.success(f"Saved Tovala sighting to Redis: ({now_string}, {user_name})")
-        return f"{number_tovalas} CONSECUTIVE TOVALAS! Reported by: {', '.join(tovala_users)}"
+        return emojize(
+            f"\n\n<b>:shallow_pan_of_food: {number_tovalas} CONSECUTIVE TOVALAS!</b>\n:bust_in_silhouette: Contributors: {', '.join(tovala_users)}\n:keycap_#: Highest streak: 3",
+            use_aliases=True,
+        )
     except RedisError as e:
-        LOGGER.error(f"RedisError while saving Tovala streak ({now_string}, {user_name}): {e}")
+        LOGGER.error(f"RedisError while saving Tovala streak from @{user_name}: {e}")
+        return emojize(
+            f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
+            use_aliases=True,
+        )
     except Exception as e:
-        LOGGER.error(f"Unexpected error while saving Tovala streak ({now_string}, {user_name}): {e}")
+        LOGGER.error(f"Unexpected error while saving Tovala streak from @{user_name}: {e}")
+        return emojize(
+            f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
+            use_aliases=True,
+        )

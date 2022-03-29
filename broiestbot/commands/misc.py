@@ -10,9 +10,9 @@ from clients import sms
 from config import (
     CHATANGO_SPECIAL_USERS,
     RAPID_API_KEY,
+    TIMEZONE_US_EASTERN,
     TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
-    TIMEZONE_US_EASTERN,
 )
 from logger import LOGGER
 
@@ -86,7 +86,13 @@ def time_until_wayne() -> str:
         weekday = datetime.today().weekday()
         if weekday < 6:
             wayne_start_time = datetime(
-                day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=TIMEZONE_US_EASTERN
+                day=now.day,
+                hour=10,
+                minute=0,
+                second=0,
+                year=now.year,
+                month=now.month,
+                tzinfo=TIMEZONE_US_EASTERN,
             )
             wayne_end_time = wayne_start_time + timedelta(hours=1)
             if wayne_start_time < now < wayne_end_time:

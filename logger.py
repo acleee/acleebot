@@ -1,8 +1,8 @@
 """Custom logger and error notifications."""
+import json
 import re
 from sys import stdout
 
-import json
 from loguru import logger
 
 from clients import sms
