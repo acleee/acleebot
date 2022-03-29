@@ -3,7 +3,6 @@ from calendar import day_name
 from datetime import datetime, timedelta
 from typing import Optional
 
-import pytz
 import requests
 from emoji import emojize
 
@@ -13,6 +12,7 @@ from config import (
     RAPID_API_KEY,
     TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
+    TIMEZONE_US_EASTERN,
 )
 from logger import LOGGER
 
@@ -23,7 +23,7 @@ def blaze_time_remaining() -> str:
 
     :returns: str
     """
-    now = datetime.now(tz=pytz.timezone("America/New_York"))
+    now = datetime.now(tz=TIMEZONE_US_EASTERN)
     am_time = now.replace(hour=4, minute=20, second=0)
     pm_time = now.replace(hour=16, minute=20, second=0)
     if am_time <= now < am_time + timedelta(seconds=59) or pm_time <= now < pm_time + timedelta(
@@ -82,12 +82,11 @@ def time_until_wayne() -> str:
     :returns: str
     """
     try:
-        tz = pytz.timezone("US/Eastern")
-        now = datetime.now(tz=tz)
+        now = datetime.now(tz=TIMEZONE_US_EASTERN)
         weekday = datetime.today().weekday()
         if weekday < 6:
             wayne_start_time = datetime(
-                day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=tz
+                day=now.day, hour=10, minute=0, second=0, year=now.year, month=now.month, tzinfo=TIMEZONE_US_EASTERN
             )
             wayne_end_time = wayne_start_time + timedelta(hours=1)
             if wayne_start_time < now < wayne_end_time:

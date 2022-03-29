@@ -2,12 +2,14 @@
 from os import environ, getenv, path
 
 from dotenv import load_dotenv
+import pytz
 
 BASE_DIR = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(BASE_DIR, ".env"))
 
-# Environment
+# General config
 ENVIRONMENT = getenv("ENVIRONMENT")
+TIMEZONE_US_EASTERN = pytz.timezone("America/New_York")
 
 # Chatango credentials
 CHATANGO_USERS = {
