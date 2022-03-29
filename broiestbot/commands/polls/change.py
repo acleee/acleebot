@@ -11,8 +11,8 @@ def change_or_stay(user_name: str, vote: str, room_name: str) -> str:
     Conduct chat-wide vote whether to 'change or stay'. Each user may cast a single vote, with the results revealed after a dynamic time period.
 
     :param str user_name: Name of user submitting a vote.
-    :param str vote: User's submitted vote (either 'change' or 'stay'.
-     :param str room_name: Chatango room in which the poll is taking place.
+    :param str vote: User's submitted vote (either 'change' or 'stay').
+    :param str room_name: Chatango room in which the poll is taking place.
 
     :returns: str
     """

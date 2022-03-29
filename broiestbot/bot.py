@@ -45,9 +45,9 @@ from broiestbot.commands import (
     random_image,
     send_text_message,
     time_until_wayne,
-    today_upcoming_nba_games,
     tovala_counter,
     tuner,
+    upcoming_nba_games,
     weather_by_location,
     wiki_summary,
 )
@@ -179,7 +179,7 @@ class Bot(RoomManager):
         elif cmd_type == "nbastandings":
             return nba_standings()
         elif cmd_type == "nbagames":
-            return today_upcoming_nba_games()
+            return upcoming_nba_games()
         elif cmd_type == "nbalive":
             return live_nba_games()
         elif cmd_type == "tovala":
