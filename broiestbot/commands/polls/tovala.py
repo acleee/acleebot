@@ -18,7 +18,7 @@ def tovala_counter(user_name: str) -> str:
         r.hincrby("tovala", user_name, 1)
         r.expire("tovala", 60)
         tovala_users = r.hkeys("tovala")
-        number_tovalas = r.hlen("tovala")
+        number_tovalas = len(r.hvals("tovala"))
         LOGGER.success(f"Saved Tovala sighting to Redis: (tovala, {user_name})")
         return emojize(
             f"\n\n<b>:shallow_pan_of_food: {number_tovalas} CONSECUTIVE TOVALAS!</b>\n:bust_in_silhouette: Contributors: {', '.join(tovala_users)}\n:keycap_#: Highest streak: 3",
