@@ -5,7 +5,7 @@ import requests
 from requests import Response
 from requests.exceptions import HTTPError
 
-from config import NBA_BASE_URL, RAPID_API_KEY
+from config import NBA_BASE_URL, NBA_SEASON_YEAR, RAPID_API_KEY
 from logger import LOGGER
 
 
@@ -19,7 +19,7 @@ def today_nba_games() -> Response:
         endpoint = f"{NBA_BASE_URL}/games"
         params = {
             "timezone": "America/New_York",
-            "season": "2021-2022",
+            "season": NBA_SEASON_YEAR,
             "league": "12",
             "date": datetime.now().strftime("%Y-%m-%d"),
         }

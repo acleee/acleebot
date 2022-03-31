@@ -12,7 +12,7 @@ make update     - Update depenencies with Poetry & outout new requirements.txt.
 make format     - Format source code and sort imports.
 make test       - Run test suite.
 make lint       - Check code formatting with flake8.
-make clean      - Remove cached files, lockfiles, and other unnessecary junk.
+make clean      - Remove cached files, lockfiles, and other unnecessary junk.
 
 endef
 export HELP

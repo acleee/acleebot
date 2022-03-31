@@ -2,7 +2,7 @@
 import requests
 from requests.exceptions import HTTPError
 
-from config import NBA_API_KEY, NBA_BASE_URL, NBA_CONFERENCE_NAMES
+from config import NBA_API_KEY, NBA_BASE_URL, NBA_CONFERENCE_NAMES, NBA_SEASON_YEAR
 from logger import LOGGER
 
 
@@ -17,7 +17,7 @@ def nba_standings() -> str:
         for conference in NBA_CONFERENCE_NAMES:
             params = {
                 "league": "12",
-                "season": "2021-2022",
+                "season": NBA_SEASON_YEAR,
                 "group": conference,
                 "stage": "NBA - Regular Season",
             }

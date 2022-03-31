@@ -182,6 +182,8 @@ class Bot(RoomManager):
             return upcoming_nba_games()
         elif cmd_type == "nbalive":
             return live_nba_games()
+        elif cmd_type == "livenba":
+            return live_nba_games()
         elif cmd_type == "tovala":
             return tovala_counter(user_name)
         # elif cmd_type == "youtube" and args:
@@ -325,8 +327,6 @@ class Bot(RoomManager):
                 user_name=user_name,
             )
             room.message(response, html=True)
-        # elif command.type == "reserved":
-        # pass
         else:
             self._giphy_fallback(chat_message, room)
 
@@ -437,6 +437,7 @@ class Bot(RoomManager):
             )
             LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
             room.message(reply)
+            room.clear_user(message.user)
             room.ban_user(message.user)
         elif (
             message.ip is not None
@@ -444,4 +445,35 @@ class Bot(RoomManager):
             and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
         ):
             LOGGER.warning(f"BANNED Eggser: username={message.user.name} ip={message.ip}")
+            room.clear_user(message.user)
+            room.ban_user(message.user)
+        elif "!anon" in user_name and "raiders" in message.body.lower():
+            LOGGER.warning(
+                f"BANNED Eggser (RAIDERS SPAM): username={message.user.name} ip={message.ip}"
+            )
+            room.clear_user(message.user)
+            room.ban_user(message.user)
+        elif "!anon" in user_name and "tigger" in message.body.lower():
+            LOGGER.warning(
+                f"BANNED Eggser (TIGGER SPAM): username={message.user.name} ip={message.ip}"
+            )
+            room.clear_user(message.user)
+            room.ban_user(message.user)
+        elif "!anon" in user_name and "wordle" in message.body.lower():
+            LOGGER.warning(
+                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
+            )
+            room.clear_user(message.user)
+            room.ban_user(message.user)
+        elif "wordle" in message.body.lower() and "tomorrow" in message.body.lower():
+            LOGGER.warning(
+                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
+            )
+            room.clear_user(message.user)
+            room.ban_user(message.user)
+        elif "is the wordle" in message.body.lower():
+            LOGGER.warning(
+                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
+            )
+            room.clear_user(message.user)
             room.ban_user(message.user)

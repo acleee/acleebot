@@ -110,14 +110,8 @@ def giphy_image_search(query: str, retry=False) -> str:
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
         return emojize(f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True)
-    except KeyError as e:
-        LOGGER.error(f"Giphy KeyError for `{query}`: {e}")
-        return emojize(
-            f":warning: holy sht u broke the bot im telling bro :warning:",
-            use_aliases=True,
-        )
-    except IndexError as e:
-        LOGGER.error(f"Giphy IndexError for `{query}`: {e}")
+    except ValueError as e:
+        LOGGER.error(f"ValueError while fetching Giphy `{query}`: {e}")
         return emojize(
             f":warning: holy sht u broke the bot im telling bro :warning:",
             use_aliases=True,

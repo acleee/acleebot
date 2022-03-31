@@ -16,7 +16,7 @@ FrameInfo = collections.namedtuple("FrameInfo", ["fin", "opcode", "masked", "pay
 
 def check_frame(buff):
     """
-    returns False if the buffer doesn't starts with a valid frame
+    returns False if the buffer doesn't start with a valid frame
     returns the size of the frame in success
     """
     buff = bytearray(buff)
@@ -82,7 +82,7 @@ def get_frames(buff):
 
 def check_msg(buff):
     """
-    :returns: True if buffer starts with fragmented message, or a unfragmented frame where the last frame ends.
+    :returns: True if buffer starts with fragmented message, or an unfragmented frame where the last frame ends.
     """
     r = check_frame(buff)
     s = 0
