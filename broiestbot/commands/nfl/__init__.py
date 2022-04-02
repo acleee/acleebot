@@ -25,7 +25,7 @@ def get_live_nfl_games() -> str:
             for i, game in enumerate(games):
                 game_summaries += format_live_nfl_game(game)
             return game_summaries
-        return emojize(":warning: No live NFL games atm :( :warning:", language="en")
+        return emojize(":warning: No live NFL games atm :( :warning:", use_aliases=True)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching live NFL games: {e.response.content}")
     except KeyError as e:

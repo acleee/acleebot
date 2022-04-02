@@ -23,7 +23,7 @@ def footy_team_lineups(room: str, username: str) -> str:
             for fixture in todays_fixtures:
                 todays_fixture_lineups += get_xi_per_fixture_team(fixture["id"])
             return todays_fixture_lineups
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", language="en")
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
 
 
 def get_xi_per_fixture_team(fixture_id: str) -> str:
@@ -45,7 +45,7 @@ def get_xi_per_fixture_team(fixture_id: str) -> str:
         return lineups
     return emojize(
         f":soccer_ball: :cross_mark: sry no fixtures today :( :cross_mark: :soccer_ball:",
-        language="en",
+        use_aliases=True,
     )
 
 

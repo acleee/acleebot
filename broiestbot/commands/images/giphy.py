@@ -39,17 +39,17 @@ def giphy_image_search(query: str, retry=False) -> str:
             return giphy_image_search(query, retry=True)
         return emojize(
             f":warning: holy sht u broke the bot im telling bro :warning:",
-            language="en",
+            use_aliases=True,
         )
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
-        return emojize(f":warning: yoooo giphy is down rn lmao :warning:", language="en")
+        return emojize(f":warning: yoooo giphy is down rn lmao :warning:", use_aliases=True)
     except ValueError as e:
         LOGGER.error(f"ValueError while fetching Giphy `{query}`: {e}")
         return emojize(
             f":warning: holy sht u broke the bot im telling bro :warning:",
-            language="en",
+            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Giphy unexpected error for `{query}`: {e}")
-        return emojize(f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", language="en")
+        return emojize(f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", use_aliases=True)

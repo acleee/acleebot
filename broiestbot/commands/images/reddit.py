@@ -20,7 +20,7 @@ def subreddit_image(subreddit: str) -> str:
             return images[0]
     except RedditAPIException as e:
         LOGGER.error(f"Reddit image search failed for subreddit `{subreddit}`: {e}")
-        return emojize(f":warning: i broke bc im a shitty bot :warning:", language="en")
+        return emojize(f":warning: i broke bc im a shitty bot :warning:", use_aliases=True)
     except Exception as e:
         LOGGER.error(f"Unexpected error when Reddit searching for `{subreddit}`: {e}")
-        return emojize(f":warning: i broke bc im a shitty bot :warning:", language="en")
+        return emojize(f":warning: i broke bc im a shitty bot :warning:", use_aliases=True)
