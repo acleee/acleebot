@@ -45,9 +45,9 @@ def get_medals_by_nation(endpoint: str) -> str:
         medals_df.rename(
             columns={
                 "Group": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-                "G": f"{emojize(':1st_place_medal:', use_aliases=True)}",
-                "S": f"{emojize(':2nd_place_medal:', use_aliases=True)}",
-                "B": f"{emojize(':3rd_place_medal:', use_aliases=True)}",
+                "G": f"{emojize(':1st_place_medal:', language='en')}",
+                "S": f"{emojize(':2nd_place_medal:', language='en')}",
+                "B": f"{emojize(':3rd_place_medal:', language='en')}",
             },
             inplace=True,
         )
@@ -91,7 +91,7 @@ def add_nation_flag_emojis(row: Series):
         .replace("POL", ":flag_for_Poland: POL")
         .replace("NZL", ":flag_for_New_Zealand: NZL")
         .replace("JPN", ":flag_for_Japan: JPN"),
-        use_aliases=True,
+        language="en",
     )
     row[0] = f"{row[0]}&nbsp;&nbsp;"
     row[4] = f"<strong>{row[4]}</strong>"

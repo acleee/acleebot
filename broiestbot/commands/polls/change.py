@@ -22,11 +22,11 @@ def change_or_stay(user_name: str, vote: str, room_name: str) -> str:
         LOGGER.error(f"RedisError while saving 'change or stay' vote from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
-            use_aliases=True,
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while saving 'change or stay' vote from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
-            use_aliases=True,
+            language="en",
         )

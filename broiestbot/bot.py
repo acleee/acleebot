@@ -23,6 +23,7 @@ from broiestbot.commands import (
     footy_predicts_today,
     footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
+    gcs_count_images_in_bucket,
     gcs_random_image_spam,
     get_all_live_twitch_streams,
     get_crypto,
@@ -186,6 +187,8 @@ class Bot(RoomManager):
             return live_nba_games()
         elif cmd_type == "tovala":
             return tovala_counter(user_name)
+        elif cmd_type == "imagecount":
+            return gcs_count_images_in_bucket(content)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")

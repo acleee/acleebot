@@ -22,9 +22,9 @@ def get_english_definition(word: str) -> str:
         dictionary = MultiDictionary()
         word_definitions = dictionary.meaning("en", word)
         for i, word_type in enumerate(word_definitions[0]):
-            definition = emojize(f":bookmark: {word_type}\n", use_aliases=True)
+            definition = emojize(f":bookmark: {word_type}\n", language="en")
             definition += emojize(
-                f":left_speech_bubble: {word_definitions[i + 1]}\n", use_aliases=True
+                f":left_speech_bubble: {word_definitions[i + 1]}\n", language="en"
             )
             if i < len(word_definitions[0]):
                 definition += "\n"
@@ -32,7 +32,7 @@ def get_english_definition(word: str) -> str:
         return response
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching English definition for `{word}`: {e}")
-        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot :warning:", language="en")
 
 
 def get_urban_definition(term: str) -> str:
@@ -61,21 +61,21 @@ def get_urban_definition(term: str) -> str:
                 example = str(example).replace("[", "").replace("]", "")[0:250]
                 return f"{word}:\n\n {definition} \n\n EXAMPLE: {example}"
             return f"{word}:\n\n {definition}"
-        return emojize(":warning: idk wtf ur trying to search for tbh :warning:", use_aliases=True)
+        return emojize(":warning: idk wtf ur trying to search for tbh :warning:", language="en")
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}"
         )
-        return emojize(f":warning: wtf urban dictionary is down :warning:", use_aliases=True)
+        return emojize(f":warning: wtf urban dictionary is down :warning:", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError error when fetching Urban definition for `{term}`: {e}")
-        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot :warning:", language="en")
     except IndexError as e:
         LOGGER.error(f"IndexError error when fetching Urban definition for `{term}`: {e}")
-        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Urban definition for `{term}`: {e}")
-        return emojize(":warning: mfer you broke bot :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot :warning:", language="en")
 
 
 def wiki_summary(query: str) -> str:
@@ -99,13 +99,13 @@ def wiki_summary(query: str) -> str:
             return f"\n\n\n\n{title}: {text[0:1500]}\n \n\n {main_category}"
         return emojize(
             f":warning: bruh i couldnt find shit for `{query}` :warning:",
-            use_aliases=True,
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching wiki summary for `{query}`: {e}")
         return emojize(
             f":warning: BRUH YOU BROKE THE BOT WTF IS `{query}`?! :warning:",
-            use_aliases=True,
+            language="en",
         )
 
 
@@ -141,14 +141,14 @@ def get_english_translation(language: str, phrase: str):
         LOGGER.error(f"HTTPError while translating `{phrase}`: {e.response.content}")
         return emojize(
             f":warning: wtf you broke the api? SPEAK ENGLISH :warning:",
-            use_aliases=True,
+            language="en",
         )
     except KeyError as e:
         LOGGER.error(f"KeyError error while translating `{phrase}`: {e}")
-        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")
     except IndexError as e:
         LOGGER.error(f"IndexError error while translating `{phrase}`: {e}")
-        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error while translating `{phrase}`: {e}")
-        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", use_aliases=True)
+        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")

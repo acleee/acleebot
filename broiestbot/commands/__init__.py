@@ -23,6 +23,7 @@ from .footy import (
 )
 from .images import (
     fetch_image_from_gcs,
+    gcs_count_images_in_bucket,
     gcs_random_image_spam,
     giphy_image_search,
     random_image,

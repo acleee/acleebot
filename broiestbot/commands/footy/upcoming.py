@@ -40,11 +40,11 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None and i < 6:
             i += 1
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", language="en")
 
 
 def footy_all_upcoming_fixtures(room: str, username: str) -> str:
@@ -60,11 +60,11 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None:
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
+    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", language="en")
 
 
 def footy_upcoming_fixtures_per_league(
@@ -192,10 +192,10 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 upcoming_foxtures = (
                     upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
                 )
-            return emojize(upcoming_foxtures, use_aliases=True)
+            return emojize(upcoming_foxtures, language="en")
         return emojize(
             f":warning: Couldn't find fixtures, has season started yet? :warning:",
-            use_aliases=True,
+            language="en",
         )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching fox fixtures: {e.response.content}")

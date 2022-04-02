@@ -36,11 +36,11 @@ def weather_by_location(location: str, room: str, user: str) -> str:
             return emojize(f":warning:️️ wtf even is `{location}` :warning:")
         data = res.json()
         if data.get("success") == "false":
-            return emojize(f":warning:️️ {data['error']['info']} :warning:", use_aliases=True)
+            return emojize(f":warning:️️ {data['error']['info']} :warning:", language="en")
         if data.get("current") is None:
             return emojize(
                 f":warning:️️ idk wtf you did but `{location}` fucked me up b :warning:",
-                use_aliases=True,
+                language="en",
             )
         weather_code = data["current"]["weather_code"]
         is_day = data["current"]["is_day"]
@@ -53,23 +53,23 @@ def weather_by_location(location: str, room: str, user: str) -> str:
                         Humidity: {data["current"]["humidity"]}%\n \
                         Cloud cover: {data["current"]["cloudcover"]}%\n \
                         Wind speed: {data["current"]["wind_speed"]}{"km/h" if params["units"] == "m" else "mph"}',
-            use_aliases=True,
+            language="en",
         )
         return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
-        return emojize(f":warning:️️ fk me the weather API is down :warning:", use_aliases=True)
+        return emojize(f":warning:️️ fk me the weather API is down :warning:", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
-            use_aliases=True,
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
-            use_aliases=True,
+            language="en",
         )
 
 

@@ -57,7 +57,7 @@ def get_channel_number(channel_name: str) -> int:
         return err_msg
     except Exception as e:
         LOGGER.error(f"Unexpected error when getting channel number: {e}")
-        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", language="en")
 
 
 def tuner(channel_name: str, username: str, bot_username: str) -> str:
@@ -89,10 +89,10 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
                 )
                 time.sleep(2)
                 on_now = get_current_show(True, bot_username)
-                return emojize(f":tv: Tuning to {capped}. On now: {on_now}", use_aliases=True)
+                return emojize(f":tv: Tuning to {capped}. On now: {on_now}", language="en")
             return emojize(
                 f":warning: u don't have the poughwer to change da channol :warning:",
-                use_aliases=True,
+                language="en",
             )
     except LookupError as e:
         LOGGER.error(
@@ -149,11 +149,11 @@ def get_current_show(detailed: bool, bot_username: str) -> Optional[str]:
             if season and episode:
                 return emojize(
                     f":tv: On now: <b>{title.upper()}</b> - S{season}E{episode}: {episode_name} \n \n <i>{plot}</i> \n {icon}",
-                    use_aliases=True,
+                    language="en",
                 )
             return emojize(
                 f":tv: On now: <b>{title.upper()}</b> - {episode_name} \n\n <i>{plot}</i> \n {icon}",
-                use_aliases=True,
+                language="en",
             )
     except LookupError as e:
         LOGGER.error(f"LookupError error when getting current show info: {e}")
