@@ -67,6 +67,10 @@ from .data import persist_chat_logs, persist_user_data
 class Bot(RoomManager):
     """Chatango bot."""
 
+    def __init__(self, name=None, password=None):
+        super().__init__(name, password)
+        self.bot_username = name
+
     def on_init(self):
         """Initialize bot."""
         self.set_name_color("000000")

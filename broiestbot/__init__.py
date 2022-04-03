@@ -22,8 +22,13 @@ def join_rooms(rooms: List[str]):
             for room in rooms:
                 broiestbot.join_room(room)
             broiestbot.main()
-        except KeyboardInterrupt:
+        except KeyboardInterrupt as e:
             broiestbot.stop()
+            print(f"KeyboardInterrupt while joining Chatango room: {e}")
+            break
+        except Exception as e:
+            broiestbot.stop()
+            print(f"Unexpected exception while joining Chatango room: {e}")
             break
 
 

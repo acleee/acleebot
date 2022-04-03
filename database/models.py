@@ -107,4 +107,18 @@ class Weather(Base):
         return f"group={self.group}, icon={self.icon}, condition={self.condition}"
 
 
+class PollResult(Base):
+    """Result of a poll or counter."""
+
+    __tablename__ = "poll"
+
+    id = Column(Integer, primary_key=True, index=True)
+    type = Column(String(255), nullable=False, index=True, unique=True)
+    count = Column(Integer)
+    updated_at = Column(DateTime, server_default=func.now())
+
+    def __repr__(self):
+        return f"type={self.type}, count={self.count}, updated_at={self.updated_at}"
+
+
 Base.metadata.create_all(engine)
