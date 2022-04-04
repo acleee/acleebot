@@ -87,7 +87,7 @@ def time_until_wayne() -> str:
         if weekday < 6:
             wayne_start_time = datetime(
                 day=now.day,
-                hour=10,
+                hour=9,
                 minute=0,
                 second=0,
                 year=now.year,
