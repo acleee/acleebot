@@ -72,7 +72,7 @@ class CryptoChartHandler:
             percentage = prices["change"]["percentage"] * 100
             if prices["last"] > 1:
                 return emojize(
-                    f":coin:\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
+                    f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
                     f':money_bag: CURRENTLY at ${prices["last"]:.2f}\n'
                     f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
                     f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
