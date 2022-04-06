@@ -33,7 +33,7 @@ class StockChartHandler:
             return message
         return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")'''
 
-    def _get_price(self, symbol: str) -> Optional[str]:
+    def get_price(self, symbol: str) -> Optional[str]:
         """Get daily price summary."""
         params = {"token": self.token}
         try:

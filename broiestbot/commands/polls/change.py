@@ -1,4 +1,4 @@
-"""Conduct a chat poll whether to 'change or stay.'"""
+"""Conduct a chat poll whether to 'change or stay'."""
 from emoji import emojize
 from redis.exceptions import RedisError
 

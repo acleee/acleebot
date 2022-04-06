@@ -1,5 +1,4 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
-from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
@@ -26,7 +25,7 @@ class CryptoChartHandler:
 
         :returns: str
         """
-        message = self._get_price(symbol)
+        message = self.get_price(symbol)
         if message:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
@@ -39,7 +38,7 @@ class CryptoChartHandler:
 
         :returns: Optional[str]
         """
-        message = self._get_price(symbol)
+        message = self.get_price(symbol)
         chart = self._create_chart(symbol)
         if "http" not in chart:
             return chart
@@ -49,15 +48,16 @@ class CryptoChartHandler:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
-    def _get_price(self, symbol) -> Optional[str]:
+    @staticmethod
+    def get_price(symbol: str, endpoint: str) -> Optional[str]:
         """
         Get crypto price for provided ticker label.
 
-        :param str symbol: Symbol for a crypto coin.
+        :param str symbol: Crypto symbol to fetch price performance for.
+        :param str endpoint: Endpoint for the requested crypto.
 
         :returns: Optional[str]
         """
-        endpoint = f"{self.price_endpoint}{symbol.lower()}usd/summary"
         try:
             resp = requests.get(url=endpoint)
             if resp.status_code == 429:
@@ -68,16 +68,22 @@ class CryptoChartHandler:
             prices = resp.json()["result"]["price"]
             percentage = prices["change"]["percentage"] * 100
             if prices["last"] > 1:
-                return (
-                    f'{symbol.upper()}: Currently at ${prices["last"]:.2f}. '
-                    f'HIGH today of ${prices["high"]:.2f}, LOW of ${prices["low"]:.2f} '
-                    f"(24-hour change of {percentage:.2f}%)."
+                return emojize(
+                    f":coin:\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
+                    f':money_bag: CURRENTLY at ${prices["last"]:.2f}\n'
+                    f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
+                    f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
+                    f":nine-thirty: (24-hour change of {percentage:.2f}%)",
+                    use_aliases=True,
                 )
             else:
-                return (
-                    f'{symbol.upper()}: Currently at ${prices["last"]}. '
-                    f'HIGH today of ${prices["high"]} LOW of ${prices["low"]} '
-                    f"(change of {percentage:.2f}%)."
+                return emojize(
+                    f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
+                    f':money_bag: Currently at ${prices["last"]}\n'
+                    f':up-right_arrow: HIGH today of ${prices["high"]}\n'
+                    f':red_triangle_pointed_down: LOW of ${prices["low"]}\n'
+                    f":nine-thirty: (change of {percentage:.2f}%)",
+                    use_aliases=True,
                 )
         except HTTPError as e:
             raise HTTPError(

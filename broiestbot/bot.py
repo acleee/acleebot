@@ -26,7 +26,7 @@ from broiestbot.commands import (
     gcs_count_images_in_bucket,
     gcs_random_image_spam,
     get_all_live_twitch_streams,
-    get_crypto,
+    get_crypto_price,
     get_current_show,
     get_english_definition,
     get_english_translation,
@@ -110,7 +110,7 @@ class Bot(RoomManager):
         elif cmd_type == "randomspam":
             return gcs_random_image_spam(content)
         elif cmd_type == "crypto":
-            return get_crypto(content)
+            return get_crypto_price(command.lower(), content)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:

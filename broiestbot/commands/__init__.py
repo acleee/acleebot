@@ -30,7 +30,7 @@ from .images import (
     subreddit_image,
 )
 from .lyrics import get_song_lyrics
-from .markets import get_crypto, get_stock, get_top_crypto
+from .markets import get_crypto_price, get_stock, get_top_crypto
 from .misc import (
     blaze_time_remaining,
     covid_cases_usa,
