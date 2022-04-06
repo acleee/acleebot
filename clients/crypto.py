@@ -1,4 +1,5 @@
 """Create cloud-hosted Candlestick charts of company stock data."""
+from datetime import datetime
 from typing import Optional
 
 import chart_studio.plotly as py
@@ -17,28 +18,30 @@ class CryptoChartHandler:
         self.price_endpoint = price_endpoint
         self.chart_endpoint = chart_endpoint
 
-    def get_chart(self, symbol: str) -> str:
+    def get_chart(self, symbol: str, endpoint: str) -> str:
         """
         Get crypto data and generate Plotly chart.
 
-        :param str symbol: Symbol for a crypto coin.
+        :param str symbol: Crypto symbol to fetch price performance for.
+        :param str endpoint: Endpoint for the requested crypto.
 
         :returns: str
         """
-        message = self.get_price(symbol)
+        message = self.get_price(symbol, endpoint)
         if message:
             return message
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
-    def get_chart_old(self, symbol: str) -> str:
+    def get_chart_old(self, symbol: str, endpoint: str) -> str:
         """
         Get crypto data and generate Plotly chart.
 
-        :param str symbol: Symbol for a crypto coin.
+        :param str symbol: Crypto symbol to fetch price performance for.
+        :param str endpoint: Endpoint for the requested crypto.
 
         :returns: Optional[str]
         """
-        message = self.get_price(symbol)
+        message = self.get_price(symbol, endpoint)
         chart = self._create_chart(symbol)
         if "http" not in chart:
             return chart
