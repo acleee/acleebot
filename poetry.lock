@@ -43,11 +43,11 @@ tests_no_zope = ["coverage[toml] (>=5.0.2)", "hypothesis", "pympler", "pytest (>
 
 [[package]]
 name = "beautifulsoup4"
-version = "4.10.0"
+version = "4.11.0"
 description = "Screen-scraping library"
 category = "main"
 optional = false
-python-versions = ">3.0.0"
+python-versions = ">=3.6.0"
 
 [package.dependencies]
 soupsieve = ">1.2"
@@ -88,7 +88,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.24.35"
+version = "1.24.36"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -287,7 +287,7 @@ uritemplate = ">=3.0.1,<5"
 
 [[package]]
 name = "google-auth"
-version = "2.6.2"
+version = "2.6.3"
 description = "Google Authentication Library"
 category = "main"
 optional = false
@@ -1052,7 +1052,7 @@ telegram = ["requests"]
 
 [[package]]
 name = "twilio"
-version = "7.8.0"
+version = "7.8.1"
 description = "Twilio API client and TwiML generator"
 category = "main"
 optional = false
@@ -1190,8 +1190,8 @@ attrs = [
     {file = "attrs-21.4.0.tar.gz", hash = "sha256:626ba8234211db98e869df76230a137c4c40a12d72445c45d5f5b716f076e2fd"},
 ]
 beautifulsoup4 = [
-    {file = "beautifulsoup4-4.10.0-py3-none-any.whl", hash = "sha256:9a315ce70049920ea4572a4055bc4bd700c940521d36fc858205ad4fcde149bf"},
-    {file = "beautifulsoup4-4.10.0.tar.gz", hash = "sha256:c23ad23c521d818955a4151a67d81580319d4bf548d3d49f4223ae041ff98891"},
+    {file = "beautifulsoup4-4.11.0-py3-none-any.whl", hash = "sha256:577b9e1c36d2ada780d807c5622e889d43172466658c2eb239e97296965cdddb"},
+    {file = "beautifulsoup4-4.11.0.tar.gz", hash = "sha256:ac98f868e1cb8eb9932a61be75b4f7018a118a490e7fdb424a74a982430cfcbd"},
 ]
 black = [
     {file = "black-22.3.0-cp310-cp310-macosx_10_9_universal2.whl", hash = "sha256:2497f9c2386572e28921fa8bec7be3e51de6801f7459dffd6e62492531c47e09"},
@@ -1223,8 +1223,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.24.35-py3-none-any.whl", hash = "sha256:734aa598af5d6bc0351e6ecce4a91b0b6ccf245febfd8d4de8425211aada5f36"},
-    {file = "botocore-1.24.35.tar.gz", hash = "sha256:36b5422d8f0c312983582b8b4b056c98e1fd6121cb0b2ddb1f67e882e1ae6867"},
+    {file = "botocore-1.24.36-py3-none-any.whl", hash = "sha256:391d31768acafea59209a975a698f59f620e01f3bafd6a2a356203eba204bba8"},
+    {file = "botocore-1.24.36.tar.gz", hash = "sha256:a02e3487dc77ac662b417fca0786309b01202494f0679025fc7b0ed4129da04a"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -1342,8 +1342,8 @@ google-api-python-client = [
     {file = "google_api_python_client-2.43.0-py2.py3-none-any.whl", hash = "sha256:a06b9621de90623ec2d66389a3615ca3c260849de622112868dd79109eed67b1"},
 ]
 google-auth = [
-    {file = "google-auth-2.6.2.tar.gz", hash = "sha256:60d449f8142c742db760f4c0be39121bc8d9be855555d784c252deaca1ced3f5"},
-    {file = "google_auth-2.6.2-py2.py3-none-any.whl", hash = "sha256:3ba4d63cb29c1e6d5ffcc1c0623c03cf02ede6240a072f213084749574e691ab"},
+    {file = "google-auth-2.6.3.tar.gz", hash = "sha256:d65bb0e3701eaaa64fd2aa85e1325580524b0bddc6dc5db3ab89c481b6a20141"},
+    {file = "google_auth-2.6.3-py2.py3-none-any.whl", hash = "sha256:5e079eb4d21df1853d55cf2b6766b77ef36f7f7bdaf7d4a70434aa97c7578d60"},
 ]
 google-auth-httplib2 = [
     {file = "google-auth-httplib2-0.1.0.tar.gz", hash = "sha256:a07c39fd632becacd3f07718dfd6021bf396978f03ad3ce4321d060015cc30ac"},
@@ -1883,8 +1883,8 @@ tqdm = [
     {file = "tqdm-4.64.0.tar.gz", hash = "sha256:40be55d30e200777a307a7585aee69e4eabb46b4ec6a4b4a5f2d9f11e7d5408d"},
 ]
 twilio = [
-    {file = "twilio-7.8.0-py2.py3-none-any.whl", hash = "sha256:f0707090c57795ee6747b849d6b7762d06c80eb2570c4f5bb37596f888ee1471"},
-    {file = "twilio-7.8.0.tar.gz", hash = "sha256:0ab9d02313ce10a7f7d94dffbbc0c8ca5c6aaa8b2ec4fa392a9dfedf64bb361a"},
+    {file = "twilio-7.8.1-py2.py3-none-any.whl", hash = "sha256:ae1d1224da7268c3aec1e811c303fcda5cc1f55258c2368fcbecaa4b391c1937"},
+    {file = "twilio-7.8.1.tar.gz", hash = "sha256:b6aeccff49c973a50eb1cbbb9eac277b3219552eac1fd8a51fe101a8e2f43a97"},
 ]
 typing-extensions = [
     {file = "typing_extensions-4.1.1-py3-none-any.whl", hash = "sha256:21c85e0fe4b9a155d0799430b0ad741cdce7e359660ccbd8b530613e8df88ce2"},

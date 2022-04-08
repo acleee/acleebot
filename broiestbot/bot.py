@@ -426,12 +426,11 @@ class Bot(RoomManager):
         message.delete()
         room.message("™")
 
-    @staticmethod
-    def _check_blacklisted_users(room: Room, user_name: str, message: Message) -> None:
+    def _check_blacklisted_users(self, room: Room, user_name: str, message: Message) -> None:
         """
         Ban and delete chat history of blacklisted user.
 
-        :param Room room: Chatango room name.
+        :param Room room: Chatango room object.
         :param str user_name: Chatango username to validate against blacklist.
         :param Message message: User submitted message.
 
@@ -451,36 +450,41 @@ class Bot(RoomManager):
             and message.ip.startswith(CHATANGO_EGGSER_IP)
             and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
         ):
-            LOGGER.warning(f"BANNED Eggser: username={message.user.name} ip={message.ip}")
-            room.clear_user(message.user)
-            room.ban_user(message.user)
-        elif "!anon" in user_name and "raiders" in message.body.lower():
-            LOGGER.warning(
-                f"BANNED Eggser (RAIDERS SPAM): username={message.user.name} ip={message.ip}"
-            )
-            room.clear_user(message.user)
-            room.ban_user(message.user)
-        elif "!anon" in user_name and "tigger" in message.body.lower():
-            LOGGER.warning(
-                f"BANNED Eggser (TIGGER SPAM): username={message.user.name} ip={message.ip}"
-            )
-            room.clear_user(message.user)
-            room.ban_user(message.user)
-        elif "!anon" in user_name and "wordle" in message.body.lower():
-            LOGGER.warning(
-                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
-            )
-            room.clear_user(message.user)
-            room.ban_user(message.user)
+            self._ban_user(room, message)
+        elif self._is_user_anon(user_name) and "raiders" in message.body.lower():
+            self._ban_user(room, message)
+        elif self._is_user_anon(user_name) and "tigger" in message.body.lower():
+            self._ban_user(room, message)
+        elif self._is_user_anon(user_name) and "wordle" in message.body.lower():
+            self._ban_user(room, message)
         elif "wordle" in message.body.lower() and "tomorrow" in message.body.lower():
-            LOGGER.warning(
-                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
-            )
-            room.clear_user(message.user)
-            room.ban_user(message.user)
+            self._ban_user(room, message)
         elif "is the wordle" in message.body.lower():
-            LOGGER.warning(
-                f"BANNED Eggser (WORDLE SPOILERS): username={message.user.name} ip={message.ip}"
-            )
-            room.clear_user(message.user)
-            room.ban_user(message.user)
+            self._ban_user(room, message)
+
+    @staticmethod
+    def _is_user_anon(user_name: str) -> bool:
+        """
+        Check whether user is anon.
+
+        :param str user_name: Chatango username to validate as anon.
+
+        :returns: bool
+        """
+        if "!anon" in user_name or "#" in user_name:
+            return True
+        return False
+
+    @staticmethod
+    def _ban_user(room: Room, message: Message) -> None:
+        """
+        Ban and delete chat history of a user.
+
+        :param Room room: Chatango room object.
+        :param Message message: User submitted message.
+
+        :returns: None
+        """
+        LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
+        room.clear_user(message.user)
+        room.ban_user(message.user)
