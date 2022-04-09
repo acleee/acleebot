@@ -74,17 +74,19 @@ def send_text_message(message: str, user: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
 
-def time_until_wayne() -> str:
+def time_until_wayne(user_name: str) -> str:
     """
     Determine amount of time remaining until LMAD.
     Only applicable to weekdays before 10am EST.
+
+    :param str user_name: Name of the user inquiring about Wayne.
 
     :returns: str
     """
     try:
         now = datetime.now(tz=TIMEZONE_US_EASTERN)
         weekday = datetime.today().weekday()
-        if weekday < 6:
+        if weekday < 5:
             wayne_start_time = datetime(
                 day=now.day,
                 hour=9,
@@ -97,19 +99,19 @@ def time_until_wayne() -> str:
             wayne_end_time = wayne_start_time + timedelta(hours=1)
             if wayne_start_time < now < wayne_end_time:
                 return emojize(
-                    f":red_exclamation_mark: :dollar: omfg Wayne is on NOW!!! CHANGE THE CHANNOL!!! :dollar: :red_exclamation_mark:",
+                    f":red_exclamation_mark: omfg Wayne is on NOW!!! CHANGE THE CHANNOL!!! :red_exclamation_mark:",
                     use_aliases=True,
                 )
             elif wayne_end_time < now:
                 return emojize(
-                    f":( Wayne is oughver already today :(",
+                    f":( sry @{user_name}, Wayne is oughver already today :(",
                     use_aliases=True,
                 )
             else:
                 time_remaining = wayne_start_time - now
                 minutes_remaining = round(time_remaining.total_seconds() / 60)
                 return emojize(
-                    f":raising_hands_dark_skin_tone: :money_bag:  {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
+                    f":raising_hands_dark_skin_tone: :money_bag: {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                     use_aliases=True,
                 )
         return emojize(
@@ -140,7 +142,12 @@ def covid_cases_usa() -> str:
     deaths = res["deaths"]
     critical = res["critical"]
     cases = res["confirmed"]
-    covid_summary = f"\n\n\n:flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n:chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n:face_with_medical_mask: {critical:,} critical"
+    covid_summary = (
+        f"\n\n\n"
+        f":flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n"
+        f":chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n"
+        f":face_with_medical_mask: {critical:,} critical"
+    )
     return emojize(
         covid_summary,
         use_aliases=True,

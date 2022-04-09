@@ -176,7 +176,7 @@ class Bot(RoomManager):
         elif cmd_type == "tune" and args:
             return tuner(args, user_name, room.user.name.lower())
         elif cmd_type == "wayne":
-            return time_until_wayne()
+            return time_until_wayne(user_name)
         elif cmd_type == "np":
             return get_current_show(True, room.user.name.lower())
         elif cmd_type == "reserved":
