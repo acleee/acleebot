@@ -48,7 +48,7 @@ pyasn1==0.4.8; python_version >= "3.7" and python_full_version < "3.0.0" and pyt
 pyjwt==2.3.0; python_version >= "3.6" and python_full_version >= "3.6.0"
 pymultidictionary==1.2.0; python_version >= "3.6" and python_version < "4"
 pymysql==1.0.2; python_version >= "3.6"
-pyparsing==3.0.7; python_version >= "3.6" and python_full_version < "3.0.0" or python_full_version >= "3.5.0" and python_version >= "3.6"
+pyparsing==3.0.8; python_full_version >= "3.6.8" and python_version >= "3.6"
 python-dateutil==2.8.2; python_version >= "3.8" and python_full_version < "3.0.0" or python_full_version >= "3.3.0" and python_version >= "3.8"
 python-dotenv==0.20.0; python_version >= "3.5"
 pytz==2022.1
