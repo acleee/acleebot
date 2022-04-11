@@ -19,21 +19,25 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
     :returns: str
     """
     try:
-        change_votes = r.smembers("change")
-        stay_votes = r.smembers("stay")
+        change_votes = r.get("change")
+        stay_votes = r.get("stay")
         if change_votes is None or stay_votes is None:
+            r.sadd("change", "")
+            r.sadd("stay", "")
+            r.expire("change", 60, nx=True)
+            r.expire("stay", 60, nx=True)
             r.enqueue(datetime.now() + timedelta(seconds=59), poll_results)
             if vote == "stay":
                 r.sadd("stay", user_name)
-                r.expire("stay", 60)
             elif vote == "change":
                 r.sadd("change", user_name)
-                r.expire("change", 60)
             else:
-                return f"pls @{user_name} that isn't a real vote :@"
+                return emojize(
+                    f":warning: pls @{user_name} that isn't a real vote :warning:", use_aliases=True
+                )
             return emojize(
                 f"\n\n"
-                f"<b>CHANGE OR STAY!</b>\n"
+                f":television: <b>CHANGE OR STAY!</b>\n"
                 f"@{user_name} just started a poll and voted to <b>{vote}</b>.\n"
                 f"Voting ends in 60 seconds.",
                 use_aliases=True,
