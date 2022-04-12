@@ -19,22 +19,15 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
     :returns: str
     """
     try:
-        change_votes = r.get("change")
-        stay_votes = r.get("stay")
-        if change_votes is None or stay_votes is None:
+        change_votes = r.smembers("change")
+        stay_votes = r.smembers("stay")
+        if len(change_votes) == 0 or len(stay_votes) == 0:
             r.sadd("change", "")
             r.sadd("stay", "")
-            r.expire("change", 60, nx=True)
-            r.expire("stay", 60, nx=True)
-            r.enqueue(datetime.now() + timedelta(seconds=59), poll_results)
-            if vote == "stay":
-                r.sadd("stay", user_name)
-            elif vote == "change":
-                r.sadd("change", user_name)
-            else:
-                return emojize(
-                    f":warning: pls @{user_name} that isn't a real vote :warning:", use_aliases=True
-                )
+            r.sadd(vote, user_name)
+            r.expire("change", 60)
+            r.expire("stay", 60)
+            # r.enqueue(datetime.now() + timedelta(seconds=59), poll_results)
             return emojize(
                 f"\n\n"
                 f":television: <b>CHANGE OR STAY!</b>\n"
@@ -44,12 +37,12 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
             )
         elif r.sismember("change", user_name) or r.sismember("stay", user_name):
             return f":warning: pls @{user_name} u already voted :warning:"
-        r.sadd(vote, user_name)
+        r.lpush(vote, user_name)
         return emojize(
             f"\n\n"
             f"<b>CHANGE:</b> {change_votes}\n"
             f"<b>STAY:</b> {stay_votes}\n"
-            f":alarm_clock: REMAINING: {r.ttl(vote)/100}",
+            f":alarm_clock: REMAINING: {r.ttl(vote)}",
             use_aliases=True,
         )
     except RedisError as e:

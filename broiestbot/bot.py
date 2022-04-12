@@ -194,8 +194,8 @@ class Bot(RoomManager):
             return tovala_counter(user_name)
         elif cmd_type == "imagecount":
             return gcs_count_images_in_bucket(content)
-        elif cmd_type == "changeorstay" and args:
-            return change_or_stay_vote(user_name, args)
+        elif cmd_type == "changeorstay":
+            return change_or_stay_vote(user_name, content)
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
