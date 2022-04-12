@@ -54,15 +54,11 @@ from broiestbot.commands import (
     wiki_summary,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import (
-    CHATANGO_BLACKLISTED_USERS,
-    CHATANGO_BOTS,
-    CHATANGO_EGGSER_IP,
-    CHATANGO_EGGSER_USERNAME_WHITELIST,
-)
+from config import CHATANGO_BOTS
 from logger import LOGGER
 
 from .data import persist_chat_logs, persist_user_data
+from .moderation import ban_word, check_blacklisted_users
 
 
 class Bot(RoomManager):
@@ -215,7 +211,7 @@ class Bot(RoomManager):
         user_name = user.name.lower()
         room_name = room.room_name.lower()
         bot_username = room.user.name.lower()
-        self._check_blacklisted_users(room, user_name, message)
+        check_blacklisted_users(room, user_name, message)
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
@@ -224,7 +220,7 @@ class Bot(RoomManager):
         # elif message.body.startswith("http"):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
-        # self._ban_word(room, message, user_name, silent=False)
+        # ban_word(room, message, user_name, silent=False)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
@@ -279,7 +275,7 @@ class Bot(RoomManager):
         if f"@{bot_username}" in chat_message and "*waves*" in chat_message:
             self._wave_back(room, user_name, bot_username)
         elif chat_message == "no u":
-            self._ban_word(room, message, user_name, silent=True)
+            ban_word(room, message, user_name, silent=True)
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
@@ -401,22 +397,6 @@ class Bot(RoomManager):
             room.message(response)
 
     @staticmethod
-    def _ban_word(room: Room, message: Message, user_name: str, silent=False) -> None:
-        """
-        Remove banned word and warn offending user.
-
-        :param Room room: Current Chatango room object.
-        :param Message message: Message sent by user.
-        :param str user_name: User responsible for triggering command.
-        :param bool silent: Whether offending user should be warned.
-
-        :returns: None
-        """
-        message.delete()
-        if silent is not True:
-            room.message(f"DO NOT SAY THAT WORD @{user_name.upper()} :@")
-
-    @staticmethod
     def _trademark(room: Room, message: Message) -> None:
         """
         Replace "TM" chats with a trademark symbol.
@@ -428,66 +408,3 @@ class Bot(RoomManager):
         """
         message.delete()
         room.message("™")
-
-    def _check_blacklisted_users(self, room: Room, user_name: str, message: Message) -> None:
-        """
-        Ban and delete chat history of blacklisted user.
-
-        :param Room room: Chatango room object.
-        :param str user_name: Chatango username to validate against blacklist.
-        :param Message message: User submitted message.
-
-        :returns: None
-        """
-        if user_name in CHATANGO_BLACKLISTED_USERS:
-            reply = emojize(
-                f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
-                use_aliases=True,
-            )
-            LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
-            room.message(reply)
-            room.clear_user(message.user)
-            room.ban_user(message.user)
-        elif (
-            message.ip is not None
-            and message.ip.startswith(CHATANGO_EGGSER_IP)
-            and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
-        ):
-            self._ban_user(room, message)
-        elif self._is_user_anon(user_name) and "raiders" in message.body.lower():
-            self._ban_user(room, message)
-        elif self._is_user_anon(user_name) and "tigger" in message.body.lower():
-            self._ban_user(room, message)
-        elif self._is_user_anon(user_name) and "wordle" in message.body.lower():
-            self._ban_user(room, message)
-        elif "wordle" in message.body.lower() and "tomorrow" in message.body.lower():
-            self._ban_user(room, message)
-        elif "is the wordle" in message.body.lower():
-            self._ban_user(room, message)
-
-    @staticmethod
-    def _is_user_anon(user_name: str) -> bool:
-        """
-        Check whether user is anon.
-
-        :param str user_name: Chatango username to validate as anon.
-
-        :returns: bool
-        """
-        if "!anon" in user_name or "#" in user_name:
-            return True
-        return False
-
-    @staticmethod
-    def _ban_user(room: Room, message: Message) -> None:
-        """
-        Ban and delete chat history of a user.
-
-        :param Room room: Chatango room object.
-        :param Message message: User submitted message.
-
-        :returns: None
-        """
-        LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
-        room.clear_user(message.user)
-        room.ban_user(message.user)
