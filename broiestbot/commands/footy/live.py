@@ -1,4 +1,4 @@
-"""Match breakdown of all currently live fixtures."""
+"""Match breakdown of all live fixtures."""
 from typing import Optional
 
 import requests

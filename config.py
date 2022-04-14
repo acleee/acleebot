@@ -208,6 +208,7 @@ EFL_LEAGUE_ID = 40
 LEAGUE_ONE_ID = 41
 EUROPA_LEAGUE_ID = 2777
 UEFA_EUROPA_ID = 3
+UEFA_CONFERENCE_LEAGUE = 848
 BUND_LEAGUE_ID = 78
 LIGA_LEAGUE_ID = 140
 EUROS_LEAGUE_ID = 4
@@ -237,12 +238,13 @@ FOOTY_LEAGUES = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
     ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
-    ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
-    ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
-    ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
+    # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
+    # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
+    # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":cow: Carabou Cup": CARABOU_CUP_ID,
     ":England: EFL": EFL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -252,10 +254,10 @@ FOOTY_LEAGUES = {
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
-    ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-    ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
+    # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
-    ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+    # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
     # ":globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
     # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
