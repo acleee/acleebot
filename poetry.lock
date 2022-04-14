@@ -88,7 +88,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.24.39"
+version = "1.24.40"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -253,7 +253,7 @@ pyflakes = ">=2.4.0,<2.5.0"
 
 [[package]]
 name = "google-api-core"
-version = "2.7.1"
+version = "2.7.2"
 description = "Google API client core library"
 category = "main"
 optional = false
@@ -334,7 +334,7 @@ grpc = ["grpcio (>=1.8.2,<2.0dev)"]
 
 [[package]]
 name = "google-cloud-storage"
-version = "2.2.1"
+version = "2.3.0"
 description = "Google Cloud Storage API client library"
 category = "main"
 optional = false
@@ -343,7 +343,7 @@ python-versions = ">=3.7"
 [package.dependencies]
 google-api-core = ">=1.31.5,<2.0.0 || >2.3.0,<3.0.0dev"
 google-auth = ">=1.25.0,<3.0dev"
-google-cloud-core = ">=1.6.0,<3.0dev"
+google-cloud-core = ">=2.3.0,<3.0dev"
 google-resumable-media = ">=2.3.2"
 protobuf = "*"
 requests = ">=2.18.0,<3.0.0dev"
@@ -976,7 +976,7 @@ python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*"
 
 [[package]]
 name = "soupsieve"
-version = "2.3.2"
+version = "2.3.2.post1"
 description = "A modern CSS selector implementation for Beautiful Soup."
 category = "main"
 optional = false
@@ -1223,8 +1223,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.24.39-py3-none-any.whl", hash = "sha256:94f50a544003918270ba726eb5652b2c31f6cb34accbf25e053ed6ea97ecf1fd"},
-    {file = "botocore-1.24.39.tar.gz", hash = "sha256:a0883dfe8b81689060af7bb2ca4ce3048b954b25bef4ed712c6760ce3da51485"},
+    {file = "botocore-1.24.40-py3-none-any.whl", hash = "sha256:fbf7ad87581a888600e5f0f39b19ded2dd668f6cf6abe29a172ac23ba7f39dd6"},
+    {file = "botocore-1.24.40.tar.gz", hash = "sha256:06badf7bbddadc404b5df10e7fd5bd351caccebd151bda29155a94dde789af5c"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -1334,8 +1334,8 @@ flake8 = [
     {file = "flake8-4.0.1.tar.gz", hash = "sha256:806e034dda44114815e23c16ef92f95c91e4c71100ff52813adf7132a6ad870d"},
 ]
 google-api-core = [
-    {file = "google-api-core-2.7.1.tar.gz", hash = "sha256:b0fa577e512f0c8e063386b974718b8614586a798c5894ed34bedf256d9dae24"},
-    {file = "google_api_core-2.7.1-py3-none-any.whl", hash = "sha256:6be1fc59e2a7ba9f66808bbc22f976f81e4c3e7ab20fa0620ce42686288787d0"},
+    {file = "google-api-core-2.7.2.tar.gz", hash = "sha256:65480309a7437f739e4476da037af02a3ec8263f1d1f89f72bbdc8f54fe402d2"},
+    {file = "google_api_core-2.7.2-py3-none-any.whl", hash = "sha256:8fcbe52dc129fd83dca4e638a76f22b3a11579c493e643134e50e9870b233302"},
 ]
 google-api-python-client = [
     {file = "google-api-python-client-2.44.0.tar.gz", hash = "sha256:fc9c31737b82a592d29636c6f77af9cf9666e45ed966d0a5ebe20711aa0df83c"},
@@ -1354,8 +1354,8 @@ google-cloud-core = [
     {file = "google_cloud_core-2.3.0-py2.py3-none-any.whl", hash = "sha256:35900f614045a33d5208e1d50f0d7945df98ce088388ce7237e7a2db12d5656e"},
 ]
 google-cloud-storage = [
-    {file = "google-cloud-storage-2.2.1.tar.gz", hash = "sha256:0244f4612710cb5ec445fc6774387564e23f9823363fb408b28724e2102401b7"},
-    {file = "google_cloud_storage-2.2.1-py2.py3-none-any.whl", hash = "sha256:abdf0fadf26516172e804e00b9c24819a3b3f7351cd32f35ca249bbfac965494"},
+    {file = "google-cloud-storage-2.3.0.tar.gz", hash = "sha256:f4cbb0de5e17228e9c09cdc897d81eaa70e2c396f58513f79de0e824584c8f5b"},
+    {file = "google_cloud_storage-2.3.0-py2.py3-none-any.whl", hash = "sha256:9a7b1d07d53bc1df5384a9906c1e6d9c920a2bdb5ffa5982d2c1d2bdaacd70c8"},
 ]
 google-crc32c = [
     {file = "google-crc32c-1.3.0.tar.gz", hash = "sha256:276de6273eb074a35bc598f8efbc00c7869c5cf2e29c90748fccc8c898c244df"},
@@ -1829,8 +1829,8 @@ six = [
     {file = "six-1.16.0.tar.gz", hash = "sha256:1e61c37477a1626458e36f7b1d82aa5c9b094fa4802892072e49de9c60c4c926"},
 ]
 soupsieve = [
-    {file = "soupsieve-2.3.2-py3-none-any.whl", hash = "sha256:a714129d3021ec17ce5be346b1007300558b378332c289a1a20e7d4de6ff18a5"},
-    {file = "soupsieve-2.3.2.tar.gz", hash = "sha256:0bcc6d7432153063e3df09c3ac9442af3eba488715bfcad6a4c38ccb2a523124"},
+    {file = "soupsieve-2.3.2.post1-py3-none-any.whl", hash = "sha256:3b2503d3c7084a42b1ebd08116e5f81aadfaea95863628c80a3b774a11b7c759"},
+    {file = "soupsieve-2.3.2.post1.tar.gz", hash = "sha256:fc53893b3da2c33de295667a0e19f078c14bf86544af307354de5fcf12a3f30d"},
 ]
 sqlalchemy = [
     {file = "SQLAlchemy-1.4.35-cp27-cp27m-macosx_10_14_x86_64.whl", hash = "sha256:093b3109c2747d5dc0fa4314b1caf4c7ca336d5c8c831e3cfbec06a7e861e1e6"},

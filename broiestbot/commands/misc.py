@@ -87,17 +87,9 @@ def time_until_wayne(user_name: str) -> str:
         now = datetime.now(tz=TIMEZONE_US_EASTERN)
         weekday = datetime.today().weekday()
         if weekday < 5:
-            wayne_start_time = datetime(
-                day=now.day,
-                hour=9,
-                minute=0,
-                second=0,
-                year=now.year,
-                month=now.month,
-                tzinfo=TIMEZONE_US_EASTERN,
-            )
+            wayne_start_time = now.replace(hour=10, minute=0, second=0)
             wayne_end_time = wayne_start_time + timedelta(hours=1)
-            if wayne_start_time < now < wayne_end_time:
+            if wayne_start_time <= now <= wayne_end_time:
                 return emojize(
                     f":red_exclamation_mark: omfg Wayne is on NOW!!! CHANGE THE CHANNOL!!! :red_exclamation_mark:",
                     use_aliases=True,
@@ -110,6 +102,13 @@ def time_until_wayne(user_name: str) -> str:
             else:
                 time_remaining = wayne_start_time - now
                 minutes_remaining = round(time_remaining.total_seconds() / 60)
+                hours_remaining = minutes_remaining / 60
+                if hours_remaining > 0:
+                    minutes_remaining = minutes_remaining % 60
+                    return emojize(
+                        f":raising_hands_dark_skin_tone: :money_bag: {hours_remaining}h {minutes_remaining}m left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
+                        use_aliases=True,
+                    )
                 return emojize(
                     f":raising_hands_dark_skin_tone: :money_bag: {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                     use_aliases=True,
