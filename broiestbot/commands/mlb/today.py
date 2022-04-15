@@ -66,14 +66,27 @@ def upcoming_mlb_game(game: dict):
 
 
 def live_mlb_game(game: dict):
-    home_name = game["teams"]["home"]["name"]
+    home_name = game["teams"]["home"]["name"].split(" ")[-1]
+    home_abbreviation = home_name[0:3].upper()
     home_score = game["scores"]["home"]["total"]
-    away_name = game["teams"]["away"]["name"]
+    home_hits = game["scores"]["home"]["hits"]
+    home_errors = game["scores"]["home"]["errors"]
+    away_name = game["teams"]["away"]["name"].split(" ")[-1]
+    away_abbreviation = away_name[0:3].upper()
     away_score = game["scores"]["away"]["total"]
+    away_hits = game["scores"]["away"]["hits"]
+    away_errors = game["scores"]["away"]["errors"]
     home_innings = game["scores"]["home"]["innings"]
     away_innings = game["scores"]["away"]["innings"]
-    game_summary = f"{away_name} <b>{away_score}</b> @ {home_name} <b>{home_score}</b>\n"
+    game_summary = (
+        f"{away_abbreviation} <b>{away_score}</b> @ {home_abbreviation} <b>{home_score}</b>\n"
+    )
     for k, v in away_innings.items():
         if v is not None:
             game_summary += f"<b>{k}</b>:   {away_innings[k]}   {home_innings[k]}\n"
+    game_summary += (
+        "\n"
+        f"<b>{away_name}</b>: {away_hits} hits, {away_errors} errors\n"
+        f"<b>{home_name}</b>: {home_hits} hits, {home_errors} errors"
+    )
     return game_summary
