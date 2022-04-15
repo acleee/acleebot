@@ -37,6 +37,7 @@ from .misc import (
     send_text_message,
     time_until_wayne,
 )
+from .mlb import today_phillies_games
 from .movies import find_imdb_movie
 from .nba import live_nba_games, nba_standings, upcoming_nba_games
 from .nfl import get_live_nfl_games

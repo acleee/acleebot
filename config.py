@@ -292,6 +292,11 @@ FOOTY_TEAMS_PRIORITY = {
     # "USMNT": USA_INT_TEAM_ID
 }
 
+# MLB
+MLB_LEAGUE_ID = "1"
+MLB_BASE_ENDPOINT = "https://api-baseball.p.rapidapi.com"
+MLB_PHILLIES_ID = "27"
+
 # Remote tuner control
 CHANNEL_LIST_FILEPATH = f"{BASE_DIR}/channels.json"
 CHANNEL_HOST = getenv("CHANNEL_HOST")

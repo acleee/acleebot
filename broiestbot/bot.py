@@ -47,6 +47,7 @@ from broiestbot.commands import (
     random_image,
     send_text_message,
     time_until_wayne,
+    today_phillies_games,
     tovala_counter,
     tuner,
     upcoming_nba_games,
@@ -192,6 +193,8 @@ class Bot(RoomManager):
             return gcs_count_images_in_bucket(content)
         elif cmd_type == "changeorstay":
             return change_or_stay_vote(user_name, content)
+        elif cmd_type == "philliesgames":
+            return today_phillies_games()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
