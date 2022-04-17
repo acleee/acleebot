@@ -13,6 +13,7 @@ from broiestbot.commands import (
     bund_standings,
     change_or_stay_vote,
     covid_cases_usa,
+    efl_standings,
     epl_golden_boot,
     epl_standings,
     extract_url,
@@ -42,6 +43,7 @@ from broiestbot.commands import (
     get_winter_olympic_medals,
     giphy_image_search,
     liga_standings,
+    ligue_standings,
     live_nba_games,
     nba_standings,
     random_image,
@@ -128,11 +130,15 @@ class Bot(RoomManager):
         elif cmd_type == "sms" and args and user_name:
             return send_text_message(args, user_name)
         elif cmd_type == "epltable":
-            return epl_standings(content)
+            return epl_standings()
         elif cmd_type == "ligatable":
-            return liga_standings(content)
+            return liga_standings()
         elif cmd_type == "bundtable":
-            return bund_standings(content)
+            return bund_standings()
+        elif cmd_type == "efltable":
+            return efl_standings()
+        elif cmd_type == "liguetable":
+            return ligue_standings()
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "allfixtures":

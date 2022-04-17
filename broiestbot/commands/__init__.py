@@ -10,6 +10,7 @@ from .embeds import create_instagram_preview
 from .footy import (
     all_leagues_golden_boot,
     bund_standings,
+    efl_standings,
     epl_golden_boot,
     epl_standings,
     fetch_fox_fixtures,
@@ -20,6 +21,7 @@ from .footy import (
     footy_upcoming_fixtures,
     get_footy_odds,
     liga_standings,
+    ligue_standings,
 )
 from .images import (
     fetch_image_from_gcs,
