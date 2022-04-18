@@ -103,7 +103,7 @@ def time_until_wayne(user_name: str) -> str:
                 time_remaining = wayne_start_time - now
                 minutes_remaining = round(time_remaining.total_seconds() / 60)
                 hours_remaining = minutes_remaining / 60
-                if hours_remaining > 0:
+                if hours_remaining >= 1:
                     minutes_remaining = minutes_remaining % 60
                     return emojize(
                         f":raising_hands_dark_skin_tone: :money_bag: {hours_remaining}h {minutes_remaining}m left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",

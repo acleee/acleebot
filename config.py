@@ -214,7 +214,7 @@ LIGA_LEAGUE_ID = 140
 EUROS_LEAGUE_ID = 4
 COPA_LEAGUE_ID = 9
 COUPE_DE_FRANCE = 66
-LIGUE_ONE_LEAGUE_ID = 61
+LIGUE_ONE_ID = 61
 FRIENDLIES_LEAGUE_ID = 667
 WORLDCUP_LEAGUE_ID = 15
 MLS_LEAGUE_ID = 253
@@ -250,7 +250,7 @@ FOOTY_LEAGUES = {
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    ":France: Ligue 1": LIGUE_ONE_LEAGUE_ID,
+    ":France: Ligue 1": LIGUE_ONE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
@@ -273,7 +273,7 @@ GOLDEN_SHOE_LEAGUES = {
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    ":France: Ligue 1": LIGUE_ONE_LEAGUE_ID,
+    ":France: Ligue 1": LIGUE_ONE_ID,
 }
 
 # Footy team IDs

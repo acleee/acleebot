@@ -11,8 +11,8 @@ from config import (
     EPL_LEAGUE_ID,
     FOOTY_HTTP_HEADERS,
     FOOTY_STANDINGS_ENDPOINT,
-    LEAGUE_ONE_ID,
     LIGA_LEAGUE_ID,
+    LIGUE_ONE_ID,
 )
 from logger import LOGGER
 
@@ -159,7 +159,7 @@ def ligue_standings() -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        params = {"league": LEAGUE_ONE_ID, "season": get_season_year(LEAGUE_ONE_ID)}
+        params = {"league": LIGUE_ONE_ID, "season": get_season_year(LIGUE_ONE_ID)}
         req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
