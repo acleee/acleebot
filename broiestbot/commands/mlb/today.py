@@ -37,7 +37,13 @@ def get_today_games() -> Optional[dict]:
     try:
         url = f"{MLB_BASE_ENDPOINT}/games"
         today = datetime.now(pytz.timezone("America/New_York")).strftime("%Y-%m-%d")
-        params = {"league": MLB_LEAGUE_ID, "season": "2022", "team": MLB_PHILLIES_ID, "date": today}
+        params = {
+            "league": MLB_LEAGUE_ID,
+            "season": str(datetime.now().year),
+            "team": MLB_PHILLIES_ID,
+            "date": today,
+            "timezone": "America/New_York",
+        }
         headers = {
             "X-RapidAPI-Host": "api-baseball.p.rapidapi.com",
             "X-RapidAPI-Key": RAPID_API_KEY,
@@ -122,9 +128,10 @@ def live_mlb_game(game: dict) -> Optional[str]:
             if v is not None:
                 game_summary += f"<b>{k}</b>:   {away_innings[k]}   {home_innings[k]}\n"
         game_summary += (
-            "\n"
-            f"<b>{away_name}</b>: {away_hits} hits, {away_errors} errors\n"
-            f"<b>{home_name}</b>: {home_hits} hits, {home_errors} errors"
+            "--------\n"
+            f"<b>R</b>: {away_score} {home_score}\n"
+            f"<b>H</b>: {away_hits} {home_hits}\n"
+            f"<b>E</b>: {away_errors} {home_errors}"
         )
         return game_summary
     except ValueError as e:
