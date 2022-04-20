@@ -29,7 +29,7 @@ def footy_team_lineups(room: str, username: str) -> str:
                 fixture_start_time = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
-                lineups = fetch_lineups_per_fixture(fixture["id"])
+                lineups = fetch_lineups_per_fixture(fixture["fixture"]["id"])
                 if lineups:
                     today_fixture_lineups += parse_upcoming_fixture(
                         fixture, fixture_start_time, room, username
@@ -83,7 +83,7 @@ def format_fixture_xis(fixture_lineups: dict) -> str:
             )
             lineups_response += f"<b>{team}<b> {formation}\n" f"{coach}\n" f"{players}\n\n"
         return lineups_response
-    except ValueError as e:
-        LOGGER.error(f"ValueError while parsing footy XIs: {e}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while parsing footy XIs: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when parsing footy XIs: {e}")

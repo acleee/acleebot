@@ -99,12 +99,12 @@ def fetch_today_fixtures_by_league(
             "season": get_season_year(league_id),
         }
         params.update(get_preferred_timezone(room, username))
-        req = requests.get(
+        resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
         )
-        return req.json().get("response")
+        return resp.json().get("response")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:

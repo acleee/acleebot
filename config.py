@@ -266,6 +266,10 @@ FOOTY_LEAGUES = {
 FOOTY_LEAGUES_LINEUPS = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":trophy: UCL": UCL_LEAGUE_ID,
+    ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    # ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
 }
 
 GOLDEN_SHOE_LEAGUES = {

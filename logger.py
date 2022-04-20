@@ -17,6 +17,7 @@ def json_formatter(record: dict) -> str:
 
     :returns: str
     """
+
     def serialize_as_admin(log: dict) -> str:
         """
         Construct JSON info log record where user is room admin.
