@@ -1,10 +1,15 @@
 """Fetch lineups before kickoff or during the match."""
+from datetime import datetime
+from typing import Optional
+
 import requests
 from emoji import emojize
+from requests.exceptions import HTTPError
 
 from config import FOOTY_HTTP_HEADERS, FOOTY_LEAGUES_LINEUPS, FOOTY_XI_ENDPOINT
+from logger import LOGGER
 
-from .today import todays_upcoming_fixtures_by_league
+from .today import fetch_today_fixtures_by_league, parse_upcoming_fixture
 
 
 def footy_team_lineups(room: str, username: str) -> str:
@@ -16,40 +21,69 @@ def footy_team_lineups(room: str, username: str) -> str:
 
     :returns: str
     """
-    todays_fixture_lineups = "\n\n\n\n"
+    today_fixture_lineups = "\n\n\n\n"
     for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
-        todays_fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
-        if bool(todays_fixtures):
-            for fixture in todays_fixtures:
-                todays_fixture_lineups += get_xi_per_fixture_team(fixture["id"])
-            return todays_fixture_lineups
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:", use_aliases=True)
+        today_fixtures = fetch_today_fixtures_by_league(league_id, room, username)
+        if bool(today_fixtures):
+            for fixture in today_fixtures:
+                fixture_start_time = datetime.strptime(
+                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
+                )
+                lineups = fetch_lineups_per_fixture(fixture["id"])
+                if lineups:
+                    today_fixture_lineups += parse_upcoming_fixture(
+                        fixture, fixture_start_time, room, username
+                    )
+                    today_fixture_lineups += format_fixture_xis(lineups)
+            return today_fixture_lineups
+    return emojize(f"@{username} No footy XIs available yet.", use_aliases=True)
 
 
-def get_xi_per_fixture_team(fixture_id: str) -> str:
+def fetch_lineups_per_fixture(fixture_id: str) -> Optional[dict]:
     """
     Get team lineup for given fixture.
 
     :param str fixture_id: ID of an upcoming fixture.
 
+    :returns: dict
+    """
+    try:
+        params = {"fixture": fixture_id}
+        resp = requests.get(FOOTY_XI_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
+        team_lineups = resp.json().get("response")
+        if resp.status_code == 200 and team_lineups:
+            return team_lineups
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching footy XIs: {e.response.content}")
+    except ValueError as e:
+        LOGGER.error(f"ValueError while fetching footy XIs: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy XIs: {e}")
+
+
+def format_fixture_xis(fixture_lineups: dict) -> str:
+    """
+    Parse & format player lineups for an upcoming fixture.
+
+    :param dict fixture_lineups: JSON Response containing two lineups for a given fixture.
+
     :returns: str
     """
-    lineups = "\n\n\n\n"
-    params = {"fixture": fixture_id}
-    resp = requests.get(FOOTY_XI_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
-    team_lineups = resp.json().get("response")
-    if bool(team_lineups) is not False:
-        for lineup in team_lineups:
-            lineups += format_team_lineup(lineup)
-    if lineups != "\n\n\n\n":
-        return lineups
-    return emojize(
-        f":soccer_ball: :cross_mark: sry no fixtures today :( :cross_mark: :soccer_ball:",
-        use_aliases=True,
-    )
-
-
-def format_team_lineup(lineup):
-    formation = lineup.get("formation")
-    for player in lineup["startXI"]:
-        pass
+    try:
+        lineups_response = ""
+        for lineup in fixture_lineups:
+            team = lineup["team"]["name"]
+            formation = lineup["formation"]
+            coach = lineup["coach"]["name"]
+            players = "\n".join(
+                [
+                    f"<b>{player['pos']}</b> {player['name']} (#{player['number']})"
+                    for player in lineup["startXI"]
+                ]
+            )
+            lineups_response += f"<b>{team}<b> {formation}\n" f"{coach}\n" f"{players}\n\n"
+        return lineups_response
+    except ValueError as e:
+        LOGGER.error(f"ValueError while parsing footy XIs: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when parsing footy XIs: {e}")

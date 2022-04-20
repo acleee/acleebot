@@ -18,7 +18,7 @@ class StockChartHandler:
 
     def get_chart(self, symbol: str) -> str:
         """Create chart of a company's 30-day stock performance."""
-        message = self._get_price(symbol)
+        message = self.get_price(symbol)
         if message:
             return message
         return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")

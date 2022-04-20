@@ -23,7 +23,6 @@ from broiestbot.commands import (
     footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
     gcs_count_images_in_bucket,
     gcs_random_image_spam,
@@ -50,6 +49,7 @@ from broiestbot.commands import (
     send_text_message,
     time_until_wayne,
     today_phillies_games,
+    today_upcoming_fixtures,
     tovala_counter,
     tuner,
     upcoming_nba_games,
@@ -148,7 +148,7 @@ class Bot(RoomManager):
         elif cmd_type == "livefixtureswithsubs":
             return footy_live_fixtures(room.room_name.lower(), user_name, subs=True)
         elif cmd_type == "todayfixtures":
-            return footy_todays_upcoming_fixtures(room.room_name.lower(), user_name)
+            return today_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "goldenboot":
             return epl_golden_boot()
         elif cmd_type == "goldenshoe":

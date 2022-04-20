@@ -74,8 +74,8 @@ def get_stock(symbol: str) -> str:
     :returns: str
     """
     try:
-        chart = sch.get_chart(symbol)
-        return chart
+        # chart = sch.get_chart(symbol)
+        return sch.get_price(symbol)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching stock price for `{symbol}`: {e}")
         return emojize(

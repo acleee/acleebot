@@ -17,11 +17,11 @@ from .footy import (
     footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_todays_upcoming_fixtures,
     footy_upcoming_fixtures,
     get_footy_odds,
     liga_standings,
     ligue_standings,
+    today_upcoming_fixtures,
 )
 from .images import (
     fetch_image_from_gcs,

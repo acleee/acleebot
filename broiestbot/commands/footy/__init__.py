@@ -9,7 +9,7 @@ from .standings import (
     liga_standings,
     ligue_standings,
 )
-from .today import footy_todays_upcoming_fixtures
+from .today import today_upcoming_fixtures
 from .upcoming import (
     fetch_fox_fixtures,
     footy_all_upcoming_fixtures,

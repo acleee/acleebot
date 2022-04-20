@@ -19,7 +19,7 @@ from .util import (
 )
 
 
-def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
+def today_upcoming_fixtures(room: str, username: str) -> str:
     """
     Fetch fixtures scheduled to occur today.
 
@@ -31,9 +31,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     upcoming_fixtures = "\n\n\n\n"
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
-        league_fixtures = footy_todays_upcoming_fixtures_per_league(
-            league_name, league_id, room, username
-        )
+        league_fixtures = today_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None and i < 5:
             i += 1
             upcoming_fixtures += league_fixtures + "\n"
@@ -45,7 +43,7 @@ def footy_todays_upcoming_fixtures(room: str, username: str) -> str:
     )
 
 
-def footy_todays_upcoming_fixtures_per_league(
+def today_upcoming_fixtures_per_league(
     league_name: str, league_id: int, room: str, username: str
 ) -> Optional[str]:
     """
@@ -60,23 +58,27 @@ def footy_todays_upcoming_fixtures_per_league(
     """
     try:
         league_upcoming_fixtures = ""
-        fixtures = todays_upcoming_fixtures_by_league(league_id, room, username)
+        fixtures = fetch_today_fixtures_by_league(league_id, room, username)
         if bool(fixtures) is not False:
             for i, fixture in enumerate(fixtures):
-                date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
+                fixture_start_time = datetime.strptime(
+                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
+                )
                 if i == 0 and len(fixture) > 1:
                     league_upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
-                league_upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
+                league_upcoming_fixtures += parse_upcoming_fixture(
+                    fixture, fixture_start_time, room, username
+                )
             return league_upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
-    except KeyError as e:
-        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
+    except ValueError as e:
+        LOGGER.error(f"ValueError while fetching footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def todays_upcoming_fixtures_by_league(
+def fetch_today_fixtures_by_league(
     league_id: int, room: str, username: str
 ) -> List[Optional[dict]]:
     """
@@ -111,12 +113,14 @@ def todays_upcoming_fixtures_by_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str) -> str:
+def parse_upcoming_fixture(
+    fixture: dict, fixture_start_time: datetime, room: str, username: str
+) -> str:
     """
     Construct upcoming fixture match-up.
 
     :param dict fixture: Scheduled fixture data.
-    :param datetime date: Fixture start time/date displayed in preferred timezone.
+    :param datetime fixture_start_time: Fixture start time/date displayed in preferred timezone.
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
@@ -124,6 +128,6 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
     """
     home_team = abbreviate_team_name(fixture["teams"]["home"]["name"])
     away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
-    display_date, tz = get_preferred_time_format(date, room, username)
-    display_date = check_fixture_start_date(date, tz, display_date)
+    display_date, tz = get_preferred_time_format(fixture_start_time, room, username)
+    display_date = check_fixture_start_date(fixture_start_time, tz, display_date)
     return f"{away_team} @ {home_team} - {display_date}\n"
