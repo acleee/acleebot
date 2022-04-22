@@ -41,50 +41,56 @@ $ make run
 Create a `.env` file with your Chatango configuration. These variables are required:
 
 ```
-CHATANGO_ROOMS=yourchatangoroom
-CHATANGO_USERNAME=yourbotusername
-CHATANGO_PASSWORD=yourbotpassword
+CHATANGO_ROOMS=[your_chatango_room_name]
+CHATANGO_USERNAME=[your_bot_username]
+CHATANGO_PASSWORD=[your_bot_password]
 
-DATABASE_URI=yourdatabaseuri
-DATABASE_NAME=yourdatabasename
-DATABASE_TABLE=yourdatabbasetable
+DATABASE_URI=[your_database_uri]
+DATABASE_NAME=[your_database_name]
+DATABASE_TABLE=[your_database_table]
 ```
 
 These variables are optional to enable different services, such as pulling images from Google Cloud or fetching Stock prices:
 
 ```env
 # Fetching images from Google Storage
-GOOGLE_broiestbot_CREDENTIALS=/path/to/credentials.json
-GOOGLE_BUCKET_NAME=nameOfStorageBucket
+GOOGLE_broiestbot_CREDENTIALS=[/path/to/credentials.json]
+GOOGLE_BUCKET_NAME=[name_of_gcs_bucket]
 
 # Fetching .gifs from Giphy
-GIPHY_API_KEY=yourGiphyAPIKey
+GIPHY_API_KEY=[your_giphy_api_key]
 
 # Stock market & crypto price data
-IEX_API_TOKEN=yourIEXStockAPIToken
-ALPHA_VANTAGE_API_KEY=yourAlphaVantageKey
+IEX_API_TOKEN=[your_iex_api_token]
+ALPHA_VANTAGE_API_KEY=[your_alpha_vantage_api_key]
 
 # Chart generation
-PLOTLY_API_KEY=yourPlotlyApiKey
-PLOTLY_USERNAME=yourPlotlyUsername
+PLOTLY_API_KEY=[your_plotly_api_key]
+PLOTLY_USERNAME=[your_plotly_username]
 
 # Weather by location
-WEATHERSTACK_API_KEY=yourWeatherstackApiKey
+WEATHERSTACK_API_KEY=[your_weatherstack_api_key]
 
 # Text notifications
 TWILIO_SENDER_PHONE=123456789
 TWILIO_RECIPIENT_PHONE=123456789
-TWILIO_AUTH_TOKEN=yourTwilioToken
-TWILIO_ACCOUNT_SID=yourTwilioAccountSid
+TWILIO_AUTH_TOKEN=[yourTwilioToken]
+TWILIO_ACCOUNT_SID=[yourTwilioAccountSid]
 
 # All APIs hosted on RapidAPI
-RAPID_API_KEY=yourRapidApiKey
+RAPID_API_KEY=[yourRapidApiKey]
 
 # Song Lyrics
-GENIUS_KEY_ID=yourLyricsGeniusKey
-GENIUS_ACCESS_TOKEN=yourLyricsGeniusToken
+GENIUS_KEY_ID=[yourLyricsGeniusKey]
+GENIUS_ACCESS_TOKEN=[yourLyricsGeniusToken]
 
 # Twitch API
-TWITCH_CLIENT_ID=yourTwitchClientId
-TWITCH_CLIENT_SECRET=yourTwitchClientSecret
+TWITCH_CLIENT_ID=[yourTwitchClientId]
+TWITCH_CLIENT_SECRET=[yourTwitchClientSecret]
+
+# General auth for Rapid API
+RAPID_API_KEY=[yourRapidApiKey]
+
+# API Basketball
+NBA_API_KEY=[yourApiBasketballKey] 
 ```
