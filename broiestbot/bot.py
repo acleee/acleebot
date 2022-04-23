@@ -232,7 +232,7 @@ class Bot(RoomManager):
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
-            self._process_command(chat_message, room, user_name)
+            self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
@@ -256,17 +256,23 @@ class Bot(RoomManager):
         else:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
-    def _process_command(self, chat_message: str, room: Room, user_name: str) -> None:
+    def _process_command(
+        self, chat_message: str, room: Room, user_name: str, message: Message
+    ) -> None:
         """
         Determines if message is a bot command.
 
         :param str chat_message: Raw message sent by user.
         :param Room room: Chatango room object.
         :param str user_name: User responsible for triggering command.
+        :param Message message: Chatango message object to be parsed.
 
         :returns: None
         """
-        if re.match(r"^!!.+$", chat_message):
+        ignored_user_message = check_ignored_users(user_name, message.ip)
+        if ignored_user_message:
+            room.message(ignored_user_message, html=True)
+        elif re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
@@ -337,12 +343,9 @@ class Bot(RoomManager):
         :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         """
-        ignored, ignored_message = check_ignored_users(user_name)
         cmd, args = self._parse_command(chat_message[1::].strip())
         command = session.query(Command).filter(Command.command == cmd).first()
-        if ignored:
-            room.message(ignored_message, html=True)
-        elif command is not None and command.type not in ("reserved", "reddit"):
+        if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
                 command.type,
                 command.response,

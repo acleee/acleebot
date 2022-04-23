@@ -7,6 +7,7 @@ from config import (
     CHATANGO_BLACKLISTED_USERS,
     CHATANGO_EGGSER_IP,
     CHATANGO_EGGSER_USERNAME_WHITELIST,
+    CHATANGO_IGNORED_IPS,
     CHATANGO_IGNORED_USERS,
 )
 from logger import LOGGER
@@ -51,20 +52,21 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
         ban_user(room, message)
 
 
-def check_ignored_users(user_name: str) -> Tuple[bool, Optional[str]]:
+def check_ignored_users(user_name: str, user_ip: str) -> Optional[str]:
     """
     Ignore commands from users who have had bot privileges revokes
 
     :param str user_name: Chatango username to validate against blacklist.
+    :param str user_ip: IP address of Chatango user to validate against blacklist.
 
     :returns: str
     """
-    if user_name in CHATANGO_IGNORED_USERS:
-        return True, emojize(
+    if user_name in CHATANGO_IGNORED_USERS or user_ip in CHATANGO_IGNORED_IPS:
+        return emojize(
             f":wave: @{user_name} bot privileges REVOKED for acting like a cunt :wave:",
             use_aliases=True,
         )
-    return False, None
+    return None
 
 
 def is_user_anon(user_name: str) -> bool:
