@@ -51,8 +51,8 @@ metadata-parser = "^0.10.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
-black = "^22.1.0"
-isort = "^5.10.1"
+black = "*"
+isort = "*"
 flake8 = "*"
 pylint = "*"
 

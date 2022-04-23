@@ -5,10 +5,10 @@ LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 define HELP
 Manage $(PROJECT_NAME). Usage:
 
-make run        - Run $(PROJECT_NAME).
+make run        - Run project locally.
 make restart    - Restart systemd service (if exists).
-make install    - Build environment & install dependencies.
-make update     - Update depenencies with Poetry & outout new requirements.txt.
+make install    - Create Python virtual environment & install dependencies.
+make update     - Update depenencies to latest version & output new `requirements.txt`.
 make format     - Format source code and sort imports.
 make test       - Run test suite.
 make lint       - Check code formatting with flake8.
@@ -18,7 +18,7 @@ endef
 export HELP
 
 
-.PHONY: run restart install update format test clean lint help
+.PHONY: run restart install update format test lint clean help
 
 
 all help:

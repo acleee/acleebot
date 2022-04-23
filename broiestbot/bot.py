@@ -183,7 +183,7 @@ class Bot(RoomManager):
         elif cmd_type == "topcrypto":
             return get_top_crypto()
         elif cmd_type == "define" and args:
-            return get_english_definition(args)
+            return get_english_definition(user_name, args)
         elif cmd_type == "tune" and args:
             return tuner(args, user_name, room.user.name.lower())
         elif cmd_type == "wayne":
