@@ -63,7 +63,7 @@ def check_ignored_users(user_name: str, user_ip: str) -> Optional[str]:
     """
     if user_name in CHATANGO_IGNORED_USERS or user_ip in CHATANGO_IGNORED_IPS:
         return emojize(
-            f":wave: @{user_name} bot privileges REVOKED for acting like a cunt :wave:",
+            f":wave: @{user_name} bot privileges REVOKED for acting like a CUNT :wave:",
             use_aliases=True,
         )
     return None
