@@ -64,6 +64,7 @@ from logger import LOGGER
 
 from .data import persist_chat_logs, persist_user_data
 from .moderation import ban_word, check_blacklisted_users
+from .moderation.users import check_ignored_users
 
 
 class Bot(RoomManager):
@@ -336,9 +337,12 @@ class Bot(RoomManager):
         :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         """
+        ignored, ignored_message = check_ignored_users(user_name)
         cmd, args = self._parse_command(chat_message[1::].strip())
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None and command.type not in ("reserved", "reddit"):
+        if ignored:
+            room.message(ignored_message, html=True)
+        elif command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
                 command.type,
                 command.response,

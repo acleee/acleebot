@@ -1,3 +1,5 @@
+from typing import Optional, Tuple
+
 from emoji import emojize
 
 from chatango.ch import Message, Room
@@ -5,6 +7,7 @@ from config import (
     CHATANGO_BLACKLISTED_USERS,
     CHATANGO_EGGSER_IP,
     CHATANGO_EGGSER_USERNAME_WHITELIST,
+    CHATANGO_IGNORED_USERS,
 )
 from logger import LOGGER
 
@@ -46,6 +49,22 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
         ban_user(room, message)
     elif "is the wordle" in message.body.lower():
         ban_user(room, message)
+
+
+def check_ignored_users(user_name: str) -> Tuple[bool, Optional[str]]:
+    """
+    Ignore commands from users who have had bot privileges revokes
+
+    :param str user_name: Chatango username to validate against blacklist.
+
+    :returns: str
+    """
+    if user_name in CHATANGO_IGNORED_USERS:
+        return True, emojize(
+            f":wave: @{user_name} bot privileges REVOKED for acting like a cunt :wave:",
+            use_aliases=True,
+        )
+    return False, None
 
 
 def is_user_anon(user_name: str) -> bool:
