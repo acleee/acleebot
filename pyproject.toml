@@ -1,7 +1,7 @@
 [tool.poetry]
 name = "broiestbot"
 version = "0.1.0"
-description = "Chat bot for the Chatango chat platform."
+description = "Chat bot for the Chatango platform."
 authors = ["Todd Birchard <toddbirchard@gmail.com>"]
 maintainers = ["Todd Birchard <toddbirchard@gmail.com>"]
 license = "MIT"
@@ -63,7 +63,7 @@ run = "wsgi:init_bot"
 issues = "https://github.com/toddbirchard/broiestbot/issues"
 
 [build-system]
-requires = ["poetry>=1.1.11"]
+requires = ["poetry>=1.1.13"]
 build-backend = "poetry.masonry.api"
 
 [tool.isort]

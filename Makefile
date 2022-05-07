@@ -62,7 +62,11 @@ format: env
 
 .PHONY: test
 test: env
-	pytest
+	$(LOCAL_PYTHON) -m \
+		coverage run -m pytest -v \
+		--disable-pytest-warnings \
+		&& coverage html --title='Coverage Report' -d .reports \
+		&& open .reports/index.html
 
 
 .PHONY: lint
@@ -76,10 +80,12 @@ lint:
 
 .PHONY: clean
 clean:
-	find . -name '**/*.pyc' -delete
 	find . -name 'poetry.lock' -delete
-	find . -name '**/*.log' -delete
-	find . -wholename './logs/*.log' -delete
-	find . -wholename 'logs/*.json' -delete
-	find . -wholename '**/__pycache__' -delete
-	find . -wholename '**/.pytest_cache' -delete
+	find . -name '.coverage' -delete
+	find . -wholename '**/*.pyc' -delete
+	find . -wholename '__pycache__' -delete
+	find . -type d -wholename '.venv' -exec rm -rf {} +
+	find . -type d -wholename '.pytest_cache' -exec rm -rf {} +
+	find . -type d -wholename '**/.pytest_cache' -exec rm -rf {} +
+	find . -type d -wholename './logs/*' -exec rm -rf {} +
+	find . -type d -wholename './.reports/*' -exec rm -rf {} +

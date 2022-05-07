@@ -108,9 +108,9 @@ class Bot(RoomManager):
             return random_image(content)
         elif cmd_type == "stock" and args:
             return get_stock(args)
-        elif cmd_type == "storage":
+        elif cmd_type == "randomimage":
             return fetch_image_from_gcs(content)
-        elif cmd_type == "randomspam":
+        elif cmd_type == "imagespam":
             return gcs_random_image_spam(content)
         elif cmd_type == "crypto":
             return get_crypto_price(command.lower(), content)
