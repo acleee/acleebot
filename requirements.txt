@@ -37,6 +37,7 @@ iniconfig==1.1.1; python_version >= "3.9"
 ipdata==4.0.0; python_version >= "3.9"
 iso639-lang==2.0.1; python_version >= "3.6" and python_version < "4"
 jmespath==1.0.0; python_version >= "3.7"
+kaleido==0.2.1
 loguru==0.6.0; python_version >= "3.5"
 lxml==4.9.0; python_version >= "2.7" and python_full_version < "3.0.0" or python_full_version >= "3.5.0"
 lyricsgenius==3.0.1

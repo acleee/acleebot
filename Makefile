@@ -5,10 +5,10 @@ LOCAL_PYTHON := $(VIRTUAL_ENVIRONMENT)/bin/python3
 define HELP
 Manage $(PROJECT_NAME). Usage:
 
-make run        - Run $(PROJECT_NAME).
+make run        - Run project locally.
 make restart    - Restart systemd service (if exists).
-make install    - Build environment & install dependencies.
-make update     - Update depenencies with Poetry & outout new requirements.txt.
+make install    - Create Python virtual environment & install dependencies.
+make update     - Update depenencies to latest version & output new `requirements.txt`.
 make format     - Format source code and sort imports.
 make test       - Run test suite.
 make lint       - Check code formatting with flake8.
@@ -18,7 +18,7 @@ endef
 export HELP
 
 
-.PHONY: run restart install update format test clean lint help
+.PHONY: run restart install update format test lint clean help
 
 
 all help:
@@ -62,7 +62,11 @@ format: env
 
 .PHONY: test
 test: env
-	pytest
+	$(LOCAL_PYTHON) -m \
+		coverage run -m pytest -v \
+		--disable-pytest-warnings \
+		&& coverage html --title='Coverage Report' -d .reports \
+		&& open .reports/index.html
 
 
 .PHONY: lint
@@ -76,10 +80,12 @@ lint:
 
 .PHONY: clean
 clean:
-	find . -name '**/*.pyc' -delete
 	find . -name 'poetry.lock' -delete
-	find . -name '**/*.log' -delete
-	find . -wholename './logs/*.log' -delete
-	find . -wholename 'logs/*.json' -delete
-	find . -wholename '**/__pycache__' -delete
-	find . -wholename '**/.pytest_cache' -delete
+	find . -name '.coverage' -delete
+	find . -wholename '**/*.pyc' -delete
+	find . -wholename '__pycache__' -delete
+	find . -type d -wholename '.venv' -exec rm -rf {} +
+	find . -type d -wholename '.pytest_cache' -exec rm -rf {} +
+	find . -type d -wholename '**/.pytest_cache' -exec rm -rf {} +
+	find . -type d -wholename './logs/*' -exec rm -rf {} +
+	find . -type d -wholename './.reports/*' -exec rm -rf {} +

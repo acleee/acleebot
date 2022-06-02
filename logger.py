@@ -97,7 +97,7 @@ def json_formatter(record: dict) -> str:
         record["extra"]["serialized"] = serialize_error(record)
         sms_error_handler(record)
 
-    if record["extra"]["serialized"] is not None:
+    if record["extra"].get("serialized") is not None:
         return "{extra[serialized]},\n"
 
 
@@ -138,7 +138,11 @@ def log_formatter(record: dict) -> str:
 
 
 def create_logger() -> logger:
-    """Customer logger creation."""
+    """
+    Configure custom logger.
+
+    :returns: logger
+    """
     logger.remove()
     logger.add(stdout, colorize=True, catch=True, format=log_formatter)
     if ENVIRONMENT == "production":

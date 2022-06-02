@@ -9,10 +9,11 @@ from config import RAPID_API_KEY
 from logger import LOGGER
 
 
-def get_english_definition(word: str) -> str:
+def get_english_definition(user_name: str, word: str) -> str:
     """
     Fetch English Dictionary definition for a given phrase or word.
 
+    :param str user_name: Chatango user requesting a definition.
     :param str word: Word or phrase to fetch English definition for.
 
     :returns: str
@@ -29,6 +30,11 @@ def get_english_definition(word: str) -> str:
             if i < len(word_definitions[0]):
                 definition += "\n"
             response += definition
+        if response in ("\n\n\n", "\n\n\n\n"):
+            return emojize(
+                f":warning: @{user_name} there's no dictionary definition for `{word}`; learn english :warning:",
+                use_aliases=True,
+            )
         return response
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching English definition for `{word}`: {e}")

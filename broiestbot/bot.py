@@ -28,6 +28,7 @@ from broiestbot.commands import (
     gcs_count_images_in_bucket,
     gcs_random_image_spam,
     get_all_live_twitch_streams,
+    get_crypto_chart,
     get_crypto_price,
     get_current_show,
     get_english_definition,
@@ -63,6 +64,7 @@ from logger import LOGGER
 
 from .data import persist_chat_logs, persist_user_data
 from .moderation import ban_word, check_blacklisted_users
+from .moderation.users import check_ignored_users
 
 
 class Bot(RoomManager):
@@ -106,12 +108,14 @@ class Bot(RoomManager):
             return random_image(content)
         elif cmd_type == "stock" and args:
             return get_stock(args)
-        elif cmd_type == "storage":
+        elif cmd_type == "randomimage":
             return fetch_image_from_gcs(content)
-        elif cmd_type == "randomspam":
+        elif cmd_type == "imagespam":
             return gcs_random_image_spam(content)
         elif cmd_type == "crypto":
             return get_crypto_price(command.lower(), content)
+        elif cmd_type == "cryptochart" and args:
+            return get_crypto_chart(args)
         elif cmd_type == "giphy":
             return giphy_image_search(content)
         elif cmd_type == "weather" and args:
@@ -179,7 +183,7 @@ class Bot(RoomManager):
         elif cmd_type == "topcrypto":
             return get_top_crypto()
         elif cmd_type == "define" and args:
-            return get_english_definition(args)
+            return get_english_definition(user_name, args)
         elif cmd_type == "tune" and args:
             return tuner(args, user_name, room.user.name.lower())
         elif cmd_type == "wayne":
@@ -228,7 +232,7 @@ class Bot(RoomManager):
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
         if chat_message.startswith("!"):
-            self._process_command(chat_message, room, user_name)
+            self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
@@ -252,17 +256,23 @@ class Bot(RoomManager):
         else:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
-    def _process_command(self, chat_message: str, room: Room, user_name: str) -> None:
+    def _process_command(
+        self, chat_message: str, room: Room, user_name: str, message: Message
+    ) -> None:
         """
         Determines if message is a bot command.
 
         :param str chat_message: Raw message sent by user.
         :param Room room: Chatango room object.
         :param str user_name: User responsible for triggering command.
+        :param Message message: Chatango message object to be parsed.
 
         :returns: None
         """
-        if re.match(r"^!!.+$", chat_message):
+        ignored_user_message = check_ignored_users(user_name, message.ip)
+        if ignored_user_message:
+            room.message(ignored_user_message, html=True)
+        elif re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)

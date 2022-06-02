@@ -23,17 +23,19 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
             movie_id = movies[0].getID()
             movie = ia.get_movie(movie_id)
             if movie:
-                cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
+                cast = movie.data.get("cast")
                 art = movie.data.get("cover url", None)
                 director = movie.data.get("director")
-                if director:
-                    director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
                 year = movie.data.get("year")
                 genres = f"({', '.join(movie.data.get('genres'))}, {year})."
                 title = f"{movie.data.get('title').upper()},"
                 rating = f"{movie.data.get('rating')}/10"
-                boxoffice = get_boxoffice_data(movie)
+                box_office = get_box_office_data(movie)
                 synopsis = movie.data.get("synopsis")
+                if cast:
+                    cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
+                if director:
+                    director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
                 if synopsis:
                     try:
                         synopsis = synopsis[0]
@@ -50,7 +52,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                             cast,
                             director,
                             synopsis,
-                            boxoffice,
+                            box_office,
                             art,
                         ],
                     )
@@ -66,7 +68,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
         return emojize(f":warning: omfg u broke me with ur shit movie :warning:", use_aliases=True)
 
 
-def get_boxoffice_data(movie: Movie) -> Optional[str]:
+def get_box_office_data(movie: Movie) -> Optional[str]:
     """
     Get IMDB box office performance for a given film.
 

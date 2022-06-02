@@ -1,10 +1,10 @@
 """Initialize bot."""
 from typing import List
 
-from datadog import initialize
-
 from broiestbot.bot import Bot
 from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS, ENVIRONMENT
+
+# from datadog import initialize
 
 
 def join_rooms(rooms: List[str]):
@@ -39,6 +39,6 @@ def start_bot():
         join_rooms([CHATANGO_TEST_ROOM])
     else:
         options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
-        initialize(**options)
+        # initialize(**options)
         print(f'Joining {", ".join(CHATANGO_ROOMS)}')
         join_rooms(CHATANGO_ROOMS)

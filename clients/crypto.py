@@ -2,23 +2,30 @@
 from datetime import datetime
 from typing import Optional
 
+import chart_studio
 import chart_studio.plotly as py
 import pandas as pd
+import plotly.express as px
 import plotly.graph_objects as go
 import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
+from config import PLOTLY_API_KEY, PLOTLY_USERNAME
+
+# Plotly
+chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY)
+
 
 class CryptoChartHandler:
-    """Create chart from crypto price data."""
+    """Fetch crypto price performance as summary or chart."""
 
     def __init__(self, token: str, price_endpoint: str, chart_endpoint: str):
         self.token = token
         self.price_endpoint = price_endpoint
         self.chart_endpoint = chart_endpoint
 
-    def get_chart(self, symbol: str, endpoint: str) -> str:
+    def get_coin_price(self, symbol: str, endpoint: str) -> str:
         """
         Get crypto data and generate Plotly chart.
 
@@ -27,39 +34,55 @@ class CryptoChartHandler:
 
         :returns: str
         """
-        message = self.get_price(symbol, endpoint)
-        if message:
-            return message
-        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
-
-    def get_chart_old(self, symbol: str, endpoint: str) -> str:
-        """
-        Get crypto data and generate Plotly chart.
-
-        :param str symbol: Crypto symbol to fetch price performance for.
-        :param str endpoint: Endpoint for the requested crypto.
-
-        :returns: Optional[str]
-        """
-        message = self.get_price(symbol, endpoint)
-        chart = self._create_chart(symbol)
-        if "http" not in chart:
-            return chart
-        elif message and chart:
-            return f"{message} \n {chart}"
-        elif message:
-            return message
-        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
-
-    @staticmethod
-    def get_price(symbol: str, endpoint: str) -> Optional[str]:
         """
         Get crypto price for provided ticker label.
 
         :param str symbol: Crypto symbol to fetch price performance for.
         :param str endpoint: Endpoint for the requested crypto.
 
+        :returns: str
+        """
+        prices = self._fetch_price_data(symbol, endpoint)
+        percentage = prices["change"]["percentage"] * 100
+        if prices.get("last") > 1:
+            return emojize(
+                f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
+                f':money_bag: CURRENTLY at ${prices["last"]:.2f}\n'
+                f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
+                f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
+                f":nine-thirty: (24-hour change of {percentage:.2f}%)",
+                use_aliases=True,
+            )
+        elif prices.get("last"):
+            return emojize(
+                f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
+                f':money_bag: Currently at ${prices["last"]}\n'
+                f':up-right_arrow: HIGH today of ${prices["high"]}\n'
+                f':red_triangle_pointed_down: LOW of ${prices["low"]}\n'
+                f":nine-thirty: (change of {percentage:.2f}%)",
+                use_aliases=True,
+            )
+        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
+
+    def get_crypto_chart(self, symbol: str) -> str:
+        """
+        Get crypto data and generate Plotly chart.
+
+        :param str symbol: Crypto symbol to fetch price performance for.
+
         :returns: Optional[str]
+        """
+        return self._create_chart(symbol)
+
+    @staticmethod
+    def _fetch_price_data(symbol: str, endpoint: str) -> Optional[dict]:
+        """
+        Get crypto price for a coin symbol.
+
+        :param str symbol: Crypto symbol to fetch price performance for.
+        :param str endpoint: Endpoint for the requested crypto.
+
+        :returns: Optional[dict]
         """
         try:
             resp = requests.get(url=endpoint)
@@ -68,26 +91,8 @@ class CryptoChartHandler:
                     f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
                     use_aliases=True,
                 )
-            prices = resp.json()["result"]["price"]
-            percentage = prices["change"]["percentage"] * 100
-            if prices["last"] > 1:
-                return emojize(
-                    f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
-                    f':money_bag: CURRENTLY at ${prices["last"]:.2f}\n'
-                    f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
-                    f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
-                    f":nine-thirty: (24-hour change of {percentage:.2f}%)",
-                    use_aliases=True,
-                )
-            else:
-                return emojize(
-                    f"\n\n\n:coin: <b>{symbol.upper()}:</b>\n"
-                    f':money_bag: Currently at ${prices["last"]}\n'
-                    f':up-right_arrow: HIGH today of ${prices["high"]}\n'
-                    f':red_triangle_pointed_down: LOW of ${prices["low"]}\n'
-                    f":nine-thirty: (change of {percentage:.2f}%)",
-                    use_aliases=True,
-                )
+            if resp.status_code == 200:
+                return resp.json()["result"]["price"]
         except HTTPError as e:
             raise HTTPError(
                 f"HTTPError error {e.response.status_code} while fetching crypto price for `{symbol}`: {e.response.content}"
@@ -140,69 +145,77 @@ class CryptoChartHandler:
 
         :returns: Optional[str]
         """
-        data = self._get_chart_data(symbol)
-        if type(data) == str:
-            return data
-        elif bool(data) and type(data) == dict:
-            crypto_df = self._parse_chart_data(data)
-            crypto_df = crypto_df.apply(pd.to_numeric)
-            fig = go.Figure(
-                data=[
-                    go.Candlestick(
-                        x=crypto_df.index,
-                        open=crypto_df["1a. open (USD)"],
-                        high=crypto_df["2a. high (USD)"],
-                        low=crypto_df["3a. low (USD)"],
-                        close=crypto_df["4a. close (USD)"],
-                        decreasing={
-                            "line": {"color": "rgb(240, 99, 90)"},
-                            "fillcolor": "rgba(142, 53, 47, 0.5)",
+        try:
+            chart_data = self._get_chart_data(symbol)
+            if chart_data:
+                crypto_df = self._parse_chart_data(chart_data)
+                crypto_df = crypto_df.apply(pd.to_numeric)
+                fig = go.Figure(
+                    data=[
+                        go.Candlestick(
+                            x=crypto_df.index,
+                            open=crypto_df["1a. open (USD)"],
+                            high=crypto_df["2a. high (USD)"],
+                            low=crypto_df["3a. low (USD)"],
+                            close=crypto_df["4a. close (USD)"],
+                            decreasing={
+                                "line": {"color": "rgb(240, 99, 90)"},
+                                "fillcolor": "rgba(142, 53, 47, 0.5)",
+                            },
+                            increasing={
+                                "line": {"color": "rgb(48, 190, 161)"},
+                                "fillcolor": "rgba(22, 155, 124, 0.6)",
+                            },
+                            whiskerwidth=1,
+                        )
+                    ],
+                    layout=go.Layout(
+                        font={"size": 15, "family": "Open Sans", "color": "#fff"},
+                        title={
+                            "x": 0.5,
+                            "font": {"size": 23},
+                            "text": f"60-day performance of {symbol.upper()}",
                         },
-                        increasing={
-                            "line": {"color": "rgb(48, 190, 161)"},
-                            "fillcolor": "rgba(22, 155, 124, 0.6)",
+                        xaxis={
+                            "type": "date",
+                            "rangeslider": {"visible": False},
+                            "ticks": "",
+                            "gridcolor": "#283442",
+                            "linecolor": "#506784",
+                            "automargin": True,
+                            "zerolinecolor": "#283442",
+                            "zerolinewidth": 2,
                         },
-                        whiskerwidth=1,
-                    )
-                ],
-                layout=go.Layout(
-                    font={"size": 15, "family": "Open Sans", "color": "#fff"},
-                    title={
-                        "x": 0.5,
-                        "font": {"size": 23},
-                        "text": f"60-day performance of {symbol.upper()}",
-                    },
-                    xaxis={
-                        "type": "date",
-                        "rangeslider": {"visible": False},
-                        "ticks": "",
-                        "gridcolor": "#283442",
-                        "linecolor": "#506784",
-                        "automargin": True,
-                        "zerolinecolor": "#283442",
-                        "zerolinewidth": 2,
-                    },
-                    yaxis={
-                        "ticks": "",
-                        "gridcolor": "#283442",
-                        "linecolor": "#506784",
-                        "automargin": True,
-                        "zerolinecolor": "#283442",
-                        "zerolinewidth": 2,
-                    },
-                    autosize=True,
-                    plot_bgcolor="rgb(23, 27, 31)",
-                    paper_bgcolor="rgb(23, 27, 31)",
-                ),
+                        yaxis={
+                            "ticks": "",
+                            "gridcolor": "#283442",
+                            "linecolor": "#506784",
+                            "automargin": True,
+                            "zerolinecolor": "#283442",
+                            "zerolinewidth": 2,
+                        },
+                        autosize=True,
+                        plot_bgcolor="rgb(23, 27, 31)",
+                        paper_bgcolor="rgb(23, 27, 31)",
+                    ),
+                )
+                chart = py.plot(
+                    fig,
+                    filename=f"{symbol}_{datetime.now()}",
+                    sharing="public",
+                    auto_open=False,
+                )
+                # return fig.write_image("figure.png", engine="kaleido")
+                return (
+                    chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1]
+                    + ".png"
+                )
+        except HTTPError as e:
+            return emojize(
+                f":warning: fk bro's plotly subscription died: {e} :warning:", use_aliases=True
             )
-            chart = py.plot(
-                fig,
-                filename=f"{symbol}_{datetime.now()}",
-                sharing="public",
-                auto_open=False,
+        except Exception as e:
+            return emojize(
+                f":warning: idk wot happened: {e} :warning:",
+                use_aliases=True,
             )
-            return (
-                chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1]
-                + ".png"
-            )
-        return None

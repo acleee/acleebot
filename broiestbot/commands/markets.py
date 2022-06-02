@@ -1,20 +1,11 @@
 """Fetch crypto or stock market data."""
-import chart_studio
 import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
 from clients import cch, sch
-from config import (
-    COINMARKETCAP_API_KEY,
-    COINMARKETCAP_LATEST_ENDPOINT,
-    PLOTLY_API_KEY,
-    PLOTLY_USERNAME,
-)
+from config import COINMARKETCAP_API_KEY, COINMARKETCAP_LATEST_ENDPOINT
 from logger import LOGGER
-
-# Plotly
-chart_studio.tools.set_credentials_file(username=PLOTLY_USERNAME, api_key=PLOTLY_API_KEY)
 
 
 def get_crypto_chart(symbol: str) -> str:
@@ -26,8 +17,7 @@ def get_crypto_chart(symbol: str) -> str:
     :returns: str
     """
     try:
-        chart = cch.get_chart(symbol)
-        return chart
+        return cch.get_crypto_chart(symbol)
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}"
@@ -41,7 +31,7 @@ def get_crypto_chart(symbol: str) -> str:
         )
 
 
-def get_crypto_price(symbol: str, endpoint: str) -> str:
+def get_crypto_price(symbol: str, endpoint) -> str:
     """
     Fetch crypto price for a given coin symbol.
 
@@ -51,7 +41,7 @@ def get_crypto_price(symbol: str, endpoint: str) -> str:
     :returns: str
     """
     try:
-        return cch.get_price(symbol, endpoint)
+        return cch.get_coin_price(symbol, endpoint)
     except HTTPError as e:
         LOGGER.error(
             f"HTTPError {e.response.status_code} while fetching crypto price for `{symbol}`: {e}"

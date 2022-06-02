@@ -3,7 +3,7 @@ from typing import Union
 
 import pandas as pd
 from ipdata import ipdata
-from ipdata.ipdata import APIKeyNotSet, IncompatibleParameters, IPData
+from ipdata.ipdata import IPData, IPDataException
 from pandas import DataFrame
 
 
@@ -20,8 +20,8 @@ class GeoIP:
         """
         try:
             return ipdata.IPData(self.api_key)
-        except APIKeyNotSet as e:
-            raise APIKeyNotSet(e)
+        except IPDataException as e:
+            raise IPDataException(e)
 
     def lookup_user(self, ip_address: str) -> dict:
         """
@@ -33,7 +33,7 @@ class GeoIP:
         """
         try:
             return self.client.lookup(
-                ip=ip_address,
+                resource=ip_address,
                 fields=[
                     "city",
                     "region",
@@ -48,8 +48,10 @@ class GeoIP:
                     "carrier",
                 ],
             )
-        except IncompatibleParameters as e:
-            raise IncompatibleParameters(e)
+        except IPDataException as e:
+            raise IPDataException(
+                f"IPDataException occured during user lookup for `{ip_address}`: {e}"
+            )
         except Exception as e:
             raise Exception(f"Failed user lookup for `{ip_address}`: {e}")
 
