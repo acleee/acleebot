@@ -18,7 +18,7 @@ keywords = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 requests = "*"
 sqlalchemy = "*"
 pymysql = "*"
@@ -50,8 +50,8 @@ metadata-parser = "^0.10.5"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"
-black = "^22.1.0"
-isort = "^5.10.1"
+black = "*"
+isort = "*"
 flake8 = "*"
 pylint = "*"
 
@@ -62,7 +62,7 @@ run = "wsgi:init_bot"
 issues = "https://github.com/toddbirchard/broiestbot/issues"
 
 [build-system]
-requires = ["poetry>=1.1.11"]
+requires = ["poetry>=1.1.13"]
 build-backend = "poetry.masonry.api"
 
 [tool.isort]

@@ -209,6 +209,7 @@ LEAGUE_ONE_ID = 41
 EUROPA_LEAGUE_ID = 2777
 UEFA_EUROPA_ID = 3
 UEFA_CONFERENCE_LEAGUE = 848
+UEFA_NATIONS_LEAGUE = 5
 BUND_LEAGUE_ID = 78
 LIGA_LEAGUE_ID = 140
 EUROS_LEAGUE_ID = 4
@@ -235,26 +236,27 @@ AFRICA_CUP_ID = 6
 FOOTY_LEAGUES = {
     # ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
     # ":world_map: WORLD CUP": WORLD_CUP_ID,
-    ":lion: EPL": EPL_LEAGUE_ID,
-    ":trophy: UCL": UCL_LEAGUE_ID,
-    ":European_Union: EUROPA": UEFA_EUROPA_ID,
-    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    ":trophy: :England: FA Cup": FA_CUP_ID,
+    # ":lion: EPL": EPL_LEAGUE_ID,
+    # ":trophy: UCL": UCL_LEAGUE_ID,
+    # ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
+    # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    # ":trophy: :England: FA Cup": FA_CUP_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
     # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":cow: Carabou Cup": CARABOU_CUP_ID,
-    ":England: EFL": EFL_LEAGUE_ID,
-    ":Spain: LIGA": LIGA_LEAGUE_ID,
-    ":Germany: BUND": BUND_LEAGUE_ID,
-    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    ":France: Ligue 1": LIGUE_ONE_ID,
+    # ":England: EFL": EFL_LEAGUE_ID,
+    # ":Spain: LIGA": LIGA_LEAGUE_ID,
+    # ":Germany: BUND": BUND_LEAGUE_ID,
+    # ":Italy: Serie A": SERIE_A_LEAGUE_ID,
+    # ":France: Ligue 1": LIGUE_ONE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
-    # ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
@@ -265,9 +267,10 @@ FOOTY_LEAGUES = {
 
 FOOTY_LEAGUES_LINEUPS = {
     ":lion: EPL": EPL_LEAGUE_ID,
-    ":trophy: UCL": UCL_LEAGUE_ID,
-    ":European_Union: EUROPA": UEFA_EUROPA_ID,
-    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    # ":trophy: UCL": UCL_LEAGUE_ID,
+    # ":European_Union: EUROPA": UEFA_EUROPA_ID,
+    # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     # ":trophy: :England: FA Cup": FA_CUP_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
 }

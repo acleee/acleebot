@@ -3,7 +3,6 @@ from typing import Optional
 
 from database import session
 from database.models import ChatangoUser
-from ipdata.ipdata import IncompatibleParameters
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
 from chatango.ch import Message, User
@@ -64,12 +63,10 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
                     )
                 )
                 # fmt: on
-    except IncompatibleParameters as e:
-        LOGGER.warning(f"Failed to save data for {user.name} due to IncompatibleParameters: {e}")
     except IntegrityError as e:
-        LOGGER.warning(f"Failed to save duplicate entry for {user.name}: {e}")
+        LOGGER.error(f"Failed to save duplicate entry for {user.name}: {e}")
     except Exception as e:
-        LOGGER.warning(f"Unexpected error while attempting to save data for {user.name}: {e}")
+        LOGGER.error(f"Unexpected error while attempting to save data for {user.name}: {e}")
 
 
 def fetch_existing_user(room_name: str, user: User, message: Message) -> Optional[ChatangoUser]:
@@ -96,4 +93,4 @@ def fetch_existing_user(room_name: str, user: User, message: Message) -> Optiona
     except SQLAlchemyError as e:
         LOGGER.warning(f"SQLAlchemyError occurred while fetching metadata for {user.name}: {e}")
     except Exception as e:
-        LOGGER.warning(f"Unexpected error while attempting to save data for {user.name}: {e}")
+        LOGGER.error(f"Unexpected error while attempting to save data for {user.name}: {e}")
