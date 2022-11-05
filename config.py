@@ -54,6 +54,7 @@ CHATANGO_ROOMS = [
     # CHATANGO_REDZONE_ROOM,
     # CHATANGO_PATREON_ROOM,
     CHATANGO_UFC_ROOM,
+    CHATANGO_UNION_ROOM,
 ]
 
 # Chatango users with additional features
