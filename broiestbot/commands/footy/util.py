@@ -78,6 +78,7 @@ def abbreviate_team_name(team_name: str) -> str:
         .replace("Liverpool", "LFC")
         .replace("Philadelphia", "PHI")
         .replace("Borussia Dortmund", "Dortmund")
+        .replace("Nottingham Forest", "Nottingham")
     )
 
 

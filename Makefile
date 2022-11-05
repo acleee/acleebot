@@ -34,11 +34,11 @@ $(VIRTUAL_ENVIRONMENT):
 
 .PHONY: dev
 dev: env
-	uwsgi --ini broiestbot.ini
+	$(LOCAL_PYTHON) -m wsgi
 
 .PHONY: run
 run: env
-	  $(LOCAL_PYTHON) -m wsgi
+	$(LOCAL_PYTHON) -m wsgi
 
 .PHONY: install
 install: env

@@ -64,7 +64,7 @@ def today_upcoming_fixtures_per_league(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
                 if i == 0 and len(fixture) > 1:
-                    league_upcoming_fixtures += emojize(f"{league_name}:\n")
+                    league_upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n")
                 league_upcoming_fixtures += parse_upcoming_fixture(
                     fixture, fixture_start_time, room, username
                 )
@@ -130,4 +130,5 @@ def parse_upcoming_fixture(
     away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
     display_date, tz = get_preferred_time_format(fixture_start_time, room, username)
     display_date = check_fixture_start_date(fixture_start_time, tz, display_date)
+    display_date = display_date.replace("Today,", "")
     return f"{away_team} @ {home_team} - {display_date}\n"

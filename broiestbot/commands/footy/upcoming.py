@@ -84,7 +84,7 @@ def footy_upcoming_fixtures_per_league(
         upcoming_fixtures = ""
         fixtures = upcoming_fixture_fetcher(league_name, league_id, room, username)
         if bool(fixtures) is not False:
-            for i, fixture in enumerate(fixtures):
+            for fixture in fixtures:
                 date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
             return upcoming_fixtures
@@ -139,6 +139,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
         FOOTY_FIXTURES_ENDPOINT,
         headers=FOOTY_HTTP_HEADERS,
         params=params,
+        timeout=20,
     )
     return resp.json().get("response")
 
