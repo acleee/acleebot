@@ -21,7 +21,7 @@ def random_image(message: str) -> str:
         return random_pic
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random image for `{message}`: {e}")
-        return emojize(f":warning: omfg bot just broke wtf did u do :warning:", use_aliases=True)
+        return emojize(f":warning: omfg bot just broke wtf did u do :warning:")
     except Exception as e:
         LOGGER.warning(f"Unexpected error when fetching random image for `{message}`: {e}")
-        return emojize(f":warning: o shit i broke im a trash bot :warning:", use_aliases=True)
+        return emojize(f":warning: o shit i broke im a trash bot :warning:")

@@ -28,7 +28,6 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
     if user_name in CHATANGO_BLACKLISTED_USERS:
         reply = emojize(
             f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:",
-            use_aliases=True,
         )
         LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
         room.message(reply)
@@ -64,7 +63,6 @@ def check_ignored_users(user_name: str, user_ip: str) -> Optional[str]:
     if user_name in CHATANGO_IGNORED_USERS or user_ip in CHATANGO_IGNORED_IPS:
         return emojize(
             f":wave: @{user_name} bot privileges REVOKED for acting like a CUNT :wave:",
-            use_aliases=True,
         )
     return None
 

@@ -18,7 +18,7 @@ keywords = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.9"
+python = "^3.8"
 requests = "*"
 sqlalchemy = "*"
 pymysql = "*"
@@ -29,7 +29,7 @@ chart-studio = "*"
 emoji = "*"
 bs4 = "*"
 wikipedia-api = "*"
-imdbpy = "*"
+cinemagoer = "*"
 ipdata = "*"
 kaleido = "0.2.1"
 boto = "*"
@@ -63,7 +63,7 @@ run = "wsgi:init_bot"
 issues = "https://github.com/toddbirchard/broiestbot/issues"
 
 [build-system]
-requires = ["poetry>=1.1.13"]
+requires = ["poetry>=1.2.2"]
 build-backend = "poetry.masonry.api"
 
 [tool.isort]

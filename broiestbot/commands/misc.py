@@ -31,7 +31,6 @@ def blaze_time_remaining() -> str:
     ):
         return emojize(
             f":herb: :fire: HOLY FUCK IT'S EXACTLY 420!!! BLAZE IT BITCHHHHHHHCAWWHHHHHH :smoking: :kissing_closed_eyes: :dash:",
-            use_aliases=True,
         )
     elif am_time > now:
         remaining = f"{am_time - now}"
@@ -45,7 +44,6 @@ def blaze_time_remaining() -> str:
         f":herb: :fire: \
             {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 \
             :smoking: :kissing_closed_eyes: :dash:",
-        use_aliases=True,
     )
 
 
@@ -68,7 +66,6 @@ def send_text_message(message: str, user: str) -> Optional[str]:
             return f"ty @{user} I just texted brough: {message}"
         return emojize(
             f":warning: lmao fuck off, only pizza can text brough :warning:",
-            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
@@ -92,12 +89,10 @@ def time_until_wayne(user_name: str) -> str:
             if wayne_start_time <= now <= wayne_end_time:
                 return emojize(
                     f":red_exclamation_mark: omfg Wayne is on NOW!!! CHANGE THE CHANNOL!!! :red_exclamation_mark:",
-                    use_aliases=True,
                 )
             elif wayne_end_time < now:
                 return emojize(
                     f":( sry @{user_name}, Wayne is oughver already today :(",
-                    use_aliases=True,
                 )
             else:
                 time_remaining = wayne_start_time - now
@@ -107,15 +102,12 @@ def time_until_wayne(user_name: str) -> str:
                     minutes_remaining = minutes_remaining % 60
                     return emojize(
                         f":raising_hands_dark_skin_tone: :money_bag: {hours_remaining}h {minutes_remaining}m left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
-                        use_aliases=True,
                     )
                 return emojize(
                     f":raising_hands_dark_skin_tone: :money_bag: {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
-                    use_aliases=True,
                 )
         return emojize(
             f":warning: bruh it's {day_name[weekday]} there's no wayne today :warning:",
-            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while determining time until wayne: {e}")
@@ -149,5 +141,4 @@ def covid_cases_usa() -> str:
     )
     return emojize(
         covid_summary,
-        use_aliases=True,
     )

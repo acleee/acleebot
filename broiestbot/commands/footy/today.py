@@ -39,7 +39,6 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
         return upcoming_fixtures
     return emojize(
         f":soccer_ball: :cross_mark: sry @{username} no fixtures today :( :cross_mark: :soccer_ball:",
-        use_aliases=True,
     )
 
 
@@ -65,7 +64,7 @@ def today_upcoming_fixtures_per_league(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
                 if i == 0 and len(fixture) > 1:
-                    league_upcoming_fixtures += emojize(f"{league_name}:\n", use_aliases=True)
+                    league_upcoming_fixtures += emojize(f"{league_name}:\n")
                 league_upcoming_fixtures += parse_upcoming_fixture(
                     fixture, fixture_start_time, room, username
                 )
@@ -103,6 +102,7 @@ def fetch_today_fixtures_by_league(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
+            timeout=20,
         )
         return resp.json().get("response")
     except HTTPError as e:

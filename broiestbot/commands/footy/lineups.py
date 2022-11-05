@@ -36,7 +36,7 @@ def footy_team_lineups(room: str, username: str) -> str:
                     )
                     today_fixture_lineups += format_fixture_xis(lineups)
             return today_fixture_lineups
-    return emojize(f"@{username} No footy XIs available yet.", use_aliases=True)
+    return emojize(f"@{username} No footy XIs available yet.")
 
 
 def fetch_lineups_per_fixture(fixture_id: str) -> Optional[dict]:

@@ -183,13 +183,6 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
-        logger.add(
-            f"{BASE_DIR}/logs/error.json",
-            level="ERROR",
-            format=json_formatter,
-            rotation="300 MB",
-            compression="zip",
-        )
     return logger
 
 

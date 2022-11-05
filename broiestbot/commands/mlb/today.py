@@ -27,7 +27,7 @@ def today_phillies_games() -> str:
             if mlb_game is not None:
                 today_games_response += parse_mlb_game(game)
                 return today_games_response
-    return emojize(":warning: Couldn't find any MLB games :( :warning:", use_aliases=True)
+    return emojize(":warning: Couldn't find any MLB games :( :warning:")
 
 
 def get_today_games() -> Optional[dict]:

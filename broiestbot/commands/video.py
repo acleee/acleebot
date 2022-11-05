@@ -34,7 +34,6 @@ def get_all_live_twitch_streams():
             return "".join(twitch_streams)
     return emojize(
         f":frowning: no memers streaming twitch rn :frowning:",
-        use_aliases=True,
     )
 
 

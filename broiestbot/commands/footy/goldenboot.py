@@ -34,7 +34,6 @@ def epl_golden_boot() -> str:
             return "\n".join(top_scorers)
         return emojize(
             f":warning: Couldn't find golden boot leaders; bot is shit tbh :warning:",
-            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching golden boot leaders: {e}")
@@ -58,7 +57,6 @@ def all_leagues_golden_boot() -> str:
             return "\n".join(top_scorers)
         return emojize(
             f":warning: Couldn't find golden boot shoe; bot is shit tbh :warning:",
-            use_aliases=True,
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching golden shoe leaders: {e}")

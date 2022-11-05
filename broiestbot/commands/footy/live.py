@@ -36,7 +36,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
             i += 1
             live_fixtures += live_league_fixtures + "\n"
     if live_fixtures == "\n\n\n\n":
-        return emojize(":warning: No live fixtures :( :warning:", use_aliases=True)
+        return emojize(":warning: No live fixtures :( :warning:")
     return live_fixtures
 
 
@@ -58,7 +58,7 @@ def footy_live_fixtures_per_league(
         live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
-            live_fixtures += emojize(f"<b>{league_name}:</b>\n", use_aliases=True)
+            live_fixtures += emojize(f"<b>{league_name}:</b>\n")
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
@@ -134,37 +134,30 @@ def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
                 if event["detail"] == "Yellow Card":
                     event_log = event_log + emojize(
                         f':yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["detail"] == "Second Yellow card":
                     event_log = event_log + emojize(
                         f':yellow_square::yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["detail"] == "Red Card":
                     event_log = event_log + emojize(
                         f':red_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["detail"] == "Normal Goal":
                     event_log = event_log + emojize(
                         f':soccer_ball: {event["type"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["detail"] == "Penalty":
                     event_log = event_log + emojize(
                         f':goal_net: :soccer_ball: (PEN), {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["detail"] == "Own Goal":
                     event_log = event_log + emojize(
                         f':skull: :soccer_ball: {event["player"]["name"]} (via {event["assist"]["name"]}) {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
                 elif event["type"] == "subst" and subs is True:
                     event_log = event_log + emojize(
                         f':red_triangle_pointed_down: {event["assist"]["name"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
-                        use_aliases=True,
                     )
             return event_log
         return None

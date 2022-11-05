@@ -5,7 +5,7 @@ import redis
 import wikipediaapi
 
 # from googleapiclient.discovery import build
-from imdb import IMDb
+from imdb import Cinemagoer
 from twilio.rest import Client
 
 from config import (  # YOUTUBE_API_KEY,
@@ -54,7 +54,7 @@ wiki = wikipediaapi.Wikipedia("en")
 sms = Client(TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN)
 
 # IMDB Client
-ia = IMDb()
+ia = Cinemagoer()
 
 # Reddit API Python SDK
 reddit = praw.Reddit(

@@ -3,7 +3,7 @@ from typing import Union
 
 import pandas as pd
 from ipdata import ipdata
-from ipdata.ipdata import IPData, IPDataException
+from ipdata.ipdata import IPData, APIKeyNotSet, IncompatibleParameters
 from pandas import DataFrame
 
 
@@ -20,8 +20,12 @@ class GeoIP:
         """
         try:
             return ipdata.IPData(self.api_key)
-        except IPDataException as e:
-            raise IPDataException(e)
+        except APIKeyNotSet as e:
+            raise APIKeyNotSet(f"IPData API key not set: {e}")
+        except IncompatibleParameters as e:
+            raise IncompatibleParameters(f"IncompatibleParameters when calling IPData: {e}")
+        except Exception as e:
+            raise Exception(f"Unexpected exception while creating IPData client: {e}")
 
     def lookup_user(self, ip_address: str) -> dict:
         """
@@ -33,7 +37,7 @@ class GeoIP:
         """
         try:
             return self.client.lookup(
-                resource=ip_address,
+                ip=ip_address,
                 fields=[
                     "city",
                     "region",
@@ -48,12 +52,10 @@ class GeoIP:
                     "carrier",
                 ],
             )
-        except IPDataException as e:
-            raise IPDataException(
-                f"IPDataException occured during user lookup for `{ip_address}`: {e}"
-            )
+        except IncompatibleParameters as e:
+            raise IncompatibleParameters(f"IncompatibleParameters when calling IPData: {e}")
         except Exception as e:
-            raise Exception(f"Failed user lookup for `{ip_address}`: {e}")
+            raise Exception(f"Unexpected failure for IPData user lookup, ip=`{ip_address}`: {e}")
 
     @staticmethod
     def save_metadata(room_name: str, user_name: str, ip_metadata: dict) -> Union[DataFrame, str]:

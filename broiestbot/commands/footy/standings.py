@@ -43,7 +43,7 @@ def epl_standings() -> Optional[str]:
             )
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
+        return emojize(":warning: Couldn't fetch standings :( :warning:")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EPL standings: {e.response.content}")
     except KeyError as e:
@@ -76,7 +76,7 @@ def liga_standings() -> Optional[str]:
             )
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
+        return emojize(":warning: Couldn't fetch standings :( :warning:")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching LIGA standings: {e.response.content}")
     except KeyError as e:
@@ -109,7 +109,7 @@ def bund_standings() -> Optional[str]:
             )
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
+        return emojize(":warning: Couldn't fetch standings :( :warning:")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching BUND standings: {e.response.content}")
     except KeyError as e:
@@ -142,7 +142,7 @@ def efl_standings() -> Optional[str]:
             )
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
+        return emojize(":warning: Couldn't fetch standings :( :warning:")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EFL standings: {e.response.content}")
     except KeyError as e:
@@ -175,7 +175,7 @@ def ligue_standings() -> Optional[str]:
             )
         if standings_table != "\n\n\n\n":
             return standings_table
-        return emojize(":warning: Couldn't fetch standings :( :warning:", use_aliases=True)
+        return emojize(":warning: Couldn't fetch standings :( :warning:")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching EFL standings: {e.response.content}")
     except KeyError as e:

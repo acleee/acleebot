@@ -51,7 +51,6 @@ class CryptoChartHandler:
                 f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
                 f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
                 f":nine-thirty: (24-hour change of {percentage:.2f}%)",
-                use_aliases=True,
             )
         elif prices.get("last"):
             return emojize(
@@ -60,7 +59,6 @@ class CryptoChartHandler:
                 f':up-right_arrow: HIGH today of ${prices["high"]}\n'
                 f':red_triangle_pointed_down: LOW of ${prices["low"]}\n'
                 f":nine-thirty: (change of {percentage:.2f}%)",
-                use_aliases=True,
             )
         return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
 
@@ -89,7 +87,6 @@ class CryptoChartHandler:
             if resp.status_code == 429:
                 return emojize(
                     f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
-                    use_aliases=True,
                 )
             if resp.status_code == 200:
                 return resp.json()["result"]["price"]
@@ -217,5 +214,4 @@ class CryptoChartHandler:
         except Exception as e:
             return emojize(
                 f":warning: idk wot happened: {e} :warning:",
-                use_aliases=True,
             )
