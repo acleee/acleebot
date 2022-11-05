@@ -32,7 +32,7 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = today_upcoming_fixtures_per_league(league_name, league_id, room, username)
-        if league_fixtures is not None and i < 5:
+        if league_fixtures is not None and i < 7:
             i += 1
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
