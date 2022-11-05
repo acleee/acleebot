@@ -269,10 +269,10 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        ignored_user_message = check_ignored_users(user_name, message.ip)
-        if ignored_user_message:
-            room.message(ignored_user_message, html=True)
-        elif re.match(r"^!!.+$", chat_message):
+        # ignored_user_message = check_ignored_users(user_name, message.ip)
+        # if ignored_user_message:
+        #     room.message(ignored_user_message, html=True)
+        if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         elif re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
