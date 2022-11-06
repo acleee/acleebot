@@ -31,27 +31,38 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         "units": temperature_units,
     }
     try:
-        res = requests.get(WEATHERSTACK_API_ENDPOINT, params=params)
-        if res.status_code != 200:
+        resp = requests.get(WEATHERSTACK_API_ENDPOINT, params=params)
+        if resp.status_code != 200:
             return emojize(f":warning:️️ wtf even is `{location}` :warning:")
-        data = res.json()
-        if data.get("success") == "false":
-            return emojize(f":warning:️️ {data['error']['info']} :warning:")
-        if data.get("current") is None:
+        resp = resp.json()
+        if resp.get("success") == "false":
+            return emojize(f":warning:️️ {resp['error']['info']} :warning:")
+        if resp.get("current") is None:
             return emojize(
                 f":warning:️️ idk wtf you did but `{location}` fucked me up b :warning:",
             )
-        weather_code = data["current"]["weather_code"]
-        is_day = data["current"]["is_day"]
+        weather_code = resp["current"]["weather_code"]
+        is_day = resp["current"]["is_day"]
+        temperature = resp["current"]["temperature"]
+        feels_like = resp["current"]["feelslike"]
+        precipitation = resp["current"]["precip"] * 10
+        cloud_cover = resp["current"]["cloudcover"]
+        humidity = resp["current"]["humidity"]
+        wind_speed = resp["current"]["wind_speed"]
+        local_time = resp["location"]["localtime"].split(" ")[1]
         weather_emoji = get_weather_emoji(weather_code, is_day)
+        precipitation_emoji = get_precipitation_emoji(resp["current"]["precip"])
+        humidity_emoji = get_humidity_emoji(humidity)
+        cloud_cover_emoji = get_cloud_cover_emoji(cloud_cover)
         response = emojize(
-            f'\n\n{data["request"]["query"]}\n \
-                        {weather_emoji} {data["current"]["weather_descriptions"][0]}\n \
-                        Temp: {data["current"]["temperature"]}°{"c" if params["units"] == "m" else "f"} (feels like: {data["current"]["feelslike"]}{"c" if params["units"] == "m" else "f"}°)\n \
-                        Precipitation: {data["current"]["precip"] * 10}%\n \
-                        Humidity: {data["current"]["humidity"]}%\n \
-                        Cloud cover: {data["current"]["cloudcover"]}%\n \
-                        Wind speed: {data["current"]["wind_speed"]}{"km/h" if params["units"] == "m" else "mph"}',
+            f'\n\n<b>{resp["request"]["query"]}</b>\n \
+                        {weather_emoji} {resp["current"]["weather_descriptions"][0]}\n \
+                        :thermometer: Temp: {temperature}°{"c" if params["units"] == "m" else "f"} (feels like: {feels_like}{"c" if params["units"] == "m" else "f"}°)\n \
+                        {precipitation_emoji} Precipitation: {precipitation}%\n \
+                        {humidity_emoji} Humidity: {humidity}%\n \
+                        {cloud_cover_emoji} Cloud cover: {cloud_cover}%\n \
+                        :wind_face: Wind speed: {wind_speed}{"km/h" if params["units"] == "m" else "mph"}\n \
+                        :six-thirty: {local_time}'
         )
         return response
     except HTTPError as e:
@@ -103,3 +114,48 @@ def get_weather_emoji(weather_code: int, is_day: str) -> str:
     elif weather_emoji.icon and is_day == "no":
         return weather_emoji.icon
     return ":sun:"
+
+
+def get_precipitation_emoji(precipitation: int) -> str:
+    """
+    Get emoji based on forecasted precipitation.
+
+    :param int precipitation: Percentage chance of precipitation on the day.
+
+    :returns: str
+    """
+    if precipitation > 70:
+        return ":cloud_with_rain:"
+    if precipitation > 50:
+        return ":cloud:"
+    return ":sparkles:"
+
+
+def get_humidity_emoji(humidity: int) -> str:
+    """
+    Get emoji based on current humidity.
+
+    :param int humidity: Current humidity percentage.
+
+    :returns: str
+    """
+    if humidity > 85:
+        return ":downcast_face_with_sweat:"
+    if humidity > 60:
+        return ":grinning_face_with_sweat:"
+    return ":slightly_smiling_face:"
+
+
+def get_cloud_cover_emoji(cloud_cover: int) -> str:
+    """
+    Get emoji based on forecasted precipitation.
+
+    :param int cloud_cover: Percentage of current cloud cover.
+
+    :returns: str
+    """
+    if cloud_cover > 80:
+        return ":cloud:"
+    if cloud_cover > 60:
+        return ":sun_behind_cloud:"
+    return ":thumbs_up_light_skin_tone:"
