@@ -4,8 +4,6 @@ from typing import List
 from broiestbot.bot import Bot
 from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS, ENVIRONMENT
 
-# from datadog import initialize
-
 
 def join_rooms(rooms: List[str]):
     """

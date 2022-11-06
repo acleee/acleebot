@@ -1,5 +1,6 @@
 """Perform Giphy query to fetch randomized top trending image."""
 from random import randint
+from typing import Optional
 
 import requests
 from emoji import emojize
@@ -9,14 +10,13 @@ from config import GIPHY_API_KEY
 from logger import LOGGER
 
 
-def giphy_image_search(query: str, retry=False) -> str:
+def giphy_image_search(query: str) -> Optional[str]:
     """
     Perform a gif image and return a random result from the top-20 images.
 
     :param str query: Query passed to Giphy to find gif.
-    :param bool retry: Whether the image fetch is a retry from a previous attempt.
 
-    :returns: str
+    :returns: Optional[str]
     """
     rand = randint(0, 15)
     params = {
@@ -24,22 +24,17 @@ def giphy_image_search(query: str, retry=False) -> str:
         "q": query,
         "limit": 1,
         "offset": rand,
-        "rating": "R",
+        "rating": "r",
         "lang": "en",
     }
     try:
         resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
-        num_images = len(resp.json()["data"])
-        if num_images == 0:
-            return "image not found :("
+        images = resp.json()["data"]
+        if len(images) == 0:
+            return None
         image = resp.json()["data"][0]["images"]["downsized"].get("url")
         if image is not None:
             return image
-        elif retry is False:
-            return giphy_image_search(query, retry=True)
-        return emojize(
-            f":warning: holy sht u broke the bot im telling bro :warning:",
-        )
     except HTTPError as e:
         LOGGER.error(f"Giphy failed to fetch `{query}`: {e.response.content}")
         return emojize(f":warning: yoooo giphy is down rn lmao :warning:")

@@ -206,8 +206,8 @@ class Bot(RoomManager):
             return gcs_count_images_in_bucket(content)
         elif cmd_type == "changeorstay":
             return change_or_stay_vote(user_name, content)
-        elif cmd_type == "philliesgames":
-            return today_phillies_games()
+        # elif cmd_type == "philliesgames":
+        #    return today_phillies_games()
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -274,9 +274,9 @@ class Bot(RoomManager):
         #     room.message(ignored_user_message, html=True)
         if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
-        elif re.match(r"^!ein+$", chat_message):
+        if re.match(r"^!ein+$", chat_message):
             return self._get_response("!ein", room, user_name)
-        elif re.match(r"^!\S+", chat_message):
+        if re.match(r"^!\S+", chat_message):
             return self._get_response(chat_message, room, user_name)
         # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
 
@@ -415,8 +415,9 @@ class Bot(RoomManager):
         """
         query = message.replace("!", "").lower().strip()
         if len(query) > 1:
-            response = giphy_image_search(query)
-            room.message(response)
+            image = giphy_image_search(query)
+            if image:
+                room.message(image)
 
     @staticmethod
     def _trademark(room: Room, message: Message) -> None:
