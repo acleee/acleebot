@@ -5,7 +5,7 @@ from PyMultiDictionary import MultiDictionary
 from requests.exceptions import HTTPError
 
 from clients import wiki
-from config import RAPID_API_KEY
+from config import RAPID_API_KEY, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -52,7 +52,7 @@ def get_urban_definition(term: str) -> str:
     headers = {"Content-Type": "application/json"}
     try:
         req = requests.get(
-            "http://api.urbandictionary.com/v0/define", params=params, headers=headers
+            "http://api.urbandictionary.com/v0/define", params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT
         )
         results = req.json().get("list")
         if results:

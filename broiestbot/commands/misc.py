@@ -12,7 +12,7 @@ from config import (
     RAPID_API_KEY,
     TIMEZONE_US_EASTERN,
     TWILIO_RECIPIENT_PHONE,
-    TWILIO_SENDER_PHONE,
+    TWILIO_SENDER_PHONE, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -129,10 +129,10 @@ def covid_cases_usa() -> str:
         "x-rapidapi-key": RAPID_API_KEY,
         "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
     }
-    res = requests.get(url, headers=headers, params=params).json()[0]
-    deaths = res["deaths"]
-    critical = res["critical"]
-    cases = res["confirmed"]
+    resp = requests.get(url, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT).json()[0]
+    deaths = resp["deaths"]
+    critical = resp["critical"]
+    cases = resp["confirmed"]
     covid_summary = (
         f"\n\n\n"
         f":flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n"

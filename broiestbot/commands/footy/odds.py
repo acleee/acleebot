@@ -4,7 +4,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import RAPID_API_KEY
+from config import RAPID_API_KEY, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -22,7 +22,7 @@ def get_footy_odds():
             "x-rapidapi-host": "odds.p.rapidapi.com",
             "x-rapidapi-key": RAPID_API_KEY,
         }
-        resp = requests.get(url, headers=headers, params=querystring)
+        resp = requests.get(url, headers=headers, params=querystring, timeout=HTTP_REQUEST_TIMEOUT)
         fixtures = resp.json().get("data")[::5]
         if resp.json().get("success"):
             fixture_odds = get_fixture_odds(fixtures)

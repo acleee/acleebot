@@ -4,7 +4,7 @@ from emoji import emojize
 from requests.exceptions import HTTPError
 
 from clients import cch, sch
-from config import COINMARKETCAP_API_KEY, COINMARKETCAP_LATEST_ENDPOINT
+from config import COINMARKETCAP_API_KEY, COINMARKETCAP_LATEST_ENDPOINT, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -86,7 +86,7 @@ def get_top_crypto() -> str:
             "Accepts": "application/json",
             "X-CMC_PRO_API_KEY": COINMARKETCAP_API_KEY,
         }
-        resp = requests.get(COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers)
+        resp = requests.get(COINMARKETCAP_LATEST_ENDPOINT, params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
         if resp.status_code == 200:
             coins = resp.json().get("data")
             return format_top_crypto_response(coins)

@@ -5,7 +5,7 @@ import requests
 from requests import Response
 from requests.exceptions import HTTPError
 
-from config import NBA_BASE_URL, NBA_SEASON_YEAR, RAPID_API_KEY
+from config import NBA_BASE_URL, NBA_SEASON_YEAR, RAPID_API_KEY, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -27,7 +27,7 @@ def today_nba_games() -> Response:
             "X-RapidAPI-Host": "api-basketball.p.rapidapi.com",
             "X-RapidAPI-Key": RAPID_API_KEY,
         }
-        return requests.get(endpoint, headers=headers, params=params)
+        return requests.get(endpoint, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching today's NBA games: {e.response.content}")
     except LookupError as e:

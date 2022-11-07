@@ -13,7 +13,7 @@ from config import (
     TWITCH_CLIENT_ID,
     TWITCH_CLIENT_SECRET,
     TWITCH_STREAMS_ENDPOINT,
-    TWITCH_TOKEN_ENDPOINT,
+    TWITCH_TOKEN_ENDPOINT, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -48,15 +48,14 @@ def get_live_twitch_stream(broadcaster_id: str, token: str) -> Optional[str]:
     """
     try:
         endpoint = TWITCH_STREAMS_ENDPOINT
-
         params = {"user_id": broadcaster_id}
         headers = {
             "Authorization": f"Bearer {token}",
             "client-id": TWITCH_CLIENT_ID,
             "Accept": "application/vnd.twitchtv.v5+json",
         }
-        req = requests.get(endpoint, params=params, headers=headers)
-        resp = req.json().get("data")
+        resp = requests.get(endpoint, params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
+        resp = resp.json().get("data")
         if bool(resp):
             return format_twitch_response(resp[0])
         return None
@@ -100,7 +99,7 @@ def get_twitch_auth_token() -> Optional[str]:
             "client_secret": TWITCH_CLIENT_SECRET,
             "grant_type": "client_credentials",
         }
-        resp = requests.post(endpoint, params=params)
+        resp = requests.post(endpoint, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         return resp.json().get("access_token")
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Twitch auth token: {e.response.content}")

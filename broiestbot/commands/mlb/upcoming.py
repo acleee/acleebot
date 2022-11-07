@@ -6,7 +6,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import MLB_BASE_ENDPOINT, RAPID_API_KEY, TIMEZONE_US_EASTERN
+from config import MLB_BASE_ENDPOINT, RAPID_API_KEY, TIMEZONE_US_EASTERN, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -75,7 +75,7 @@ def fetch_team_statistics(team_id: str) -> Optional[dict]:
             "X-RapidAPI-Host": "api-baseball.p.rapidapi.com",
             "X-RapidAPI-Key": RAPID_API_KEY,
         }
-        resp = requests.get(url, headers=headers, params=querystring)
+        resp = requests.get(url, headers=headers, params=querystring, timeout=HTTP_REQUEST_TIMEOUT)
         if resp.status_code == 200 and resp.json():
             return resp.json().get("response")
     except HTTPError as e:

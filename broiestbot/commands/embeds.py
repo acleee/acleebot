@@ -6,7 +6,7 @@ from bs4 import BeautifulSoup
 from requests import Response
 from requests.exceptions import HTTPError
 
-from config import INSTAGRAM_APP_ID
+from config import INSTAGRAM_APP_ID, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -26,7 +26,7 @@ def create_instagram_preview(url: str) -> Optional[str]:
             "Access-Control-Max-Age": "3600",
             "User-Agent": "Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:52.0) Gecko/20100101 Firefox/52.0",
         }
-        req = requests.get(url, headers=headers)
+        req = requests.get(url, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
         html = BeautifulSoup(req.content, "html.parser")
         img_tag = html.find("meta", property="og:image")
         if img_tag is not None:
@@ -50,7 +50,7 @@ def get_instagram_token() -> Optional[Response]:
         params = {
             "client_id": INSTAGRAM_APP_ID,
         }
-        return requests.post(f"https://www.facebook.com/x/oauth/status", params=params)
+        return requests.post(f"https://www.facebook.com/x/oauth/status", params=params, timeout=HTTP_REQUEST_TIMEOUT)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching Instagram token: {e.response.content}")
     except Exception as e:

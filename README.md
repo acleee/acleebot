@@ -1,8 +1,8 @@
 # BroiestBot
 
-![Python](https://img.shields.io/badge/python-^3.9-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
+![Python](https://img.shields.io/badge/python-^3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
 ![Ch.py](https://img.shields.io/badge/ch.py-1.3.8-blue.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=ChatBot&logoColor=white)
-![Requests](https://img.shields.io/badge/Requests-^v2.27.0-red.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
+![Requests](https://img.shields.io/badge/Requests-^v2.28.1-red.svg?longCache=true&style=flat-square&colorA=4c566a&colorB=5e81ac&logo=Python&logoColor=white)
 ![SQLAlchemy](https://img.shields.io/badge/SQLAlchemy-^1.4.0-red.svg?longCache=true&style=flat-square&logo=scala&logoColor=white&colorA=4c566a&colorB=bf616a)
 ![GitHub Last Commit](https://img.shields.io/github/last-commit/google/skia.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=a3be8c)
 [![GitHub Issues](https://img.shields.io/github/issues/toddbirchard/broiestbot.svg?style=flat-square&colorA=4c566a&logo=GitHub&colorB=ebcb8b)](https://github.com/toddbirchard/broiestbot/issues)
@@ -54,7 +54,7 @@ These variables are optional to enable different services, such as pulling image
 
 ```env
 # Fetching images from Google Storage
-GOOGLE_broiestbot_CREDENTIALS=[/path/to/credentials.json]
+GOOGLE_APPLICATION_CREDENTIALS=[/path/to/credentials.json]
 GOOGLE_BUCKET_NAME=[name_of_gcs_bucket]
 
 # Fetching .gifs from Giphy

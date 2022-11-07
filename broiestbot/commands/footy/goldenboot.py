@@ -10,7 +10,7 @@ from config import (
     EPL_LEAGUE_ID,
     FOOTY_HTTP_HEADERS,
     FOOTY_TOPSCORERS_ENDPOINT,
-    GOLDEN_SHOE_LEAGUES,
+    GOLDEN_SHOE_LEAGUES, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -76,6 +76,7 @@ def golden_boot_leaders(league=EPL_LEAGUE_ID) -> List[Tuple[int, str]]:
             FOOTY_TOPSCORERS_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
         )
         players = req.json().get("response")
         if players:

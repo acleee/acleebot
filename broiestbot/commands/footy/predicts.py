@@ -9,7 +9,7 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOOTY_PREDICTS_ENDPOINT,
+    FOOTY_PREDICTS_ENDPOINT, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -32,7 +32,7 @@ def footy_predicts_today(room: str, username: str) -> Optional[str]:
             return "No fixtures today :("
         for fixture_id in fixture_ids:
             url = f"{FOOTY_PREDICTS_ENDPOINT}/{fixture_id}"
-            res = requests.get(url, headers=FOOTY_HTTP_HEADERS)
+            res = requests.get(url, headers=FOOTY_HTTP_HEADERS, timeout=HTTP_REQUEST_TIMEOUT)
             predictions = res.json()["api"]["predictions"]
             for prediction in predictions:
                 home_chance = prediction["winning_percent"]["home"]
@@ -67,7 +67,7 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
         display_date, tz = get_preferred_time_format(today, room, username)
         params = {"date": display_date}
         params.update(get_preferred_timezone(room, username))
-        res = requests.get(FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params)
+        res = requests.get(FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         fixtures = res.json().get("response")
         if bool(fixtures):
             return [

@@ -2,7 +2,7 @@
 import requests
 from requests.exceptions import HTTPError
 
-from config import NBA_API_KEY, NBA_BASE_URL, NBA_CONFERENCE_NAMES, NBA_SEASON_YEAR
+from config import NBA_API_KEY, NBA_BASE_URL, NBA_CONFERENCE_NAMES, NBA_SEASON_YEAR, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -26,7 +26,7 @@ def nba_standings() -> str:
                 "x-rapidapi-host": "api-basketball.p.rapidapi.com",
                 "x-rapidapi-key": NBA_API_KEY,
             }
-            resp = requests.get(endpoint, headers=headers, params=params)
+            resp = requests.get(endpoint, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT)
             if resp.status_code == 200:
                 standings += f"{conference.upper()}\n"
                 for team_info in resp.json()["response"][0]:

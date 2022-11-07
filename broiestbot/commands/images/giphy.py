@@ -6,7 +6,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import GIPHY_API_KEY
+from config import GIPHY_API_KEY, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 
@@ -28,7 +28,7 @@ def giphy_image_search(query: str) -> Optional[str]:
         "lang": "en",
     }
     try:
-        resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params)
+        resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params, timeout=HTTP_REQUEST_TIMEOUT)
         images = resp.json()["data"]
         if len(images) == 0:
             return None

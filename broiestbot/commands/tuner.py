@@ -10,7 +10,7 @@ from config import (
     CHANNEL_HOST,
     CHANNEL_LIST_FILEPATH,
     CHANNEL_TUNER_HEADERS,
-    CHATANGO_SPECIAL_USERS,
+    CHATANGO_SPECIAL_USERS, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -85,7 +85,7 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
                     + "}"
                 )
                 requests.post(
-                    f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
+                    f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False, timeout=HTTP_REQUEST_TIMEOUT
                 )
                 time.sleep(2)
                 on_now = get_current_show(True, bot_username)
@@ -133,7 +133,7 @@ def get_current_show(detailed: bool, bot_username: str) -> Optional[str]:
         if bot_username != "broiestbro":
             data = '{"jsonrpc":"2.0","method":"XBMC.GetInfoLabels","params": {"labels":["VideoPlayer.Title", "VideoPlayer.MovieTitle", "VideoPlayer.TVShowTitle", "VideoPlayer.EpisodeName", "VideoPlayer.Season", "VideoPlayer.Episode", "VideoPlayer.Plot", "VideoPlayer.Genre", "Pvr.EPGEventIcon"]}, "id":1}'
             resp = requests.post(
-                f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False
+                f"{CHANNEL_HOST}jsonrpc", headers=CHANNEL_TUNER_HEADERS, data=data, verify=False, timeout=HTTP_REQUEST_TIMEOUT
             )
             json = resp.json()["result"]
             title = json["VideoPlayer.Title"]

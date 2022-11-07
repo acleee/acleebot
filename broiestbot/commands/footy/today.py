@@ -6,7 +6,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import FOOTY_FIXTURES_ENDPOINT, FOOTY_HTTP_HEADERS, FOOTY_LEAGUES
+from config import FOOTY_FIXTURES_ENDPOINT, FOOTY_HTTP_HEADERS, FOOTY_LEAGUES, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 from .util import (
@@ -101,8 +101,7 @@ def fetch_today_fixtures_by_league(
         resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
-            params=params,
-            timeout=20,
+            params=params, timeout=HTTP_REQUEST_TIMEOUT
         )
         return resp.json().get("response")
     except HTTPError as e:

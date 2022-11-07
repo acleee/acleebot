@@ -9,7 +9,7 @@ from config import (
     CHATANGO_OBI_ROOM,
     METRIC_SYSTEM_USERS,
     WEATHERSTACK_API_ENDPOINT,
-    WEATHERSTACK_API_KEY,
+    WEATHERSTACK_API_KEY, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -31,7 +31,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         "units": temperature_units,
     }
     try:
-        resp = requests.get(WEATHERSTACK_API_ENDPOINT, params=params)
+        resp = requests.get(WEATHERSTACK_API_ENDPOINT, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         if resp.status_code != 200:
             return emojize(f":warning:️️ wtf even is `{location}` :warning:")
         resp = resp.json()

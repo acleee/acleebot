@@ -9,7 +9,7 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
+    FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -101,6 +101,7 @@ def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[st
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
         )
         return res.json().get("response")
     except HTTPError as e:
@@ -126,7 +127,7 @@ def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
         req = requests.get(
             FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
-            params=params,
+            params=params, timeout=HTTP_REQUEST_TIMEOUT
         )
         events = req.json().get("response")
         if events:

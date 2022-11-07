@@ -11,7 +11,7 @@ from requests.exceptions import HTTPError
 from config import (
     REDGIFS_ACCESS_KEY,
     REDGIFS_IMAGE_SEARCH_ENDPOINT,
-    REDGIFS_TOKEN_ENDPOINT,
+    REDGIFS_TOKEN_ENDPOINT, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -48,7 +48,7 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
             endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
             params = {"search_text": query.title(), "order": "trending", "count": 80}
             headers = {"Authorization": f"Bearer {token}"}
-            resp = requests.get(endpoint, params=params, headers=headers)
+            resp = requests.get(endpoint, params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
             results = resp.json().get("gifs", None)
             if resp.status_code == 200 and results is not None:
                 results = [result for result in results if result["urls"].get("sd") is not None]
@@ -124,7 +124,7 @@ def redgifs_auth_token() -> Optional[str]:
     body = {"access_key": REDGIFS_ACCESS_KEY}
     headers = {"Content-Type": "application/json"}
     try:
-        resp = requests.post(endpoint, json=body, headers=headers)
+        resp = requests.post(endpoint, json=body, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
         if resp.status_code == 200:
             return resp.json().get("access_token")
         else:

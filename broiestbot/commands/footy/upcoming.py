@@ -12,7 +12,7 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOXES_TEAM_ID,
+    FOXES_TEAM_ID, HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -139,7 +139,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
         FOOTY_FIXTURES_ENDPOINT,
         headers=FOOTY_HTTP_HEADERS,
         params=params,
-        timeout=20,
+        timeout=HTTP_REQUEST_TIMEOUT
     )
     return resp.json().get("response")
 
@@ -176,12 +176,12 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
         season = get_season_year(EPL_LEAGUE_ID)
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
-        req = requests.get(
+        resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
-            params=params,
+            params=params, timeout=HTTP_REQUEST_TIMEOUT
         )
-        fixtures = req.json().get("response")
+        fixtures = resp.json().get("response")
         if bool(fixtures):
             for fixture in fixtures:
                 home_team = fixture["teams"]["home"]["name"]

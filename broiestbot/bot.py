@@ -124,10 +124,10 @@ class Bot(RoomManager):
             return wiki_summary(args)
         elif cmd_type == "imdb" and args:
             return find_imdb_movie(args)
-        elif cmd_type == "lesbians":
-            return get_redgifs_gif("lesbians", user_name)
-        elif cmd_type == "nsfw" and args:
-            return get_redgifs_gif(args, user_name, after_dark_only=True)
+        # elif cmd_type == "lesbians":
+        #     return get_redgifs_gif("lesbians", user_name)
+        # elif cmd_type == "nsfw" and args:
+        #     return get_redgifs_gif(args, user_name, after_dark_only=True)
         elif cmd_type == "urban" and args:
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
