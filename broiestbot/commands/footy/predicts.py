@@ -9,7 +9,8 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOOTY_PREDICTS_ENDPOINT, HTTP_REQUEST_TIMEOUT,
+    FOOTY_PREDICTS_ENDPOINT,
+    HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -67,7 +68,12 @@ def footy_fixtures_today(room: str, username: str) -> Optional[List[int]]:
         display_date, tz = get_preferred_time_format(today, room, username)
         params = {"date": display_date}
         params.update(get_preferred_timezone(room, username))
-        res = requests.get(FOOTY_FIXTURES_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        res = requests.get(
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         fixtures = res.json().get("response")
         if bool(fixtures):
             return [

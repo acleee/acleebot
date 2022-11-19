@@ -7,7 +7,13 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import MLB_BASE_ENDPOINT, MLB_LEAGUE_ID, MLB_PHILLIES_ID, RAPID_API_KEY, HTTP_REQUEST_TIMEOUT
+from config import (
+    MLB_BASE_ENDPOINT,
+    MLB_LEAGUE_ID,
+    MLB_PHILLIES_ID,
+    RAPID_API_KEY,
+    HTTP_REQUEST_TIMEOUT,
+)
 from logger import LOGGER
 
 from .util import parse_mlb_game

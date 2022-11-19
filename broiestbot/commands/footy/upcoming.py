@@ -12,7 +12,8 @@ from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
-    FOXES_TEAM_ID, HTTP_REQUEST_TIMEOUT,
+    FOXES_TEAM_ID,
+    HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -139,7 +140,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
         FOOTY_FIXTURES_ENDPOINT,
         headers=FOOTY_HTTP_HEADERS,
         params=params,
-        timeout=HTTP_REQUEST_TIMEOUT
+        timeout=HTTP_REQUEST_TIMEOUT,
     )
     return resp.json().get("response")
 
@@ -179,7 +180,8 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
         resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
-            params=params, timeout=HTTP_REQUEST_TIMEOUT
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
         )
         fixtures = resp.json().get("response")
         if bool(fixtures):

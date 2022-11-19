@@ -52,7 +52,10 @@ def get_urban_definition(term: str) -> str:
     headers = {"Content-Type": "application/json"}
     try:
         req = requests.get(
-            "http://api.urbandictionary.com/v0/define", params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT
+            "http://api.urbandictionary.com/v0/define",
+            params=params,
+            headers=headers,
+            timeout=HTTP_REQUEST_TIMEOUT,
         )
         results = req.json().get("list")
         if results:

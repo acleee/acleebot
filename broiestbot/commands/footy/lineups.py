@@ -6,7 +6,12 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import FOOTY_HTTP_HEADERS, FOOTY_LEAGUES_LINEUPS, FOOTY_XI_ENDPOINT, HTTP_REQUEST_TIMEOUT
+from config import (
+    FOOTY_HTTP_HEADERS,
+    FOOTY_LEAGUES_LINEUPS,
+    FOOTY_XI_ENDPOINT,
+    HTTP_REQUEST_TIMEOUT,
+)
 from logger import LOGGER
 
 from .today import fetch_today_fixtures_by_league, parse_upcoming_fixture
@@ -49,7 +54,12 @@ def fetch_lineups_per_fixture(fixture_id: str) -> Optional[dict]:
     """
     try:
         params = {"fixture": fixture_id}
-        resp = requests.get(FOOTY_XI_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        resp = requests.get(
+            FOOTY_XI_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         team_lineups = resp.json().get("response")
         if resp.status_code == 200 and team_lineups:
             return team_lineups

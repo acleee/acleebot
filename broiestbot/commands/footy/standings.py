@@ -12,7 +12,8 @@ from config import (
     FOOTY_HTTP_HEADERS,
     FOOTY_STANDINGS_ENDPOINT,
     LIGA_LEAGUE_ID,
-    LIGUE_ONE_ID, HTTP_REQUEST_TIMEOUT,
+    LIGUE_ONE_ID,
+    HTTP_REQUEST_TIMEOUT,
 )
 from logger import LOGGER
 
@@ -28,7 +29,12 @@ def epl_standings() -> Optional[str]:
     try:
         standings_table = "\n\n\n\n"
         params = {"league": EPL_LEAGUE_ID, "season": get_season_year(EPL_LEAGUE_ID)}
-        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -61,7 +67,12 @@ def liga_standings() -> Optional[str]:
     try:
         standings_table = "\n\n\n\n"
         params = {"league": LIGA_LEAGUE_ID, "season": get_season_year(LIGA_LEAGUE_ID)}
-        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -94,7 +105,12 @@ def bund_standings() -> Optional[str]:
     try:
         standings_table = "\n\n]\n"
         params = {"league": BUND_LEAGUE_ID, "season": get_season_year(BUND_LEAGUE_ID)}
-        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -127,7 +143,12 @@ def efl_standings() -> Optional[str]:
     try:
         standings_table = "\n\n\n\n"
         params = {"league": EFL_LEAGUE_ID, "season": get_season_year(EFL_LEAGUE_ID)}
-        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:
@@ -160,7 +181,12 @@ def ligue_standings() -> Optional[str]:
     try:
         standings_table = "\n\n\n\n"
         params = {"league": LIGUE_ONE_ID, "season": get_season_year(LIGUE_ONE_ID)}
-        req = requests.get(FOOTY_STANDINGS_ENDPOINT, headers=FOOTY_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
         res = req.json()
         standings = res["response"][0]["league"]["standings"][0]
         for standing in standings:

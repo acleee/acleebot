@@ -101,7 +101,8 @@ def fetch_today_fixtures_by_league(
         resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
-            params=params, timeout=HTTP_REQUEST_TIMEOUT
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
         )
         return resp.json().get("response")
     except HTTPError as e:

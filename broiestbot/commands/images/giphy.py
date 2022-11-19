@@ -28,7 +28,9 @@ def giphy_image_search(query: str) -> Optional[str]:
         "lang": "en",
     }
     try:
-        resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params, timeout=HTTP_REQUEST_TIMEOUT)
+        resp = requests.get(
+            "https://api.giphy.com/v1/gifs/search", params=params, timeout=HTTP_REQUEST_TIMEOUT
+        )
         images = resp.json()["data"]
         if len(images) == 0:
             return None

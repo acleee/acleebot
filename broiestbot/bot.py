@@ -296,8 +296,6 @@ class Bot(RoomManager):
         """
         if f"@{bot_username}" in chat_message and "*waves*" in chat_message:
             self._wave_back(room, user_name, bot_username)
-        elif chat_message == "no u":
-            ban_word(room, message, user_name, silent=True)
         elif (
             "petition" in chat_message
             and "competition" not in chat_message
