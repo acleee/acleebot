@@ -204,7 +204,7 @@ FOOTY_HTTP_HEADERS = {
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
 }
 
-# 2020-2021 Footy Leagues
+# 2021-2022 Footy Leagues
 EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2
 FA_CUP_ID = 45
@@ -240,7 +240,7 @@ CARABOU_CUP_ID = 48
 AFRICA_CUP_ID = 6
 
 FOOTY_LEAGUES = {
-    ":trophy: WORLD": WORLDCUP_LEAGUE_ID,
+    ":trophy: WORLD": WORLD_CUP_ID,
     ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":lion: EPL": EPL_LEAGUE_ID,
@@ -249,7 +249,7 @@ FOOTY_LEAGUES = {
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":trophy: :England: FA Cup": FA_TROPHY_ID,
+    ":trophy: :England: FA Trophy": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
     # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
