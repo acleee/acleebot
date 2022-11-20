@@ -240,7 +240,7 @@ CARABOU_CUP_ID = 48
 AFRICA_CUP_ID = 6
 
 FOOTY_LEAGUES = {
-    ":trophy: WORLD": WORLD_CUP_ID,
+    ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
     ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":lion: EPL": EPL_LEAGUE_ID,
