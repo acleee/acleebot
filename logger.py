@@ -89,7 +89,7 @@ def json_formatter(record: dict) -> str:
             }
             return json.dumps(subset)
 
-    serialized_log = record["extra"]["serialized"]
+    serialized_log = record["extra"].get("serialized")
     if serialized_log:
         log_level = record["level"].name
         if log_level in ("WARNING", "SUCCESS", "TRACE", "MESSAGE"):
