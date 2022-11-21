@@ -37,6 +37,6 @@ def start_bot():
         join_rooms([CHATANGO_TEST_ROOM])
     else:
         options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
-        # initialize(**options)
+        initialize(**options)
         print(f'Joining {", ".join(CHATANGO_ROOMS)}')
         join_rooms(CHATANGO_ROOMS)

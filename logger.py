@@ -89,13 +89,16 @@ def json_formatter(record: dict) -> str:
             }
             return json.dumps(subset)
 
-    if record["level"].name in ("WARNING", "SUCCESS", "TRACE", "MESSAGE"):
-        record["extra"]["serialized"] = serialize_event(record)
-    elif record["level"].name == "INFO":
-        record["extra"]["serialized"] = serialize_as_admin(record)
-    else:
-        record["extra"]["serialized"] = serialize_error(record)
-        sms_error_handler(record)
+    serialized_log = record["extra"]["serialized"]
+    if serialized_log:
+        log_level = record["level"].name
+        if log_level in ("WARNING", "SUCCESS", "TRACE", "MESSAGE"):
+            serialized_log = serialize_event(record)
+        elif log_level == "INFO":
+            serialized_log = serialize_as_admin(record)
+        elif log_level in ("ERROR", "CRITICAL"):
+            serialized_log = serialize_error(record)
+            sms_error_handler(record)
 
     if record["extra"].get("serialized") is not None:
         return "{extra[serialized]},\n"

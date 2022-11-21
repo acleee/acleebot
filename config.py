@@ -262,7 +262,7 @@ FOOTY_LEAGUES = {
     # n":Germany: BUND": BUND_LEAGUE_ID,
     # n":Italy: Serie A": SERIE_A_LEAGUE_ID,
     # ":France: Ligue 1": LIGUE_ONE_ID,
-    ":England: LEAGUE ONE": LEAGUE_ONE_ID,
+    # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":trophy: COMMUNITY": COMMUNITY_SHIELD_CUP,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
