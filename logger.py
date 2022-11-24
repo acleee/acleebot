@@ -28,7 +28,7 @@ def json_formatter(record: dict) -> str:
         """
         try:
             chat_data = re.search(
-                r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log["message"]
+                r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message")
             )
             if chat_data and log.get("message") is not None:
                 chat_dict = chat_data.groupdict()
@@ -149,13 +149,13 @@ def create_logger() -> logger:
     logger.remove()
     logger.add(stdout, colorize=True, catch=True, format=log_formatter)
     if ENVIRONMENT == "production":
-        """logger.add(
-            "/var/log/broiestbot/info.json",
+        logger.add(
+            "/var/log/broiestbot/ddog.json",
             format=json_formatter,
             rotation="300 MB",
             compression="zip",
             catch=True,
-        )"""
+        )
         logger.add(
             "/var/log/broiestbot/info.log",
             colorize=True,

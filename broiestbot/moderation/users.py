@@ -5,7 +5,7 @@ from emoji import emojize
 from chatango.ch import Message, Room
 from config import (
     CHATANGO_BLACKLISTED_USERS,
-    CHATANGO_EGGSER_IP,
+    CHATANGO_BANNED_IPS,
     CHATANGO_EGGSER_USERNAME_WHITELIST,
     CHATANGO_IGNORED_IPS,
     CHATANGO_IGNORED_USERS,
@@ -35,7 +35,7 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
         room.ban_user(message.user)
     elif (
         message.ip is not None
-        and message.ip.startswith(CHATANGO_EGGSER_IP)
+        and message.ip in CHATANGO_BANNED_IPS
         and message.user.name.lower() not in CHATANGO_EGGSER_USERNAME_WHITELIST
     ):
         ban_user(room, message)
