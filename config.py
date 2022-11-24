@@ -249,7 +249,7 @@ FOOTY_LEAGUES = {
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":trophy: :England: FA Trophy": FA_TROPHY_ID,
+    # ":trophy: :England: FA Trophy": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
     # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
@@ -273,13 +273,14 @@ FOOTY_LEAGUES = {
 }
 
 FOOTY_LEAGUES_LINEUPS = {
+    ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     # ":trophy: UCL": UCL_LEAGUE_ID,
     # ":European_Union: EUROPA": UEFA_EUROPA_ID,
     # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
+    # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     # ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":Spain: LIGA": LIGA_LEAGUE_ID,
+    # ":Spain: LIGA": LIGA_LEAGUE_ID,
 }
 
 GOLDEN_SHOE_LEAGUES = {
