@@ -12,18 +12,14 @@ from config import BASE_DIR, ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_
 def json_formatter(record: dict) -> str:
     """
     Format info message logs.
-
     :param dict record: Log object containing log metadata & message.
-
     :returns: str
     """
 
     def serialize_as_admin(log: dict) -> str:
         """
         Construct JSON info log record where user is room admin.
-
         :param dict log: Dictionary containing logged message with metadata.
-
         :returns: str
         """
         try:
@@ -48,9 +44,7 @@ def json_formatter(record: dict) -> str:
     def serialize_event(log: dict) -> str:
         """
         Construct warning log.
-
         :param dict log: Dictionary containing logged message with metadata.
-
         :returns: str
         """
         try:
@@ -76,9 +70,7 @@ def json_formatter(record: dict) -> str:
     def serialize_error(log: dict) -> str:
         """
         Construct error log record.
-
         :param dict log: Dictionary containing logged message with metadata.
-
         :returns: str
         """
         if log is not None and log.get("message") is not None:
@@ -92,22 +84,20 @@ def json_formatter(record: dict) -> str:
     serialized_log = record["extra"].get("serialized")
     if serialized_log:
         log_level = record["level"].name
-        if log_level in ("WARNING", "SUCCESS", "TRACE", "MESSAGE"):
+        if log_level in ("WARNING", "SUCCESS"):
             serialized_log = serialize_event(record)
         elif log_level == "INFO":
             serialized_log = serialize_as_admin(record)
         elif log_level in ("ERROR", "CRITICAL"):
             serialized_log = serialize_error(record)
             sms_error_handler(record)
-
-    if record["extra"].get("serialized") is not None:
-        return "{extra[serialized]},\n"
+    else:
+        return f"{serialized_log},\n"
 
 
 def sms_error_handler(log: dict) -> None:
     """
     Trigger error log SMS notification.
-
     :param dict log: Log object containing log metadata & message.
     """
     sms.messages.create(
@@ -120,9 +110,7 @@ def sms_error_handler(log: dict) -> None:
 def log_formatter(record: dict) -> str:
     """
     Formatter for .log records
-
     :param dict record: Log object containing log metadata & message.
-
     :returns: str
     """
     if record["level"].name == "TRACE":
@@ -143,19 +131,11 @@ def log_formatter(record: dict) -> str:
 def create_logger() -> logger:
     """
     Configure custom logger.
-
     :returns: logger
     """
     logger.remove()
     logger.add(stdout, colorize=True, catch=True, format=log_formatter)
     if ENVIRONMENT == "production":
-        logger.add(
-            "/var/log/broiestbot/ddog.json",
-            format=json_formatter,
-            rotation="300 MB",
-            compression="zip",
-            catch=True,
-        )
         logger.add(
             "/var/log/broiestbot/info.log",
             colorize=True,
@@ -177,12 +157,10 @@ def create_logger() -> logger:
         )
     elif ENVIRONMENT == "development":
         logger.add(
-            f"{BASE_DIR}/logs/error.log",
+            f"{BASE_DIR}/logs/info.log",
             colorize=True,
-            level="ERROR",
-            format="<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | "
-            + "<red>{level}</red>: "
-            + "<light-white>{message}</light-white>",
+            catch=True,
+            format=log_formatter,
             rotation="300 MB",
             compression="zip",
         )
