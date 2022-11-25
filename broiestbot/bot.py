@@ -237,7 +237,7 @@ class Bot(RoomManager):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
         # ban_word(room, message, user_name, silent=False)
-        elif chat_message.trim() == "image not found :(":
+        elif chat_message == "image not found :(":
             ban_word(room, message, user_name, silent=True)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
