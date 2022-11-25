@@ -237,6 +237,8 @@ class Bot(RoomManager):
         # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
         # ban_word(room, message, user_name, silent=False)
+        elif chat_message.trim() == "image not found :(":
+            ban_word(room, message, user_name, silent=True)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
@@ -287,7 +289,7 @@ class Bot(RoomManager):
         Search database for non-command phrases which elicit a response.
 
         :param str chat_message: A non-command chat which may prompt a response.
-        :param Room room: Current chatango room object.
+        :param Room room: Current Chatango room object.
         :param str user_name: User responsible for triggering command.
         :param Message message: Chatango message object to be parsed.
         :param str bot_username: Username of the currently-running bot.
