@@ -39,6 +39,7 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
         return upcoming_fixtures
     return emojize(
         f":soccer_ball: :cross_mark: sry @{username} no fixtures today :( :cross_mark: :soccer_ball:",
+        language="en",
     )
 
 
@@ -64,7 +65,7 @@ def today_upcoming_fixtures_per_league(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
                 if i == 0 and len(fixture) > 1:
-                    league_upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n")
+                    league_upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
                 league_upcoming_fixtures += parse_upcoming_fixture(
                     fixture, fixture_start_time, room, username
                 )

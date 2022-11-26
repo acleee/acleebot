@@ -28,7 +28,7 @@ def get_footy_odds():
             fixture_odds = get_fixture_odds(fixtures)
 
         return emojize(
-            f":yellow_square: idk what happened bot died rip :yellow_square:",
+            f":yellow_square: idk what happened bot died rip :yellow_square:", language="en"
         )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy odds: {e.response.content}")
@@ -52,7 +52,5 @@ def get_fixture_odds(fixtures: List[dict]):
                                         Draw: {odds[1]}\n \
                                         {away_team}: {odds[2]}\n\n"
         if fixture_odds:
-            return emojize(
-                f"\n\n\n\n:soccer: :moneybag: EPL ODDS\n\n{fixture_odds}",
-            )
+            return emojize(f"\n\n\n\n:soccer: :moneybag: EPL ODDS\n\n{fixture_odds}", language="en")
     return None

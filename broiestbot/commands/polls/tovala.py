@@ -26,17 +26,20 @@ def tovala_counter(user_name: str) -> str:
         standing_total_sightings = get_current_total()
         LOGGER.success(f"Saved Tovala sighting to Redis: (tovala, {user_name})")
         return emojize(
-            f"\n\n<b>:shallow_pan_of_food: {session_total_sightings} CONSECUTIVE TOVALAS!</b>\n{tovala_contributors}\n:keycap_#: Highest streak: {standing_total_sightings}"
+            f"\n\n<b>:shallow_pan_of_food: {session_total_sightings} CONSECUTIVE TOVALAS!</b>\n{tovala_contributors}\n:keycap_#: Highest streak: {standing_total_sightings}",
+            language="en",
         )
     except RedisError as e:
         LOGGER.error(f"RedisError while saving Tovala streak from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while saving Tovala streak from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
+            language="en",
         )
 
 

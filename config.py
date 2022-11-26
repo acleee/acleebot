@@ -242,7 +242,6 @@ AFRICA_CUP_ID = 6
 FOOTY_LEAGUES = {
     ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
     ":smiley: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
-    # ":world_map: WORLD CUP": WORLD_CUP_ID,
     # ":lion: EPL": EPL_LEAGUE_ID,
     # ":trophy: UCL": UCL_LEAGUE_ID,
     # ":European_Union: EUROPA": UEFA_EUROPA_ID,

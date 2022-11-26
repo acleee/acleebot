@@ -46,5 +46,6 @@ def formatted_tovala_result(r: Redis) -> str:
     number_tovalas = len(r.hvals("tovala"))
     tovala_users = r.hgetall("tovala")
     return emojize(
-        f"\n\n<b>:shallow_pan_of_food: {number_tovalas} CONSECUTIVE TOVALAS!</b>\n{tally_tovala_sightings_by_user(tovala_users)}\n:keycap_#: Highest streak: 3"
+        f"\n\n<b>:shallow_pan_of_food: {number_tovalas} CONSECUTIVE TOVALAS!</b>\n{tally_tovala_sightings_by_user(tovala_users)}\n:keycap_#: Highest streak: 3",
+        language="en",
     )

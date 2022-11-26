@@ -24,7 +24,7 @@ def live_nba_games() -> str:
                 if game["status"]["short"] != "NS" and game["status"]["short"] != "FT"
             ]
             if len(live_games) > 0:
-                games += emojize(":basketball: <b>Live NBA Games:</b>\n")
+                games += emojize(":basketball: <b>Live NBA Games:</b>\n", language="en")
                 for game in live_games:
                     away_team = game["teams"]["away"]["name"]
                     away_team_score = game["scores"]["away"]["total"]

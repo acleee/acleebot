@@ -214,7 +214,10 @@ class Bot(RoomManager):
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
-        return emojize(f":warning: idk wtf u did but bot is ded now, thanks @{user_name} :warning:")
+        return emojize(
+            f":warning: idk wtf u did but bot is ded now, thanks @{user_name} :warning:",
+            language="en",
+        )
 
     def on_message(self, room: Room, user: User, message: Message) -> None:
         """

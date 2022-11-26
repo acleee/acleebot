@@ -37,7 +37,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
             i += 1
             live_fixtures += live_league_fixtures + "\n"
     if live_fixtures == "\n\n\n\n":
-        return emojize(":warning: No live fixtures :( :warning:")
+        return emojize(":warning: No live fixtures :warning:", language="en")
     return live_fixtures
 
 
@@ -59,7 +59,7 @@ def footy_live_fixtures_per_league(
         live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
-            live_fixtures += emojize(f"<b>{league_name}:</b>\n")
+            live_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
@@ -98,13 +98,14 @@ def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[st
     try:
         params = {"league": league_id, "live": "all"}
         params.update(get_preferred_timezone(room, username))
-        res = requests.get(
+        resp = requests.get(
             FOOTY_FIXTURES_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
             params=params,
             timeout=HTTP_REQUEST_TIMEOUT,
         )
-        return res.json().get("response")
+        if resp.status_code == 200:
+            return resp.json()["response"]
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -137,30 +138,37 @@ def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
                 if event["detail"] == "Yellow Card":
                     event_log = event_log + emojize(
                         f':yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["detail"] == "Second Yellow card":
                     event_log = event_log + emojize(
                         f':yellow_square::yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["detail"] == "Red Card":
                     event_log = event_log + emojize(
                         f':red_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["detail"] == "Normal Goal":
                     event_log = event_log + emojize(
                         f':soccer_ball: {event["type"]}, {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["detail"] == "Penalty":
                     event_log = event_log + emojize(
                         f':goal_net: :soccer_ball: (PEN), {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["detail"] == "Own Goal":
                     event_log = event_log + emojize(
                         f':skull: :soccer_ball: {event["player"]["name"]} (via {event["assist"]["name"]}) {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
                 elif event["type"] == "subst" and subs is True:
                     event_log = event_log + emojize(
                         f':red_triangle_pointed_down: {event["assist"]["name"]} :evergreen_tree: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        language="en",
                     )
             return event_log
         return None

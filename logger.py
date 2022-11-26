@@ -91,8 +91,6 @@ def json_formatter(record: dict) -> str:
         elif log_level in ("ERROR", "CRITICAL"):
             serialized_log = serialize_error(record)
             sms_error_handler(record)
-    else:
-        return f"{serialized_log},\n"
 
 
 def sms_error_handler(log: dict) -> None:
@@ -109,8 +107,10 @@ def sms_error_handler(log: dict) -> None:
 
 def log_formatter(record: dict) -> str:
     """
-    Formatter for .log records
+    Format `.log` records.
+
     :param dict record: Log object containing log metadata & message.
+
     :returns: str
     """
     if record["level"].name == "TRACE":

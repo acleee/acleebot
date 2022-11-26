@@ -34,13 +34,14 @@ def weather_by_location(location: str, room: str, user: str) -> str:
     try:
         resp = requests.get(WEATHERSTACK_API_ENDPOINT, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         if resp.status_code != 200:
-            return emojize(f":warning:️️ wtf even is `{location}` :warning:")
+            return emojize(f":warning:️️ wtf even is `{location}` :warning:", language="en")
         resp = resp.json()
         if resp.get("success") == "false":
-            return emojize(f":warning:️️ {resp['error']['info']} :warning:")
+            return emojize(f":warning:️️ {resp['error']['info']} :warning:", language="en")
         if resp.get("current") is None:
             return emojize(
                 f":warning:️️ idk wtf you did but `{location}` fucked me up b :warning:",
+                language="en",
             )
         weather_code = resp["current"]["weather_code"]
         is_day = resp["current"]["is_day"]
@@ -63,21 +64,24 @@ def weather_by_location(location: str, room: str, user: str) -> str:
                         {humidity_emoji} Humidity: {humidity}%\n \
                         {cloud_cover_emoji} Cloud cover: {cloud_cover}%\n \
                         :wind_face: Wind speed: {wind_speed}{"km/h" if params["units"] == "m" else "mph"}\n \
-                        :six-thirty: {local_time}'
+                        :six-thirty: {local_time}',
+            language="en",
         )
         return response
     except HTTPError as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e.response.content}")
-        return emojize(f":warning:️️ fk me the weather API is down :warning:")
+        return emojize(f":warning:️️ fk me the weather API is down :warning:", language="en")
     except KeyError as e:
-        LOGGER.error(f"KeyError while fetching weather for `{location}`: {e}")
+        LOGGER.error(f"KeyError while fetching weather for `{location}`: {e}", language="en")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Failed to get weather for `{location}`: {e}")
         return emojize(
             f":warning:️️ omfg u broke the bot WHAT DID YOU DO IM DEAD AHHHHHH :warning:",
+            language="en",
         )
 
 
@@ -111,7 +115,7 @@ def get_weather_emoji(weather_code: int, is_day: str) -> str:
         "sun",
         None,
     ]:
-        return emojize(":night_with_stars:")
+        return emojize(":night_with_stars:", language="en")
     elif weather_emoji.icon and is_day == "no":
         return weather_emoji.icon
     return ":sun:"

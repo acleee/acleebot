@@ -41,11 +41,11 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None and i < 6:
             i += 1
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n")
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:")
+    return emojize(":warning: Couldn't find any upcoming fixtures :warning:", language="en")
 
 
 def footy_all_upcoming_fixtures(room: str, username: str) -> str:
@@ -61,11 +61,13 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None:
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n")
+            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(":warning: Couldn't find any upcoming fixtures :( :warning:")
+    return emojize(
+        ":warning: Couldn't find upcoming fixtures for the next week :warning:", language="en"
+    )
 
 
 def footy_upcoming_fixtures_per_league(
@@ -87,7 +89,9 @@ def footy_upcoming_fixtures_per_league(
         if bool(fixtures) is not False:
             for fixture in fixtures:
                 date = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
-                upcoming_fixtures += add_upcoming_fixture(fixture, date, room, username)
+                upcoming_fixture = add_upcoming_fixture(fixture, date, room, username)
+                if upcoming_fixture:
+                    upcoming_fixtures += upcoming_fixture
             return upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
@@ -101,7 +105,7 @@ def upcoming_fixture_fetcher(
     league_name: str, league_id: int, room: str, username: str
 ) -> Optional[List[dict]]:
     """
-    Fetch next 5 upcoming fixtures for a given league.
+    Fetch 6 upcoming fixtures for each top league, or 3 for each lower league.
 
     :param str league_name: Name of the league/cup.
     :param int league_id: ID of footy league/cup.
@@ -120,10 +124,6 @@ def upcoming_fixture_fetcher(
         }
         params.update(get_preferred_timezone(room, username))
         return fetch_upcoming_fixtures_by_league(params)
-    except HTTPError as e:
-        LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
-    except KeyError as e:
-        LOGGER.error(f"KeyError while fetching footy fixtures: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
@@ -136,13 +136,21 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
 
     :returns: Optional[List[dict]]
     """
-    resp = requests.get(
-        FOOTY_FIXTURES_ENDPOINT,
-        headers=FOOTY_HTTP_HEADERS,
-        params=params,
-        timeout=HTTP_REQUEST_TIMEOUT,
-    )
-    return resp.json().get("response")
+    try:
+        resp = requests.get(
+            FOOTY_FIXTURES_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
+        if resp.status_code == 200:
+            return resp.json()["response"]
+    except HTTPError as e:
+        LOGGER.error(
+            f"HTTPError {resp.status_code} while fetching footy fixtures: {e.response.content}"
+        )
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
 def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str) -> str:
@@ -197,7 +205,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 )
             return emojize(upcoming_foxtures)
         return emojize(
-            f":warning: Couldn't find fixtures, has season started yet? :warning:",
+            f":warning: Couldn't find fixtures, has season started yet? :warning:", language="en"
         )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching fox fixtures: {e.response.content}")

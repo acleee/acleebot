@@ -59,13 +59,13 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                 )
                 return response
             LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
-            return emojize(f":warning: wtf kind of movie is {movie} :warning:")
+            return emojize(f":warning: wtf kind of movie is {movie} :warning:", language="en")
     except IMDbError as e:
         LOGGER.warning(f"IMDB failed to find `{movie_title}`: {e}")
-        return emojize(f":warning: wtf kind of movie is {movie_title} :warning:")
+        return emojize(f":warning: wtf kind of movie is {movie_title} :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error while fetching IMDB movie `{movie_title}`: {e}")
-        return emojize(f":warning: omfg u broke me with ur shit movie :warning:")
+        return emojize(f":warning: omfg u broke me with ur shit movie :warning:", language="en")
 
 
 def get_box_office_data(movie: Movie) -> Optional[str]:

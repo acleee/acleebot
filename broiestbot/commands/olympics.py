@@ -45,9 +45,9 @@ def get_medals_by_nation(endpoint: str) -> str:
         medals_df.rename(
             columns={
                 "Group": "&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;",
-                "G": f"{emojize(':1st_place_medal:')}",
-                "S": f"{emojize(':2nd_place_medal:')}",
-                "B": f"{emojize(':3rd_place_medal:')}",
+                "G": f"{emojize(':1st_place_medal:', language='en')}",
+                "S": f"{emojize(':2nd_place_medal:', language='en')}",
+                "B": f"{emojize(':3rd_place_medal:', language='en')}",
             },
             inplace=True,
         )
@@ -57,7 +57,7 @@ def get_medals_by_nation(endpoint: str) -> str:
         )
     except Exception as e:
         LOGGER.error(f"Exception occurred while fetching winter olympics leaderboard: {e}")
-        return emojize(":warning: lmao nobody has won anything yet retart :warning:")
+        return emojize(":warning: lmao nobody has won anything yet retart :warning:", language="en")
 
 
 def add_nation_flag_emojis(row: Series):

@@ -33,6 +33,7 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
                 f":television: <b>CHANGE OR STAY!</b>\n"
                 f"@{user_name} just started a poll and voted to <b>{vote}</b>.\n"
                 f"Voting ends in 60 seconds.",
+                language="en",
             )
         elif r.sismember("change", user_name) or r.sismember("stay", user_name):
             return f":warning: pls @{user_name} u already voted :warning:"
@@ -42,16 +43,19 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
             f"<b>CHANGE:</b> {change_votes}\n"
             f"<b>STAY:</b> {stay_votes}\n"
             f":alarm_clock: REMAINING: {r.ttl(vote)}",
+            language="en",
         )
     except RedisError as e:
         LOGGER.error(f"RedisError while saving 'change or stay' vote from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert is strugglin with polls atm :warning:",
+            language="en",
         )
     except Exception as e:
         LOGGER.error(f"Unexpected error while saving 'change or stay' vote from @{user_name}: {e}")
         return emojize(
             f":warning: my b @{user_name}, broughbert just broke like a littol BITCH :warning:",
+            language="en",
         )
 
 

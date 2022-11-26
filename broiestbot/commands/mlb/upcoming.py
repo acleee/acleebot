@@ -31,6 +31,7 @@ def parse_upcoming_mlb_game(game: dict) -> Optional[str]:
             f":baseball: <b>{away_name}</b> @ <b>{home_name}</b> \n"
             f":input_numbers: {away_stats} - {home_stats}\n"
             f":nine_o’clock: Today, {start_time}",
+            language="en",
         )
     except ValueError as e:
         LOGGER.error(f"ValueError while parsing upcoming Phillies game: {e}")
