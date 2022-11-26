@@ -155,6 +155,12 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
+        logger.add(
+            "/var/log/broiestbot/ddog.json",
+            format=json_formatter,
+            rotation="500 MB",
+            compression="zip",
+        )
     elif ENVIRONMENT == "development":
         logger.add(
             f"{BASE_DIR}/logs/info.log",

@@ -1,8 +1,16 @@
 """Initialize bot."""
 from typing import List
+from datadog import initialize
 
 from broiestbot.bot import Bot
-from config import CHATANGO_ROOMS, CHATANGO_TEST_ROOM, CHATANGO_USERS, ENVIRONMENT
+from config import (
+    CHATANGO_ROOMS,
+    CHATANGO_TEST_ROOM,
+    CHATANGO_USERS,
+    ENVIRONMENT,
+    DATADOG_API_KEY,
+    DATADOG_APP_KEY,
+)
 
 
 def join_rooms(rooms: List[str]):
@@ -35,8 +43,13 @@ def start_bot():
     if ENVIRONMENT == "development":
         print("Starting in dev mode...")
         join_rooms([CHATANGO_TEST_ROOM])
-    else:
-        # options = {"statsd_host": "127.0.0.1", "statsd_port": 8125}
-        # initialize(**options)
+    elif ENVIRONMENT == "production":
+        initialize(
+            api_key=DATADOG_API_KEY,
+            app_key=DATADOG_APP_KEY,
+            statsd_host="127.0.0.1",
+            statsd_port=8125,
+            statsd_constant_tags=["env:production", "service:broiestbot"],
+        )
         print(f'Joining {", ".join(CHATANGO_ROOMS)}')
         join_rooms(CHATANGO_ROOMS)
