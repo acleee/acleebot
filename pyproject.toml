@@ -48,6 +48,7 @@ html5lib = "*"
 google-api-python-client = "*"
 PyMultiDictionary = "*"
 metadata-parser = "^0.10.5"
+PSNAWP = "*"
 
 [tool.poetry.dev-dependencies]
 pytest = "*"

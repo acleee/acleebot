@@ -27,12 +27,14 @@ from config import (  # YOUTUBE_API_KEY,
     REDIS_PORT,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
+    PLAYSTATION_SSO_TOKEN,
 )
 
 from .crypto import CryptoChartHandler
 from .gcs import GCS
 from .geo import GeoIP
 from .stock import StockChartHandler
+from .psn import PlaystationClient
 
 # Google Cloud Storage
 gcs = GCS(GOOGLE_BUCKET_NAME, GOOGLE_BUCKET_URL)
@@ -79,3 +81,6 @@ r = redis.Redis(
 
 # Youtube
 # yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
+
+# Playstation
+psn = PlaystationClient(token=PLAYSTATION_SSO_TOKEN)

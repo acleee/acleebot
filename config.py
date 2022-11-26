@@ -343,3 +343,6 @@ NBA_BASE_URL = "https://api-basketball.p.rapidapi.com"
 NBA_API_KEY = getenv("NBA_API_KEY")
 NBA_CONFERENCE_NAMES = ["Eastern Conference", "Western Conference"]
 NBA_SEASON_YEAR = "2021-2022"
+
+# Playstation
+PLAYSTATION_SSO_TOKEN = getenv("PLAYSTATION_SSO_TOKEN")
