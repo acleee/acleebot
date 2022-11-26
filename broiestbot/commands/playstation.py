@@ -1,22 +1,28 @@
 """PSN Commands"""
 
 from clients import psn
-from logger import LOGGER
+from emoji import emojize
 
 
 def get_current_psn_user():
     """Test PSN API."""
     online_id = psn.account.online_id
-    account_id = psn.account.account_id
     friends = psn.account.friends_list()
-    friends = [
-        f"{friend.online_id}\n"
+    online_friends = [
+        friend
         for friend in friends
         if friend.get_presence()["basicPresence"]["availability"] != "unavailable"
     ]
-    LOGGER.info(f"Online ID: {online_id}\nAccount ID: {account_id}\nFriends: {friends}")
-    if friends:
-        response = f"\n\n{online_id}'s online PSN friends\n:"
-        for friend in friends:
+    friend_statuses = [
+        f"{friend.online_id}: playing {friend.get_presence()['gameTitleInfoList'][0]['titleName']} on {friend.get_presence()['basicPresence']['platform']}"
+        if friend.get_presence().get("gameTitleInfoList") is not None
+        else f"{friend.online_id}"
+        for friend in online_friends
+    ]
+    if friend_statuses:
+        response = emojize(
+            f"\n\n:video_game: <b>{online_id.upper()}'s online PSN friends</b>:\n", language="en"
+        )
+        for friend in friend_statuses:
             response += f"{friend}\n"
         return response
