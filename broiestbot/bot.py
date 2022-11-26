@@ -57,6 +57,7 @@ from broiestbot.commands import (
     upcoming_nba_games,
     weather_by_location,
     wiki_summary,
+    get_current_psn_user,
 )
 from chatango.ch import Message, Room, RoomManager, User
 from config import CHATANGO_BOTS
@@ -206,6 +207,8 @@ class Bot(RoomManager):
             return gcs_count_images_in_bucket(content)
         elif cmd_type == "changeorstay":
             return change_or_stay_vote(user_name, content)
+        elif cmd_type == "psn":
+            return get_current_psn_user()
         # elif cmd_type == "philliesgames":
         #    return today_phillies_games()
         # elif cmd_type == "youtube" and args:
