@@ -1,5 +1,6 @@
 """Persist user metadata."""
 from typing import Optional
+from datetime import datetime
 
 from database import session
 from database.models import ChatangoUser
@@ -59,7 +60,7 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
                         is_tor=user_metadata.get("threat").get("is_tor"),
                         is_known_attacker=user_metadata.get("threat").get("is_known_attacker"),
                         is_known_abuser=user_metadata.get("threat").get("is_known_abuser"),
-                        is_bogon=user_metadata.get("threat").get("is_bogon"),
+                        created_at=datetime.now()
                     )
                 )
                 # fmt: on

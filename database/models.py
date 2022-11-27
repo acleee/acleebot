@@ -38,7 +38,7 @@ class Command(Base):
 
 
 class Phrase(Base):
-    """Reserved phrases which prompt a response (no `!` required)."""
+    """Reserved phrases which trigger a response."""
 
     __tablename__ = "phrases"
 
@@ -52,7 +52,7 @@ class Phrase(Base):
 
 
 class ChatangoUser(Base):
-    """Chatango user metadata for anon auditing purposes."""
+    """Chatango user metadata."""
 
     __tablename__ = "user"
 
@@ -86,7 +86,8 @@ class ChatangoUser(Base):
     is_tor = Column(Boolean)
     is_known_attacker = Column(Boolean)
     is_known_abuser = Column(Boolean)
-    is_bogon = Column(Boolean)
+    created_at = Column(DateTime, server_default=func.now())
+    updated_at = Column(DateTime, onupdate=func.now())
 
     def __repr__(self):
         return f"username={self.username}, chatango_room={self.chatango_room}, city={self.city}, region={self.ip}"
