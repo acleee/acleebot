@@ -8,7 +8,7 @@ Base = declarative_base()
 
 
 class Chat(Base):
-    """Chatango user chat to persist in logs."""
+    """Single chat (from a user) to persist in logs."""
 
     __tablename__ = "chat"
 
@@ -23,7 +23,7 @@ class Chat(Base):
 
 
 class Command(Base):
-    """Bot commands triggered by `!` prefix upon chat."""
+    """Bot commands triggered by `!` prefix."""
 
     __tablename__ = "commands"
 

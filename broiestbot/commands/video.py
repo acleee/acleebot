@@ -21,21 +21,23 @@ from logger import LOGGER
 
 def get_all_live_twitch_streams():
     token = get_twitch_auth_token()
-    twitch_streams = []
-    i = 0
-    for user, broadcaster_id in TWITCH_BROADCASTERS.items():
-        stream = get_live_twitch_stream(broadcaster_id, token)
-        if bool(stream):
-            i += 1
-            twitch_streams.append(stream)
-            if i == 1:
-                twitch_streams.insert(0, "\n\n\n\n")
-            if len(twitch_streams) > 2:
-                return "\n-----------------------\n".join(twitch_streams)
-            return "".join(twitch_streams)
-    return emojize(
-        f":frowning: no memers streaming twitch rn :frowning:",
-    )
+    try:
+        twitch_streams = []
+        i = 0
+        for user, broadcaster_id in TWITCH_BROADCASTERS.items():
+            stream = get_live_twitch_stream(broadcaster_id, token)
+            if bool(stream):
+                i += 1
+                twitch_streams.append(stream)
+                if i == 1:
+                    twitch_streams.insert(0, "\n\n\n\n")
+                if len(twitch_streams) > 2:
+                    return "\n-----------------------\n".join(twitch_streams)
+                return "".join(twitch_streams)
+        return emojize(f":frowning: no memers streaming twitch rn :frowning:", language="en")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching Twitch streams: {e}")
+        return emojize(f":frowning: Twitch is down or something idk :frowning:", language="en")
 
 
 def get_live_twitch_stream(broadcaster_id: str, token: str) -> Optional[str]:
@@ -103,7 +105,9 @@ def get_twitch_auth_token() -> Optional[str]:
         resp = requests.post(endpoint, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         return resp.json().get("access_token")
     except HTTPError as e:
-        LOGGER.error(f"HTTPError when fetching Twitch auth token: {e.response.content}")
+        LOGGER.error(
+            f"HTTPError {resp.status_code} when fetching Twitch auth token: {e.response.content}"
+        )
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch auth token: {e}")
 

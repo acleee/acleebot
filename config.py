@@ -97,6 +97,12 @@ GOOGLE_APPLICATION_CREDENTIALS = "gcloud.json"
 GOOGLE_BUCKET_NAME = getenv("GOOGLE_BUCKET_NAME")
 GOOGLE_BUCKET_URL = getenv("GOOGLE_BUCKET_URL")
 
+# Google Translate
+GOOGLE_TRANSLATE_ENDPOINT = "https://google-translate1.p.rapidapi.com/language/translate/v2"
+
+# Urban Dictionary
+URBAN_DICTIONARY_ENDPOINT = "http://api.urbandictionary.com/v0/define"
+
 # Gifs
 GIPHY_API_KEY = getenv("GIPHY_API_KEY")
 REDGIFS_ACCESS_KEY = getenv("REDGIFS_ACCESS_KEY")

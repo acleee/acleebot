@@ -62,11 +62,10 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
                 elif username == "thegreatpizza":
                     return emojize(
                         f":pizza: *h* wow pizza ur taste in lesbians is so dank that I coughldnt find nething sry :( *h* :pizza:",
+                        language="en",
                     )
                 elif username == "broiestbro":
-                    return emojize(
-                        f":@ bro u fgt wot r u searching 4 go2bed :@",
-                    )
+                    return emojize(f"bro wot r u searching 4 go2bed", language="en")
                 else:
                     return emojize(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
@@ -75,22 +74,19 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
                 LOGGER.error(f"Error {resp.status_code} fetching NSFW gif: {resp.content}")
                 return emojize(
                     f":warning: omfg @{username} u broke bot with ur kinky ass bs smfh :warning:",
+                    language="en",
                 )
         return "https://i.imgur.com/oGMHkqT.jpg"
     except HTTPError as e:
         LOGGER.warning(f"HTTPError while fetching nsfw image for `{query}`: {e.response.content}")
-        return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:",
-        )
+        return emojize(f":warning: yea nah idk wtf ur searching for :warning:", language="en")
     except IndexError as e:
         LOGGER.warning(f"IndexError while fetching nsfw image for `{query}`: {e}")
-        return emojize(
-            f":warning: yea nah idk wtf ur searching for :warning:",
-        )
+        return emojize(f":warning: yea nah idk wtf ur searching for :warning:", language="en")
     except Exception as e:
         LOGGER.warning(f"Unexpected error while fetching nsfw image for `{query}`: {e}")
         return emojize(
-            f":warning: dude u must b a freak cuz that just broke bot :warning:",
+            f":warning: dude u must b a freak cuz that just broke bot :warning:", language="en"
         )
 
 

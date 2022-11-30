@@ -52,7 +52,7 @@ from .tuner import get_current_show, tuner
 # from .video import search_youtube_for_video
 from .video import get_all_live_twitch_streams
 from .weather import weather_by_location
-from .playstation import get_current_psn_user
+from .playstation import get_psn_online_friends
 
 
 def basic_message(message):

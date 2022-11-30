@@ -5,7 +5,12 @@ from PyMultiDictionary import MultiDictionary
 from requests.exceptions import HTTPError
 
 from clients import wiki
-from config import RAPID_API_KEY, HTTP_REQUEST_TIMEOUT
+from config import (
+    RAPID_API_KEY,
+    HTTP_REQUEST_TIMEOUT,
+    GOOGLE_TRANSLATE_ENDPOINT,
+    URBAN_DICTIONARY_ENDPOINT,
+)
 from logger import LOGGER
 
 
@@ -53,7 +58,7 @@ def get_urban_definition(term: str) -> str:
     headers = {"Content-Type": "application/json"}
     try:
         req = requests.get(
-            "http://api.urbandictionary.com/v0/define",
+            URBAN_DICTIONARY_ENDPOINT,
             params=params,
             headers=headers,
             timeout=HTTP_REQUEST_TIMEOUT,
@@ -125,7 +130,7 @@ def get_english_translation(language: str, phrase: str):
     :return: str
     """
     try:
-        url = "https://google-translate1.p.rapidapi.com/language/translate/v2"
+        url = GOOGLE_TRANSLATE_ENDPOINT
         data = {
             "q": phrase,
             "target": "en",
