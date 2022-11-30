@@ -17,7 +17,6 @@ def get_psn_online_friends() -> str:
     try:
         psn_account = psn.account.online_id
         online_friends = psn.get_online_friends()
-        LOGGER.info(f"PSN friends: {online_friends}")
         if bool(online_friends):
             active_friends = get_active_friends(online_friends)
             if active_friends or online_friends:
@@ -73,7 +72,7 @@ def create_active_psn_user_response(active_friend: User) -> str:
         friend_meta = active_friend.get_presence()
         playing_game = friend_meta["basicPresence"]["gameTitleInfoList"][0]["titleName"]
         platform = friend_meta["basicPresence"]["primaryPlatformInfo"]["platform"]
-        return f"<b>{active_friend.online_id}</b>: playing {playing_game} on {platform}\n"
+        return f"• <b>{active_friend.online_id}</b>: playing {playing_game} on {platform}\n"
     except Exception as e:
         LOGGER.error(e)
         return "idk"
