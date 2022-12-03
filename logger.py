@@ -154,7 +154,7 @@ def create_logger() -> logger:
             "/var/log/broiestbot/ddog.json",
             serialize=True,
             catch=True,
-            format=json_formatter,
+            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
             rotation="500 MB",
             compression="zip",
         )
