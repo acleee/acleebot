@@ -54,8 +54,6 @@ def create_psn_response(active_friends: List[User], online_friends: List[User]) 
     LOGGER.info(f"PSN friends: {online_friends}")
     for active_friend in active_friends:
         response += create_active_psn_user_response(active_friend)
-    # for online_friend in online_friends:
-    # response += f"{online_friend.online_id} is online.\n"
     return response
 
 

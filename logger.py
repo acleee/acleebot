@@ -15,6 +15,7 @@ def json_formatter(record: dict) -> str:
     :param dict record: Log object containing log metadata & message.
     :returns: str
     """
+    record["time"] = record["time"].strftime("%m/%d/%Y, %H:%M:%S")
 
     def serialize_as_admin(log: dict) -> str:
         """
@@ -29,12 +30,12 @@ def json_formatter(record: dict) -> str:
             if chat_data and log.get("message") is not None:
                 chat_dict = chat_data.groupdict()
                 subset = {
-                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                    "message": log["message"].split(": ", 1)[1],
-                    "level": log["level"].name,
-                    "room": chat_dict["room"],
-                    "user": chat_dict["user"],
-                    "ip": chat_dict["ip"],
+                    "time": log["time"],
+                    "message": log.get("message").split(": ", 1)[1],
+                    "level": log.get("level").name,
+                    "room": chat_dict.get("room"),
+                    "user": chat_dict.get("user"),
+                    "ip": chat_dict.get("ip"),
                 }
                 return json.dumps(subset)
         except Exception as e:
@@ -50,13 +51,9 @@ def json_formatter(record: dict) -> str:
         try:
             chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
             chat_dict = chat_data.groupdict()
-            if (
-                bool(chat_data)
-                and len(chat_data.groupdict().values()) == 2
-                and log.get("message") is not None
-            ):
+            if bool(chat_data) and log.get("message") is not None:
                 subset = {
-                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                    "time": log["time"],
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
                     "room": chat_dict["room"],
@@ -75,7 +72,7 @@ def json_formatter(record: dict) -> str:
         """
         if log is not None and log.get("message") is not None:
             subset = {
-                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "time": log["time"],
                 "level": log["level"].name,
                 "message": log["message"],
             }
@@ -84,11 +81,11 @@ def json_formatter(record: dict) -> str:
     serialized_log = record["extra"].get("serialized")
     if serialized_log:
         log_level = record["level"].name
-        if log_level in ("WARNING", "SUCCESS"):
-            serialized_log = serialize_event(record)
-        elif log_level == "INFO":
+        if log_level in ("INFO", "TRACE"):
             serialized_log = serialize_as_admin(record)
-        elif log_level in ("ERROR", "CRITICAL"):
+        elif log_level in ("WARNING", "SUCCESS"):
+            serialized_log = serialize_event(record)
+        else:
             serialized_log = serialize_error(record)
             sms_error_handler(record)
 
@@ -149,14 +146,14 @@ def create_logger() -> logger:
             colorize=True,
             catch=True,
             level="ERROR",
-            format="<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | "
-            + "<red>{level}</red>: "
-            + "<light-white>{message}</light-white>",
+            format=log_formatter,
             rotation="300 MB",
             compression="zip",
         )
         logger.add(
             "/var/log/broiestbot/ddog.json",
+            serialize=True,
+            catch=True,
             format=json_formatter,
             rotation="500 MB",
             compression="zip",
@@ -168,6 +165,14 @@ def create_logger() -> logger:
             catch=True,
             format=log_formatter,
             rotation="300 MB",
+            compression="zip",
+        )
+        logger.add(
+            f"{BASE_DIR}/logs/ddog.json",
+            serialize=True,
+            catch=True,
+            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
+            rotation="500 MB",
             compression="zip",
         )
     return logger
