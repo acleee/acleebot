@@ -9,6 +9,7 @@ from config import (
     CHATANGO_EGGSER_USERNAME_WHITELIST,
     CHATANGO_IGNORED_IPS,
     CHATANGO_IGNORED_USERS,
+    CHATANGO_BLACKLIST_ROOMS,
 )
 from logger import LOGGER
 
@@ -19,13 +20,16 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
     """
     Ban and delete chat history of blacklisted user.
 
-    :param Room room: Chatango room object.
+    :param Room room: Chatango room in which user appeared.
     :param str user_name: Chatango username to validate against blacklist.
     :param Message message: User submitted message.
 
     :returns: None
     """
-    if user_name in CHATANGO_BLACKLISTED_USERS:
+    if (
+        user_name in CHATANGO_BLACKLISTED_USERS
+        and room.room_name.lower() in CHATANGO_BLACKLIST_ROOMS
+    ):
         reply = emojize(
             f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:", language="en"
         )

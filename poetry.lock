@@ -182,7 +182,7 @@ six = "*"
 
 [[package]]
 name = "cinemagoer"
-version = "2022.2.11"
+version = "2022.12.4"
 description = "Python package to access the IMDb's database"
 category = "main"
 optional = false
@@ -193,9 +193,8 @@ lxml = "*"
 SQLAlchemy = "*"
 
 [package.extras]
-dev = ["flake8", "flake8-isort", "readme-renderer"]
+dev = ["flake8", "flake8-isort", "polib", "pytest", "pytest-cov", "tox"]
 doc = ["sphinx", "sphinx-rtd-theme"]
-test = ["pytest", "pytest-cov", "pytest-profiling"]
 
 [[package]]
 name = "click"
@@ -847,7 +846,7 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "psnawp"
-version = "1.0.4"
+version = "1.1.0"
 description = "Python API Wrapper for PlayStation Network API"
 category = "main"
 optional = false
@@ -856,13 +855,14 @@ python-versions = ">=3.8"
 [package.dependencies]
 certifi = "2022.9.24"
 chardet = "5.0.0"
+charset-normalizer = "2.1.1"
 idna = "3.4"
 requests = "2.28.1"
-urllib3 = "1.26.12"
+urllib3 = "1.26.13"
 
 [package.extras]
 docs = ["sphinx (==5.2.2)", "sphinx-rtd-theme (==1.0.0)"]
-testing = ["build (==0.8.0)", "certifi (==2022.9.24)", "chardet (==5.0.0)", "flake8 (==5.0.4)", "idna (==3.4)", "mypy (==0.981)", "pip-tools (==6.8.0)", "pre-commit (==2.20.0)", "pytest (==7.1.3)", "pytest-cov (==4.0.0)", "pytest-vcr (==1.0.2)", "python-dotenv (==0.21.0)", "requests (==2.28.1)", "twine (==4.0.1)", "types-requests (==2.28.11)", "urllib3 (==1.26.12)", "vcrpy (==4.2.1)"]
+testing = ["alabaster (==0.7.12)", "attrs (==22.1.0)", "babel (==2.11.0)", "bleach (==5.0.1)", "build (==0.9.0)", "certifi (==2022.9.24)", "cffi (==1.15.1)", "cfgv (==3.3.1)", "chardet (==5.0.0)", "charset-normalizer (==2.1.1)", "click (==8.1.3)", "commonmark (==0.9.1)", "coverage[toml] (==6.5.0)", "cryptography (==38.0.3)", "distlib (==0.3.6)", "docutils (==0.17.1)", "exceptiongroup (==1.0.4)", "filelock (==3.8.0)", "flake8 (==6.0.0)", "identify (==2.5.9)", "idna (==3.4)", "imagesize (==1.4.1)", "importlib-metadata (==5.1.0)", "iniconfig (==1.1.1)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.2)", "keyring (==23.11.0)", "markdown-it-py (==2.1.0)", "markupsafe (==2.1.1)", "mccabe (==0.7.0)", "mdit-py-plugins (==0.3.1)", "mdurl (==0.1.2)", "more-itertools (==9.0.0)", "multidict (==6.0.2)", "mypy (==0.991)", "mypy-extensions (==0.4.3)", "myst-parser (==0.18.1)", "nodeenv (==1.7.0)", "packaging (==21.3)", "pep517 (==0.13.0)", "pip-tools (==6.10.0)", "pkginfo (==1.8.3)", "platformdirs (==2.5.4)", "pluggy (==1.0.0)", "pre-commit (==2.20.0)", "pycodestyle (==2.10.0)", "pycparser (==2.21)", "pyflakes (==3.0.1)", "pygments (==2.13.0)", "pyparsing (==3.0.9)", "pytest (==7.2.0)", "pytest-cov (==4.0.0)", "pytest-vcr (==1.0.2)", "python-dotenv (==0.21.0)", "pytz (==2022.6)", "pyyaml (==6.0)", "readme-renderer (==37.3)", "requests (==2.28.1)", "requests-toolbelt (==0.10.1)", "rfc3986 (==2.0.0)", "rich (==12.6.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "snowballstemmer (==2.2.0)", "sphinx (==5.3.0)", "sphinx-rtd-theme (==1.1.1)", "sphinxcontrib-applehelp (==1.0.2)", "sphinxcontrib-devhelp (==1.0.2)", "sphinxcontrib-htmlhelp (==2.0.0)", "sphinxcontrib-jsmath (==1.0.1)", "sphinxcontrib-qthelp (==1.0.3)", "sphinxcontrib-serializinghtml (==1.1.5)", "toml (==0.10.2)", "tomli (==2.0.1)", "twine (==4.0.1)", "types-attrs (==19.1.0)", "types-requests (==2.28.11.5)", "types-urllib3 (==1.26.25.4)", "typing-extensions (==4.4.0)", "urllib3 (==1.26.13)", "vcrpy (==4.2.1)", "virtualenv (==20.16.7)", "webencodings (==0.5.1)", "wheel (==0.38.4)", "wrapt (==1.14.1)", "yarl (==1.8.1)", "zipp (==3.11.0)"]
 
 [[package]]
 name = "pyasn1"
@@ -1047,15 +1047,14 @@ python-versions = "*"
 
 [[package]]
 name = "redis"
-version = "4.3.5"
+version = "4.4.0"
 description = "Python client for Redis database and key-value store"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [package.dependencies]
 async-timeout = ">=4.0.2"
-packaging = ">=20.4"
 
 [package.extras]
 hiredis = ["hiredis (>=1.0.0)"]
@@ -1267,11 +1266,11 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "urllib3"
-version = "1.26.12"
+version = "1.26.13"
 description = "HTTP library with thread-safe connection pooling, file post, and more."
 category = "main"
 optional = false
-python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*, <4"
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*, !=3.4.*, !=3.5.*"
 
 [package.extras]
 brotli = ["brotli (>=1.0.9)", "brotlicffi (>=0.8.0)", "brotlipy (>=0.6.0)"]
@@ -1442,8 +1441,8 @@ chart-studio = [
     {file = "chart_studio-1.1.0-py3-none-any.whl", hash = "sha256:fd183185d6e6d31c642567145c1a862f941ca9c7695aac8b2f3ebbcbcea31a7a"},
 ]
 cinemagoer = [
-    {file = "cinemagoer-2022.2.11-py3-none-any.whl", hash = "sha256:355dea3ff74e8f54c530a0ac39381854de2449f1f579c22d03bf685947ee3eb5"},
-    {file = "cinemagoer-2022.2.11.tar.gz", hash = "sha256:8efe29dab44a7d275702f3160746015bd55c87b2eed85991dd57dda42594e6c6"},
+    {file = "cinemagoer-2022.12.4-py3-none-any.whl", hash = "sha256:ef6f4bb6f4948e9a9bcfcec37307ac8af47b7c23b2e08f746bf083a83e66d98e"},
+    {file = "cinemagoer-2022.12.4.tar.gz", hash = "sha256:63006016752567c14e1a63a24190cfa44963228116b282303632f7279e9f4ae7"},
 ]
 click = [
     {file = "click-8.1.3-py3-none-any.whl", hash = "sha256:bb4d8133cb15a609f44e8213d9b391b0809795062913b383c62be0ee95b1db48"},
@@ -1991,8 +1990,8 @@ protobuf = [
     {file = "protobuf-4.21.10.tar.gz", hash = "sha256:4d97c16c0d11155b3714a29245461f0eb60cace294455077f3a3b8a629afa383"},
 ]
 psnawp = [
-    {file = "PSNAWP-1.0.4-py3-none-any.whl", hash = "sha256:4284e59e40767ba930f65d70436b3c82dd83b99082e0930cf64e1e3b60a8c39f"},
-    {file = "PSNAWP-1.0.4.tar.gz", hash = "sha256:5323ffdfdf8896414e66344d6efb79d067881ec3071242929a56777e9cdb849e"},
+    {file = "PSNAWP-1.1.0-py3-none-any.whl", hash = "sha256:8b8aa0d67598b9eade03b08a71f6a20cd5cd66ffce61e1bf26de12212152417b"},
+    {file = "PSNAWP-1.1.0.tar.gz", hash = "sha256:123e14cd0434d7eb7e7170a7c4d9ccfe95102c19cb7cbb6e8214f0f09aaedfa9"},
 ]
 pyasn1 = [
     {file = "pyasn1-0.4.8-py2.py3-none-any.whl", hash = "sha256:39c7e2ec30515947ff4e87fb6f456dfc6e84857d34be479c9d4a4ba4bf46aa5d"},
@@ -2075,8 +2074,8 @@ pytz = [
     {file = "pytz-2022.6.tar.gz", hash = "sha256:e89512406b793ca39f5971bc999cc538ce125c0e51c27941bef4568b460095e2"},
 ]
 redis = [
-    {file = "redis-4.3.5-py3-none-any.whl", hash = "sha256:46652271dc7525cd5a9667e5b0ca983c848c75b2b8f7425403395bb8379dcf25"},
-    {file = "redis-4.3.5.tar.gz", hash = "sha256:30c07511627a4c5c4d970e060000772f323174f75e745a26938319817ead7a12"},
+    {file = "redis-4.4.0-py3-none-any.whl", hash = "sha256:cae3ee5d1f57d8caf534cd8764edf3163c77e073bdd74b6f54a87ffafdc5e7d9"},
+    {file = "redis-4.4.0.tar.gz", hash = "sha256:7b8c87d19c45d3f1271b124858d2a5c13160c4e74d4835e28273400fa34d5228"},
 ]
 requests = [
     {file = "requests-2.28.1-py3-none-any.whl", hash = "sha256:8fefa2a1a1365bf5520aac41836fbee479da67864514bdb821f31ce07ce65349"},
@@ -2182,8 +2181,8 @@ uritemplate = [
     {file = "uritemplate-4.1.1.tar.gz", hash = "sha256:4346edfc5c3b79f694bccd6d6099a322bbeb628dbf2cd86eea55a456ce5124f0"},
 ]
 urllib3 = [
-    {file = "urllib3-1.26.12-py2.py3-none-any.whl", hash = "sha256:b930dd878d5a8afb066a637fbb35144fe7901e3b209d1cd4f524bd0e9deee997"},
-    {file = "urllib3-1.26.12.tar.gz", hash = "sha256:3fa96cf423e6987997fc326ae8df396db2a8b7c667747d47ddd8ecba91f4a74e"},
+    {file = "urllib3-1.26.13-py2.py3-none-any.whl", hash = "sha256:47cc05d99aaa09c9e72ed5809b60e7ba354e64b59c9c173ac3018642d8bb41fc"},
+    {file = "urllib3-1.26.13.tar.gz", hash = "sha256:c083dd0dce68dbfbe1129d5271cb90f9447dea7d52097c6e0126120c521ddea8"},
 ]
 uwsgi = [
     {file = "uwsgi-2.0.21.tar.gz", hash = "sha256:35a30d83791329429bc04fe44183ce4ab512fcf6968070a7bfba42fc5a0552a9"},
