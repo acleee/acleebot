@@ -23,7 +23,7 @@ from broiestbot.commands import (
     footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_team_lineups,
+    footy_upcoming_lineups,
     footy_upcoming_fixtures,
     gcs_count_images_in_bucket,
     gcs_random_image_spam,
@@ -163,8 +163,8 @@ class Bot(RoomManager):
             return footy_predicts_today(room.room_name.lower(), user_name)
         elif cmd_type == "foxtures":
             return fetch_fox_fixtures(room.room_name.lower(), user_name)
-        elif cmd_type == "footyxi":
-            return footy_team_lineups(room.room_name.lower(), user_name)
+        elif cmd_type == "todayxi":
+            return footy_upcoming_lineups(room.room_name.lower(), user_name)
         elif cmd_type == "covid":
             return covid_cases_usa()
         elif cmd_type == "lyrics" and args:

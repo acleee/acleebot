@@ -17,7 +17,7 @@ from logger import LOGGER
 from .today import fetch_today_fixtures_by_league, parse_upcoming_fixture
 
 
-def footy_team_lineups(room: str, username: str) -> str:
+def footy_upcoming_lineups(room: str, username: str) -> str:
     """
     Fetch starting lineups by team for immediate or live fixtures.
 
@@ -29,17 +29,20 @@ def footy_team_lineups(room: str, username: str) -> str:
     today_fixture_lineups = "\n\n\n\n"
     for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
         today_fixtures = fetch_today_fixtures_by_league(league_id, room, username)
+        today_fixture_lineups += emojize(f"<b>{league_name}</b>\n", language="en")
         if bool(today_fixtures):
             for fixture in today_fixtures:
                 fixture_start_time = datetime.strptime(
                     fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
                 )
                 lineups = fetch_lineups_per_fixture(fixture["fixture"]["id"])
+                today_fixture_lineups += parse_upcoming_fixture(
+                    fixture, fixture_start_time, room, username
+                )
                 if lineups:
-                    today_fixture_lineups += parse_upcoming_fixture(
-                        fixture, fixture_start_time, room, username
-                    )
-                    today_fixture_lineups += format_fixture_xis(lineups)
+                    today_fixture_lineups += get_fixture_xis(lineups)
+                else:
+                    today_fixture_lineups += "<i>Lineups not available yet<i>\n\n"
             return today_fixture_lineups
     return f"@{username} No footy XIs available yet."
 
@@ -71,7 +74,7 @@ def fetch_lineups_per_fixture(fixture_id: str) -> Optional[dict]:
         LOGGER.error(f"Unexpected error when fetching footy XIs: {e}")
 
 
-def format_fixture_xis(fixture_lineups: dict) -> str:
+def get_fixture_xis(fixture_lineups: dict) -> str:
     """
     Parse & format player lineups for an upcoming fixture.
 
