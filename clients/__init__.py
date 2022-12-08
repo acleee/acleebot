@@ -83,4 +83,4 @@ r = redis.Redis(
 # yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
 # Playstation
-psn = PlaystationClient(token=PLAYSTATION_SSO_TOKEN)
+# psn = PlaystationClient(token=PLAYSTATION_SSO_TOKEN)
