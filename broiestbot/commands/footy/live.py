@@ -8,7 +8,7 @@ from requests.exceptions import HTTPError
 from config import (
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
-    FOOTY_LEAGUES,
+    FOOTY_LIVE_SCORED_LEAGUES,
     FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT,
     HTTP_REQUEST_TIMEOUT,
 )
@@ -29,7 +29,7 @@ def footy_live_fixtures(room: str, username: str, subs=False) -> str:
     """
     live_fixtures = "\n\n\n\n"
     i = 0
-    for league_name, league_id in FOOTY_LEAGUES.items():
+    for league_name, league_id in FOOTY_LIVE_SCORED_LEAGUES.items():
         live_league_fixtures = footy_live_fixtures_per_league(
             league_id, league_name, room, username, subs=subs
         )
