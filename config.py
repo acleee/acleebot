@@ -263,7 +263,7 @@ AFRICA_CUP_ID = 6
 
 FOOTY_LEAGUES = {
     ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
-    # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     # ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
@@ -320,6 +320,7 @@ GOLDEN_SHOE_LEAGUES = {
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
     ":France: Ligue 1": LIGUE_ONE_ID,
+    ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
 }
 
 # Footy team IDs
