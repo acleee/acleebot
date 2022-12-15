@@ -52,9 +52,7 @@ def get_medals_by_nation(endpoint: str) -> str:
             inplace=True,
         )
         medals_df = medals_df.apply(add_nation_flag_emojis, axis=1)
-        return (
-            f"\n\n{medals_df.to_string(header=True, index=False, col_space=10, justify='center')}"
-        )
+        return f"\n\n{medals_df.to_string(header=True, index=False, col_space=10, justify='center')}"
     except Exception as e:
         LOGGER.error(f"Exception occurred while fetching winter olympics leaderboard: {e}")
         return emojize(":warning: lmao nobody has won anything yet retart :warning:", language="en")

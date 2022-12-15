@@ -14,13 +14,12 @@ def get_live_nfl_games() -> str:
     """
     try:
         params = {"status": "in progress", "league": "NFL"}
-        resp = requests.get(
-            NFL_GAMES_URL, headers=NFL_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT
-        )
+        resp = requests.get(NFL_GAMES_URL, headers=NFL_HTTP_HEADERS, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         games = resp.json().get("results")
         if resp.status_code == 429:
             return emojize(
-                f":warning: y'all used the command too much now they tryna charge me smh :warning:"
+                f":warning: y'all used the command too much now they tryna charge me smh :warning:",
+                language="en",
             )
         if games:
             game_summaries = "\n\n\n\n"

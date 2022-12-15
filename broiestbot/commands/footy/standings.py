@@ -44,9 +44,7 @@ def epl_standings() -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")
@@ -82,16 +80,12 @@ def liga_standings() -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while fetching LIGA standings: {e.response.content}", language="en"
-        )
+        LOGGER.error(f"HTTPError while fetching LIGA standings: {e.response.content}", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching LIGA standings: {e}", language="en")
     except Exception as e:
@@ -122,9 +116,7 @@ def bund_standings() -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")
@@ -160,9 +152,7 @@ def efl_standings() -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")
@@ -198,9 +188,7 @@ def ligue_standings() -> Optional[str]:
             wins = standing["all"]["win"]
             draws = standing["all"]["draw"]
             losses = standing["all"]["lose"]
-            standings_table = (
-                standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-            )
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
         if standings_table != "\n\n\n\n":
             return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")

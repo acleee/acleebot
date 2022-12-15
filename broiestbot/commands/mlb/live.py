@@ -25,9 +25,7 @@ def parse_live_mlb_game(game: dict) -> Optional[str]:
         away_errors = game["scores"]["away"]["errors"]
         home_innings = game["scores"]["home"]["innings"]
         away_innings = game["scores"]["away"]["innings"]
-        game_summary = (
-            f"{away_abbreviation} <b>{away_score}</b> @ {home_abbreviation} <b>{home_score}</b>\n"
-        )
+        game_summary = f"{away_abbreviation} <b>{away_score}</b> @ {home_abbreviation} <b>{home_score}</b>\n"
         for k, v in away_innings.items():
             if v is not None:
                 game_summary += f"<b>{k}</b>:   {away_innings[k]}   {home_innings[k]}\n"

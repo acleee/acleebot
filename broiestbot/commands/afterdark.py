@@ -49,9 +49,7 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
             endpoint = REDGIFS_IMAGE_SEARCH_ENDPOINT
             params = {"search_text": query.title(), "order": "trending", "count": 80}
             headers = {"Authorization": f"Bearer {token}"}
-            resp = requests.get(
-                endpoint, params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT
-            )
+            resp = requests.get(endpoint, params=params, headers=headers, timeout=HTTP_REQUEST_TIMEOUT)
             results = resp.json().get("gifs", None)
             if resp.status_code == 200 and results is not None:
                 results = [result for result in results if result["urls"].get("sd") is not None]
@@ -69,6 +67,7 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
                 else:
                     return emojize(
                         f":warning: wow @{username} u must b a freak tf r u even searching foughr jfc :warning:",
+                        language="en",
                     )
             else:
                 LOGGER.error(f"Error {resp.status_code} fetching NSFW gif: {resp.content}")
@@ -85,9 +84,7 @@ def get_redgifs_gif(query: str, username: str, after_dark_only: bool = False) ->
         return emojize(f":warning: yea nah idk wtf ur searching for :warning:", language="en")
     except Exception as e:
         LOGGER.warning(f"Unexpected error while fetching nsfw image for `{query}`: {e}")
-        return emojize(
-            f":warning: dude u must b a freak cuz that just broke bot :warning:", language="en"
-        )
+        return emojize(f":warning: dude u must b a freak cuz that just broke bot :warning:", language="en")
 
 
 def get_full_gif_metadata(image: dict) -> str:
@@ -105,12 +102,11 @@ def get_full_gif_metadata(image: dict) -> str:
         tags = ", #".join(image["tags"])
         return emojize(
             f"\n\n\n{image_url}\n:thumbsup: Likes {likes}\n:eyes: Views {views}\n#{tags}",
+            language="en",
         )
     except Exception as e:
         LOGGER.warning(f"Unexpected error while fetching nsfw image for id `{image['id']}`: {e}")
-        return emojize(
-            f":warning: dude u must b a freak cuz that just broke bot :warning:",
-        )
+        return emojize(f":warning: dude u must b a freak cuz that just broke bot :warning:", language="en")
 
 
 def redgifs_auth_token() -> Optional[str]:
@@ -127,9 +123,7 @@ def redgifs_auth_token() -> Optional[str]:
         if resp.status_code == 200:
             return resp.json().get("access_token")
         else:
-            LOGGER.error(
-                f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}"
-            )
+            LOGGER.error(f"Failed to get Redgifs token with status code {resp.status_code}: {resp.json()}")
     except HTTPError as e:
         LOGGER.error(f"HTTPError when fetching Redgifs auth token: {e.response.content}")
     except Exception as e:

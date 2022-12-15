@@ -28,9 +28,7 @@ def giphy_image_search(query: str) -> Optional[str]:
         "lang": "en",
     }
     try:
-        resp = requests.get(
-            "https://api.giphy.com/v1/gifs/search", params=params, timeout=HTTP_REQUEST_TIMEOUT
-        )
+        resp = requests.get("https://api.giphy.com/v1/gifs/search", params=params, timeout=HTTP_REQUEST_TIMEOUT)
         images = resp.json()["data"]
         if len(images) == 0:
             return None
@@ -42,9 +40,7 @@ def giphy_image_search(query: str) -> Optional[str]:
         return emojize(f":warning: yoooo giphy is down rn lmao :warning:", language="en")
     except ValueError as e:
         LOGGER.error(f"ValueError while fetching Giphy `{query}`: {e}")
-        return emojize(
-            f":warning: holy sht u broke the bot im telling bro :warning:", language="en"
-        )
+        return emojize(f":warning: holy sht u broke the bot im telling bro :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Giphy unexpected error for `{query}`: {e}")
         return emojize(f":warning: AAAAAA I'M BROKEN WHAT DID YOU DO :warning:", language="en")

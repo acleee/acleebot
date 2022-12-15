@@ -75,9 +75,7 @@ genius = lyricsgenius.Genius()
 genius.remove_section_headers = True
 
 # Redis
-r = redis.Redis(
-    host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB, decode_responses=True
-)
+r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB, decode_responses=True)
 
 # Youtube
 # yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)

@@ -38,14 +38,12 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
     return emojize(
-        f":soccer_ball: :cross_mark: sry @{username} no fixtures today :( :cross_mark: :soccer_ball:",
+        f":soccer_ball: :cross_mark: sry no fixtures today :( :cross_mark: :soccer_ball:",
         language="en",
     )
 
 
-def today_upcoming_fixtures_per_league(
-    league_name: str, league_id: int, room: str, username: str
-) -> Optional[str]:
+def today_upcoming_fixtures_per_league(league_name: str, league_id: int, room: str, username: str) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -61,14 +59,10 @@ def today_upcoming_fixtures_per_league(
         fixtures = fetch_today_fixtures_by_league(league_id, room, username)
         if bool(fixtures) is not False:
             for i, fixture in enumerate(fixtures):
-                fixture_start_time = datetime.strptime(
-                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
-                )
+                fixture_start_time = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 if i == 0 and len(fixture) > 1:
                     league_upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
-                league_upcoming_fixtures += parse_upcoming_fixture(
-                    fixture, fixture_start_time, room, username
-                )
+                league_upcoming_fixtures += parse_upcoming_fixture(fixture, fixture_start_time, room, username)
             return league_upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
@@ -78,9 +72,7 @@ def today_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def fetch_today_fixtures_by_league(
-    league_id: int, room: str, username: str
-) -> List[Optional[dict]]:
+def fetch_today_fixtures_by_league(league_id: int, room: str, username: str) -> List[Optional[dict]]:
     """
     Fetch all upcoming fixtures for the current date.
 
@@ -114,9 +106,7 @@ def fetch_today_fixtures_by_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def parse_upcoming_fixture(
-    fixture: dict, fixture_start_time: datetime, room: str, username: str
-) -> str:
+def parse_upcoming_fixture(fixture: dict, fixture_start_time: datetime, room: str, username: str) -> str:
     """
     Construct upcoming fixture match-up.
 

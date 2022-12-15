@@ -50,9 +50,7 @@ def get_instagram_token() -> Optional[Response]:
         params = {
             "client_id": INSTAGRAM_APP_ID,
         }
-        return requests.post(
-            f"https://www.facebook.com/x/oauth/status", params=params, timeout=HTTP_REQUEST_TIMEOUT
-        )
+        return requests.post(f"https://www.facebook.com/x/oauth/status", params=params, timeout=HTTP_REQUEST_TIMEOUT)
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching Instagram token: {e.response.content}")
     except Exception as e:

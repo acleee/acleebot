@@ -27,9 +27,7 @@ def blaze_time_remaining() -> str:
     now = datetime.now(tz=TIMEZONE_US_EASTERN)
     am_time = now.replace(hour=4, minute=20, second=0)
     pm_time = now.replace(hour=16, minute=20, second=0)
-    if am_time <= now < am_time + timedelta(seconds=59) or pm_time <= now < pm_time + timedelta(
-        seconds=59
-    ):
+    if am_time <= now < am_time + timedelta(seconds=59) or pm_time <= now < pm_time + timedelta(seconds=59):
         return emojize(
             f":herb: :fire: HOLY FUCK IT'S EXACTLY 420!!! BLAZE IT BITCHHHHHHHCAWWHHHHHH :smoking: :kissing_closed_eyes: :dash:",
             language="en",
@@ -67,9 +65,7 @@ def send_text_message(message: str, user: str) -> Optional[str]:
                 to=TWILIO_RECIPIENT_PHONE,
             )
             return f"ty @{user} I just texted brough: {message}"
-        return emojize(
-            f":warning: lmao fuck off, only pizza can text brough :warning:", language="en"
-        )
+        return emojize(f":warning: lmao fuck off, only pizza can text brough :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
@@ -95,9 +91,7 @@ def time_until_wayne(user_name: str) -> str:
                     language="en",
                 )
             elif wayne_end_time < now:
-                return emojize(
-                    f":( sry @{user_name}, Wayne is oughver already today :(", language="en"
-                )
+                return emojize(f":( sry @{user_name}, Wayne is oughver already today :(", language="en")
             else:
                 time_remaining = wayne_start_time - now
                 minutes_remaining = round(time_remaining.total_seconds() / 60)

@@ -44,15 +44,11 @@ def get_channel_number(channel_name: str) -> int:
     :returns: int
     """
     try:
-        channel = [
-            channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name
-        ]
+        channel = [channel for channel in CHANNEL_DATA if channel["channel"].lower() == channel_name]
         return int(channel[0]["channelid"])
     except LookupError:
         err_msg = f"{channel_name} wasn't found, but I found the following channels: \n"
-        channel = [
-            channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()
-        ]
+        channel = [channel for channel in CHANNEL_DATA if channel_name in channel["channel"].lower()]
         for name in channel:
             err_msg += f"{name['channel']}\n"
         return err_msg
@@ -95,13 +91,9 @@ def tuner(channel_name: str, username: str, bot_username: str) -> str:
                 time.sleep(2)
                 on_now = get_current_show(True, bot_username)
                 return emojize(f":tv: Tuning to {capped}. On now: {on_now}", language="en")
-            return emojize(
-                f":warning: u don't have the poughwer to change da channol :warning:", language="en"
-            )
+            return emojize(f":warning: u don't have the poughwer to change da channol :warning:", language="en")
     except LookupError as e:
-        LOGGER.error(
-            f"LookupError occurred when fetching tuner channel; defaulting to {channel_name}: {e}"
-        )
+        LOGGER.error(f"LookupError occurred when fetching tuner channel; defaulting to {channel_name}: {e}")
         # return get_channel_number(channel_name)
     except Exception as e:
         LOGGER.error(f"Unexpected error when changing channel: {e}")

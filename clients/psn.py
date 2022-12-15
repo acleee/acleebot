@@ -26,9 +26,7 @@ class PlaystationClient:
         """
         friends = self.account.friends_list()
         online_friends = [
-            friend
-            for friend in friends
-            if friend.get_presence()["basicPresence"]["availability"] == "availableToPlay"
+            friend for friend in friends if friend.get_presence()["basicPresence"]["availability"] == "availableToPlay"
         ]
         return online_friends
 

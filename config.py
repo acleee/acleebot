@@ -129,9 +129,7 @@ IEX_API_BASE_URL = "https://cloud.iexapis.com/stable/stock/"
 ALPHA_VANTAGE_API_KEY = environ.get("ALPHA_VANTAGE_API_KEY")
 ALPHA_VANTAGE_PRICE_BASE_URL = "https://api.cryptowat.ch/markets/bitfinex/"
 ALPHA_VANTAGE_CHART_BASE_URL = "https://www.alphavantage.co/query/"
-COINMARKETCAP_LATEST_ENDPOINT = (
-    "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
-)
+COINMARKETCAP_LATEST_ENDPOINT = "https://pro-api.coinmarketcap.com/v1/cryptocurrency/listings/latest"
 COINMARKETCAP_API_KEY = getenv("COINMARKETCAP_API_KEY")
 
 # Plotly
@@ -366,12 +364,8 @@ CHANNEL_TUNER_HEADERS = {
 }
 
 # Olympics
-OLYMPICS_LEADERBOARD_ENDPOINT = (
-    "https://www.espn.com/olympics/summer/2020/medals/_/view/overall/sort/gold"
-)
-WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = (
-    "https://www.espn.com/olympics/winter/2022/medals/_/view/overall/sort/gold"
-)
+OLYMPICS_LEADERBOARD_ENDPOINT = "https://www.espn.com/olympics/summer/2020/medals/_/view/overall/sort/gold"
+WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = "https://www.espn.com/olympics/winter/2022/medals/_/view/overall/sort/gold"
 
 # NBA
 NBA_BASE_URL = "https://api-basketball.p.rapidapi.com"

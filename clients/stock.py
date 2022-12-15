@@ -21,7 +21,7 @@ class StockChartHandler:
         message = self.get_price(symbol)
         if message:
             return message
-        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")
+        return emojize("⚠️ dats nought a stock symbol u MORAN :@ ⚠️", language="en")
 
     '''def get_chart_old(self, symbol: str) -> str:
         """Create chart of a company's 30-day stock performance."""
@@ -31,7 +31,7 @@ class StockChartHandler:
             return f"{message} \n {chart}"
         elif message:
             return message
-        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️")'''
+        return emojize("⚠️ dats nought a stock symbol u RETART :@ ⚠️", language="en")'''
 
     def get_price(self, symbol: str) -> Optional[str]:
         """Get daily price summary."""
@@ -62,13 +62,9 @@ class StockChartHandler:
             if req.status_code == 200 and req.content:
                 return req.content
         except HTTPError as e:
-            raise HTTPError(
-                f"Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}"
-            )
+            raise HTTPError(f"Failed to fetch stock timeseries data for `{symbol}`: {e.response.content}")
         except Exception as e:
-            raise Exception(
-                f"Unexpected error while fetching stock timeseries data for `{symbol}`: {e}"
-            )
+            raise Exception(f"Unexpected error while fetching stock timeseries data for `{symbol}`: {e}")
         return None
 
     '''@staticmethod

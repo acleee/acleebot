@@ -32,9 +32,7 @@ def nba_standings() -> str:
                 "x-rapidapi-host": "api-basketball.p.rapidapi.com",
                 "x-rapidapi-key": NBA_API_KEY,
             }
-            resp = requests.get(
-                endpoint, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT
-            )
+            resp = requests.get(endpoint, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT)
             if resp.status_code == 200:
                 standings += f"{conference.upper()}\n"
                 for team_info in resp.json()["response"][0]:

@@ -24,9 +24,7 @@ def json_formatter(record: dict) -> str:
         :returns: str
         """
         try:
-            chat_data = re.search(
-                r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message")
-            )
+            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message"))
             if chat_data and log.get("message") is not None:
                 chat_dict = chat_data.groupdict()
                 subset = {

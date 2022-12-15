@@ -32,13 +32,9 @@ def footy_upcoming_lineups(room: str, username: str) -> str:
         today_fixture_lineups += emojize(f"<b>{league_name}</b>\n", language="en")
         if bool(today_fixtures):
             for fixture in today_fixtures:
-                fixture_start_time = datetime.strptime(
-                    fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z"
-                )
+                fixture_start_time = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 lineups = fetch_lineups_per_fixture(fixture["fixture"]["id"])
-                today_fixture_lineups += parse_upcoming_fixture(
-                    fixture, fixture_start_time, room, username
-                )
+                today_fixture_lineups += parse_upcoming_fixture(fixture, fixture_start_time, room, username)
                 if lineups:
                     today_fixture_lineups += get_fixture_xis(lineups)
                 else:
@@ -89,10 +85,7 @@ def get_fixture_xis(fixture_lineups: dict) -> str:
             formation = lineup["formation"]
             coach = lineup["coach"]["name"]
             players = "\n".join(
-                [
-                    f"<b>{player['pos']}</b> {player['name']} (#{player['number']})"
-                    for player in lineup["startXI"]
-                ]
+                [f"<b>{player['pos']}</b> {player['name']} (#{player['number']})" for player in lineup["startXI"]]
             )
             lineups_response += f"<b>{team}<b> {formation}\n" f"{coach}\n" f"{players}\n\n"
         return lineups_response

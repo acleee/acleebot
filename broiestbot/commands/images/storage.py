@@ -27,9 +27,7 @@ def fetch_image_from_gcs(subdirectory: str) -> str:
         LOGGER.warning(f"GCS `NotFound` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", language="en")
     except GoogleCloudError as e:
-        LOGGER.warning(
-            f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}"
-        )
+        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", language="en")
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")
@@ -52,14 +50,10 @@ def gcs_random_image_spam(subdirectory: str) -> str:
         images = gcs.bucket.list_blobs(prefix=subdirectory)
         image_list = [image.name for image in images if "." in image.name]
         for i in range(3):
-            response.append(
-                f"{GOOGLE_BUCKET_URL}{GOOGLE_BUCKET_NAME}/{image_list[randint(0, len(image_list) - 1)]}"
-            )
+            response.append(f"{GOOGLE_BUCKET_URL}{GOOGLE_BUCKET_NAME}/{image_list[randint(0, len(image_list) - 1)]}")
         return " ".join(response)
     except GoogleCloudError as e:
-        LOGGER.warning(
-            f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}"
-        )
+        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", language="en")
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")
@@ -90,9 +84,7 @@ def gcs_count_images_in_bucket(subdirectory: str) -> str:
             language="en",
         )
     except GoogleCloudError as e:
-        LOGGER.warning(
-            f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}"
-        )
+        LOGGER.warning(f"GCS `GoogleCloudError` error when fetching image for `{subdirectory}`: {e}")
         return emojize(f":warning: omfg bot just broke wtf did u do :warning:", language="en")
     except ValueError as e:
         LOGGER.warning(f"ValueError when fetching random GCS image for `{subdirectory}`: {e}")

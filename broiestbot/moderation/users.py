@@ -26,13 +26,8 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
 
     :returns: None
     """
-    if (
-        user_name in CHATANGO_BLACKLISTED_USERS
-        and room.room_name.lower() in CHATANGO_BLACKLIST_ROOMS
-    ):
-        reply = emojize(
-            f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:", language="en"
-        )
+    if user_name in CHATANGO_BLACKLISTED_USERS and room.room_name.lower() in CHATANGO_BLACKLIST_ROOMS:
+        reply = emojize(f":wave: @{user_name} lmao pz fgt have fun being banned forever :wave:", language="en")
         LOGGER.warning(f"BANNED user: username={message.user.name} ip={message.ip}")
         room.message(reply)
         room.clear_user(message.user)

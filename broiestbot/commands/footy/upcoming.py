@@ -65,14 +65,10 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
-    return emojize(
-        ":warning: Couldn't find upcoming fixtures for the next week :warning:", language="en"
-    )
+    return emojize(":warning: Couldn't find upcoming fixtures for the next week :warning:", language="en")
 
 
-def footy_upcoming_fixtures_per_league(
-    league_name, league_id: int, room: str, username: str
-) -> Optional[str]:
+def footy_upcoming_fixtures_per_league(league_name, league_id: int, room: str, username: str) -> Optional[str]:
     """
     Get this week's upcoming fixtures for a given league or tournament.
 
@@ -101,9 +97,7 @@ def footy_upcoming_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def upcoming_fixture_fetcher(
-    league_name: str, league_id: int, room: str, username: str
-) -> Optional[List[dict]]:
+def upcoming_fixture_fetcher(league_name: str, league_id: int, room: str, username: str) -> Optional[List[dict]]:
     """
     Fetch 6 upcoming fixtures for each top league, or 3 for each lower league.
 
@@ -116,9 +110,7 @@ def upcoming_fixture_fetcher(
     """
     try:
         params = {
-            "next": 6
-            if "EPL" in league_name or "UCL" in league_name or "WORLD CUP" in league_name
-            else 3,
+            "next": 6 if "EPL" in league_name or "UCL" in league_name or "WORLD CUP" in league_name else 3,
             "league": league_id,
             "status": "NS",
         }
@@ -146,9 +138,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
         if resp.status_code == 200:
             return resp.json()["response"]
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError {resp.status_code} while fetching footy fixtures: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError {resp.status_code} while fetching footy fixtures: {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
@@ -200,13 +190,9 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 display_date, tz = get_preferred_time_format(date, room, username)
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
-                upcoming_foxtures = (
-                    upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
-                )
-            return emojize(upcoming_foxtures)
-        return emojize(
-            f":warning: Couldn't find fixtures, has season started yet? :warning:", language="en"
-        )
+                upcoming_foxtures = upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
+            return emojize(upcoming_foxtures, language="en")
+        return emojize(f":warning: Couldn't find fixtures, has season started yet? :warning:", language="en")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching fox fixtures: {e.response.content}")
     except KeyError as e:

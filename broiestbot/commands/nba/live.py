@@ -31,7 +31,9 @@ def live_nba_games() -> str:
                     home_team = game["teams"]["home"]["name"]
                     home_team_score = game["scores"]["home"]["total"]
                     game_clock = game["status"]["timer"]
-                    games += f"{away_team} <b>{away_team_score}</b> @ {home_team} <b>{home_team_score}</b>\n{game_clock}"
+                    games += (
+                        f"{away_team} <b>{away_team_score}</b> @ {home_team} <b>{home_team_score}</b>\n{game_clock}"
+                    )
                 return games
             elif len(resp.json()["response"]) > 0:
                 upcoming_games = upcoming_nba_games()

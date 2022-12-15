@@ -31,7 +31,7 @@ def get_all_live_twitch_streams():
                 twitch_streams.append(stream)
                 if i == 1:
                     twitch_streams.insert(0, "\n\n\n\n")
-                if len(twitch_streams) > 2:
+                elif i > 1:
                     return "\n-----------------------\n".join(twitch_streams)
                 return "".join(twitch_streams)
         return emojize(f":frowning: no memers streaming twitch rn :frowning:", language="en")
@@ -105,9 +105,7 @@ def get_twitch_auth_token() -> Optional[str]:
         resp = requests.post(endpoint, params=params, timeout=HTTP_REQUEST_TIMEOUT)
         return resp.json().get("access_token")
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError {resp.status_code} when fetching Twitch auth token: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError {resp.status_code} when fetching Twitch auth token: {e.response.content}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch auth token: {e}")
 

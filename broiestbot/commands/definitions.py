@@ -28,10 +28,8 @@ def get_english_definition(user_name: str, word: str) -> str:
         dictionary = MultiDictionary()
         word_definitions = dictionary.meaning("en", word)
         for i, word_type in enumerate(word_definitions[0]):
-            definition = emojize(f":bookmark: {word_type}\n")
-            definition += emojize(
-                f":left_speech_bubble: {word_definitions[i + 1]}\n", language="en"
-            )
+            definition = emojize(f":bookmark: {word_type}\n", language="en")
+            definition += emojize(f":left_speech_bubble: {word_definitions[i + 1]}\n", language="en")
             if i < len(word_definitions[0]):
                 definition += "\n"
             response += definition
@@ -67,9 +65,7 @@ def get_urban_definition(term: str) -> str:
         if results:
             word = term.upper()
             results = sorted(results, key=lambda i: i["thumbs_down"], reverse=True)
-            definition = (str(results[0].get("definition")).replace("[", "").replace("]", ""))[
-                0:1500
-            ]
+            definition = (str(results[0].get("definition")).replace("[", "").replace("]", ""))[0:1500]
             example = results[0].get("example")
             if example:
                 example = str(example).replace("[", "").replace("]", "")[0:250]
@@ -77,9 +73,7 @@ def get_urban_definition(term: str) -> str:
             return f"{word}:\n\n {definition}"
         return emojize(":warning: idk wtf ur trying to search for tbh :warning:", language="en")
     except HTTPError as e:
-        LOGGER.error(
-            f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}"
-        )
+        LOGGER.error(f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}")
         return emojize(f":warning: wtf urban dictionary is down :warning:", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError error when fetching Urban definition for `{term}`: {e}")
@@ -104,9 +98,7 @@ def wiki_summary(query: str) -> str:
         wiki_page = wiki.page(query)
         if wiki_page.exists():
             title = wiki_page.title.upper()
-            main_category = list(wiki_page.categories.values())[0].title.replace(
-                "Category:", "Category: "
-            )
+            main_category = list(wiki_page.categories.values())[0].title.replace("Category:", "Category: ")
             text = wiki_page.text
             if "disambiguation" in main_category and "Other uses" in text:
                 text = text.split("Other uses")[0]
@@ -151,9 +143,7 @@ def get_english_translation(language: str, phrase: str):
         return f'TRANSLATION: `{res.json()["data"]["translations"][0]["translatedText"]}`'
     except HTTPError as e:
         LOGGER.error(f"HTTPError while translating `{phrase}`: {e.response.content}")
-        return emojize(
-            f":warning: wtf you broke the api? SPEAK ENGLISH :warning:",
-        )
+        return emojize(f":warning: wtf you broke the api? SPEAK ENGLISH :warning:", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError error while translating `{phrase}`: {e}")
         return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")

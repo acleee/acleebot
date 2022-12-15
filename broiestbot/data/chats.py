@@ -24,10 +24,6 @@ def persist_chat_logs(user_name: str, room_name: str, chat_message: str, bot_use
     except IntegrityError as e:
         LOGGER.warning(f"Failed to save duplicate chat entry: {e}")
     except SQLAlchemyError as e:
-        LOGGER.warning(
-            f"SQLAlchemyError occurred while persisting chat data from  {user_name}, `{chat_message}`: {e}"
-        )
+        LOGGER.warning(f"SQLAlchemyError occurred while persisting chat data from  {user_name}, `{chat_message}`: {e}")
     except Exception as e:
-        LOGGER.warning(
-            f"Unexpected error occurred while persisting chat data from {user_name}, `{chat_message}`: {e}"
-        )
+        LOGGER.warning(f"Unexpected error occurred while persisting chat data from {user_name}, `{chat_message}`: {e}")

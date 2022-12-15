@@ -264,9 +264,7 @@ class Bot(RoomManager):
         else:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
-    def _process_command(
-        self, chat_message: str, room: Room, user_name: str, message: Message
-    ) -> None:
+    def _process_command(self, chat_message: str, room: Room, user_name: str, message: Message) -> None:
         """
         Determines if message is a bot command.
 
@@ -305,9 +303,7 @@ class Bot(RoomManager):
         if f"@{bot_username}" in chat_message and "*waves*" in chat_message:
             self._wave_back(room, user_name, bot_username)
         elif (
-            "petition" in chat_message
-            and "competition" not in chat_message
-            and user_name.upper() not in CHATANGO_BOTS
+            "petition" in chat_message and "competition" not in chat_message and user_name.upper() not in CHATANGO_BOTS
         ):
             room.message(
                 "SIGN THE PETITION: \
@@ -319,9 +315,7 @@ class Bot(RoomManager):
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
         else:
-            fetched_phrase = (
-                session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
-            )
+            fetched_phrase = session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
             if fetched_phrase is not None:
                 room.message(fetched_phrase.response)
 
@@ -403,9 +397,7 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name == bot_username:
-            room.message(
-                f"stop talking to urself and get some friends u fuckin loser jfc kys @{bot_username}"
-            )
+            room.message(f"stop talking to urself and get some friends u fuckin loser jfc kys @{bot_username}")
         else:
             room.message(f"@{user_name} *waves*")
 

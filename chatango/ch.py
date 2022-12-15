@@ -275,9 +275,7 @@ def _get_anon_id(n, ssid):
     if n is None:
         n = "5504"
     try:
-        return "".join(
-            str(x + y)[-1] for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:]))
-        )
+        return "".join(str(x + y)[-1] for x, y in zip((int(x) for x in n), (int(x) for x in ssid[4:])))
     except ValueError:
         return "NNNN"
 
@@ -439,9 +437,7 @@ class ANON_PM:
         self._persons[name]._sock = sock
         if not self._persons[name]._auth():
             return
-        self._persons[name]._pingTask = self._mgr.set_internal(
-            self._mgr._ping_delay, self._persons[name].ping
-        )
+        self._persons[name]._pingTask = self._mgr.set_internal(self._mgr._ping_delay, self._persons[name].ping)
         self._persons[name]._connected = True
 
     def message(self, user, msg):
@@ -1873,9 +1869,7 @@ class RoomManager:
         :param Room room: Chatango room recently joined by bot.
         """
         room.message("Beep boop I'm dead inside 🤖")
-        LOGGER.success(
-            f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}"
-        )
+        LOGGER.success(f"[{room.room_name}] [{self.user.name}]: Successfully connected to {room.room_name}")
 
     def on_reconnect(self, room: Room):
         """

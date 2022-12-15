@@ -51,6 +51,7 @@ class CryptoChartHandler:
                 f':up-right_arrow: HIGH today of ${prices["high"]:.2f}\n'
                 f':red_triangle_pointed_down: LOW of ${prices["low"]:.2f}\n'
                 f":nine-thirty: (24-hour change of {percentage:.2f}%)",
+                language="en",
             )
         elif prices.get("last"):
             return emojize(
@@ -59,8 +60,9 @@ class CryptoChartHandler:
                 f':up-right_arrow: HIGH today of ${prices["high"]}\n'
                 f':red_triangle_pointed_down: LOW of ${prices["low"]}\n'
                 f":nine-thirty: (change of {percentage:.2f}%)",
+                language="en",
             )
-        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️")
+        return emojize("⚠️ dats nought a COIN u RETART :@ ⚠️", language="en")
 
     def get_crypto_chart(self, symbol: str) -> str:
         """
@@ -85,9 +87,7 @@ class CryptoChartHandler:
         try:
             resp = requests.get(url=endpoint)
             if resp.status_code == 429:
-                return emojize(
-                    f":warning: jfc stop abusing the crypto commands u fgts, you exceeded the API limit :@ :warning:",
-                )
+                return emojize(f":warning: jfc you exceeded the crypto API limit :@ :warning:", language="en")
             if resp.status_code == 200:
                 return resp.json()["result"]["price"]
         except HTTPError as e:
@@ -129,9 +129,7 @@ class CryptoChartHandler:
 
         :returns: Optional[pd.DataFrame]
         """
-        df = pd.DataFrame.from_dict(
-            coin_data["Time Series (Digital Currency Daily)"], orient="index"
-        )[:60]
+        df = pd.DataFrame.from_dict(coin_data["Time Series (Digital Currency Daily)"], orient="index")[:60]
         return df
 
     def _create_chart(self, symbol: str) -> Optional[str]:
@@ -203,15 +201,8 @@ class CryptoChartHandler:
                     auto_open=False,
                 )
                 # return fig.write_image("figure.png", engine="kaleido")
-                return (
-                    chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1]
-                    + ".png"
-                )
+                return chart.replace("https://plotly.com/", "https://chart-studio.plotly.com/")[:-1] + ".png"
         except HTTPError as e:
-            return emojize(
-                f":warning: fk bro's plotly subscription died: {e} :warning:", use_aliases=True
-            )
+            return emojize(f":warning: fk bro's plotly subscription died: {e} :warning:", language="en")
         except Exception as e:
-            return emojize(
-                f":warning: idk wot happened: {e} :warning:",
-            )
+            return emojize(f":warning: idk wot happened: {e} :warning:", language="en")
