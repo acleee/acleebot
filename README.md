@@ -103,5 +103,5 @@ REDIS_PORT=yourRedisPort
 REDIS_DB=yourRedisDb
 
 # API Basketball
-NBA_API_KEY=g0WO10fWOCmshLudRLxChsXgQlCtp15tFmkjsn5qiWhSv1HcPs
+NBA_API_KEY=yourNbaKey
 ```

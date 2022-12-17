@@ -83,7 +83,7 @@ python-versions = "*"
 
 [[package]]
 name = "botocore"
-version = "1.29.30"
+version = "1.29.32"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
@@ -141,7 +141,7 @@ exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
 
 [[package]]
 name = "certifi"
-version = "2022.9.24"
+version = "2022.12.7"
 description = "Python package for providing Mozilla's CA Bundle."
 category = "main"
 optional = false
@@ -149,11 +149,11 @@ python-versions = ">=3.6"
 
 [[package]]
 name = "chardet"
-version = "5.0.0"
+version = "5.1.0"
 description = "Universal encoding detector for Python 3"
 category = "main"
 optional = false
-python-versions = ">=3.6"
+python-versions = ">=3.7"
 
 [[package]]
 name = "charset-normalizer"
@@ -843,15 +843,16 @@ python-versions = ">=3.7"
 
 [[package]]
 name = "psnawp"
-version = "1.2.0"
+version = "1.2.1"
 description = "Python API Wrapper for PlayStation Network API"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 
 [package.dependencies]
-certifi = "2022.9.24"
-chardet = "5.0.0"
+attrs = "22.1.0"
+certifi = "2022.12.7"
+chardet = "5.1.0"
 charset-normalizer = "2.1.1"
 idna = "3.4"
 requests = "2.28.1"
@@ -859,7 +860,7 @@ urllib3 = "1.26.13"
 
 [package.extras]
 docs = ["sphinx (==5.2.2)", "sphinx-rtd-theme (==1.0.0)"]
-testing = ["alabaster (==0.7.12)", "attrs (==22.1.0)", "babel (==2.11.0)", "bleach (==5.0.1)", "build (==0.9.0)", "certifi (==2022.9.24)", "cffi (==1.15.1)", "cfgv (==3.3.1)", "chardet (==5.0.0)", "charset-normalizer (==2.1.1)", "click (==8.1.3)", "commonmark (==0.9.1)", "coverage[toml] (==6.5.0)", "cryptography (==38.0.3)", "distlib (==0.3.6)", "docutils (==0.17.1)", "exceptiongroup (==1.0.4)", "filelock (==3.8.0)", "flake8 (==6.0.0)", "identify (==2.5.9)", "idna (==3.4)", "imagesize (==1.4.1)", "importlib-metadata (==5.1.0)", "iniconfig (==1.1.1)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.2)", "keyring (==23.11.0)", "markdown-it-py (==2.1.0)", "markupsafe (==2.1.1)", "mccabe (==0.7.0)", "mdit-py-plugins (==0.3.1)", "mdurl (==0.1.2)", "more-itertools (==9.0.0)", "multidict (==6.0.2)", "mypy (==0.991)", "mypy-extensions (==0.4.3)", "myst-parser (==0.18.1)", "nodeenv (==1.7.0)", "packaging (==21.3)", "pep517 (==0.13.0)", "pip-tools (==6.10.0)", "pkginfo (==1.8.3)", "platformdirs (==2.5.4)", "pluggy (==1.0.0)", "pre-commit (==2.20.0)", "pycodestyle (==2.10.0)", "pycparser (==2.21)", "pyflakes (==3.0.1)", "pygments (==2.13.0)", "pyparsing (==3.0.9)", "pytest (==7.2.0)", "pytest-cov (==4.0.0)", "pytest-vcr (==1.0.2)", "python-dotenv (==0.21.0)", "pytz (==2022.6)", "pyyaml (==6.0)", "readme-renderer (==37.3)", "requests (==2.28.1)", "requests-toolbelt (==0.10.1)", "rfc3986 (==2.0.0)", "rich (==12.6.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "snowballstemmer (==2.2.0)", "sphinx (==5.3.0)", "sphinx-rtd-theme (==1.1.1)", "sphinxcontrib-applehelp (==1.0.2)", "sphinxcontrib-devhelp (==1.0.2)", "sphinxcontrib-htmlhelp (==2.0.0)", "sphinxcontrib-jsmath (==1.0.1)", "sphinxcontrib-qthelp (==1.0.3)", "sphinxcontrib-serializinghtml (==1.1.5)", "toml (==0.10.2)", "tomli (==2.0.1)", "twine (==4.0.1)", "types-attrs (==19.1.0)", "types-requests (==2.28.11.5)", "types-urllib3 (==1.26.25.4)", "typing-extensions (==4.4.0)", "urllib3 (==1.26.13)", "vcrpy (==4.2.1)", "virtualenv (==20.16.7)", "webencodings (==0.5.1)", "wheel (==0.38.4)", "wrapt (==1.14.1)", "yarl (==1.8.1)", "zipp (==3.11.0)"]
+testing = ["alabaster (==0.7.12)", "attrs (==22.1.0)", "babel (==2.11.0)", "bleach (==5.0.1)", "build (==0.9.0)", "certifi (==2022.12.7)", "cffi (==1.15.1)", "cfgv (==3.3.1)", "chardet (==5.1.0)", "charset-normalizer (==2.1.1)", "click (==8.1.3)", "commonmark (==0.9.1)", "coverage[toml] (==6.5.0)", "cryptography (==38.0.4)", "distlib (==0.3.6)", "docutils (==0.17.1)", "exceptiongroup (==1.0.4)", "filelock (==3.8.2)", "flake8 (==6.0.0)", "identify (==2.5.9)", "idna (==3.4)", "imagesize (==1.4.1)", "importlib-metadata (==5.1.0)", "iniconfig (==1.1.1)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.2)", "keyring (==23.11.0)", "markdown-it-py (==2.1.0)", "markupsafe (==2.1.1)", "mccabe (==0.7.0)", "mdit-py-plugins (==0.3.3)", "mdurl (==0.1.2)", "more-itertools (==9.0.0)", "multidict (==6.0.3)", "mypy (==0.991)", "mypy-extensions (==0.4.3)", "myst-parser (==0.18.1)", "nodeenv (==1.7.0)", "packaging (==22.0)", "pep517 (==0.13.0)", "pip-tools (==6.11.0)", "pkginfo (==1.9.2)", "platformdirs (==2.6.0)", "pluggy (==1.0.0)", "pre-commit (==2.20.0)", "pycodestyle (==2.10.0)", "pycparser (==2.21)", "pyflakes (==3.0.1)", "pygments (==2.13.0)", "pytest (==7.2.0)", "pytest-cov (==4.0.0)", "pytest-vcr (==1.0.2)", "python-dotenv (==0.21.0)", "pytz (==2022.6)", "pyyaml (==6.0)", "readme-renderer (==37.3)", "requests (==2.28.1)", "requests-toolbelt (==0.10.1)", "rfc3986 (==2.0.0)", "rich (==12.6.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "snowballstemmer (==2.2.0)", "sphinx (==5.3.0)", "sphinx-rtd-theme (==1.1.1)", "sphinxcontrib-applehelp (==1.0.2)", "sphinxcontrib-devhelp (==1.0.2)", "sphinxcontrib-htmlhelp (==2.0.0)", "sphinxcontrib-jsmath (==1.0.1)", "sphinxcontrib-qthelp (==1.0.3)", "sphinxcontrib-serializinghtml (==1.1.5)", "toml (==0.10.2)", "tomli (==2.0.1)", "twine (==4.0.2)", "types-attrs (==19.1.0)", "types-requests (==2.28.11.5)", "types-urllib3 (==1.26.25.4)", "typing-extensions (==4.4.0)", "urllib3 (==1.26.13)", "vcrpy (==4.2.1)", "virtualenv (==20.17.1)", "webencodings (==0.5.1)", "wheel (==0.38.4)", "wrapt (==1.14.1)", "yarl (==1.8.2)", "zipp (==3.11.0)"]
 
 [[package]]
 name = "pyasn1"
@@ -1394,8 +1395,8 @@ boto = [
     {file = "boto-2.49.0.tar.gz", hash = "sha256:ea0d3b40a2d852767be77ca343b58a9e3a4b00d9db440efb8da74b4e58025e5a"},
 ]
 botocore = [
-    {file = "botocore-1.29.30-py3-none-any.whl", hash = "sha256:6bfe917c022b92c093da448aae71b18f7dcbbbc69403f57ee39ca4775b2888e6"},
-    {file = "botocore-1.29.30.tar.gz", hash = "sha256:9364417f53842167f8bcf72b9ab3c78457c7df613051101952b2470d9de7ea31"},
+    {file = "botocore-1.29.32-py3-none-any.whl", hash = "sha256:b1a65edca151665a6844bf9f317440e31d8d5e4cbce3477f2661462e20c213b1"},
+    {file = "botocore-1.29.32.tar.gz", hash = "sha256:27bc3903f7f8c813efd1605ff13ffdfca2c37dc78cadfa488cfda78fca323deb"},
 ]
 bs4 = [
     {file = "bs4-0.0.1.tar.gz", hash = "sha256:36ecea1fd7cc5c0c6e4a1ff075df26d50da647b75376626cc186e2212886dd3a"},
@@ -1413,12 +1414,12 @@ cattrs = [
     {file = "cattrs-22.2.0.tar.gz", hash = "sha256:f0eed5642399423cf656e7b66ce92cdc5b963ecafd041d1b24d136fdde7acf6d"},
 ]
 certifi = [
-    {file = "certifi-2022.9.24-py3-none-any.whl", hash = "sha256:90c1a32f1d68f940488354e36370f6cca89f0f106db09518524c88d6ed83f382"},
-    {file = "certifi-2022.9.24.tar.gz", hash = "sha256:0d9c601124e5a6ba9712dbc60d9c53c21e34f5f641fe83002317394311bdce14"},
+    {file = "certifi-2022.12.7-py3-none-any.whl", hash = "sha256:4ad3232f5e926d6718ec31cfc1fcadfde020920e278684144551c91769c7bc18"},
+    {file = "certifi-2022.12.7.tar.gz", hash = "sha256:35824b4c3a97115964b408844d64aa14db1cc518f6562e8d7261699d1350a9e3"},
 ]
 chardet = [
-    {file = "chardet-5.0.0-py3-none-any.whl", hash = "sha256:d3e64f022d254183001eccc5db4040520c0f23b1a3f33d6413e099eb7f126557"},
-    {file = "chardet-5.0.0.tar.gz", hash = "sha256:0368df2bfd78b5fc20572bb4e9bb7fb53e2c094f60ae9993339e8671d0afb8aa"},
+    {file = "chardet-5.1.0-py3-none-any.whl", hash = "sha256:362777fb014af596ad31334fde1e8c327dfdb076e1960d1694662d46a6917ab9"},
+    {file = "chardet-5.1.0.tar.gz", hash = "sha256:0d62712b956bc154f85fb0a266e2a3c5913c2967e00348701b32411d6def31e5"},
 ]
 charset-normalizer = [
     {file = "charset-normalizer-2.1.1.tar.gz", hash = "sha256:5a3d016c7c547f69d6f81fb0db9449ce888b418b5b9952cc5e6e66843e9dd845"},
@@ -1983,8 +1984,8 @@ protobuf = [
     {file = "protobuf-4.21.12.tar.gz", hash = "sha256:7cd532c4566d0e6feafecc1059d04c7915aec8e182d1cf7adee8b24ef1e2e6ab"},
 ]
 psnawp = [
-    {file = "PSNAWP-1.2.0-py3-none-any.whl", hash = "sha256:243201de1dfc20025239ffdb69ef97c323d10495761e641d92724efea1bef778"},
-    {file = "PSNAWP-1.2.0.tar.gz", hash = "sha256:3a9f4d107ec9453f1cb425fe78e7273bdb3ca416c7d84ebe1afa1a93f67b4d47"},
+    {file = "PSNAWP-1.2.1-py3-none-any.whl", hash = "sha256:99f875d4f6d603865350d83ea7a25dd7bafabd9afbb4ec527582bd34ba9e4600"},
+    {file = "PSNAWP-1.2.1.tar.gz", hash = "sha256:126f9ce2df2d75e9406d621817eaf299f8977c829c03636ea90e9c44219756c1"},
 ]
 pyasn1 = [
     {file = "pyasn1-0.4.8-py2.py3-none-any.whl", hash = "sha256:39c7e2ec30515947ff4e87fb6f456dfc6e84857d34be479c9d4a4ba4bf46aa5d"},
