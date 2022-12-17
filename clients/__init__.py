@@ -7,6 +7,7 @@ import wikipediaapi
 # from googleapiclient.discovery import build
 from imdb import Cinemagoer
 from twilio.rest import Client
+from clients.ddog import ddog_apm_trace
 
 from config import (  # YOUTUBE_API_KEY,
     ALPHA_VANTAGE_API_KEY,

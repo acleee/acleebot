@@ -18,7 +18,7 @@ keywords = [
 ]
 
 [tool.poetry.dependencies]
-python = "^3.8"
+python = "^3.9"
 requests = "*"
 sqlalchemy = "*"
 pymysql = "*"
@@ -47,7 +47,7 @@ pandas = "*"
 html5lib = "*"
 google-api-python-client = "*"
 PyMultiDictionary = "*"
-metadata-parser = "^0.10.5"
+metadata-parser = "*"
 PSNAWP = "*"
 
 [tool.poetry.dev-dependencies]
@@ -67,7 +67,7 @@ issues = "https://github.com/toddbirchard/broiestbot/issues"
 black = {version = "^22.10.0", allow-prereleases = true}
 
 [build-system]
-requires = ["poetry>=1.2.2"]
+requires = ["poetry>=1.3.1"]
 build-backend = "poetry.masonry.api"
 
 [tool.isort]
