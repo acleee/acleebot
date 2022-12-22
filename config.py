@@ -264,7 +264,7 @@ AFRICA_CUP_ID = 6
 
 FOOTY_LEAGUES = {
     # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
-    ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     # ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
@@ -278,12 +278,12 @@ FOOTY_LEAGUES = {
     # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":United_States: MLS": MLS_LEAGUE_ID,
-    ":cow: Carabou Cup": CARABOU_CUP_ID,
+    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
     # ":England: EFL": EFL_LEAGUE_ID,
-    # ":Spain: LIGA": LIGA_LEAGUE_ID,
-    # ":Germany: BUND": BUND_LEAGUE_ID,
-    # ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    # ":France: Ligue 1": LIGUE_ONE_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
+    ":France: Ligue 1": LIGUE_ONE_ID,
     # ":England: LEAGUE ONE": LEAGUE_ONE_ID,
     # ":shield: COMMUNITY SHIELD": COMMUNITY_SHIELD_CUP,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
@@ -297,12 +297,14 @@ FOOTY_LEAGUES = {
 FOOTY_LIVE_SCORED_LEAGUES = {
     # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
-    ":blue_circle: UCL": UCL_LEAGUE_ID,
-    ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
-    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    ":cow: Carabou Cup": CARABOU_CUP_ID,
+    # ":blue_circle: UCL": UCL_LEAGUE_ID,
+    # ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
+    # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
-    # ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
 }
 
 FOOTY_LEAGUES_LINEUPS = {
