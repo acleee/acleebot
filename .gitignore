@@ -105,10 +105,10 @@ ENV/
 # mkdocs documentation
 /site
 
-# mypy
+# MyPy
 .mypy_cache/
 
-# etc
+# Etc
 .DS_Store
 .idea
 .idea/*
@@ -120,16 +120,21 @@ ENV/
 .idea/vcs.xml
 .uwsgi_plugins_builder
 
-# credentials
+# Credentials
 HackersAndSlackers-b7835abe15a0.json
 gcloud.json
 creds/
 *.conf
 
-# logs
+# Logs
 nohup.out
 nohup.*
 *.out
 *.log
 *.json
 logs/*
+
+# IDEs
+.vscode
+idea
+

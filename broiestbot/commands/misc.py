@@ -14,6 +14,7 @@ from config import (
     TWILIO_RECIPIENT_PHONE,
     TWILIO_SENDER_PHONE,
     HTTP_REQUEST_TIMEOUT,
+    COVID_API_ENDPOINT,
 )
 from logger import LOGGER
 
@@ -29,7 +30,7 @@ def blaze_time_remaining() -> str:
     pm_time = now.replace(hour=16, minute=20, second=0)
     if am_time <= now < am_time + timedelta(seconds=59) or pm_time <= now < pm_time + timedelta(seconds=59):
         return emojize(
-            f":herb: :fire: HOLY FUCK IT'S EXACTLY 420!!! BLAZE IT BITCHHHHHHHCAWWHHHHHH :smoking: :kissing_closed_eyes: :dash:",
+            f":herb: :fire: HOLY FUCK IT'S EXACTLY 420!!! BLAZE IT BITCHHHHHHHCAWWHHHHHH :cigarette: :kissing_face_with_closed_eyes: :dashing_away:",
             language="en",
         )
     elif am_time > now:
@@ -65,7 +66,7 @@ def send_text_message(message: str, user: str) -> Optional[str]:
                 to=TWILIO_RECIPIENT_PHONE,
             )
             return f"ty @{user} I just texted brough: {message}"
-        return emojize(f":warning: lmao fuck off, only pizza can text brough :warning:", language="en")
+        return emojize(f":warning: pls, only pizzaough can text brough :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")
 
@@ -124,7 +125,7 @@ def covid_cases_usa() -> str:
 
     :returns: str
     """
-    url = "https://covid-19-data.p.rapidapi.com/country/code"
+    url = COVID_API_ENDPOINT
     params = {
         "code": "usa",
         "format": "json",
@@ -139,7 +140,7 @@ def covid_cases_usa() -> str:
     cases = resp["confirmed"]
     covid_summary = (
         f"\n\n\n"
-        f":flag_for_United_States::eagle: USA! USA! USA! USA! :eagle::flag_for_United_States:\n"
+        f":United_States: :eagle: USA! USA! USA! USA! :eagle: :United_States:\n"
         f":chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n"
         f":face_with_medical_mask: {critical:,} critical"
     )

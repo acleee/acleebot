@@ -169,6 +169,9 @@ INSTAGRAM_PASSWORD = getenv("INSTAGRAM_PASSWORD")
 INSTAGRAM_APP_ID = getenv("INSTAGRAM_APP_ID")
 INSTAGRAM_APP_SECRET = getenv("INSTAGRAM_APP_SECRET")
 
+# Covid
+COVID_API_ENDPOINT = "https://covid-19-data.p.rapidapi.com/country/code"
+
 # Lyrics Genius
 GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
