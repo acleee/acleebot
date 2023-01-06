@@ -2,6 +2,7 @@
 from calendar import day_name
 from datetime import datetime, timedelta
 from typing import Optional
+from math import floor
 
 import requests
 from emoji import emojize
@@ -44,7 +45,7 @@ def blaze_time_remaining() -> str:
     return emojize(
         f":herb: :fire: \
             {remaining[0]} hours, {remaining[1]} minutes, & {remaining[2]} seconds until 4:20 \
-            :smoking: :kissing_closed_eyes: :dash:",
+            :smoking: :kissing_face_with_closed_eyes: :dashing_away:",
         language="en",
     )
 
@@ -99,12 +100,13 @@ def time_until_wayne(user_name: str) -> str:
                 hours_remaining = minutes_remaining / 60
                 if hours_remaining >= 1:
                     minutes_remaining = minutes_remaining % 60
+                    hours_remaining = floor(hours_remaining)
                     return emojize(
-                        f":raising_hands_dark_skin_tone: :money_bag: {hours_remaining}h {minutes_remaining}m left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
+                        f":raising_hands_dark_skin_tone: :money_bag: <b>{hours_remaining}h {minutes_remaining}m</b> left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                         language="en",
                     )
                 return emojize(
-                    f":raising_hands_dark_skin_tone: :money_bag: {minutes_remaining} minutes left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
+                    f":raising_hands_dark_skin_tone: :money_bag: <b>{minutes_remaining} minutes</b> left until WAYNE :money_bag: :raising_hands_dark_skin_tone:",
                     language="en",
                 )
         return emojize(
