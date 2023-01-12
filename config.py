@@ -247,6 +247,7 @@ LIGA_LEAGUE_ID = 140
 EUROS_LEAGUE_ID = 4
 COPA_LEAGUE_ID = 9
 COUPE_DE_FRANCE = 66
+COPA_DEL_REY = 143
 LIGUE_ONE_ID = 61
 FRIENDLIES_LEAGUE_ID = 667
 WORLDCUP_LEAGUE_ID = 15
@@ -274,6 +275,7 @@ FOOTY_LEAGUES = {
     # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
     # ":trophy: :England: FA Trophy": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
@@ -306,6 +308,7 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":cow_face: Carabou Cup": CARABOU_CUP_ID,
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
 }
