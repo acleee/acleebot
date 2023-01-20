@@ -276,7 +276,8 @@ FOOTY_LEAGUES = {
     # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
+    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
+    # ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
     ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
     # ":trophy: :England: FA Trophy": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
@@ -285,7 +286,6 @@ FOOTY_LEAGUES = {
     # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":United_States: MLS": MLS_LEAGUE_ID,
-    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
     # ":England: EFL": EFL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
@@ -310,14 +310,15 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":cow_face: Carabou Cup": CARABOU_CUP_ID,
     # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
     ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
+    # ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
     ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
 }
 
 FOOTY_LEAGUES_LINEUPS = {
-    ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
+    # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
@@ -383,7 +384,7 @@ WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = "https://www.espn.com/olympics/winter/202
 NBA_BASE_URL = "https://api-basketball.p.rapidapi.com"
 NBA_API_KEY = getenv("NBA_API_KEY")
 NBA_CONFERENCE_NAMES = ["Eastern Conference", "Western Conference"]
-NBA_SEASON_YEAR = "2021-2022"
+NBA_SEASON_YEAR = "2022-2023"
 
 # Playstation
 PLAYSTATION_SSO_TOKEN = getenv("PLAYSTATION_SSO_TOKEN")
