@@ -133,14 +133,19 @@ def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
         events = req.json().get("response")
         if events:
             for i, event in enumerate(events):
-                if event["detail"] == "Yellow Card":
+                if "Goal Disallowed" in event["detail"]:
+                    event_log = event_log + emojize(
+                        f':cross_mark: :soccer_ball: {event["player"]["name"]} {event["time"]["elapsed"]}" ({event.get("detail") if not None else ""})\n',
+                        language="en",
+                    )
+                elif event["detail"] == "Yellow Card":
                     event_log = event_log + emojize(
                         f':yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
                         language="en",
                     )
                 elif event["detail"] == "Second Yellow card":
                     event_log = event_log + emojize(
-                        f':yellow_square::yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]}"\n',
+                        f':yellow_square::yellow_square: {event["player"]["name"]} {event["time"]["elapsed"]} ({event.get("comments") if not None else ""})"\n',
                         language="en",
                     )
                 elif event["detail"] == "Red Card":
@@ -160,7 +165,7 @@ def get_events_per_live_fixture(fixture_id: int, subs=False) -> Optional[str]:
                     )
                 elif event["detail"] == "Own Goal":
                     event_log = event_log + emojize(
-                        f':skull: :soccer_ball: {event["player"]["name"]} (via {event["assist"]["name"]}) {event["time"]["elapsed"]}"\n',
+                        f':skull: :soccer_ball: {event["player"]["name"]} {"(via" + event["assist"].get("name") if not None else ""}) {event["time"]["elapsed"]}"\n',
                         language="en",
                     )
                 elif event["type"] == "subst" and subs is True:
