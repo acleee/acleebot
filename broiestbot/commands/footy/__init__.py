@@ -9,6 +9,7 @@ from .standings import (
     epl_standings,
     liga_standings,
     ligue_standings,
+    league_standings,
 )
 from .today import today_upcoming_fixtures
 from .upcoming import (

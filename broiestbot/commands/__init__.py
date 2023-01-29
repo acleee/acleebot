@@ -23,6 +23,7 @@ from .footy import (
     liga_standings,
     ligue_standings,
     today_upcoming_fixtures,
+    league_standings,
 )
 from .images import (
     fetch_image_from_gcs,

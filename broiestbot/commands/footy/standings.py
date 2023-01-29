@@ -7,8 +7,7 @@ from requests.exceptions import HTTPError
 
 from config import (
     BUND_LEAGUE_ID,
-    EFL_LEAGUE_ID,
-    EPL_LEAGUE_ID,
+    ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     FOOTY_HTTP_HEADERS,
     FOOTY_STANDINGS_ENDPOINT,
     LIGA_LEAGUE_ID,
@@ -28,7 +27,7 @@ def epl_standings() -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        params = {"league": EPL_LEAGUE_ID, "season": get_season_year(EPL_LEAGUE_ID)}
+        params = {"league": ENGLISH_CHAMPIONSHIP_LEAGUE_ID, "season": get_season_year(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)}
         req = requests.get(
             FOOTY_STANDINGS_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
@@ -99,7 +98,7 @@ def bund_standings() -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        standings_table = "\n\n]\n"
+        standings_table = "\n\n\n"
         params = {"league": BUND_LEAGUE_ID, "season": get_season_year(BUND_LEAGUE_ID)}
         req = requests.get(
             FOOTY_STANDINGS_ENDPOINT,
@@ -136,7 +135,7 @@ def efl_standings() -> Optional[str]:
     """
     try:
         standings_table = "\n\n\n\n"
-        params = {"league": EFL_LEAGUE_ID, "season": get_season_year(EFL_LEAGUE_ID)}
+        params = {"league": ENGLISH_CHAMPIONSHIP_LEAGUE_ID, "season": get_season_year(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)}
         req = requests.get(
             FOOTY_STANDINGS_ENDPOINT,
             headers=FOOTY_HTTP_HEADERS,
@@ -198,3 +197,41 @@ def ligue_standings() -> Optional[str]:
         LOGGER.error(f"KeyError while fetching EFL standings: {e}")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching EFL standings: {e}")
+
+
+def league_standings(LEAGUE_ID: int) -> Optional[str]:
+    """
+    Get table standings for a given league.
+
+    :param int LEAGUE_ID: ID of league to get table standings for.
+
+    :returns: Optional[str]
+    """
+    try:
+        standings_table = "\n\n\n\n"
+        params = {"league": LEAGUE_ID, "season": get_season_year(LEAGUE_ID)}
+        req = requests.get(
+            FOOTY_STANDINGS_ENDPOINT,
+            headers=FOOTY_HTTP_HEADERS,
+            params=params,
+            timeout=HTTP_REQUEST_TIMEOUT,
+        )
+        res = req.json()
+        standings = res["response"][0]["league"]["standings"][0]
+        for standing in standings:
+            rank = standing["rank"]
+            team = standing["team"]["name"]
+            points = standing["points"]
+            wins = standing["all"]["win"]
+            draws = standing["all"]["draw"]
+            losses = standing["all"]["lose"]
+            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
+        if standings_table != "\n\n\n\n":
+            return standings_table
+        return emojize(":warning: Couldn't fetch standings :warning:", language="en")
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError while fetching {LEAGUE_ID} standings: {e.response.content}")
+    except KeyError as e:
+        LOGGER.error(f"KeyError while fetching {LEAGUE_ID} standings: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error when fetching {LEAGUE_ID} standings: {e}")

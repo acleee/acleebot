@@ -58,9 +58,16 @@ from broiestbot.commands import (
     weather_by_location,
     wiki_summary,
     get_psn_online_friends,
+    league_standings,
 )
 from chatango.ch import Message, Room, RoomManager, User
-from config import CHATANGO_BOTS
+from config import (
+    CHATANGO_BOTS,
+    ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
+    ENGLISH_LEAGUE_THREE_ID,
+    ENGLISH_LEAGUE_FOUR_ID,
+    ENGLISH_LEAGUE_FIVE_ID,
+)
 from logger import LOGGER
 
 from .data import persist_chat_logs, persist_user_data
@@ -142,7 +149,13 @@ class Bot(RoomManager):
         elif cmd_type == "bundtable":
             return bund_standings()
         elif cmd_type == "efltable":
-            return efl_standings()
+            return league_standings(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)
+        elif cmd_type == "eng3table":
+            return league_standings(ENGLISH_LEAGUE_THREE_ID)
+        elif cmd_type == "eng4table":
+            return league_standings(ENGLISH_LEAGUE_FOUR_ID)
+        elif cmd_type == "eng5table":
+            return league_standings(ENGLISH_LEAGUE_FIVE_ID)
         elif cmd_type == "liguetable":
             return ligue_standings()
         elif cmd_type == "fixtures":
