@@ -10,12 +10,9 @@ from broiestbot.commands import (
     all_leagues_golden_boot,
     basic_message,
     blaze_time_remaining,
-    bund_standings,
     change_or_stay_vote,
     covid_cases_usa,
-    efl_standings,
     epl_golden_boot,
-    epl_standings,
     extract_url,
     fetch_fox_fixtures,
     fetch_image_from_gcs,
@@ -43,8 +40,6 @@ from broiestbot.commands import (
     get_urban_definition,
     get_winter_olympic_medals,
     giphy_image_search,
-    liga_standings,
-    ligue_standings,
     live_nba_games,
     nba_standings,
     random_image,
@@ -58,16 +53,20 @@ from broiestbot.commands import (
     weather_by_location,
     wiki_summary,
     get_psn_online_friends,
-    league_standings,
+    league_table_standings,
     footy_live_fixture_stats,
 )
 from chatango.ch import Message, Room, RoomManager, User
 from config import (
     CHATANGO_BOTS,
+    EPL_LEAGUE_ID,
+    LIGA_LEAGUE_ID,
     ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     ENGLISH_LEAGUE_THREE_ID,
     ENGLISH_LEAGUE_FOUR_ID,
     ENGLISH_LEAGUE_FIVE_ID,
+    BUND_LEAGUE_ID,
+    LIGUE_ONE_ID,
 )
 from logger import LOGGER
 
@@ -144,21 +143,21 @@ class Bot(RoomManager):
         elif cmd_type == "sms" and args and user_name:
             return send_text_message(args, user_name)
         elif cmd_type == "epltable":
-            return epl_standings()
+            return league_table_standings(EPL_LEAGUE_ID)
         elif cmd_type == "ligatable":
-            return liga_standings()
+            return league_table_standings(LIGA_LEAGUE_ID)
         elif cmd_type == "bundtable":
-            return bund_standings()
+            return league_table_standings(BUND_LEAGUE_ID)
         elif cmd_type == "efltable":
-            return league_standings(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)
+            return league_table_standings(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)
         elif cmd_type == "eng3table":
-            return league_standings(ENGLISH_LEAGUE_THREE_ID)
+            return league_table_standings(ENGLISH_LEAGUE_THREE_ID)
         elif cmd_type == "eng4table":
-            return league_standings(ENGLISH_LEAGUE_FOUR_ID)
+            return league_table_standings(ENGLISH_LEAGUE_FOUR_ID)
         elif cmd_type == "eng5table":
-            return league_standings(ENGLISH_LEAGUE_FIVE_ID)
+            return league_table_standings(ENGLISH_LEAGUE_FIVE_ID)
         elif cmd_type == "liguetable":
-            return ligue_standings()
+            return league_table_standings(LIGUE_ONE_ID)
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "allfixtures":
@@ -405,7 +404,7 @@ class Bot(RoomManager):
     @staticmethod
     def _wave_back(room: Room, user_name: str, bot_username) -> None:
         """
-        Wave back at user.
+        Automatically reply to user who waved at the bot.
 
         :param Room room: Current Chatango room object.
         :param str user_name: Username of Chatango user who waved.
@@ -413,7 +412,7 @@ class Bot(RoomManager):
         :returns: None
         """
         if user_name == bot_username:
-            room.message(f"stop talking to urself and get some friends u fuckin loser jfc kys @{bot_username}")
+            room.message(f"stop talking to urself and get some friends u loser jfc kys @{bot_username}")
         else:
             room.message(f"@{user_name} *waves*")
 

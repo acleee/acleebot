@@ -1,4 +1,4 @@
-"""Geo data client to identify bad actors."""
+"""User geo data client to identify bad actors."""
 from typing import Union
 
 import pandas as pd
@@ -35,7 +35,7 @@ class GeoIP:
         """
         try:
             return self.client.lookup(
-                ip=ip_address,
+                ip_address,
                 fields=[
                     "city",
                     "region",

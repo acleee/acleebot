@@ -7,11 +7,15 @@ from dotenv import load_dotenv
 BASE_DIR = path.abspath(path.dirname(__file__))
 load_dotenv(path.join(BASE_DIR, ".env"))
 
-# General config
+# General
+# -------------------------------------------------
 ENVIRONMENT = getenv("ENVIRONMENT")
 TIMEZONE_US_EASTERN = pytz.timezone("America/New_York")
 
-# Chatango credentials
+# Chatango
+# -------------------------------------------------
+
+# Chatango bot credentials
 CHATANGO_USERS = {
     "BROIESTBOT": {
         "USERNAME": getenv("CHATANGO_BOT_USERNAME"),
@@ -30,7 +34,7 @@ CHATANGO_BOTS = [
     "ACLEEBOT",
 ]
 
-# Chatango rooms
+# All known Chatango rooms
 CHATANGO_TEST_ROOM = getenv("CHATANGO_TEST_ROOM")
 CHATANGO_ACLEE_ROOM = getenv("CHATANGO_ACLEE_ROOM")
 CHATANGO_SIXERS_ROOM = getenv("CHATANGO_SIXERS_ROOM")
@@ -43,6 +47,8 @@ CHATANGO_PATREON_ROOM = getenv("CHATANGO_PATREON_ROOM")
 CHATANGO_FLYERS_ROOM = getenv("CHATANGO_FLYERS_ROOM")
 CHATANGO_UFC_ROOM = getenv("CHATANGO_UFC_ROOM")
 CHATANGO_UNION_ROOM = getenv("CHATANGO_UNION_ROOM")
+
+# Chatango rooms to be joined by the bot
 CHATANGO_ROOMS = [
     CHATANGO_ACLEE_ROOM,
     CHATANGO_SIXERS_ROOM,
@@ -57,12 +63,12 @@ CHATANGO_ROOMS = [
     # CHATANGO_UNION_ROOM,
 ]
 
-# Chatango users with additional features
+# List of Chatango users with privileges to special commands
 CHATANGO_SPECIAL_USERS = getenv("CHATANGO_SPECIAL_USERS")
 if CHATANGO_SPECIAL_USERS:
     CHATANGO_SPECIAL_USERS = CHATANGO_SPECIAL_USERS.split(",")
 
-# Users to be banned on sight
+# Chatango users to be banned or ignored
 CHATANGO_IGNORED_USERS = getenv("CHATANGO_IGNORED_USERS")
 CHATANGO_IGNORED_IPS = getenv("CHATANGO_IGNORED_IPS")
 CHATANGO_BANNED_IPS = getenv("CHATANGO_BANNED_IPS")
@@ -82,12 +88,14 @@ CHATANGO_BLACKLIST_ROOMS = [
 ]
 
 # Database
+# -------------------------------------------------
 SQLALCHEMY_DATABASE_URI = getenv("SQLALCHEMY_DATABASE_URI")
 SQLALCHEMY_DATABASE_RO_URI = getenv("SQLALCHEMY_DATABASE_RO_URI")
 DATABASE_USERS_TABLE = getenv("DATABASE_USERS_TABLE")
 DATABASE_ARGS = {"ssl": {"ca": f"{BASE_DIR}/creds/ca-certificate.crt"}}
 
 # Redis
+# -------------------------------------------------
 REDIS_HOST = getenv("REDIS_HOST")
 REDIS_USERNAME = getenv("REDIS_USERNAME")
 REDIS_PASSWORD = getenv("REDIS_PASSWORD")
@@ -95,10 +103,12 @@ REDIS_PORT = getenv("REDIS_PORT")
 REDIS_DB = getenv("REDIS_DB")
 
 # Datadog
+# -------------------------------------------------
 DATADOG_API_KEY = getenv("DATADOG_API_KEY")
 DATADOG_APP_KEY = getenv("DATADOG_APP_KEY")
 
 # User Logging
+# -------------------------------------------------
 PERSIST_USER_DATA = getenv("PERSIST_USER_DATA")
 PERSIST_CHAT_DATA = getenv("PERSIST_CHAT_DATA")
 
@@ -106,6 +116,7 @@ PERSIST_CHAT_DATA = getenv("PERSIST_CHAT_DATA")
 HTTP_REQUEST_TIMEOUT = 20
 
 # Google Cloud
+# -------------------------------------------------
 GOOGLE_APPLICATION_CREDENTIALS = "gcloud.json"
 GOOGLE_BUCKET_NAME = getenv("GOOGLE_BUCKET_NAME")
 GOOGLE_BUCKET_URL = getenv("GOOGLE_BUCKET_URL")
@@ -114,19 +125,23 @@ GOOGLE_BUCKET_URL = getenv("GOOGLE_BUCKET_URL")
 GOOGLE_TRANSLATE_ENDPOINT = "https://google-translate1.p.rapidapi.com/language/translate/v2"
 
 # Urban Dictionary
+# -------------------------------------------------
 URBAN_DICTIONARY_ENDPOINT = "http://api.urbandictionary.com/v0/define"
 
 # Gifs
+# -------------------------------------------------
 GIPHY_API_KEY = getenv("GIPHY_API_KEY")
 REDGIFS_ACCESS_KEY = getenv("REDGIFS_ACCESS_KEY")
 REDGIFS_TOKEN_ENDPOINT = "https://weblogin.redgifs.com/oauth/webtoken"
 REDGIFS_IMAGE_SEARCH_ENDPOINT = "https://api.redgifs.com/v2/gifs/search"
 
-# Stock
+# Stocks
+# -------------------------------------------------
 IEX_API_TOKEN = getenv("IEX_API_TOKEN")
 IEX_API_BASE_URL = "https://cloud.iexapis.com/stable/stock/"
 
 # Crypto
+# -------------------------------------------------
 ALPHA_VANTAGE_API_KEY = environ.get("ALPHA_VANTAGE_API_KEY")
 ALPHA_VANTAGE_PRICE_BASE_URL = "https://api.cryptowat.ch/markets/bitfinex/"
 ALPHA_VANTAGE_CHART_BASE_URL = "https://www.alphavantage.co/query/"
@@ -134,19 +149,23 @@ COINMARKETCAP_LATEST_ENDPOINT = "https://pro-api.coinmarketcap.com/v1/cryptocurr
 COINMARKETCAP_API_KEY = getenv("COINMARKETCAP_API_KEY")
 
 # Plotly
+# -------------------------------------------------
 PLOTLY_API_KEY = getenv("PLOTLY_API_KEY")
 PLOTLY_USERNAME = getenv("PLOTLY_USERNAME")
 
 # Weather
+# -------------------------------------------------
 WEATHERSTACK_API_ENDPOINT = "http://api.weatherstack.com/current"
 WEATHERSTACK_API_KEY = getenv("WEATHERSTACK_API_KEY")
 METRIC_SYSTEM_USERS = getenv("METRIC_SYSTEM_USERS")
 
 # Email
+# -------------------------------------------------
 GMAIL_EMAIL = getenv("GMAIL_EMAIL")
 GMAIL_PASSWORD = getenv("GMAIL_PASSWORD")
 
 # Twilio
+# -------------------------------------------------
 TWILIO_SENDER_PHONE = getenv("TWILIO_SENDER_PHONE")
 TWILIO_RECIPIENT_PHONE = getenv("TWILIO_RECIPIENT_PHONE")
 TWILIO_AUTH_TOKEN = getenv("TWILIO_AUTH_TOKEN")
@@ -159,33 +178,43 @@ REDDIT_USERNAME = getenv("REDDIT_USERNAME")
 REDDIT_PASSWORD = getenv("REDDIT_CLIENT_SECRET")
 
 # Rapid API
+# -------------------------------------------------
 RAPID_API_KEY = getenv("RAPID_API_KEY")
 
 # IP Data
+# -------------------------------------------------
 IP_DATA_KEY = getenv("IP_DATA_KEY")
 
 # Instagram
+# -------------------------------------------------
 INSTAGRAM_USERNAME = getenv("INSTAGRAM_USERNAME")
 INSTAGRAM_PASSWORD = getenv("INSTAGRAM_PASSWORD")
 INSTAGRAM_APP_ID = getenv("INSTAGRAM_APP_ID")
 INSTAGRAM_APP_SECRET = getenv("INSTAGRAM_APP_SECRET")
 
-# Covid
+# Covid API
+# -------------------------------------------------
 COVID_API_ENDPOINT = "https://covid-19-data.p.rapidapi.com/country/code"
 
-# Lyrics Genius
+# Lyrics Genius API
+# -------------------------------------------------
 GENIUS_KEY_ID = getenv("GENIUS_KEY_ID")
 GENIUS_ACCESS_TOKEN = getenv("GENIUS_KEY_SECRET")
 
 # Youtube
+# -------------------------------------------------
 YOUTUBE_API_KEY = getenv("YOUTUBE_API_KEY")
 
 # Twitch
+# -------------------------------------------------
+
+# Twitch API endpoints, client ID, and client secret
 TWITCH_CLIENT_ID = getenv("TWITCH_CLIENT_ID")
 TWITCH_CLIENT_SECRET = getenv("TWITCH_CLIENT_SECRET")
 TWITCH_TOKEN_ENDPOINT = "https://id.twitch.tv/oauth2/token"
 TWITCH_STREAMS_ENDPOINT = "https://api.twitch.tv/helix/streams"
 
+# Twitch usernames and IDs to follow
 TWITCH_BRO_USERNAME = getenv("TWITCH_BRO_USERNAME")
 TWITCH_BRO_ID = getenv("TWITCH_BRO_ID")
 TWITCH_ATLAS_USERNAME = getenv("TWITCH_ATLAS_USERNAME")
@@ -209,6 +238,7 @@ TWITCH_BROADCASTERS = {
 }
 
 # NFL
+# -------------------------------------------------
 NFL_GAMES_URL = "https://sportspage-feeds.p.rapidapi.com/games"
 NFL_HTTP_HEADERS = {
     "content-type": "application/json",
@@ -217,6 +247,9 @@ NFL_HTTP_HEADERS = {
 }
 
 # Footy
+# -------------------------------------------------
+
+# Footy API endpoints, tokens, and headers
 FOOTY_BASE_URL = "https://api-football-v1.p.rapidapi.com/v3"
 FOOTY_FIXTURES_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures"
 FOOTY_LIVE_FIXTURE_EVENTS_ENDPOINT = f"{FOOTY_BASE_URL}/fixtures/events"
@@ -225,14 +258,13 @@ FOOTY_PREDICTS_ENDPOINT = f"{FOOTY_BASE_URL}/predictions"
 FOOTY_TOPSCORERS_ENDPOINT = f"{FOOTY_BASE_URL}/players/topscorers"
 FOOTY_STANDINGS_ENDPOINT = f"{FOOTY_BASE_URL}/standings"
 FOOTY_XI_ENDPOINT = "https://api-football-v1.p.rapidapi.com/v3/fixtures/lineups"
-
 FOOTY_HTTP_HEADERS = {
     "content-type": "application/json",
     "x-rapidapi-key": RAPID_API_KEY,
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
 }
 
-# Footy Leagues
+# Footy League IDs
 EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2
 FA_CUP_ID = 45
@@ -272,6 +304,7 @@ CARABOU_CUP_ID = 48
 AFRICA_CUP_ID = 6
 PRIMEIRA_LIGA_ID = 94
 
+# Footy Leagues, cups and tournaments
 FOOTY_LEAGUES = {
     # ":trophy: WORLD CUP": WORLD_CUP_ID,
     # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
@@ -305,6 +338,7 @@ FOOTY_LEAGUES = {
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
 }
 
+# Footy leagues with "live scoring" enabled
 FOOTY_LIVE_SCORED_LEAGUES = {
     # ":trophy: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
@@ -321,6 +355,7 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
 }
 
+# Footy leagues with "lineups" enabled
 FOOTY_LEAGUES_LINEUPS = {
     # ":trophy: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
@@ -332,6 +367,7 @@ FOOTY_LEAGUES_LINEUPS = {
     # ":Spain: LIGA": LIGA_LEAGUE_ID,
 }
 
+# Footy leagues to be considered for "golden shoe" award
 GOLDEN_SHOE_LEAGUES = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -374,6 +410,7 @@ FOOTY_TEAMS_PRIORITY = {
     # "USMNT": USA_INT_TEAM_ID
 }
 
+# Footy team IDs for EPL
 EPL_TEAM_IDS = [
     LIVERPOOL_TEAM_ID,
     MANC_TEAM_ID,
@@ -397,11 +434,13 @@ EPL_TEAM_IDS = [
 ]
 
 # MLB
+# -------------------------------------------------
 MLB_LEAGUE_ID = "1"
 MLB_BASE_ENDPOINT = "https://api-baseball.p.rapidapi.com"
 MLB_PHILLIES_ID = "27"
 
 # Remote tuner control
+# -------------------------------------------------
 CHANNEL_LIST_FILEPATH = f"{BASE_DIR}/channels.json"
 CHANNEL_HOST = getenv("CHANNEL_HOST")
 CHANNEL_AUTH = getenv("CHANNEL_AUTH")
@@ -420,14 +459,17 @@ CHANNEL_TUNER_HEADERS = {
 }
 
 # Olympics
+# -------------------------------------------------
 OLYMPICS_LEADERBOARD_ENDPOINT = "https://www.espn.com/olympics/summer/2020/medals/_/view/overall/sort/gold"
 WINTER_OLYMPICS_LEADERBOARD_ENDPOINT = "https://www.espn.com/olympics/winter/2022/medals/_/view/overall/sort/gold"
 
 # NBA
+# -------------------------------------------------
 NBA_BASE_URL = "https://api-basketball.p.rapidapi.com"
 NBA_API_KEY = getenv("NBA_API_KEY")
 NBA_CONFERENCE_NAMES = ["Eastern Conference", "Western Conference"]
 NBA_SEASON_YEAR = "2022-2023"
 
-# Playstation
+# Playstation PSN
+# -------------------------------------------------
 PLAYSTATION_SSO_TOKEN = getenv("PLAYSTATION_SSO_TOKEN")

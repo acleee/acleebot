@@ -9,10 +9,7 @@ from .definitions import (
 from .embeds import create_instagram_preview
 from .footy import (
     all_leagues_golden_boot,
-    bund_standings,
-    efl_standings,
     epl_golden_boot,
-    epl_standings,
     fetch_fox_fixtures,
     footy_all_upcoming_fixtures,
     footy_live_fixtures,
@@ -20,10 +17,8 @@ from .footy import (
     footy_upcoming_lineups,
     footy_upcoming_fixtures,
     get_footy_odds,
-    liga_standings,
-    ligue_standings,
     today_upcoming_fixtures,
-    league_standings,
+    league_table_standings,
     footy_live_fixture_stats,
 )
 from .images import (
