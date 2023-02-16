@@ -2,7 +2,7 @@
 from typing import Optional
 from datetime import datetime
 
-from database import session
+from database import session_rw
 from database.models import ChatangoUser
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -29,7 +29,7 @@ def persist_user_data(room_name: str, user: User, message: Message, bot_username
             if existing_user is None:
                 user_metadata = geo.lookup_user(message.ip)
                 # fmt: off
-                session.add(
+                session_rw.add(
                     ChatangoUser(
                         username=user.name.lower().replace("!anon", "anon"),
                         chatango_room=room_name,
@@ -83,7 +83,7 @@ def fetch_existing_user(room_name: str, user: User, message: Message) -> Optiona
     try:
         if message.ip:
             return (
-                session.query(ChatangoUser)
+                session_rw.query(ChatangoUser)
                 .filter(
                     ChatangoUser.username == user.name.lower(),
                     ChatangoUser.chatango_room == room_name,

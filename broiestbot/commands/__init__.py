@@ -24,6 +24,7 @@ from .footy import (
     ligue_standings,
     today_upcoming_fixtures,
     league_standings,
+    footy_live_fixture_stats,
 )
 from .images import (
     fetch_image_from_gcs,

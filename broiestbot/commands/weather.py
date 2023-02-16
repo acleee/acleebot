@@ -1,6 +1,6 @@
 """Fetch weather for a given location."""
 import requests
-from database import session
+from database import session_ro
 from database.models import Weather
 from emoji import emojize
 from requests.exceptions import HTTPError
@@ -108,7 +108,7 @@ def get_weather_emoji(weather_code: int, is_day: str) -> str:
 
     :returns: str
     """
-    weather_emoji = session.query(Weather).filter(Weather.code == weather_code).one_or_none()
+    weather_emoji = session_ro.query(Weather).filter(Weather.code == weather_code).one_or_none()
     if weather_emoji is not None:
         return weather_emoji.icon
     elif is_day == "no" and weather_emoji.group in [
