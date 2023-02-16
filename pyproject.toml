@@ -49,8 +49,6 @@ google-api-python-client = "*"
 PyMultiDictionary = "*"
 metadata-parser = "*"
 PSNAWP = "*"
-
-[tool.poetry.dev-dependencies]
 pytest = "*"
 black = "*"
 isort = "*"

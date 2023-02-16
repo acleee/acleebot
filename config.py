@@ -98,7 +98,7 @@ REDIS_DB = getenv("REDIS_DB")
 DATADOG_API_KEY = getenv("DATADOG_API_KEY")
 DATADOG_APP_KEY = getenv("DATADOG_APP_KEY")
 
-# Logging
+# User Logging
 PERSIST_USER_DATA = getenv("PERSIST_USER_DATA")
 PERSIST_CHAT_DATA = getenv("PERSIST_CHAT_DATA")
 
@@ -232,7 +232,7 @@ FOOTY_HTTP_HEADERS = {
     "x-rapidapi-host": "api-football-v1.p.rapidapi.com",
 }
 
-# 2021-2022 Footy Leagues
+# Footy Leagues
 EPL_LEAGUE_ID = 39
 UCL_LEAGUE_ID = 2
 FA_CUP_ID = 45
@@ -273,29 +273,29 @@ AFRICA_CUP_ID = 6
 PRIMEIRA_LIGA_ID = 94
 
 FOOTY_LEAGUES = {
-    # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
+    # ":trophy: WORLD CUP": WORLD_CUP_ID,
     # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
-    # ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
-    # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
-    ":trophy: :England: FA Cup": FA_CUP_ID,
-    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
-    # ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
-    ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
-    # ":trophy: :England: FA Trophy": FA_TROPHY_ID,
+    ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
+    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
+    ":trophy: :England: FA CUP": FA_CUP_ID,
+    ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
+    ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
+    ":Italy: SERIE A": SERIE_A_LEAGUE_ID,
+    # ":France: Ligue 1": LIGUE_ONE_ID,
+    # ":trophy: :Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
+    # ":trophy: :England: FA TROPHY": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
-    # ":trophy: :France: Coupe De France": COUPE_DE_FRANCE,
+    # ":trophy: :France: COUPE DE FRANCE": COUPE_DE_FRANCE,
     # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
     # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
     # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":United_States: MLS": MLS_LEAGUE_ID,
-    # ":England: EFL Championship": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
-    ":Spain: LIGA": LIGA_LEAGUE_ID,
-    ":Germany: BUND": BUND_LEAGUE_ID,
-    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    # ":France: Ligue 1": LIGUE_ONE_ID,
+    # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     # ":shield: COMMUNITY SHIELD": COMMUNITY_SHIELD_CUP,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
@@ -306,29 +306,29 @@ FOOTY_LEAGUES = {
 }
 
 FOOTY_LIVE_SCORED_LEAGUES = {
-    # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
+    # ":trophy: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
-    # ":blue_circle: UCL": UCL_LEAGUE_ID,
-    # ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
-    # ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    ":cow_face: Carabou Cup": CARABOU_CUP_ID,
-    # ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
-    ":trophy: :England: FA Cup": FA_CUP_ID,
-    # ":trophy: :Spain: El Clásico": SPAIN_EL_CLASICO,
-    ":trophy: :Spain: Copa del Rey": COPA_DEL_REY,
+    ":blue_circle: UCL": UCL_LEAGUE_ID,
+    ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
+    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
+    ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
+    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
+    ":trophy: :England: FA CUP": FA_CUP_ID,
+    # ":trophy: :Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
 }
 
 FOOTY_LEAGUES_LINEUPS = {
-    # ":trophy: :Qatar: WORLD CUP": WORLD_CUP_ID,
+    # ":trophy: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
-    ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
-    ":trophy: UEFA Nations League": UEFA_NATIONS_LEAGUE,
-    # ":trophy: :England: FA Cup": FA_CUP_ID,
+    ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
+    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
+    # ":trophy: :England: FA CUP": FA_CUP_ID,
     # ":Spain: LIGA": LIGA_LEAGUE_ID,
 }
 
@@ -336,9 +336,8 @@ GOLDEN_SHOE_LEAGUES = {
     ":lion: EPL": EPL_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
-    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
-    ":France: Ligue 1": LIGUE_ONE_ID,
-    ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
+    ":Italy: SERIE A": SERIE_A_LEAGUE_ID,
+    ":France: LIGUE 1": LIGUE_ONE_ID,
 }
 
 # Footy team IDs
