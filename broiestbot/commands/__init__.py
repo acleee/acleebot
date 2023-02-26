@@ -14,7 +14,7 @@ from .footy import (
     footy_all_upcoming_fixtures,
     footy_live_fixtures,
     footy_predicts_today,
-    footy_upcoming_lineups,
+    footy_team_lineups,
     footy_upcoming_fixtures,
     get_footy_odds,
     today_upcoming_fixtures,

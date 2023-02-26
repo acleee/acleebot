@@ -97,7 +97,7 @@ def fetch_today_fixtures_by_league(league_id: int, room: str, username: str) -> 
             params=params,
             timeout=HTTP_REQUEST_TIMEOUT,
         )
-        return resp.json().get("response")
+        return resp.json()["response"]
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
