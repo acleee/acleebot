@@ -359,9 +359,7 @@ FOOTY_LIVE_SCORED_LEAGUES = {
 FOOTY_LEAGUES_LINEUPS = {
     # ":trophy: WORLD CUP": WORLD_CUP_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
-    ":blue_circle: UCL": UCL_LEAGUE_ID,
-    ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
-    ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
+    ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
     # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     # ":trophy: :England: FA CUP": FA_CUP_ID,
     # ":Spain: LIGA": LIGA_LEAGUE_ID,

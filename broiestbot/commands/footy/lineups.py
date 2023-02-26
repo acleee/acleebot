@@ -6,7 +6,7 @@ import requests
 from emoji import emojize
 from requests.exceptions import HTTPError
 
-from config import FOOTY_FIXTURES_ENDPOINT, FOOTY_HTTP_HEADERS, FOOTY_LEAGUES, HTTP_REQUEST_TIMEOUT
+from config import FOOTY_FIXTURES_ENDPOINT, FOOTY_HTTP_HEADERS, FOOTY_LEAGUES_LINEUPS, HTTP_REQUEST_TIMEOUT
 from logger import LOGGER
 
 from .util import (
@@ -39,25 +39,20 @@ def footy_team_lineups(room: str, username: str) -> str:
     """
     try:
         today_fixture_lineups = "\n\n\n\n"
-        fixtures = []
-        for league_name, league_id in FOOTY_LEAGUES.items():
+        for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
             league_fixtures = get_today_live_or_upcoming_fixtures(league_id, room, username)
             if league_fixtures is not None:
-                fixtures += league_fixtures
-            if fixtures:
                 today_fixture_lineups += emojize(f"<b>{league_name}</b>\n", language="en")
-                for fixture in fixtures:
+                for fixture in league_fixtures:
                     if fixture is not None:
-                        LOGGER.info(f"{fixture}")
                         fixture_id = fixture["fixture"]["id"]
                         lineups = fetch_lineups_per_fixture(fixture_id)
                         if lineups:
                             today_fixture_lineups += get_fixture_xis(lineups)
-                            today_fixture_lineups += "\n\n"
+                            today_fixture_lineups += "\n\n----------------------\n\n"
                         else:
                             today_fixture_lineups += "<i>Lineups not available yet<i>\n\n"
-                    return today_fixture_lineups
-        return f"@{username} No footy XIs available yet."
+        return today_fixture_lineups
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy XIs: {e}")
 
@@ -97,7 +92,6 @@ def get_fixture_xis(teams: dict) -> str:
     """
     try:
         lineups_response = ""
-        LOGGER.info(teams)
         for team in teams:
             team_name = team["team"]["name"]
             formation = team["formation"]
@@ -108,7 +102,6 @@ def get_fixture_xis(teams: dict) -> str:
                     for player in team["startXI"]
                 ]
             )
-            LOGGER.info(players)
             lineups_response += f"<b>{team_name}</b> {formation} ({coach})\n"
             lineups_response += f"{players}\n\n"
         return lineups_response
