@@ -358,11 +358,13 @@ FOOTY_LIVE_SCORED_LEAGUES = {
 # Footy leagues with "lineups" enabled
 FOOTY_LEAGUES_LINEUPS = {
     ":lion: EPL": EPL_LEAGUE_ID,
-    ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
-    # ":blue_circle: UCL": UCL_LEAGUE_ID,
+    # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
+    ":blue_circle: UCL": UCL_LEAGUE_ID,
     # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     # ":trophy: :England: FA CUP": FA_CUP_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
+    ":Italy: Serie A": SERIE_A_LEAGUE_ID,
+    ":Germany: BUND": BUND_LEAGUE_ID,
 }
 
 # Footy leagues to be considered for "golden shoe" award

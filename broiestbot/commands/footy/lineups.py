@@ -40,10 +40,12 @@ def footy_team_lineups(room: str, username: str) -> str:
     :returns: str
     """
     try:
+        i = 0
         today_fixture_lineups = "\n\n\n\n"
         for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
             league_fixtures = get_today_live_or_upcoming_fixtures(league_id, room, username)
-            if league_fixtures is not None:
+            if league_fixtures and i < 3:
+                i += 1
                 today_fixture_lineups += emojize(f"<b>{league_name}</b>\n\n", language="en")
                 for fixture in league_fixtures:
                     if fixture is not None:
