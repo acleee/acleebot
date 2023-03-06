@@ -6,7 +6,7 @@ from sys import stdout
 from loguru import logger
 
 from clients import sms
-from config import BASE_DIR, ENVIRONMENT, TWILIO_RECIPIENT_PHONE, TWILIO_SENDER_PHONE
+from config import BASE_DIR, ENVIRONMENT, TWILIO_BRO_PHONE_NUMBER, TWILIO_SENDER_PHONE
 
 
 def json_formatter(record: dict) -> str:
@@ -96,7 +96,7 @@ def sms_error_handler(log: dict) -> None:
     sms.messages.create(
         body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
         from_=TWILIO_SENDER_PHONE,
-        to=TWILIO_RECIPIENT_PHONE,
+        to=TWILIO_BRO_PHONE_NUMBER,
     )
 
 

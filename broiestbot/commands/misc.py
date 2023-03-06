@@ -1,4 +1,4 @@
-"""Miscellaneous utility/novelty commands."""
+"""Miscellaneous utility commands."""
 from calendar import day_name
 from datetime import datetime, timedelta
 from typing import Optional
@@ -12,7 +12,7 @@ from config import (
     CHATANGO_SPECIAL_USERS,
     RAPID_API_KEY,
     TIMEZONE_US_EASTERN,
-    TWILIO_RECIPIENT_PHONE,
+    TWILIO_PHONE_NUMBERS,
     TWILIO_SENDER_PHONE,
     HTTP_REQUEST_TIMEOUT,
     COVID_API_ENDPOINT,
@@ -50,23 +50,28 @@ def blaze_time_remaining() -> str:
     )
 
 
-def send_text_message(message: str, user: str) -> Optional[str]:
+def send_text_message(message: str, user: str, recipient: str) -> Optional[str]:
     """
     Send SMS to Bro via Twilio.
 
     :param str message: Text message body to send via SMS.
     :param str user: Username of user attempting to send SMS.
+    :param str recipient: 'Recipient' of the outgoing SMS message.
 
     :returns: Optional[str]
     """
     try:
         if user.lower() in CHATANGO_SPECIAL_USERS:
-            sms.messages.create(
-                body=f"{user.upper()}: {message}",
-                from_=TWILIO_SENDER_PHONE,
-                to=TWILIO_RECIPIENT_PHONE,
-            )
-            return f"ty @{user} I just texted brough: {message}"
+            phone_number = TWILIO_PHONE_NUMBERS.get(recipient)
+            if phone_number:
+                sms.messages.create(
+                    body=f"{user.upper()}: {message}",
+                    from_=TWILIO_SENDER_PHONE,
+                    to=phone_number,
+                )
+                LOGGER.success(f"Sent SMS to {recipient} from {user}: {message}")
+                return f"ty @{user} I just texted {recipient}: {message}"
+            return emojize(f":warning: ya uhhh idk who tf that is bruh :warning:", language="en")
         return emojize(f":warning: pls, only pizzaough can text brough :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when sending SMS: {e}")

@@ -1,14 +1,13 @@
 """Define data models for chat commands, phrases, user logs, etc."""
-from database import engine_ro, engine_rw
+from database import engine_rw
 from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 
-BaseRW = declarative_base()
-BaseRO = declarative_base()
+Base = declarative_base()
 
 
-class Chat(BaseRW):
+class Chat(Base):
     """Single chat (from a user) to persist in logs."""
 
     __tablename__ = "chat"
@@ -23,7 +22,7 @@ class Chat(BaseRW):
         return f"time={self.created_at}, room={self.room}, username={self.username}, chat={self.message}"
 
 
-class Command(BaseRO):
+class Command(Base):
     """Bot commands triggered by `!` prefix."""
 
     __tablename__ = "commands"
@@ -38,7 +37,7 @@ class Command(BaseRO):
         return f"command={self.command}, type={self.type}, response={self.response}"
 
 
-class Phrase(BaseRO):
+class Phrase(Base):
     """Reserved phrases which trigger a response."""
 
     __tablename__ = "phrases"
@@ -52,7 +51,7 @@ class Phrase(BaseRO):
         return f"command={self.phrase}, type={self.response}"
 
 
-class ChatangoUser(BaseRW):
+class ChatangoUser(Base):
     """Chatango user metadata."""
 
     __tablename__ = "user"
@@ -94,7 +93,7 @@ class ChatangoUser(BaseRW):
         return f"username={self.username}, chatango_room={self.chatango_room}, city={self.city}, region={self.ip}"
 
 
-class Weather(BaseRO):
+class Weather(Base):
     """Mapping of weather emojis to weather conditions."""
 
     __tablename__ = "weather"
@@ -109,7 +108,7 @@ class Weather(BaseRO):
         return f"group={self.group}, icon={self.icon}, condition={self.condition}"
 
 
-class PollResult(BaseRW):
+class PollResult(Base):
     """Result of a poll or counter."""
 
     __tablename__ = "poll"
@@ -123,5 +122,4 @@ class PollResult(BaseRW):
         return f"type={self.type}, count={self.count}, updated_at={self.updated_at}"
 
 
-BaseRO.metadata.create_all(engine_ro)
-BaseRW.metadata.create_all(engine_rw)
+Base.metadata.create_all(engine_rw)

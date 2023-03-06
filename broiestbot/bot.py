@@ -2,7 +2,7 @@
 import re
 from typing import Optional, Tuple
 
-from database import session_ro
+from database import session_rw
 from database.models import Command, Phrase
 from emoji import emojize
 
@@ -140,8 +140,8 @@ class Bot(RoomManager):
             return get_urban_definition(args)
         elif cmd_type == "420" and args is None:
             return blaze_time_remaining()
-        elif cmd_type == "sms" and args and user_name:
-            return send_text_message(args, user_name)
+        elif cmd_type == "sms" and args and user_name and content:
+            return send_text_message(args, user_name, content)
         elif cmd_type == "epltable":
             return league_table_standings(EPL_LEAGUE_ID)
         elif cmd_type == "ligatable":
@@ -330,7 +330,7 @@ class Bot(RoomManager):
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
         else:
-            fetched_phrase = session_ro.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
+            fetched_phrase = session_rw.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
             if fetched_phrase is not None:
                 room.message(fetched_phrase.response)
 
@@ -359,7 +359,7 @@ class Bot(RoomManager):
         :param str user_name: User responsible for triggering command.
         """
         cmd, args = self._parse_command(chat_message[1::].strip())
-        command = session_ro.query(Command).filter(Command.command == cmd).first()
+        command = session_rw.query(Command).filter(Command.command == cmd).first()
         if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
                 command.type,
