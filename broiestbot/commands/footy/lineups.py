@@ -46,13 +46,13 @@ def footy_team_lineups(room: str, username: str) -> str:
             league_fixtures = get_today_live_or_upcoming_fixtures(league_id, room, username)
             if league_fixtures and i < 3:
                 i += 1
-                today_fixture_lineups += emojize(f"<b>{league_name}</b>\n\n", language="en")
+                today_fixture_lineups += emojize(f"<b>{league_name}</b>\n", language="en")
                 for fixture in league_fixtures:
                     if fixture is not None:
                         fixture_id = fixture["fixture"]["id"]
                         fixture_summary = build_fixture_summary(fixture, room, username)
                         lineups = fetch_lineups_per_fixture(fixture_id)
-                        if lineups and fixture_summary:
+                        if lineups:
                             today_fixture_lineups += fixture_summary
                             today_fixture_lineups += get_fixture_xis(lineups)
                             today_fixture_lineups += "\n\n----------------------\n\n"
@@ -121,6 +121,15 @@ def get_fixture_xis(teams: dict) -> str:
 
 
 def get_today_live_or_upcoming_fixtures(league_id: int, room: str, username: str) -> List[dict]:
+    """
+    Get fixtures for a league for the current day (live or upcoming).
+
+    :param int league_id: ID of a footy league to fetch fixtures for.
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: List[dict]
+    """
     try:
         today = get_current_day(room)
         params = {
