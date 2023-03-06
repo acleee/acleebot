@@ -1,5 +1,5 @@
 """Define data models for chat commands, phrases, user logs, etc."""
-from database import engine_rw
+from database import engine
 from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
@@ -122,4 +122,4 @@ class PollResult(Base):
         return f"type={self.type}, count={self.count}, updated_at={self.updated_at}"
 
 
-Base.metadata.create_all(engine_rw)
+Base.metadata.create_all(engine)

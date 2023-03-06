@@ -44,20 +44,18 @@ def footy_team_lineups(room: str, username: str) -> str:
         today_fixture_lineups = "\n\n\n\n"
         for league_name, league_id in FOOTY_LEAGUES_LINEUPS.items():
             league_fixtures = get_today_live_or_upcoming_fixtures(league_id, room, username)
-            if league_fixtures and i < 3:
-                i += 1
-                today_fixture_lineups += emojize(f"<b>{league_name}</b>\n\n", language="en")
+            LOGGER.warning(f"league_fixtures = {league_fixtures}")
+            if league_fixtures is not None:
+                today_fixture_lineups += emojize(f"<b>{league_name}</b>\n", language="en")
                 for fixture in league_fixtures:
-                    if fixture is not None:
+                    i += 1
+                    if fixture and i < 3:
+                        today_fixture_lineups += build_fixture_summary(fixture, room, username)
                         fixture_id = fixture["fixture"]["id"]
-                        fixture_summary = build_fixture_summary(fixture, room, username)
                         lineups = fetch_lineups_per_fixture(fixture_id)
-                        if lineups and fixture_summary:
-                            today_fixture_lineups += fixture_summary
+                        if lineups:
                             today_fixture_lineups += get_fixture_xis(lineups)
                             today_fixture_lineups += "\n\n----------------------\n\n"
-                        else:
-                            today_fixture_lineups += "<i>Lineups not available yet<i>\n\n"
         return today_fixture_lineups.rstrip("\n\n----------------------\n\n")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching footy XIs: {e}")
@@ -72,6 +70,7 @@ def fetch_lineups_per_fixture(fixture_id: int) -> Optional[dict]:
     :returns: dict
     """
     try:
+        LOGGER.info(f"fixture_id = {fixture_id}")
         params = {"fixture": fixture_id}
         resp = requests.get(
             FOOTY_XI_ENDPOINT,
@@ -99,6 +98,8 @@ def get_fixture_xis(teams: dict) -> str:
     try:
         lineups_response = ""
         for i, team in enumerate(teams):
+            if team.get("startXI"):
+                return emojize(f":sadpanda: No lineups available yet. :sadpanda:", language="en")
             team_name = team["team"]["name"]
             formation = team["formation"]
             coach = team["coach"]["name"]
@@ -120,7 +121,16 @@ def get_fixture_xis(teams: dict) -> str:
         LOGGER.error(f"Unexpected error when fetching footy fixtures: {e}")
 
 
-def get_today_live_or_upcoming_fixtures(league_id: int, room: str, username: str) -> List[dict]:
+def get_today_live_or_upcoming_fixtures(league_id: int, room: str, username: str) -> Optional[List[dict]]:
+    """
+    Get fixtures for a league for the current day (live or upcoming).
+
+    :param int league_id: ID of a footy league to fetch fixtures for.
+    :param str room: Chatango room in which command was triggered.
+    :param str username: Name of user who triggered the command.
+
+    :returns: List[Optional[dict]]
+    """
     try:
         today = get_current_day(room)
         params = {
@@ -135,7 +145,9 @@ def get_today_live_or_upcoming_fixtures(league_id: int, room: str, username: str
             params=params,
             timeout=HTTP_REQUEST_TIMEOUT,
         )
-        return resp.json()["response"]
+        if bool(resp.json()["response"]):
+            return resp.json()["response"]
+        return None
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
@@ -162,12 +174,12 @@ def build_fixture_summary(fixture: dict, room: str, username: str) -> str:
         display_date, tz = get_preferred_time_format(date, room, username)
         display_date = check_fixture_start_date(date, tz, display_date)
         if status == "FT":
-            return f"<i>{away_team} @ {home_team} ({status})</i>\n"
+            return f"<i>{away_team} @ {home_team} ({status})</i>\n\n"
         elif status == "NS":
-            return f"<i>{away_team} @ {home_team} ({display_date})</i>\n"
+            return f"<i>{away_team} @ {home_team} ({display_date})</i>\n\n"
         elif elapsed != 90:
-            return f"<i>{away_team} @ {home_team} ({elapsed})</i>\n"
+            return f"<i>{away_team} @ {home_team} ({elapsed})</i>\n\n"
         else:
-            return f"<i>{away_team} @ {home_team} ({status_detail})</i>\n"
+            return f"<i>{away_team} @ {home_team} ({status_detail})</i>\n\n"
     except Exception as e:
         LOGGER.error(f"Unexpected error when parsing footy fixtures: {e}")
