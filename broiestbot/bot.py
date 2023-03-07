@@ -1,6 +1,7 @@
 """Chatango bot."""
 import re
 from typing import Optional, Tuple
+from time import sleep
 
 from database import session
 from database.models import Command, Phrase
@@ -254,7 +255,7 @@ class Bot(RoomManager):
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
         if "youtube" in chat_message or "youtu.be" in chat_message:
-            self.create_link_preview(chat_message, room)
+            self.create_link_preview(user_name, chat_message, room, message)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):
@@ -421,16 +422,19 @@ class Bot(RoomManager):
         room.message("™")
 
     @staticmethod
-    def create_link_preview(chat_message: str, room: Room) -> None:
+    def create_link_preview(user_name: str, chat_message: str, room: Room, message: Message) -> None:
         """
         Generate link preview for URL.
 
         :param Room room: Current Chatango room object.
         :param str chat_message: URL to generate a link preview for.
+        :param Message message: Chatango message object.
 
         :returns: None
         """
         youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com||^(http)s?://youtu.be", chat_message)
+        # youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com", chat_message)
         if youtube_matcher:
             video_preview = create_youtube_video_preview(chat_message)
-            room.message(video_preview, html=True)
+            if user_name.upper() not in CHATANGO_BOTS:
+                room.message(video_preview, html=True)

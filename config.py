@@ -28,11 +28,7 @@ CHATANGO_USERS = {
 }
 
 # Known Chatango bot usernames
-CHATANGO_BOTS = [
-    "BROIESTBRO",
-    "BROIESTBOT",
-    "ACLEEBOT",
-]
+CHATANGO_BOTS = ["BROIESTBRO", "BROIESTBOT", "ACLEEBOT", "LMAOLOVER"]
 
 # All known Chatango rooms
 CHATANGO_TEST_ROOM = getenv("CHATANGO_TEST_ROOM")

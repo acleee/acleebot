@@ -128,9 +128,12 @@ def create_youtube_video_preview(query: str) -> str:
         video_desc = video.get("long_desc")
         video_channel = video.get("channel")
         video_duration = video.get("duration")
+        video_url = f"https://youtu.be{video.get('url_suffix')}"
         video_publish_time = video.get("publish_time")
         if video_title:
             video_preview += f"<b>{video_title}</b>\n"
+        if video_url:
+            video_preview += f"{video_url}\n"
         if video_desc:
             video_preview += f"{video_desc}\n"
         if video_views:
