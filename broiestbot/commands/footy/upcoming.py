@@ -39,9 +39,9 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
-        if league_fixtures is not None and i < 6:
+        if league_fixtures is not None and i < 8:
             i += 1
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
+            upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
@@ -61,10 +61,10 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
         if league_fixtures is not None:
-            upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
+            upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
-        return upcoming_fixtures
+        return f"`{upcoming_fixtures}`"
     return emojize(":warning: Couldn't find upcoming fixtures for the next week :warning:", language="en")
 
 
@@ -110,7 +110,7 @@ def upcoming_fixture_fetcher(league_name: str, league_id: int, room: str, userna
     """
     try:
         params = {
-            "next": 6 if "EPL" in league_name or "UCL" in league_name or "WORLD CUP" in league_name else 3,
+            "next": 6 if "EPL" in league_name or "UCL" in league_name or "UEFA" in league_name else 3,
             "league": league_id,
             "status": "NS",
         }
@@ -158,7 +158,8 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
     away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
     display_date, tz = get_preferred_time_format(date, room, username)
     display_date = check_fixture_start_date(date, tz, display_date)
-    return f"{away_team} @ {home_team} - {display_date}\n"
+    matchup = f"{away_team} @ {home_team}"
+    return f"{matchup:<30} | <i>{display_date}</i>\n"
 
 
 def fetch_fox_fixtures(room: str, username: str) -> str:
@@ -171,7 +172,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     try:
-        upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES:</b>\n"
+        upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES</b>\n"
         season = get_season_year(EPL_LEAGUE_ID)
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
@@ -190,7 +191,8 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
                 display_date, tz = get_preferred_time_format(date, room, username)
                 if room == CHATANGO_OBI_ROOM:
                     display_date, tz = get_preferred_time_format(date, room, username)
-                upcoming_foxtures = upcoming_foxtures + f"{away_team} @ {home_team} - {display_date}\n"
+                    matchup = f"{away_team} @ {home_team}"
+                upcoming_foxtures = upcoming_foxtures + f"{matchup} | <i>{display_date}</i>\n"
             return emojize(upcoming_foxtures, language="en")
         return emojize(f":warning: Couldn't find fixtures, has season started yet? :warning:", language="en")
     except HTTPError as e:

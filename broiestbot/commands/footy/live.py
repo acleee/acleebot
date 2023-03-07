@@ -58,7 +58,7 @@ def footy_live_fixtures_per_league(
         live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
-            live_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
+            live_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]
@@ -224,7 +224,7 @@ def footy_live_fixture_stats_per_league(
         live_fixtures = "\n\n\n\n"
         fixtures = fetch_live_fixtures(league_id, room, username)
         if fixtures:
-            live_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
+            live_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             for i, fixture in enumerate(fixtures):
                 home_team = fixture["teams"]["home"]["name"]
                 away_team = fixture["teams"]["away"]["name"]

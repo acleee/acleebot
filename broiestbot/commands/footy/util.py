@@ -1,3 +1,4 @@
+"""Helpers for footy commands."""
 from datetime import datetime, timedelta, tzinfo
 from typing import Optional, Tuple, Union
 
@@ -71,12 +72,19 @@ def abbreviate_team_name(team_name: str) -> str:
         .replace("New York City", "NYC")
         .replace("New York", "NY")
         .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester United", "ManU")
+        .replace("Manchester United", "Manu")
         .replace("Manchester City", "Man City")
         .replace("Liverpool", "LFC")
-        .replace("Philadelphia", "PHI")
+        .replace("Philadelphia", "Philly")
         .replace("Borussia Dortmund", "Dortmund")
         .replace("Nottingham Forest", "Nottingham")
+        .replace("Club Brugge KV", "Club Brugge")
+        .replace("PSV Eindhoven", "PSV")
+        .replace("Olympiakos Piraeus", "Olympiakos")
+        .replace("Sheriff Tiraspol", "Sheriff")
+        .replace("Red Bull Salzburg", "RB Salzburg")
+        .replace("Vikingur Reykjavik", "Reykjavik")
+        .replace("Malmo FF", "Malmo")
     )
 
 
@@ -91,7 +99,7 @@ def check_fixture_start_date(fixture_start_date: datetime, tz: tzinfo, display_d
     :returns: Union[str, datetime]
     """
     if fixture_start_date.date() == datetime.date(datetime.now(tz)):
-        return f"Today, {display_date.split(', ')[1]}"
+        return f"<b>Today</b>, {display_date.split(', ')[1]}"
     elif fixture_start_date.date() == datetime.date(datetime.now(tz)) + timedelta(days=1):
         return f"Tomorrow, {display_date.split(', ')[1]}"
     return display_date
@@ -112,7 +120,8 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
     away_team = abbreviate_team_name(fixture["teams"]["away"]["name"])
     display_date, tz = get_preferred_time_format(date, room, username)
     display_date = check_fixture_start_date(date, tz, display_date)
-    return f"{away_team} @ {home_team} - {display_date}\n"
+    matchup = f"{away_team} @ {home_team}"
+    return f"{matchup:<30} | <i>{display_date}</i>\n"
 
 
 def get_season_year(league_id: int) -> Optional[int]:

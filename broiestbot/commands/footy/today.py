@@ -32,7 +32,7 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = today_upcoming_fixtures_per_league(league_name, league_id, room, username)
-        if league_fixtures is not None and i < 7:
+        if league_fixtures is not None and i < 8:
             i += 1
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
@@ -61,9 +61,9 @@ def today_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
             for i, fixture in enumerate(fixtures):
                 fixture_start_time = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 if i == 0 and len(fixture) > 1:
-                    league_upcoming_fixtures += emojize(f"<b>{league_name}:</b>\n", language="en")
+                    league_upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
                 league_upcoming_fixtures += parse_upcoming_fixture(fixture, fixture_start_time, room, username)
-            return league_upcoming_fixtures
+            return f"`{league_upcoming_fixtures}`"
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except ValueError as e:
@@ -122,4 +122,5 @@ def parse_upcoming_fixture(fixture: dict, fixture_start_time: datetime, room: st
     display_date, tz = get_preferred_time_format(fixture_start_time, room, username)
     display_date = check_fixture_start_date(fixture_start_time, tz, display_date)
     display_date = display_date.replace("Today,", "")
-    return f"{away_team} @ {home_team} - {display_date}\n"
+    matchup = f"{away_team} @ {home_team}"
+    return f"{matchup:<30} | <i>{display_date}</i>\n"
