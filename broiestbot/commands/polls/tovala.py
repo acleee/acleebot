@@ -1,5 +1,5 @@
 """Allow users to track consecutive Tovala streaks via Redis cache."""
-from database import session_rw
+from database import session
 from database.models import PollResult
 from emoji import emojize
 from redis.exceptions import RedisError
@@ -78,7 +78,7 @@ def get_current_total() -> int:
     :returns: int
     """
     try:
-        total_count = session_rw.query(PollResult).filter(PollResult.type == "tovala").one_or_none()
+        total_count = session.query(PollResult).filter(PollResult.type == "tovala").one_or_none()
         if total_count is not None:
             return total_count.count
         return 0
