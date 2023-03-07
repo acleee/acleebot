@@ -3,11 +3,12 @@ import lyricsgenius
 import praw
 import redis
 import wikipediaapi
+from pyyoutube import Api as YoutubeApi
 
 # from googleapiclient.discovery import build
 from imdb import Cinemagoer
 from twilio.rest import Client
-from clients.ddog import ddog_apm_trace
+from clients.youtube import yt
 
 from config import (  # YOUTUBE_API_KEY,
     ALPHA_VANTAGE_API_KEY,
@@ -29,6 +30,7 @@ from config import (  # YOUTUBE_API_KEY,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
     PLAYSTATION_SSO_TOKEN,
+    YOUTUBE_API_KEY,
 )
 
 from .crypto import CryptoChartHandler
@@ -77,9 +79,6 @@ genius.remove_section_headers = True
 
 # Redis
 r = redis.Redis(host=REDIS_HOST, port=REDIS_PORT, password=REDIS_PASSWORD, db=REDIS_DB, decode_responses=True)
-
-# Youtube
-# yt = build("youtube", "v3", developerKey=YOUTUBE_API_KEY)
 
 # Playstation
 # psn = PlaystationClient(token=PLAYSTATION_SSO_TOKEN)

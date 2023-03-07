@@ -254,8 +254,8 @@ class Bot(RoomManager):
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
-        if "youtube" in chat_message or "youtu.be" in chat_message:
-            self.create_link_preview(user_name, chat_message, room, message)
+        # if "youtube" in chat_message or "youtu.be" in chat_message:
+        # self.create_link_preview(user_name, message.body, room, message)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):

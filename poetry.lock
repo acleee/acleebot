@@ -119,14 +119,14 @@ files = [
 
 [[package]]
 name = "botocore"
-version = "1.29.85"
+version = "1.29.86"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.85-py3-none-any.whl", hash = "sha256:1f2d1f7e3b41f8c9cc5576be16d86552a46724fd5d15f38a50c002a957ac43ff"},
-    {file = "botocore-1.29.85.tar.gz", hash = "sha256:cb7e7e88a09ba807956643849b3a9b4e343a2c117838c0be1ca660052f69bcd2"},
+    {file = "botocore-1.29.86-py3-none-any.whl", hash = "sha256:6083c649791559dd916c9ff7ac62486b391f6f9464d3cf6964582a489c866b11"},
+    {file = "botocore-1.29.86.tar.gz", hash = "sha256:8a4afc6d540c01890e434b9a31fb1b17f8c759001e12c7ad7c49f55ea5805993"},
 ]
 
 [package.dependencies]
@@ -311,6 +311,26 @@ files = [
     {file = "colorama-0.4.6-py2.py3-none-any.whl", hash = "sha256:4f1d9991f5acc0ca119f9d443620b77f9d6b33703e51011c16baf57afb285fc6"},
     {file = "colorama-0.4.6.tar.gz", hash = "sha256:08695f5cb7ed6e0531a20572697297273c47b8cae5a63ffc6d6ed5c201be6e44"},
 ]
+
+[[package]]
+name = "dataclasses-json"
+version = "0.5.7"
+description = "Easily serialize dataclasses to and from JSON"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "dataclasses-json-0.5.7.tar.gz", hash = "sha256:c2c11bc8214fbf709ffc369d11446ff6945254a7f09128154a7620613d8fda90"},
+    {file = "dataclasses_json-0.5.7-py3-none-any.whl", hash = "sha256:bc285b5f892094c3a53d558858a88553dd6a61a11ab1a8128a0e554385dcc5dd"},
+]
+
+[package.dependencies]
+marshmallow = ">=3.3.0,<4.0.0"
+marshmallow-enum = ">=1.5.1,<2.0.0"
+typing-inspect = ">=0.4.0"
+
+[package.extras]
+dev = ["flake8", "hypothesis", "ipython", "mypy (>=0.710)", "portray", "pytest (>=6.2.3)", "simplejson", "types-dataclasses"]
 
 [[package]]
 name = "datadog"
@@ -961,6 +981,21 @@ files = [
 ]
 
 [[package]]
+name = "isodate"
+version = "0.6.1"
+description = "An ISO 8601 date/time/duration parser and formatter"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "isodate-0.6.1-py2.py3-none-any.whl", hash = "sha256:0751eece944162659049d35f4f549ed815792b38793f07cf73381c1c87cbed96"},
+    {file = "isodate-0.6.1.tar.gz", hash = "sha256:48c5881de7e8b0a0d648cb024c8062dc84e7b840ed81e864c7614fd3c127bde9"},
+]
+
+[package.dependencies]
+six = "*"
+
+[[package]]
 name = "isort"
 version = "5.12.0"
 description = "A Python utility / library to sort Python imports."
@@ -1231,6 +1266,42 @@ rtd = ["attrs", "myst-parser", "pyyaml", "sphinx", "sphinx-copybutton", "sphinx-
 testing = ["coverage", "pytest", "pytest-cov", "pytest-regressions"]
 
 [[package]]
+name = "marshmallow"
+version = "3.19.0"
+description = "A lightweight library for converting complex datatypes to and from native Python datatypes."
+category = "main"
+optional = false
+python-versions = ">=3.7"
+files = [
+    {file = "marshmallow-3.19.0-py3-none-any.whl", hash = "sha256:93f0958568da045b0021ec6aeb7ac37c81bfcccbb9a0e7ed8559885070b3a19b"},
+    {file = "marshmallow-3.19.0.tar.gz", hash = "sha256:90032c0fd650ce94b6ec6dc8dfeb0e3ff50c144586462c389b81a07205bedb78"},
+]
+
+[package.dependencies]
+packaging = ">=17.0"
+
+[package.extras]
+dev = ["flake8 (==5.0.4)", "flake8-bugbear (==22.10.25)", "mypy (==0.990)", "pre-commit (>=2.4,<3.0)", "pytest", "pytz", "simplejson", "tox"]
+docs = ["alabaster (==0.7.12)", "autodocsumm (==0.2.9)", "sphinx (==5.3.0)", "sphinx-issues (==3.0.1)", "sphinx-version-warning (==1.1.2)"]
+lint = ["flake8 (==5.0.4)", "flake8-bugbear (==22.10.25)", "mypy (==0.990)", "pre-commit (>=2.4,<3.0)"]
+tests = ["pytest", "pytz", "simplejson"]
+
+[[package]]
+name = "marshmallow-enum"
+version = "1.5.1"
+description = "Enum field for Marshmallow"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "marshmallow-enum-1.5.1.tar.gz", hash = "sha256:38e697e11f45a8e64b4a1e664000897c659b60aa57bfa18d44e226a9920b6e58"},
+    {file = "marshmallow_enum-1.5.1-py2.py3-none-any.whl", hash = "sha256:57161ab3dbfde4f57adeb12090f39592e992b9c86d206d02f6bd03ebec60f072"},
+]
+
+[package.dependencies]
+marshmallow = ">=2.0.0"
+
+[[package]]
 name = "mccabe"
 version = "0.7.0"
 description = "McCabe checker, plugin for flake8"
@@ -1323,6 +1394,23 @@ files = [
     {file = "numpy-1.24.2-pp38-pypy38_pp73-win_amd64.whl", hash = "sha256:150947adbdfeceec4e5926d956a06865c1c690f2fd902efede4ca6fe2e657c3f"},
     {file = "numpy-1.24.2.tar.gz", hash = "sha256:003a9f530e880cb2cd177cba1af7220b9aa42def9c4afc2a2fc3ee6be7eb2b22"},
 ]
+
+[[package]]
+name = "oauthlib"
+version = "3.2.2"
+description = "A generic, spec-compliant, thorough implementation of the OAuth request-signing logic"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "oauthlib-3.2.2-py3-none-any.whl", hash = "sha256:8139f29aac13e25d502680e9e19963e83f16838d48a0d71c287fe40e7067fbca"},
+    {file = "oauthlib-3.2.2.tar.gz", hash = "sha256:9859c40929662bec5d64f34d01c99e093149682a3f38915dc0655d5a633dd918"},
+]
+
+[package.extras]
+rsa = ["cryptography (>=3.0.0)"]
+signals = ["blinker (>=1.4.0)"]
+signedtoken = ["cryptography (>=3.0.0)", "pyjwt (>=2.0.0,<3)"]
 
 [[package]]
 name = "packaging"
@@ -1536,6 +1624,18 @@ urllib3 = "1.26.13"
 [package.extras]
 docs = ["sphinx (==5.2.2)", "sphinx-rtd-theme (==1.0.0)"]
 testing = ["alabaster (==0.7.12)", "attrs (==22.1.0)", "babel (==2.11.0)", "bleach (==5.0.1)", "build (==0.9.0)", "certifi (==2022.12.7)", "cffi (==1.15.1)", "cfgv (==3.3.1)", "chardet (==5.1.0)", "charset-normalizer (==2.1.1)", "click (==8.1.3)", "commonmark (==0.9.1)", "coverage[toml] (==6.5.0)", "cryptography (==38.0.4)", "distlib (==0.3.6)", "docutils (==0.17.1)", "exceptiongroup (==1.0.4)", "filelock (==3.8.2)", "flake8 (==6.0.0)", "identify (==2.5.9)", "idna (==3.4)", "imagesize (==1.4.1)", "importlib-metadata (==5.1.0)", "iniconfig (==1.1.1)", "jaraco-classes (==3.2.3)", "jeepney (==0.8.0)", "jinja2 (==3.1.2)", "keyring (==23.11.0)", "markdown-it-py (==2.1.0)", "markupsafe (==2.1.1)", "mccabe (==0.7.0)", "mdit-py-plugins (==0.3.3)", "mdurl (==0.1.2)", "more-itertools (==9.0.0)", "multidict (==6.0.3)", "mypy (==0.991)", "mypy-extensions (==0.4.3)", "myst-parser (==0.18.1)", "nodeenv (==1.7.0)", "packaging (==22.0)", "pep517 (==0.13.0)", "pip-tools (==6.11.0)", "pkginfo (==1.9.2)", "platformdirs (==2.6.0)", "pluggy (==1.0.0)", "pre-commit (==2.20.0)", "pycodestyle (==2.10.0)", "pycparser (==2.21)", "pyflakes (==3.0.1)", "pygments (==2.13.0)", "pytest (==7.2.0)", "pytest-cov (==4.0.0)", "pytest-vcr (==1.0.2)", "python-dotenv (==0.21.0)", "pytz (==2022.6)", "pyyaml (==6.0)", "readme-renderer (==37.3)", "requests (==2.28.1)", "requests-toolbelt (==0.10.1)", "rfc3986 (==2.0.0)", "rich (==12.6.0)", "secretstorage (==3.3.3)", "six (==1.16.0)", "snowballstemmer (==2.2.0)", "sphinx (==5.3.0)", "sphinx-rtd-theme (==1.1.1)", "sphinxcontrib-applehelp (==1.0.2)", "sphinxcontrib-devhelp (==1.0.2)", "sphinxcontrib-htmlhelp (==2.0.0)", "sphinxcontrib-jsmath (==1.0.1)", "sphinxcontrib-qthelp (==1.0.3)", "sphinxcontrib-serializinghtml (==1.1.5)", "toml (==0.10.2)", "tomli (==2.0.1)", "twine (==4.0.2)", "types-attrs (==19.1.0)", "types-requests (==2.28.11.5)", "types-urllib3 (==1.26.25.4)", "typing-extensions (==4.4.0)", "urllib3 (==1.26.13)", "vcrpy (==4.2.1)", "virtualenv (==20.17.1)", "webencodings (==0.5.1)", "wheel (==0.38.4)", "wrapt (==1.14.1)", "yarl (==1.8.2)", "zipp (==3.11.0)"]
+
+[[package]]
+name = "py-youtube"
+version = "1.1.7"
+description = "Python library Get YouTube Video Data & Search Video"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "py_youtube-1.1.7-py3-none-any.whl", hash = "sha256:a98281d3b5d5567d295a7ebace2730ce263a48612330e315680ec79c1b3faf84"},
+    {file = "py_youtube-1.1.7.tar.gz", hash = "sha256:5fc2c193bcbd374b2a33d8e71e02e647b6a342c0ad5ba78dc6115eb0f2811b75"},
+]
 
 [[package]]
 name = "pyasn1"
@@ -1806,6 +1906,24 @@ files = [
 cli = ["click (>=5.0)"]
 
 [[package]]
+name = "python-youtube"
+version = "0.9.0"
+description = "A Python wrapper around for YouTube Data API."
+category = "main"
+optional = false
+python-versions = ">=3.6,<4.0"
+files = [
+    {file = "python_youtube-0.9.0-py3-none-any.whl", hash = "sha256:fad8904a5bdddca85fb8138b0f239608c556a268cdcdc1b0b7e9318209448b8c"},
+    {file = "python_youtube-0.9.0.tar.gz", hash = "sha256:d237fae37e9933721d96a4907555a4da171f96bb7187603f46fc0d154e4091fe"},
+]
+
+[package.dependencies]
+dataclasses-json = ">=0.5.3,<0.6.0"
+isodate = ">=0.6.0,<0.7.0"
+requests = ">=2.24.0,<3.0.0"
+requests-oauthlib = ">=1.3.0,<2.0.0"
+
+[[package]]
 name = "pytz"
 version = "2022.7.1"
 description = "World timezone definitions, modern and historical"
@@ -1857,6 +1975,25 @@ urllib3 = ">=1.21.1,<1.27"
 [package.extras]
 socks = ["PySocks (>=1.5.6,!=1.5.7)"]
 use-chardet-on-py3 = ["chardet (>=3.0.2,<6)"]
+
+[[package]]
+name = "requests-oauthlib"
+version = "1.3.1"
+description = "OAuthlib authentication support for Requests."
+category = "main"
+optional = false
+python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
+files = [
+    {file = "requests-oauthlib-1.3.1.tar.gz", hash = "sha256:75beac4a47881eeb94d5ea5d6ad31ef88856affe2332b9aafb52c6452ccf0d7a"},
+    {file = "requests_oauthlib-1.3.1-py2.py3-none-any.whl", hash = "sha256:2577c501a2fb8d05a304c09d090d6e47c306fef15809d102b327cf8364bddab5"},
+]
+
+[package.dependencies]
+oauthlib = ">=3.0.0"
+requests = ">=2.0.0"
+
+[package.extras]
+rsa = ["oauthlib[signedtoken] (>=3.0.0)"]
 
 [[package]]
 name = "requests-toolbelt"
@@ -2105,6 +2242,22 @@ files = [
 ]
 
 [[package]]
+name = "typing-inspect"
+version = "0.8.0"
+description = "Runtime inspection utilities for typing module."
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "typing_inspect-0.8.0-py3-none-any.whl", hash = "sha256:5fbf9c1e65d4fa01e701fe12a5bca6c6e08a4ffd5bc60bfac028253a447c5188"},
+    {file = "typing_inspect-0.8.0.tar.gz", hash = "sha256:8b1ff0c400943b6145df8119c41c244ca8207f1f10c9c057aeed1560e4806e3d"},
+]
+
+[package.dependencies]
+mypy-extensions = ">=0.3.0"
+typing-extensions = ">=3.7.4"
+
+[[package]]
 name = "update-checker"
 version = "0.18.0"
 description = "A python module that will check for package updates."
@@ -2320,22 +2473,7 @@ files = [
     {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
 ]
 
-[[package]]
-name = "youtube-search"
-version = "2.1.2"
-description = "Perform YouTube video searches without the API"
-category = "main"
-optional = false
-python-versions = "*"
-files = [
-    {file = "youtube-search-2.1.2.tar.gz", hash = "sha256:5749a6d8076fda65557c91367f0fab0936290ecdea457c831c9f3f05918a3aa2"},
-    {file = "youtube_search-2.1.2-py3-none-any.whl", hash = "sha256:f9cfaaf7c59806777eb29d3b8acee96b50e80f73a0621c2bb220d4e5beb09e4f"},
-]
-
-[package.dependencies]
-requests = "*"
-
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "d5aff9887b5638d2fee4cd7be4f9697880582a4ce60f182dd68c8ea0dee8a4e8"
+content-hash = "170648c3809b839762d18a57b83ddafd17eb32044f557f3fadac60461ab3800f"

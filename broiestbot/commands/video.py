@@ -4,7 +4,7 @@ from typing import Optional
 import requests
 from emoji import emojize
 
-from youtube_search import YoutubeSearch
+from clients import yt
 
 from requests.exceptions import HTTPError
 
@@ -110,36 +110,38 @@ def get_twitch_auth_token() -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching Twitch auth token: {e}")
 
 
-def create_youtube_video_preview(query: str) -> str:
+def create_youtube_video_preview(video_url: str) -> str:
     """
-    Search for a Youtube video.
+    Generate a link preview for a Youtube video by URL.
 
-    :param str query: Query to fetch most relevant YouTube Video.
+    :param str video_url: Full URL to a YouTube video.
 
     :returns: str
     """
     try:
         video_preview = "\n\n\n\n"
-        videos = YoutubeSearch(query, max_results=1).to_dict()
-        video = videos[0]
-        video_thumbnail = video.get("thumbnails")[0].split("?")[0]
+        video_id = video_url.split("v=")[1]
+        LOGGER.warning(f"video_id = {video_id}")
+        video = yt.videos().list(part="snippet,contentDetails,statistics", id=video_id).execute()
+        LOGGER.warning(f"video = {video}")
+        video_thumbnail = video.get("thumbnails").split("?")[0]
         video_title = video.get("title")
         video_views = video.get("views")
-        video_desc = video.get("long_desc")
+        video_likes = video.get("video_likes")
+        video_dislikes = video.get("video_dislikes")
         video_channel = video.get("channel")
-        video_duration = video.get("duration")
-        video_url = f"https://youtu.be{video.get('url_suffix')}"
-        video_publish_time = video.get("publish_time")
+        video_category = video.get("category")
+        video_publish_time = video.get("publishdate")
         if video_title:
             video_preview += f"<b>{video_title}</b>\n"
         if video_url:
             video_preview += f"{video_url}\n"
-        if video_desc:
-            video_preview += f"{video_desc}\n"
         if video_views:
             video_preview += emojize(f":eyes: {video_views.replace(' views', '')}\n", language="en")
-        if video_duration:
-            video_preview += emojize(f":stopwatch: {video_duration}\n", language="en")
+        if video_likes and video_dislikes:
+            video_preview += emojize(f":thumbsup: {video_likes} :thumbsdown: {video_dislikes}\n", language="en")
+        if video_category:
+            video_preview += emojize(f":file_cabinet: {video_category}\n", language="en")
         if video_publish_time:
             video_preview += emojize(f":calendar: {video_publish_time}\n", language="en")
         if video_channel:
