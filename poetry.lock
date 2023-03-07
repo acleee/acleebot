@@ -1966,6 +1966,7 @@ category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
+    {file = "SQLAlchemy-2.0.5-py3-none-any.whl", hash = "sha256:7069df49da29baf2ee71216445f53e8fbedba03b44ea8eb5a11a0b92b12d8c07"},
     {file = "SQLAlchemy-2.0.5.tar.gz", hash = "sha256:721d4ad38be4615d9052d9ed62e91470e46e0ef588fea392ad16f209907fab70"},
 ]
 
@@ -1975,7 +1976,7 @@ typing-extensions = ">=4.2.0"
 
 [package.extras]
 aiomysql = ["aiomysql", "greenlet (!=0.4.17)"]
-aiosqlite = ["aiosqlite", "greenlet (!=0.4.17)", "typing_extensions (!=3.10.0.1)"]
+aiosqlite = ["aiosqlite", "greenlet (!=0.4.17)", "typing-extensions (!=3.10.0.1)"]
 asyncio = ["greenlet (!=0.4.17)"]
 asyncmy = ["asyncmy (>=0.2.3,!=0.2.4,!=0.2.6)", "greenlet (!=0.4.17)"]
 mariadb-connector = ["mariadb (>=1.0.1,!=1.1.2,!=1.1.5)"]
@@ -1985,7 +1986,7 @@ mssql-pyodbc = ["pyodbc"]
 mypy = ["mypy (>=0.910)"]
 mysql = ["mysqlclient (>=1.4.0)"]
 mysql-connector = ["mysql-connector-python"]
-oracle = ["cx_oracle (>=7)"]
+oracle = ["cx-oracle (>=7)"]
 oracle-oracledb = ["oracledb (>=1.0.1)"]
 postgresql = ["psycopg2 (>=2.7)"]
 postgresql-asyncpg = ["asyncpg", "greenlet (!=0.4.17)"]
@@ -1994,7 +1995,7 @@ postgresql-psycopg = ["psycopg (>=3.0.7)"]
 postgresql-psycopg2binary = ["psycopg2-binary"]
 postgresql-psycopg2cffi = ["psycopg2cffi"]
 pymysql = ["pymysql"]
-sqlcipher = ["sqlcipher3_binary"]
+sqlcipher = ["sqlcipher3-binary"]
 
 [[package]]
 name = "tenacity"
@@ -2280,7 +2281,22 @@ files = [
     {file = "xmltodict-0.13.0.tar.gz", hash = "sha256:341595a488e3e01a85a9d8911d8912fd922ede5fecc4dce437eb4b6c8d037e56"},
 ]
 
+[[package]]
+name = "youtube-search"
+version = "2.1.2"
+description = "Perform YouTube video searches without the API"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "youtube-search-2.1.2.tar.gz", hash = "sha256:5749a6d8076fda65557c91367f0fab0936290ecdea457c831c9f3f05918a3aa2"},
+    {file = "youtube_search-2.1.2-py3-none-any.whl", hash = "sha256:f9cfaaf7c59806777eb29d3b8acee96b50e80f73a0621c2bb220d4e5beb09e4f"},
+]
+
+[package.dependencies]
+requests = "*"
+
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.9"
-content-hash = "6d62be40df8e0c904aa2515af60bd188ecc778220c4498eaefd1f9b7775d9cdf"
+content-hash = "802462b0edf585c7890a9854585a4e23904d46877738bee8e96e562edc205137"

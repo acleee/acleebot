@@ -46,6 +46,7 @@ from broiestbot.commands import (
     send_text_message,
     time_until_wayne,
     today_phillies_games,
+    create_youtube_video_preview,
     today_upcoming_fixtures,
     tovala_counter,
     tuner,
@@ -252,6 +253,8 @@ class Bot(RoomManager):
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
+        if "youtube" in chat_message or "youtu.be" in chat_message:
+            self.create_link_preview(chat_message, room)
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):
@@ -374,34 +377,6 @@ class Bot(RoomManager):
             self._giphy_fallback(chat_message, room)
 
     @staticmethod
-    def _create_link_preview(room: Room, chat_message: str) -> None:
-        """
-        Generate link preview for URL.
-
-        :param Room room: Current Chatango room object.
-        :param str chat_message: URL of an Instagram post.
-
-        :returns: None
-        """
-        if (
-            ".jpg" not in chat_message
-            and ".png" not in chat_message
-            and ".gif" not in chat_message
-            and ".jpeg" not in chat_message
-            and ".mp4" not in chat_message
-            and ".JPG" not in chat_message
-            and ".PNG" not in chat_message
-            and ".GIF" not in chat_message
-            and ".JPEG" not in chat_message
-            and ".MP4" not in chat_message
-            and "twitter" not in chat_message
-            and "youtube" not in chat_message
-        ):
-            link_preview = extract_url(chat_message)
-            if link_preview:
-                room.message(link_preview, html=True)
-
-    @staticmethod
     def _wave_back(room: Room, user_name: str, bot_username) -> None:
         """
         Automatically reply to user who waved at the bot.
@@ -444,3 +419,19 @@ class Bot(RoomManager):
         """
         message.delete()
         room.message("™")
+
+    @staticmethod
+    def create_link_preview(chat_message: str, room: Room) -> None:
+        """
+        Generate link preview for URL.
+
+        :param Room room: Current Chatango room object.
+        :param str chat_message: URL to generate a link preview for.
+
+        :returns: None
+        """
+        youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com||^(http)s?://youtu.be", chat_message)
+        LOGGER.info(f"youtube_matcher = {youtube_matcher}")
+        if youtube_matcher:
+            video_preview = create_youtube_video_preview(chat_message)
+            room.message(video_preview, html=True)

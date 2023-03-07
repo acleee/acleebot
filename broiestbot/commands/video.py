@@ -4,8 +4,8 @@ from typing import Optional
 import requests
 from emoji import emojize
 
-# from clients import yt
-# from googleapiclient.errors import HttpError
+from youtube_search import YoutubeSearch
+
 from requests.exceptions import HTTPError
 
 from config import (
@@ -110,7 +110,7 @@ def get_twitch_auth_token() -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching Twitch auth token: {e}")
 
 
-'''def search_youtube_for_video(query: str) -> str:
+def create_youtube_video_preview(query: str) -> str:
     """
     Search for a Youtube video.
 
@@ -119,13 +119,30 @@ def get_twitch_auth_token() -> Optional[str]:
     :returns: str
     """
     try:
-        request = yt.search().list(
-            part="snippet", q=query, maxResults=1, safeSearch=None
-        )
-        response = request.execute()
-        LOGGER.info(response)
-        return response
-    except HttpError as e:
-        LOGGER.error(f"HttpError while fetching YouTube video: {e}")
+        video_preview = "\n\n\n\n"
+        videos = YoutubeSearch(query, max_results=1).to_dict()
+        video = videos[0]
+        video_thumbnail = video.get("thumbnails")[0].split("?")[0]
+        video_title = video.get("title")
+        video_views = video.get("views")
+        video_desc = video.get("long_desc")
+        video_channel = video.get("channel")
+        video_duration = video.get("duration")
+        video_publish_time = video.get("publish_time")
+        if video_title:
+            video_preview += f"<b>{video_title}</b>\n"
+        if video_desc:
+            video_preview += f"{video_desc}\n"
+        if video_views:
+            video_preview += emojize(f":eyes: {video_views.replace(' views', '')}\n", language="en")
+        if video_duration:
+            video_preview += emojize(f":stopwatch: {video_duration}\n", language="en")
+        if video_publish_time:
+            video_preview += emojize(f":calendar: {video_publish_time}\n", language="en")
+        if video_channel:
+            emojize(f":television: {video_channel}\n", language="en")
+        if video_thumbnail:
+            video_preview += f"{video_thumbnail}"
+        return video_preview
     except Exception as e:
-        LOGGER.error(f"Error while fetching YouTube video: {e}")'''
+        LOGGER.error(f"Error while fetching YouTube video: {e}")

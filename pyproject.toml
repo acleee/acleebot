@@ -54,6 +54,7 @@ black = "*"
 isort = "*"
 flake8 = "*"
 pylint = "*"
+youtube-search = "*"
 
 [tool.poetry.scripts]
 run = "wsgi:init_bot"
