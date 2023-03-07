@@ -1,5 +1,5 @@
 """Persist chat logs."""
-from database import session_rw
+from database import session
 from database.models import Chat
 from sqlalchemy.exc import IntegrityError, SQLAlchemyError
 
@@ -20,7 +20,7 @@ def persist_chat_logs(user_name: str, room_name: str, chat_message: str, bot_use
     """
     try:
         if PERSIST_CHAT_DATA == "true" and bot_username in ("broiestbro", "broiestbot"):
-            session_rw.add(Chat(username=user_name, room=room_name, message=chat_message))
+            session.add(Chat(username=user_name, room=room_name, message=chat_message))
     except IntegrityError as e:
         LOGGER.warning(f"Failed to save duplicate chat entry: {e}")
     except SQLAlchemyError as e:

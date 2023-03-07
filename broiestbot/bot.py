@@ -2,7 +2,7 @@
 import re
 from typing import Optional, Tuple
 
-from database import session_rw
+from database import session
 from database.models import Command, Phrase
 from emoji import emojize
 
@@ -13,7 +13,7 @@ from broiestbot.commands import (
     change_or_stay_vote,
     covid_cases_usa,
     epl_golden_boot,
-    extract_url,
+    # extract_url,
     fetch_fox_fixtures,
     fetch_image_from_gcs,
     find_imdb_movie,
@@ -32,7 +32,7 @@ from broiestbot.commands import (
     get_english_translation,
     get_footy_odds,
     get_live_nfl_games,
-    get_redgifs_gif,
+    # get_redgifs_gif,
     get_song_lyrics,
     get_stock,
     get_summer_olympic_medals,
@@ -53,7 +53,7 @@ from broiestbot.commands import (
     upcoming_nba_games,
     weather_by_location,
     wiki_summary,
-    get_psn_online_friends,
+    # get_psn_online_friends,
     league_table_standings,
     footy_live_fixture_stats,
 )
@@ -333,7 +333,7 @@ class Bot(RoomManager):
         elif chat_message.lower() == "tm":
             self._trademark(room, message)
         else:
-            fetched_phrase = session_rw.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
+            fetched_phrase = session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
             if fetched_phrase is not None:
                 room.message(fetched_phrase.response)
 
@@ -362,7 +362,7 @@ class Bot(RoomManager):
         :param str user_name: User responsible for triggering command.
         """
         cmd, args = self._parse_command(chat_message[1::].strip())
-        command = session_rw.query(Command).filter(Command.command == cmd).first()
+        command = session.query(Command).filter(Command.command == cmd).first()
         if command is not None and command.type not in ("reserved", "reddit"):
             response = self.create_message(
                 command.type,
