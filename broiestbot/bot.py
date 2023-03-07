@@ -431,7 +431,6 @@ class Bot(RoomManager):
         :returns: None
         """
         youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com||^(http)s?://youtu.be", chat_message)
-        LOGGER.info(f"youtube_matcher = {youtube_matcher}")
         if youtube_matcher:
             video_preview = create_youtube_video_preview(chat_message)
             room.message(video_preview, html=True)
