@@ -64,7 +64,7 @@ def footy_all_upcoming_fixtures(room: str, username: str) -> str:
             upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
-        return f"`{upcoming_fixtures}`"
+        return upcoming_fixtures
     return emojize(":warning: Couldn't find upcoming fixtures for the next week :warning:", language="en")
 
 

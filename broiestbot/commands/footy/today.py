@@ -63,7 +63,7 @@ def today_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
                 if i == 0 and len(fixture) > 1:
                     league_upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
                 league_upcoming_fixtures += parse_upcoming_fixture(fixture, fixture_start_time, room, username)
-            return f"`{league_upcoming_fixtures}`"
+            return league_upcoming_fixtures
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except ValueError as e:
