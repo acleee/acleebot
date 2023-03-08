@@ -91,7 +91,10 @@ def json_formatter(record: dict) -> str:
 def sms_error_handler(log: dict) -> None:
     """
     Trigger error log SMS notification.
+
     :param dict log: Log object containing log metadata & message.
+
+    :returns: None
     """
     sms.messages.create(
         body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
@@ -148,14 +151,14 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
-        logger.add(
+        """logger.add(
             "/var/log/broiestbot/ddog.json",
             serialize=True,
             catch=True,
             format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
             rotation="500 MB",
             compression="zip",
-        )
+        )"""
     elif ENVIRONMENT == "development":
         logger.add(
             f"{BASE_DIR}/logs/info.log",

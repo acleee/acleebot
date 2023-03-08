@@ -3,14 +3,12 @@ import lyricsgenius
 import praw
 import redis
 import wikipediaapi
-from pyyoutube import Api as YoutubeApi
 
 # from googleapiclient.discovery import build
 from imdb import Cinemagoer
 from twilio.rest import Client
-from clients.youtube import yt
 
-from config import (  # YOUTUBE_API_KEY,
+from config import (
     ALPHA_VANTAGE_API_KEY,
     ALPHA_VANTAGE_CHART_BASE_URL,
     ALPHA_VANTAGE_PRICE_BASE_URL,
@@ -30,7 +28,6 @@ from config import (  # YOUTUBE_API_KEY,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
     PLAYSTATION_SSO_TOKEN,
-    YOUTUBE_API_KEY,
 )
 
 from .crypto import CryptoChartHandler

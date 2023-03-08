@@ -47,7 +47,6 @@ from broiestbot.commands import (
     send_text_message,
     time_until_wayne,
     today_phillies_games,
-    create_youtube_video_preview,
     today_upcoming_fixtures,
     tovala_counter,
     tuner,
@@ -259,7 +258,6 @@ class Bot(RoomManager):
         if chat_message.startswith("!"):
             self._process_command(chat_message, room, user_name, message)
         # elif message.body.startswith("http"):
-        # self._create_link_preview(room, message.body)
         # elif re.match(r"bl\/S+b", chat_message) and "south" not in chat_message:
         # ban_word(room, message, user_name, silent=False)
         elif chat_message == "image not found :(":
@@ -297,6 +295,8 @@ class Bot(RoomManager):
         # ignored_user_message = check_ignored_users(user_name, message.ip)
         # if ignored_user_message:
         #     room.message(ignored_user_message, html=True)
+        if chat_message == "!!":
+            pass
         if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         if re.match(r"^!ein+$", chat_message):
@@ -421,7 +421,7 @@ class Bot(RoomManager):
         message.delete()
         room.message("™")
 
-    @staticmethod
+    '''@staticmethod
     def create_link_preview(user_name: str, chat_message: str, room: Room, message: Message) -> None:
         """
         Generate link preview for URL.
@@ -433,8 +433,7 @@ class Bot(RoomManager):
         :returns: None
         """
         youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com||^(http)s?://youtu.be", chat_message)
-        # youtube_matcher = re.match(r"^(http)s?:\/\/(www.)?youtube.com", chat_message)
         if youtube_matcher:
             video_preview = create_youtube_video_preview(chat_message)
             if user_name.upper() not in CHATANGO_BOTS:
-                room.message(video_preview, html=True)
+                room.message(video_preview, html=True)'''

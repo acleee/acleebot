@@ -54,8 +54,6 @@ black = "*"
 isort = "*"
 flake8 = "*"
 pylint = "*"
-py-youtube = "^1.1.7"
-python-youtube = "^0.9.0"
 
 [tool.poetry.scripts]
 run = "wsgi:init_bot"
