@@ -4,7 +4,6 @@ import praw
 import redis
 import wikipediaapi
 
-# from googleapiclient.discovery import build
 from imdb import Cinemagoer
 from twilio.rest import Client
 
@@ -27,7 +26,6 @@ from config import (
     REDIS_PORT,
     TWILIO_ACCOUNT_SID,
     TWILIO_AUTH_TOKEN,
-    PLAYSTATION_SSO_TOKEN,
 )
 
 from .crypto import CryptoChartHandler

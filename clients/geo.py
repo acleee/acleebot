@@ -3,7 +3,7 @@ from typing import Union
 
 import pandas as pd
 from ipdata import ipdata
-from ipdata.ipdata import IPData, IPDataException
+from ipdata.ipdata import IPData, APIKeyNotSet, IncompatibleParameters
 from pandas import DataFrame
 
 
@@ -20,8 +20,10 @@ class GeoIP:
         """
         try:
             return ipdata.IPData(self.api_key)
-        except IPDataException as e:
-            raise IPDataException(f"IPDataException while creating IPData client: {e}")
+        except APIKeyNotSet as e:
+            raise APIKeyNotSet(f"IPData API key not set: {e}")
+        except IncompatibleParameters as e:
+            raise IncompatibleParameters(f"IncompatibleParameters when calling IPData: {e}")
         except Exception as e:
             raise Exception(f"Unexpected exception while creating IPData client: {e}")
 
@@ -50,8 +52,10 @@ class GeoIP:
                     "carrier",
                 ],
             )
-        except IPDataException as e:
-            raise IPDataException(f"IPDataException while creating IPData client: {e}")
+        except APIKeyNotSet as e:
+            raise APIKeyNotSet(f"IPData API key not set: {e}")
+        except IncompatibleParameters as e:
+            raise IncompatibleParameters(f"IncompatibleParameters when calling IPData: {e}")
         except Exception as e:
             raise Exception(f"Unexpected failure for IPData user lookup, ip=`{ip_address}`: {e}")
 

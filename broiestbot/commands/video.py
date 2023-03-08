@@ -4,8 +4,6 @@ from typing import Optional
 import requests
 from emoji import emojize
 
-from clients import yt
-
 from requests.exceptions import HTTPError
 
 from config import (
@@ -110,7 +108,7 @@ def get_twitch_auth_token() -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching Twitch auth token: {e}")
 
 
-def create_youtube_video_preview(video_url: str) -> str:
+'''def create_youtube_video_preview(video_url: str) -> str:
     """
     Generate a link preview for a Youtube video by URL.
 
@@ -150,4 +148,4 @@ def create_youtube_video_preview(video_url: str) -> str:
             video_preview += f"{video_thumbnail}"
         return video_preview
     except Exception as e:
-        LOGGER.error(f"Error while fetching YouTube video: {e}")
+        LOGGER.error(f"Error while fetching YouTube video: {e}")'''
