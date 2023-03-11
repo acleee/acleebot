@@ -3,6 +3,7 @@ from typing import Optional
 from datetime import datetime
 
 import requests
+from requests.models import Request
 import re
 from bs4 import BeautifulSoup
 from requests import Response
@@ -22,12 +23,13 @@ def generate_twitter_preview(message: str) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        twitter_match = re.compile(r"twitter.com/[a-zA-Z0-9_]+/status/([0-9]+)", re.IGNORECASE)
-        twitter_matched_url = twitter_match.search(message)
-        tweet_id = twitter_matched_url.group(1)
-        tweet_response = fetch_tweet_by_id(tweet_id)
-        if tweet_response:
-            return parse_tweet_preview(tweet_response, tweet_id)
+        twitter_match = re.search(r"^https://twitter.com/[a-zA-Z0-9_]+/status/([0-9]+)", message)
+        if twitter_match:
+            tweet_id = twitter_match.group(1)
+            tweet_response = fetch_tweet_by_id(tweet_id)
+            if tweet_response:
+                LOGGER.success(f"Created Twitter link preview for Tweet: ({message})")
+                return parse_tweet_preview(tweet_response, tweet_id)
         return None
     except Exception as e:
         LOGGER.error(f"Unexpected error while creating Twitter embed: {e}")
@@ -49,9 +51,7 @@ def fetch_tweet_by_id(tweet_id: str) -> Optional[dict]:
             "user.fields": "url",
         }
         endpoint = f"https://api.twitter.com/2/tweets/{tweet_id}"
-        LOGGER.warning(f"Twitter endpoint: {endpoint}")
         resp = requests.get(endpoint, auth=twitter_bearer_oauth, params=params)
-        LOGGER.warning(f"Twitter response: {resp}")
         if resp.status_code == 200:
             return resp
     except HTTPError as e:
@@ -62,7 +62,12 @@ def fetch_tweet_by_id(tweet_id: str) -> Optional[dict]:
 
 def parse_tweet_preview(response: Response, tweet_id: str) -> Optional[str]:
     """
-    Create Tweet preview from JSON response.
+    Create formatted Tweet preview chat message from JSON response.
+
+    :param Response response: Prepared API request to fetch Tweet from Twitter API.
+    :param str tweet_id: Tweet ID to fetch.
+
+    :returns: Optional[str]
     """
     try:
         tweet_data = response.json()["data"]
@@ -75,11 +80,16 @@ def parse_tweet_preview(response: Response, tweet_id: str) -> Optional[str]:
         tweet_author_name = tweet_users[0]["name"]
         tweet_author_username = tweet_users[0]["username"]
         # tweet_author_url = tweet_users[0]["url"]
-        tweet_attachments = response.json()["includes"]["media"]
         tweet_url = f"https://twitter.com/{tweet_author_username}/status/{tweet_id}"
-        tweet_images = [attachment["url"] for attachment in tweet_attachments if attachment["type"] == "photo"]
+        tweet_attachments = response.json()["includes"].get("media")
+        if tweet_attachments:
+            tweet_images = [attachment["url"] for attachment in tweet_attachments if attachment["type"] == "photo"]
+            return emojize(
+                f"\n\n:bust_in_silhouette: <b>{tweet_author_name}</b> <i>@{tweet_author_username}</i>\n{tweet_date_formatted}\n\n{tweet_body}\n\n{' '.join(tweet_images)}\n\n{tweet_url}",
+                language="en",
+            )
         return emojize(
-            f"\n\n:bust_in_silhouette: <b>{tweet_author_name}</b> <i>@{tweet_author_username}</i>\n{tweet_date_formatted}\n\n{tweet_body}\n\n{' '.join(tweet_images)}\n\n{tweet_url}",
+            f"\n\n:bust_in_silhouette: <b>{tweet_author_name}</b> <i>@{tweet_author_username}</i>\n{tweet_date_formatted}\n\n{tweet_body}\n\n{tweet_url}",
             language="en",
         )
     except KeyError as e:
@@ -88,14 +98,13 @@ def parse_tweet_preview(response: Response, tweet_id: str) -> Optional[str]:
         LOGGER.error(f"Unexpected error while parsing Tweet: {e}")
 
 
-def twitter_bearer_oauth(r):
+def twitter_bearer_oauth(req: Request) -> Request:
     """
     Method required by bearer token authentication.
     """
-
-    r.headers["Authorization"] = f"Bearer {TWITTER_BEARER_TOKEN}"
-    r.headers["User-Agent"] = "v2TweetLookupPython"
-    return r
+    req.headers["Authorization"] = f"Bearer {TWITTER_BEARER_TOKEN}"
+    req.headers["User-Agent"] = "v2TweetLookupPython"
+    return req
 
 
 def create_instagram_preview(url: str) -> Optional[str]:
