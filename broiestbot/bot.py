@@ -60,6 +60,8 @@ from broiestbot.commands import (
 from chatango.ch import Message, Room, RoomManager, User
 from config import (
     CHATANGO_BOTS,
+    CHATANGO_IGNORED_IPS,
+    CHATANGO_IGNORED_USERS,
     EPL_LEAGUE_ID,
     LIGA_LEAGUE_ID,
     ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
@@ -73,7 +75,7 @@ from logger import LOGGER
 
 from .data import persist_chat_logs, persist_user_data
 from .moderation import ban_word, check_blacklisted_users
-from .moderation.users import check_ignored_users
+from .moderation.users import ignored_user
 
 
 class Bot(RoomManager):
@@ -292,9 +294,8 @@ class Bot(RoomManager):
 
         :returns: None
         """
-        # ignored_user_message = check_ignored_users(user_name, message.ip)
-        # if ignored_user_message:
-        #     room.message(ignored_user_message, html=True)
+        if user_name in CHATANGO_IGNORED_USERS or message.ip in CHATANGO_IGNORED_IPS:
+            return ignored_user(user_name, message.ip)
         if chat_message == "!!":
             pass
         if re.match(r"^!!.+$", chat_message):

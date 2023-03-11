@@ -50,7 +50,7 @@ def check_blacklisted_users(room: Room, user_name: str, message: Message) -> Non
         ban_user(room, message)
 
 
-def check_ignored_users(user_name: str, user_ip: str) -> Optional[str]:
+def ignored_user(user_name: str, user_ip: str) -> Optional[str]:
     """
     Ignore commands from users who have had bot privileges revokes
 
@@ -59,12 +59,11 @@ def check_ignored_users(user_name: str, user_ip: str) -> Optional[str]:
 
     :returns: str
     """
-    if user_name in CHATANGO_IGNORED_USERS or user_ip in CHATANGO_IGNORED_IPS:
-        return emojize(
-            f":wave: @{user_name} bot privileges REVOKED for acting like a CUNT :wave:",
-            language="en",
-        )
-    return None
+
+    return emojize(
+        f":wave: @{user_name} bot privileges REVOKED for acting like a CUNT :wave:",
+        language="en",
+    )
 
 
 def is_user_anon(user_name: str) -> bool:
