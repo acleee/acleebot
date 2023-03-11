@@ -56,6 +56,7 @@ from broiestbot.commands import (
     # get_psn_online_friends,
     league_table_standings,
     footy_live_fixture_stats,
+    generate_twitter_preview,
 )
 from chatango.ch import Message, Room, RoomManager, User
 from config import (
@@ -255,6 +256,7 @@ class Bot(RoomManager):
         self._log_message(room, user, message)
         persist_user_data(room_name, user, message, bot_username)
         persist_chat_logs(user_name, room_name, chat_message, bot_username)
+        self._create_twitter_preview(room, user_name, chat_message)
         # if "youtube" in chat_message or "youtu.be" in chat_message:
         # self.create_link_preview(user_name, message.body, room, message)
         if chat_message.startswith("!"):
@@ -266,6 +268,25 @@ class Bot(RoomManager):
             ban_word(room, message, user_name, silent=True)
         else:
             self._process_phrase(chat_message, room, user_name, message, bot_username)
+
+    @staticmethod
+    def _create_twitter_preview(room, user_name, chat_message):
+        """
+        Generate preview for Twitter links.
+
+        :param Room room: Current Chatango room object.
+        :param str user_name: User who posted the message.
+        :param str message:Chat message text submitted by a user.
+
+        :returns: None
+        """
+        if (
+            re.search(r"twitter.com/[a-zA-Z0-9_]+/status/([0-9]+)", chat_message)
+            and user_name.upper() not in CHATANGO_BOTS
+        ):
+            twitter_preview = generate_twitter_preview(chat_message)
+            if twitter_preview:
+                room.message(twitter_preview, html=True)
 
     @staticmethod
     def _log_message(room: Room, user: User, message: Message):
@@ -304,7 +325,6 @@ class Bot(RoomManager):
             return self._get_response("!ein", room, user_name)
         if re.match(r"^!\S+", chat_message):
             return self._get_response(chat_message, room, user_name)
-        # elif re.search(r"instagram.com/p/[a-zA-Z0-9_-]+", message.body):
 
     def _process_phrase(
         self, chat_message: str, room: Room, user_name: str, message: Message, bot_username: str

@@ -6,7 +6,7 @@ from .definitions import (
     get_urban_definition,
     wiki_summary,
 )
-from .embeds import create_instagram_preview
+from .embeds import create_instagram_preview, generate_twitter_preview
 from .footy import (
     all_leagues_golden_boot,
     epl_golden_boot,

@@ -1,13 +1,101 @@
 """Generate link previews from URLs."""
 from typing import Optional
+from datetime import datetime
 
 import requests
+import re
 from bs4 import BeautifulSoup
 from requests import Response
 from requests.exceptions import HTTPError
+from emoji import emojize
 
-from config import INSTAGRAM_APP_ID, HTTP_REQUEST_TIMEOUT
+from config import INSTAGRAM_APP_ID, HTTP_REQUEST_TIMEOUT, TWITTER_BEARER_TOKEN
 from logger import LOGGER
+
+
+def generate_twitter_preview(message: str) -> Optional[str]:
+    """
+    Check chat message for Twitter URL and generate preview.
+
+    :param str message: Chatango message to check for Twitter URL.
+
+    :returns: Optional[str]
+    """
+    try:
+        twitter_match = re.compile(r"twitter.com/[a-zA-Z0-9_]+/status/([0-9]+)", re.IGNORECASE)
+        twitter_matched_url = twitter_match.search(message)
+        tweet_id = twitter_matched_url.group(1)
+        tweet_response = fetch_tweet_by_id(tweet_id)
+        if tweet_response:
+            return parse_tweet_preview(tweet_response, tweet_id)
+        return None
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while creating Twitter embed: {e}")
+
+
+def fetch_tweet_by_id(tweet_id: str) -> Optional[dict]:
+    """
+    Fetch Tweet JSON by Tweet ID.
+
+    :param str tweet_id: Tweet ID to fetch.
+
+    :returns: Optional[dict]
+    """
+    try:
+        params = {
+            "tweet.fields": "created_at,attachments",
+            "expansions": "author_id,attachments.media_keys",
+            "media.fields": "url,alt_text",
+            "user.fields": "url",
+        }
+        endpoint = f"https://api.twitter.com/2/tweets/{tweet_id}"
+        LOGGER.warning(f"Twitter endpoint: {endpoint}")
+        resp = requests.get(endpoint, auth=twitter_bearer_oauth, params=params)
+        LOGGER.warning(f"Twitter response: {resp}")
+        if resp.status_code == 200:
+            return resp
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError error while fetching Tweet by ID ({tweet_id}): {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while fetching Tweet by ID ({tweet_id}): {e}")
+
+
+def parse_tweet_preview(response: Response, tweet_id: str) -> Optional[str]:
+    """
+    Create Tweet preview from JSON response.
+    """
+    try:
+        tweet_data = response.json()["data"]
+        tweet_body = tweet_data["text"]
+        tweet_date = tweet_data["created_at"].replace(".000Z", "")
+        tweet_date_formatted = emojize(
+            f":calendar: {datetime.strptime(tweet_date, '%Y-%m-%dT%H:%M:%S')}", language="en"
+        )
+        tweet_users = response.json()["includes"]["users"]
+        tweet_author_name = tweet_users[0]["name"]
+        tweet_author_username = tweet_users[0]["username"]
+        # tweet_author_url = tweet_users[0]["url"]
+        tweet_attachments = response.json()["includes"]["media"]
+        tweet_url = f"https://twitter.com/{tweet_author_username}/status/{tweet_id}"
+        tweet_images = [attachment["url"] for attachment in tweet_attachments if attachment["type"] == "photo"]
+        return emojize(
+            f"\n\n:bust_in_silhouette: <b>{tweet_author_name}</b> <i>@{tweet_author_username}</i>\n{tweet_date_formatted}\n\n{tweet_body}\n\n{' '.join(tweet_images)}\n\n{tweet_url}",
+            language="en",
+        )
+    except KeyError as e:
+        LOGGER.error(f"KeyError while parsing Tweet: {e}")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while parsing Tweet: {e}")
+
+
+def twitter_bearer_oauth(r):
+    """
+    Method required by bearer token authentication.
+    """
+
+    r.headers["Authorization"] = f"Bearer {TWITTER_BEARER_TOKEN}"
+    r.headers["User-Agent"] = "v2TweetLookupPython"
+    return r
 
 
 def create_instagram_preview(url: str) -> Optional[str]:
