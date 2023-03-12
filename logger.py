@@ -5,6 +5,7 @@ from sys import stdout
 
 from loguru import logger
 
+
 from clients import sms
 from config import BASE_DIR, ENVIRONMENT, TWILIO_BRO_PHONE_NUMBER, TWILIO_SENDER_PHONE
 
@@ -151,14 +152,14 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
-        """logger.add(
+        logger.add(
             "/var/log/broiestbot/ddog.json",
             serialize=True,
             catch=True,
             format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
             rotation="500 MB",
             compression="zip",
-        )"""
+        )
     elif ENVIRONMENT == "development":
         logger.add(
             f"{BASE_DIR}/logs/info.log",

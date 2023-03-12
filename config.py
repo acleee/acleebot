@@ -493,3 +493,13 @@ NBA_SEASON_YEAR = "2022-2023"
 # Playstation PSN
 # -------------------------------------------------
 PLAYSTATION_SSO_TOKEN = getenv("PLAYSTATION_SSO_TOKEN")
+
+
+# DDOG
+# -------------------------------------------------
+
+DDOG_JSON_FORMAT = (
+    "%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] "
+    "[dd.service=%(dd.service)s dd.env=%(dd.env)s dd.version=%(dd.version)s dd.trace_id=%(dd.trace_id)s dd.span_id=%(dd.span_id)s] "
+    "- %(message)s"
+)
