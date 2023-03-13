@@ -271,7 +271,7 @@ class Bot(RoomManager):
             self._process_phrase(chat_message, room, user_name, message, bot_username)
 
     @staticmethod
-    def _create_twitter_preview(room, chat_message):
+    def _create_twitter_preview(room: Room, chat_message: str):
         """
         Generate preview for Twitter links.
 
@@ -381,7 +381,7 @@ class Bot(RoomManager):
         """
         cmd, args = self._parse_command(chat_message[1::].strip())
         command = session.query(Command).filter(Command.command == cmd).first()
-        if command is not None and command.type not in ("reserved", "reddit"):
+        if command is not None and command.type != "reserved":
             response = self.create_message(
                 command.type,
                 command.response,
@@ -390,7 +390,8 @@ class Bot(RoomManager):
                 room=room,
                 user_name=user_name,
             )
-            room.message(response, html=True)
+            if response:
+                room.message(response, html=True)
         else:
             self._giphy_fallback(chat_message, room)
 
