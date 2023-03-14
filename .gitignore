@@ -125,6 +125,7 @@ HackersAndSlackers-b7835abe15a0.json
 gcloud.json
 creds/
 *.conf
+.twitter_oauth
 
 # Logs
 nohup.out

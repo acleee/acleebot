@@ -48,13 +48,13 @@ CHATANGO_UNION_ROOM = getenv("CHATANGO_UNION_ROOM")
 CHATANGO_ROOMS = [
     CHATANGO_ACLEE_ROOM,
     CHATANGO_SIXERS_ROOM,
-    # CHATANGO_PHILLIES_ROOM,
+    CHATANGO_PHILLIES_ROOM,
     # CHATANGO_FLYERS_ROOM,
     CHATANGO_ALT_ROOM,
     # CHATANGO_NFL_ROOM,
     CHATANGO_OBI_ROOM,
     # CHATANGO_REDZONE_ROOM,
-    CHATANGO_PATREON_ROOM,
+    # CHATANGO_PATREON_ROOM,
     CHATANGO_UFC_ROOM,
     # CHATANGO_UNION_ROOM,
 ]
@@ -322,14 +322,13 @@ PRIMEIRA_LIGA_ID = 94
 
 # Footy Leagues, cups and tournaments
 FOOTY_LEAGUES = {
-    # ":trophy: WORLD CUP": WORLD_CUP_ID,
-    # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     ":lion: EPL": EPL_LEAGUE_ID,
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA Conference": UEFA_CONFERENCE_LEAGUE,
     ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+    ":United_States: MLS": MLS_LEAGUE_ID,
     ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     ":trophy: :England: FA CUP": FA_CUP_ID,
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
@@ -342,16 +341,17 @@ FOOTY_LEAGUES = {
     # ":trophy: :England: FA TROPHY": FA_TROPHY_ID,
     # ":globe_showing_Europe-Africa: AFRICA CUP OF NATIONS:": AFRICA_CUP_ID,
     # ":trophy: :France: COUPE DE FRANCE": COUPE_DE_FRANCE,
-    # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
-    # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
-    # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
-    ":United_States: MLS": MLS_LEAGUE_ID,
     # ":shield: COMMUNITY SHIELD": COMMUNITY_SHIELD_CUP,
     # ":globe_showing_Americas: COPA": COPA_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
     # ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,
+    # ":globe_showing_Americas: WC QUALIFIERS (CONCACAF)": WC_QUALIFIERS_CONCACAF,
+    # ":globe_showing_Europe-Africa: WC QUALIFIERS (EUROPE)": WC_QUALIFIERS_EUROPE,
+    # ":globe_showing_Americas: WC QUALIFIERS (SOUTH AMERICA)": WC_QUALIFIERS_SOUTHAMERICA,
     # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
+    # ":trophy: WORLD CUP": WORLD_CUP_ID,
+    # ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
 }
 
 # Footy leagues with "live scoring" enabled
