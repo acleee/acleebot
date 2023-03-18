@@ -29,11 +29,11 @@ def today_upcoming_fixtures(room: str, username: str) -> str:
     :returns: str
     """
     upcoming_fixtures = "\n\n\n\n"
-    i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = today_upcoming_fixtures_per_league(league_name, league_id, room, username)
-        if league_fixtures is not None and i < 8:
-            i += 1
+        # TODO: Optimize speed or priority of fixtures without capping number of leagues via (and i < 8)
+        # if league_fixtures is not None and i < 8:
+        if league_fixtures is not None:
             upcoming_fixtures += league_fixtures + "\n"
     if upcoming_fixtures != "\n\n\n\n":
         return upcoming_fixtures
