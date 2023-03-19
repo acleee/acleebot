@@ -353,7 +353,7 @@ class Bot(RoomManager):
         else:
             fetched_phrase = session.query(Phrase).filter(Phrase.phrase == chat_message).one_or_none()
             if fetched_phrase is not None:
-                room.message(fetched_phrase.response)
+                room.message(fetched_phrase.response, html=True)
 
     @staticmethod
     def _parse_command(user_msg: str) -> Tuple[str, Optional[str]]:

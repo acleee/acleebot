@@ -86,7 +86,6 @@ CHATANGO_BLACKLIST_ROOMS = [
 # Database
 # -------------------------------------------------
 SQLALCHEMY_DATABASE_URI = getenv("SQLALCHEMY_DATABASE_URI")
-SQLALCHEMY_DATABASE_RO_URI = getenv("SQLALCHEMY_DATABASE_RO_URI")
 DATABASE_USERS_TABLE = getenv("DATABASE_USERS_TABLE")
 DATABASE_ARGS = {"ssl": {"ca": f"{BASE_DIR}/creds/ca-certificate.crt"}}
 
