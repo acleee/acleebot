@@ -16,6 +16,10 @@ from config import (
     CONCACAF_GOLD_CUP_ID,
     COPA_DEL_REY,
     COUPE_DE_FRANCE,
+    AFCON_CUP_ID,
+    AFCON_QUALIFIERS_ID,
+    EUROS_LEAGUE_ID,
+    EUROS_QUALIFIERS_ID,
 )
 
 
@@ -145,6 +149,10 @@ def get_season_year(league_id: int) -> Optional[int]:
         WC_QUALIFIERS_CONCACAF,
         WC_QUALIFIERS_EUROPE,
         WC_QUALIFIERS_SOUTHAMERICA,
+        AFCON_CUP_ID,
+        AFCON_QUALIFIERS_ID,
+        EUROS_LEAGUE_ID,
+        EUROS_QUALIFIERS_ID,
     ):
         return now.year
     if now.month >= 8:

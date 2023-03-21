@@ -39,7 +39,7 @@ def footy_upcoming_fixtures(room: str, username: str) -> str:
     i = 0
     for league_name, league_id in FOOTY_LEAGUES.items():
         league_fixtures = footy_upcoming_fixtures_per_league(league_name, league_id, room, username)
-        if league_fixtures is not None and i < 8:
+        if league_fixtures is not None and i < 10:
             i += 1
             upcoming_fixtures += emojize(f"<b>{league_name}</b>\n", language="en")
             upcoming_fixtures += league_fixtures + "\n"
