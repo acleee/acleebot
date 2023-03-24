@@ -189,7 +189,7 @@ class Bot(RoomManager):
         elif cmd_type == "lyrics" and args:
             return get_song_lyrics(args)
         elif cmd_type == "entranslation" and args:
-            return get_english_translation(command, args)
+            return get_english_translation(command, content, args)
         elif cmd_type == "olympics":
             return get_summer_olympic_medals()
         elif cmd_type in ("wolympics", "winterolympics"):
@@ -298,7 +298,7 @@ class Bot(RoomManager):
         if bool(message.ip) is True and message.body is not None:
             LOGGER.info(f"[{room.room_name}] [{user.name}] [{message.ip}]: {message.body}")
         else:
-            LOGGER.info(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
+            LOGGER.warning(f"[{room.room_name}] [{user.name}] [no IP address]: {message.body}")
 
     def _process_command(self, chat_message: str, room: Room, user_name: str, message: Message) -> None:
         """
@@ -343,8 +343,8 @@ class Bot(RoomManager):
         ):
             room.message(
                 "SIGN THE PETITION: \
-                                https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
-                                https://i.imgur.com/nYQy0GR.jpg",
+                https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
+                https://i.imgur.com/nYQy0GR.jpg",
             )
         elif chat_message.endswith("only on aclee"):
             room.message("™")

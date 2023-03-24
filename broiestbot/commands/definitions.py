@@ -75,11 +75,8 @@ def get_urban_definition(term: str) -> str:
     except HTTPError as e:
         LOGGER.error(f"HTTPError while trying to get Urban definition for `{term}`: {e.response.content}")
         return emojize(f":warning: wtf urban dictionary is down :warning:", language="en")
-    except KeyError as e:
-        LOGGER.error(f"KeyError error when fetching Urban definition for `{term}`: {e}")
-        return emojize(":warning: mfer you broke bot :warning:", language="en")
-    except IndexError as e:
-        LOGGER.error(f"IndexError error when fetching Urban definition for `{term}`: {e}")
+    except LookupError as e:
+        LOGGER.error(f"LookupError error when fetching Urban definition for `{term}`: {e}")
         return emojize(":warning: mfer you broke bot :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Urban definition for `{term}`: {e}")
@@ -112,11 +109,12 @@ def wiki_summary(query: str) -> str:
         )
 
 
-def get_english_translation(language: str, phrase: str):
+def get_english_translation(language_symbol: str, language_full_name: str, phrase: str) -> str:
     """
-    Translate a phrase between languages.
+    Translate a non-english phrase into English.
 
-    :param str language: Language to translate from into English
+    :param str language_symbol: Language `symbol` to translate from.
+    :param str language_full_name: Language full-name, including flag emoji.
     :param str phrase: Message to be translated.
 
     :return: str
@@ -126,13 +124,13 @@ def get_english_translation(language: str, phrase: str):
         data = {
             "q": phrase,
             "target": "en",
-            "source": language,
+            "source": language_symbol,
         }
         headers = {
             "content-type": "application/x-www-form-urlencoded",
             "accept-encoding": "application/gzip",
-            "x-rapidapi-key": RAPID_API_KEY,
-            "x-rapidapi-host": "google-translate1.p.rapidapi.com",
+            "X-RapidAPI-Key": RAPID_API_KEY,
+            "X-RapidAPI-Host": "google-translate1.p.rapidapi.com",
         }
         res = requests.request("POST", url, data=data, headers=headers)
         if res.status_code == 429:
@@ -140,15 +138,17 @@ def get_english_translation(language: str, phrase: str):
                 f":warning: yall translated too much shit this month now google tryna charge me smh :warning:",
                 language="en",
             )
-        return f'TRANSLATION: `{res.json()["data"]["translations"][0]["translatedText"]}`'
+        language_emoji = language_full_name.split(" ", 1)[0]
+        language_name = language_full_name.split(" ", 1)[1].upper()
+        return emojize(
+            f'{language_emoji} <b>{language_name} TRANSLATION</b>: {res.json()["data"]["translations"][0]["translatedText"]}',
+            language="en",
+        )
     except HTTPError as e:
         LOGGER.error(f"HTTPError while translating `{phrase}`: {e.response.content}")
         return emojize(f":warning: wtf you broke the api? SPEAK ENGLISH :warning:", language="en")
-    except KeyError as e:
-        LOGGER.error(f"KeyError error while translating `{phrase}`: {e}")
-        return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")
-    except IndexError as e:
-        LOGGER.error(f"IndexError error while translating `{phrase}`: {e}")
+    except LookupError as e:
+        LOGGER.error(f"LookupError error while translating `{phrase}`: {e}")
         return emojize(":warning: mfer you broke bot SPEAK ENGLISH :warning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error while translating `{phrase}`: {e}")

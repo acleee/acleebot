@@ -13,7 +13,9 @@ from config import BASE_DIR, ENVIRONMENT, TWILIO_BRO_PHONE_NUMBER, TWILIO_SENDER
 def json_formatter(record: dict) -> str:
     """
     Format info message logs.
+
     :param dict record: Log object containing log metadata & message.
+
     :returns: str
     """
     record["time"] = record["time"].strftime("%m/%d/%Y, %H:%M:%S")
@@ -21,7 +23,9 @@ def json_formatter(record: dict) -> str:
     def serialize_as_admin(log: dict) -> str:
         """
         Construct JSON info log record where user is room admin.
+
         :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         try:

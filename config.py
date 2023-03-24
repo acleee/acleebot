@@ -118,6 +118,7 @@ GOOGLE_BUCKET_URL = getenv("GOOGLE_BUCKET_URL")
 
 # Google Translate
 GOOGLE_TRANSLATE_ENDPOINT = "https://google-translate1.p.rapidapi.com/language/translate/v2"
+GOOGLE_TRANSLATE_API_KEY = getenv("GOOGLE_TRANSLATE_API_KEY")
 
 # Urban Dictionary
 # -------------------------------------------------
@@ -369,6 +370,7 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
     ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
+    ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
     ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
