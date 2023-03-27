@@ -311,7 +311,8 @@ WORLDCUP_LEAGUE_ID = 15
 MLS_LEAGUE_ID = 253
 CONCACAF_LEAGUE_ID = 767
 CONCACAF_GOLD_CUP_ID = 22
-CONCACAF_CHAMPIONS_LEAGUE = 16
+CONCACAF_NATIONS_LEAGUE_ID = 536
+CONCACAF_CHAMPIONS_LEAGUE_ID = 16
 OLYMPICS_MEN_LEAGUE_ID = 480
 OLYMPICS_WOMEN_LEAGUE_ID = 524
 WORLD_CUP_ID = 1
@@ -331,8 +332,9 @@ FOOTY_LEAGUES = {
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
-    ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
-    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
+    ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
+    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
     ":European_Union: :rainbow: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
     ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
@@ -371,7 +373,8 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
     ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
     ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
-    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
+    ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
@@ -391,7 +394,8 @@ FOOTY_LEAGUES_LINEUPS = {
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     ":trophy: :England: FA CUP": FA_CUP_ID,
-    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE,
+    ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
+    ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
     ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
     # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
@@ -431,6 +435,7 @@ BOURNEMOUTH_TEAM_ID = 35
 
 ENGLAND_INT_TEAM_ID = 10
 WREXHAM_TEAM_ID = 1837
+USA_CONCACAF_TEAM_ID = 2384
 # USA_INT_TEAM_ID = 0
 
 # Specify team IDs to be prioritized whe fetching starting XIs

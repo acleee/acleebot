@@ -4,6 +4,8 @@ from typing import Optional, Tuple, Union
 
 import pytz
 from pytz import BaseTzInfo
+from emoji import emojize
+
 
 from config import (
     CHATANGO_OBI_ROOM,
@@ -12,7 +14,7 @@ from config import (
     WC_QUALIFIERS_EUROPE,
     WC_QUALIFIERS_SOUTHAMERICA,
     MLS_LEAGUE_ID,
-    CONCACAF_CHAMPIONS_LEAGUE,
+    CONCACAF_CHAMPIONS_LEAGUE_ID,
     CONCACAF_GOLD_CUP_ID,
     COPA_DEL_REY,
     COUPE_DE_FRANCE,
@@ -20,6 +22,7 @@ from config import (
     AFCON_QUALIFIERS_ID,
     EUROS_LEAGUE_ID,
     EUROS_QUALIFIERS_ID,
+    CONCACAF_NATIONS_LEAGUE_ID,
 )
 
 
@@ -76,26 +79,24 @@ def abbreviate_team_name(team_name: str) -> str:
 
     :returns: str
     """
-    return (
-        team_name.replace("New England", "NE")
-        .replace("New York City", "NYC")
-        .replace("New York", "NY")
-        .replace("Paris Saint Germain", "PSG")
-        .replace("Manchester United", "Manu")
-        .replace("Manchester City", "Man City")
-        .replace("Liverpool", "LFC")
-        .replace("Philadelphia", "Philly")
-        .replace("Borussia Dortmund", "Dortmund")
-        .replace("Nottingham Forest", "Nottingham")
-        .replace("Club Brugge KV", "Club Brugge")
-        .replace("PSV Eindhoven", "PSV")
-        .replace("Olympiakos Piraeus", "Olympiakos")
-        .replace("Sheriff Tiraspol", "Sheriff")
-        .replace("Red Bull Salzburg", "RB Salzburg")
-        .replace("Vikingur Reykjavik", "Reykjavik")
+    return team_name \
+        .replace("New England", "NE") \
+        .replace("New York City", "NYC") \
+        .replace("New York", "NY") \
+        .replace("Paris Saint Germain", "PSG") \
+        .replace("Manchester United", "Manu") \
+        .replace("Manchester City", "Man City") \
+        .replace("Liverpool", "LFC") \
+        .replace("Philadelphia", "Philly") \
+        .replace("Borussia Dortmund", "Dortmund") \
+        .replace("Nottingham Forest", "Nottingham") \
+        .replace("Club Brugge KV", "Club Brugge") \
+        .replace("PSV Eindhoven", "PSV") \
+        .replace("Olympiakos Piraeus", "Olympiakos") \
+        .replace("Sheriff Tiraspol", "Sheriff") \
+        .replace("Red Bull Salzburg", "RB Salzburg") \
+        .replace("Vikingur Reykjavik", "Reykjavik") \
         .replace("Malmo FF", "Malmo")
-    )
-
 
 def check_fixture_start_date(fixture_start_date: datetime, tz: tzinfo, display_date: str) -> Union[str, datetime]:
     """
@@ -135,14 +136,17 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
 
 def get_season_year(league_id: int) -> Optional[int]:
     """
-    Determine season year based on current month; returns None if season is over.
+    Determine `season` year — based on month for domestic leagues, or year for international leagues.
+
+    :param int league_id: ID of league to determine season year for.
 
     :returns:  Optional[int]
     """
     now = datetime.now()
+    # Leagues which have a season year that is the same as the current year.
     if league_id in (
         MLS_LEAGUE_ID,
-        CONCACAF_CHAMPIONS_LEAGUE,
+        CONCACAF_CHAMPIONS_LEAGUE_ID,
         CONCACAF_GOLD_CUP_ID,
         COPA_DEL_REY,
         COUPE_DE_FRANCE,
@@ -155,6 +159,10 @@ def get_season_year(league_id: int) -> Optional[int]:
         EUROS_QUALIFIERS_ID,
     ):
         return now.year
+    # Exception for leagues that have a nonsensical `season` year.
+    elif league_id == CONCACAF_NATIONS_LEAGUE_ID:
+        return now.year - 1
+    # Domestic leagues that begin in the summer and end in the spring.
     if now.month >= 8:
         return now.year
     elif now.month <= 5:
