@@ -10,6 +10,15 @@ from clients import sms
 from config import BASE_DIR, ENVIRONMENT, TWILIO_BRO_PHONE_NUMBER, TWILIO_SENDER_PHONE
 
 
+DD_APM_FORMAT = (
+    "%(asctime)s %(levelname)s [%(name)s] [%(filename)s:%(lineno)d] "
+    "[dd.service=%(dd.service)s dd.env=%(dd.env)s "
+    "dd.version=%(dd.version)s "
+    "dd.trace_id=%(dd.trace_id)s dd.span_id=%(dd.span_id)s]"
+    "- %(message)s"
+)
+
+
 def json_formatter(record: dict) -> str:
     """
     Format info message logs.
@@ -91,6 +100,8 @@ def json_formatter(record: dict) -> str:
         else:
             serialized_log = serialize_error(record)
             sms_error_handler(record)
+        
+    return "{extra[serialized]},\n"
 
 
 def sms_error_handler(log: dict) -> None:
@@ -156,12 +167,18 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
+        # Datadog JSON logs
         logger.add(
-            "/var/log/broiestbot/ddog.json",
-            serialize=True,
-            catch=True,
-            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-            rotation="500 MB",
+            "/var/log/broiestbot/info.json",
+            format=json_formatter,
+            rotation="300 MB",
+            compression="zip",
+        )
+        # Datadog APM tracing
+        logger.add(
+            "/var/log/broiestbot/apm.json",
+            format=DD_APM_FORMAT,
+            rotation="300 MB",
             compression="zip",
         )
     elif ENVIRONMENT == "development":
@@ -173,12 +190,18 @@ def create_logger() -> logger:
             rotation="300 MB",
             compression="zip",
         )
+        # Datadog APM tracing
         logger.add(
             f"{BASE_DIR}/logs/ddog.json",
-            serialize=True,
-            catch=True,
-            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
-            rotation="500 MB",
+            format=DD_APM_FORMAT,
+            rotation="300 MB",
+            compression="zip",
+        )
+        # Datadog JSON logs
+        logger.add(
+            f"{BASE_DIR}/logs/info.json"
+            format=json_formatter,
+            rotation="300 MB",
             compression="zip",
         )
     return logger
