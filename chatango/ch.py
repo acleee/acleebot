@@ -1905,8 +1905,9 @@ class RoomManager:
 
         :param Room room: Chatango room where the event occurred
         """
-        LOGGER.error(f"Failed to join {room.room_name}. Attempting to rejoin...")
-        self.on_connect_fail(room)
+        if room.get("room_name"):
+            LOGGER.error(f"Failed to join {room.room_name}. Attempting to rejoin...")
+            self.on_connect_fail(room)
 
     @staticmethod
     def on_flood_ban(room: Room):

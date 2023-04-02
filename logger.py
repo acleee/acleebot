@@ -28,6 +28,9 @@ def json_formatter(record: dict) -> str:
     :returns: str
     """
 
+    record["time"] = record["time"].strftime("%m/%d/%Y, %H:%M:%S")
+    record["elapsed"] = record["elapsed"].total_seconds()
+
     def serialize_as_admin(log: dict) -> str:
         """
         Construct JSON info log record where user is room admin.
@@ -37,43 +40,42 @@ def json_formatter(record: dict) -> str:
         :returns: str
         """
         try:
-            chat_data = re.match(r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message"))
-            if chat_data:
-                chat_dict = chat_data.groupdict()
+            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message"))
+            if chat_data and log.get("message"):
                 subset = {
-                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
-                    "message": log.get("message").split(": ", 1)[1],
-                    "level": log.get("level").name,
-                    "room": chat_dict.get("room").replace("[", "").replace("]", ""),
-                    "user": chat_dict.get("user").replace("[", "").replace("]", ""),
-                    "ip": chat_dict.get("ip").replace("[", "").replace("]", ""),
+                    "time": log["time"],
+                    "message": log["message"].split(": ", 1)[1],
+                    "level": log["level"].name,
+                    "room": chat_data["room"].replace("[", "").replace("]", ""),
+                    "user": chat_data["user"].replace("[", "").replace("]", ""),
+                    "ip": chat_data["ip"].replace("[", "").replace("]", ""),
                 }
                 return json.dumps(subset)
         except Exception as e:
-            log["error"] = f"Logging error occurred: {e}"
-            return serialize_error(log)
+            subset["error"] = f"Logging error occurred: {str(e)}"
+            return serialize_error(subset)
 
     def serialize_event(log: dict) -> str:
         """
         Construct warning log.
+
         :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         try:
-            chat_data = re.match(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
-            chat_dict = chat_data.groupdict()
+            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
             if bool(chat_data) and log.get("message") is not None:
                 subset = {
-                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                    "time": log["time"],
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
-                    "room": chat_dict["room"].replace("[", "").replace("]", ""),
-                    "user": chat_dict["user"].replace("[", "").replace("]", ""),
+                    "room": chat_data["room"].replace("[", "").replace("]", ""),
+                    "user": chat_data["user"].replace("[", "").replace("]", ""),
                 }
                 return json.dumps(subset)
         except Exception as e:
-            log["error"] = f"Logging error occurred: {e}"
-            return serialize_error(log)
+            log["error"] = f"Logging error occurred: {str(e)}"
 
     def serialize_error(log: dict) -> str:
         """
@@ -83,9 +85,9 @@ def json_formatter(record: dict) -> str:
 
         :returns: str
         """
-        if log is not None and log.get("message") is not None:
+        if log and log.get("message"):
             subset = {
-                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
+                "time": log["time"],
                 "level": log["level"].name,
                 "message": log["message"],
             }
@@ -170,7 +172,9 @@ def create_logger() -> logger:
         # Datadog APM tracing
         logger.add(
             "/var/log/broiestbot/apm.json",
-            format=DD_APM_FORMAT,
+            serialize=True,
+            catch=True,
+            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
             rotation="300 MB",
             compression="zip",
         )
@@ -185,8 +189,10 @@ def create_logger() -> logger:
         )
         # Datadog APM tracing
         logger.add(
-            f"{BASE_DIR}/logs/ddog.json",
-            format=DD_APM_FORMAT,
+            f"{BASE_DIR}/logs/apm.json",
+            serialize=True,
+            catch=True,
+            format="{time:YYYY-MM-DD at HH:mm:ss} | {level} | {message}",
             rotation="300 MB",
             compression="zip",
         )
