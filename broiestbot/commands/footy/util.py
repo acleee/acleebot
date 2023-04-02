@@ -79,24 +79,26 @@ def abbreviate_team_name(team_name: str) -> str:
 
     :returns: str
     """
-    return team_name \
-        .replace("New England", "NE") \
-        .replace("New York City", "NYC") \
-        .replace("New York", "NY") \
-        .replace("Paris Saint Germain", "PSG") \
-        .replace("Manchester United", "Manu") \
-        .replace("Manchester City", "Man City") \
-        .replace("Liverpool", "LFC") \
-        .replace("Philadelphia", "Philly") \
-        .replace("Borussia Dortmund", "Dortmund") \
-        .replace("Nottingham Forest", "Nottingham") \
-        .replace("Club Brugge KV", "Club Brugge") \
-        .replace("PSV Eindhoven", "PSV") \
-        .replace("Olympiakos Piraeus", "Olympiakos") \
-        .replace("Sheriff Tiraspol", "Sheriff") \
-        .replace("Red Bull Salzburg", "RB Salzburg") \
-        .replace("Vikingur Reykjavik", "Reykjavik") \
+    return (
+        team_name.replace("New England", "NE")
+        .replace("New York City", "NYC")
+        .replace("New York", "NY")
+        .replace("Paris Saint Germain", "PSG")
+        .replace("Manchester United", "Manu")
+        .replace("Manchester City", "Man City")
+        .replace("Liverpool", "LFC")
+        .replace("Philadelphia", "Philly")
+        .replace("Borussia Dortmund", "Dortmund")
+        .replace("Nottingham Forest", "Nottingham")
+        .replace("Club Brugge KV", "Club Brugge")
+        .replace("PSV Eindhoven", "PSV")
+        .replace("Olympiakos Piraeus", "Olympiakos")
+        .replace("Sheriff Tiraspol", "Sheriff")
+        .replace("Red Bull Salzburg", "RB Salzburg")
+        .replace("Vikingur Reykjavik", "Reykjavik")
         .replace("Malmo FF", "Malmo")
+    )
+
 
 def check_fixture_start_date(fixture_start_date: datetime, tz: tzinfo, display_date: str) -> Union[str, datetime]:
     """

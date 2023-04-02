@@ -27,7 +27,6 @@ def json_formatter(record: dict) -> str:
 
     :returns: str
     """
-    record["time"] = record["time"].strftime("%m/%d/%Y, %H:%M:%S")
 
     def serialize_as_admin(log: dict) -> str:
         """
@@ -38,11 +37,11 @@ def json_formatter(record: dict) -> str:
         :returns: str
         """
         try:
-            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message"))
-            if chat_data and log.get("message") is not None:
+            chat_data = re.match(r"(?P<room>\[\S+]) (?P<user>\[\S+]) (?P<ip>\[\S+])", log.get("message"))
+            if chat_data:
                 chat_dict = chat_data.groupdict()
                 subset = {
-                    "time": log["time"],
+                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log.get("message").split(": ", 1)[1],
                     "level": log.get("level").name,
                     "room": chat_dict.get("room"),
@@ -61,11 +60,11 @@ def json_formatter(record: dict) -> str:
         :returns: str
         """
         try:
-            chat_data = re.search(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
+            chat_data = re.match(r"(?P<room>\[\S+]) (?P<user>\[\S+])", log["message"])
             chat_dict = chat_data.groupdict()
             if bool(chat_data) and log.get("message") is not None:
                 subset = {
-                    "time": log["time"],
+                    "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
                     "room": chat_dict["room"],
@@ -79,29 +78,29 @@ def json_formatter(record: dict) -> str:
     def serialize_error(log: dict) -> str:
         """
         Construct error log record.
+
         :param dict log: Dictionary containing logged message with metadata.
+
         :returns: str
         """
         if log is not None and log.get("message") is not None:
             subset = {
-                "time": log["time"],
+                "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                 "level": log["level"].name,
                 "message": log["message"],
             }
             return json.dumps(subset)
 
-    serialized_log = record["extra"].get("serialized")
-    if serialized_log:
-        log_level = record["level"].name
-        if log_level in ("INFO", "TRACE"):
-            serialized_log = serialize_as_admin(record)
-        elif log_level in ("WARNING", "SUCCESS"):
-            serialized_log = serialize_event(record)
-        else:
-            serialized_log = serialize_error(record)
-            sms_error_handler(record)
-        
-    return "{extra[serialized]},\n"
+    if record["level"].name == "INFO":
+        record["extra"]["serialized"] = serialize_as_admin(record)
+        return "{extra[serialized]},\n"
+    elif record["level"].name in ("WARNING", "SUCCESS"):
+        record["extra"]["serialized"] = serialize_event(record)
+        return "{extra[serialized]},\n"
+    else:
+        record["extra"]["serialized"] = serialize_error(record)
+        sms_error_handler(record)
+        return "{extra[serialized]},\n"
 
 
 def sms_error_handler(log: dict) -> None:
@@ -121,25 +120,19 @@ def sms_error_handler(log: dict) -> None:
 
 def log_formatter(record: dict) -> str:
     """
-    Format `.log` records.
-
-    :param dict record: Log object containing log metadata & message.
-
+    Formatter for .log records
+    :param dict record: Key/value object containing a single log's message & metadata.
     :returns: str
     """
-    if record["level"].name == "TRACE":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #cfe2f3>{level}</fg #cfe2f3>: <light-white>{message}</light-white>\n"
-    elif record["level"].name == "INFO":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #9cbfdd>{level}</fg #9cbfdd>: <light-white>{message}</light-white>\n"
-    elif record["level"].name == "DEBUG":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #8598ea>{level}</fg #8598ea>: <light-white>{message}</light-white>\n"
+    if record["level"].name == "INFO":
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "WARNING":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> |  <fg #dcad5a>{level}</fg #dcad5a>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> |  <fg #b09057>{level}</fg #b09057>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "SUCCESS":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #3dd08d>{level}</fg #3dd08d>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #6dac77>{level}</fg #6dac77>: <light-white>{message}</light-white>\n"
     elif record["level"].name == "ERROR":
-        return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #ae2c2c>{level}</fg #ae2c2c>: <light-white>{message}</light-white>\n"
-    return "<fg #70acde>{time:MM-DD-YYYY HH:mm:ss}</fg #70acde> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
+        return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #a35252>{level}</fg #a35252>: <light-white>{message}</light-white>\n"
+    return "<fg #5278a3>{time:MM-DD-YYYY HH:mm:ss}</fg #5278a3> | <fg #b3cfe7>{level}</fg #b3cfe7>: <light-white>{message}</light-white>\n"
 
 
 def create_logger() -> logger:
@@ -199,7 +192,7 @@ def create_logger() -> logger:
         )
         # Datadog JSON logs
         logger.add(
-            f"{BASE_DIR}/logs/info.json"
+            f"{BASE_DIR}/logs/info.json",
             format=json_formatter,
             rotation="300 MB",
             compression="zip",
