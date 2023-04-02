@@ -44,9 +44,9 @@ def json_formatter(record: dict) -> str:
                     "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log.get("message").split(": ", 1)[1],
                     "level": log.get("level").name,
-                    "room": chat_dict.get("room"),
-                    "user": chat_dict.get("user"),
-                    "ip": chat_dict.get("ip"),
+                    "room": chat_dict.get("room").replace("[", "").replace("]", ""),
+                    "user": chat_dict.get("user").replace("[", "").replace("]", ""),
+                    "ip": chat_dict.get("ip").replace("[", "").replace("]", ""),
                 }
                 return json.dumps(subset)
         except Exception as e:
@@ -67,8 +67,8 @@ def json_formatter(record: dict) -> str:
                     "time": log["time"].strftime("%m/%d/%Y, %H:%M:%S"),
                     "message": log["message"].split(": ", 1)[1],
                     "level": log["level"].name,
-                    "room": chat_dict["room"],
-                    "user": chat_dict["user"],
+                    "room": chat_dict["room"].replace("[", "").replace("]", ""),
+                    "user": chat_dict["user"].replace("[", "").replace("]", ""),
                 }
                 return json.dumps(subset)
         except Exception as e:
