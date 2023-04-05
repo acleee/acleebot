@@ -99,13 +99,13 @@ REDIS_DB = getenv("REDIS_DB")
 
 # Datadog
 # -------------------------------------------------
-DATADOG_API_KEY = getenv("DATADOG_API_KEY")
-DATADOG_APP_KEY = getenv("DATADOG_APP_KEY")
+DDOG_APP_KEY = getenv("DDOG_APP_KEY")
+DDOG_API_KEY = getenv("DDOG_API_KEY")
 
 # User Logging
 # -------------------------------------------------
-PERSIST_USER_DATA = getenv("PERSIST_USER_DATA")
-PERSIST_CHAT_DATA = getenv("PERSIST_CHAT_DATA")
+PERSIST_USER_DATA = True
+PERSIST_CHAT_DATA = True
 
 # APIs
 HTTP_REQUEST_TIMEOUT = 20
@@ -335,8 +335,8 @@ FOOTY_LEAGUES = {
     # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
     ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
-    ":European_Union: :rainbow: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
-    ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
+    # ":European_Union: :rainbow: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
+    # ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     ":trophy: :England: FA CUP": FA_CUP_ID,
@@ -345,10 +345,10 @@ FOOTY_LEAGUES = {
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: SERIE A": SERIE_A_LEAGUE_ID,
-    # ":France: Ligue 1": LIGUE_ONE_ID,
+    ":France: Ligue 1": LIGUE_ONE_ID,
     # ":trophy: :monkey: AFCON:": AFCON_CUP_ID,
-    # ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
-    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
+    ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
     # ":trophy: :England: FA TROPHY": FA_TROPHY_ID,
     # ":trophy: :France: COUPE DE FRANCE": COUPE_DE_FRANCE,
     # ":shield: COMMUNITY SHIELD": COMMUNITY_SHIELD_CUP,
@@ -371,8 +371,8 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
-    ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
-    ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
+    # ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
+    # ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
     ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
     ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,

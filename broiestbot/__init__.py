@@ -8,8 +8,8 @@ from config import (
     CHATANGO_TEST_ROOM,
     CHATANGO_USERS,
     ENVIRONMENT,
-    DATADOG_API_KEY,
-    DATADOG_APP_KEY,
+    DDOG_API_KEY,
+    DDOG_APP_KEY,
 )
 
 
@@ -45,8 +45,8 @@ def start_bot():
         join_rooms([CHATANGO_TEST_ROOM])
     elif ENVIRONMENT == "production":
         initialize(
-            api_key=DATADOG_API_KEY,
-            app_key=DATADOG_APP_KEY,
+            api_key=DDOG_API_KEY,
+            app_key=DDOG_APP_KEY,
             statsd_host="127.0.0.1",
             statsd_port=8125,
             statsd_constant_tags=["env:production", "service:broiestbot"],

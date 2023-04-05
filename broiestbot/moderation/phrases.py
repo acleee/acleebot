@@ -1,9 +1,10 @@
+"""Delete chats containing blacklisted phrases."""
 from chatango.ch import Message, Room
 
 
 def ban_word(room: Room, message: Message, user_name: str, silent=False) -> None:
     """
-    Remove banned word and warn offending user.
+    Delete chat containing banned word and warn offending user.
 
     :param Room room: Current Chatango room object.
     :param Message message: Message sent by user.

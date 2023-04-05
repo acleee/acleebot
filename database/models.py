@@ -8,7 +8,7 @@ Base = declarative_base()
 
 
 class Chat(Base):
-    """Single chat (from a user) to persist in logs."""
+    """Chat from a user to persist in logs."""
 
     __tablename__ = "chat"
 
@@ -19,7 +19,7 @@ class Chat(Base):
     created_at = Column(DateTime, server_default=func.now())
 
     def __repr__(self):
-        return f"time={self.created_at}, room={self.room}, username={self.username}, chat={self.message}"
+        return f"username={self.username}, room={self.room}, chat={self.message}, time={self.created_at}"
 
 
 class Command(Base):

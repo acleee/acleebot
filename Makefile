@@ -24,7 +24,9 @@ export HELP
 all help:
 	@echo "$$HELP"
 
+
 env: $(VIRTUAL_ENVIRONMENT)
+
 
 $(VIRTUAL_ENVIRONMENT):
 	if [ ! -d $(VIRTUAL_ENVIRONMENT) ]; then \
@@ -32,13 +34,16 @@ $(VIRTUAL_ENVIRONMENT):
 		python3 -m venv $(VIRTUAL_ENVIRONMENT); \
 	fi
 
+
 .PHONY: dev
 dev: env
 	$(LOCAL_PYTHON) -m wsgi
 
+
 .PHONY: run
 run: env
 	$(LOCAL_PYTHON) -m wsgi
+
 
 .PHONY: install
 install: env
@@ -46,11 +51,13 @@ install: env
 	$(LOCAL_PYTHON) -m pip install -r requirements.txt && \
 	echo "Installed dependencies in virtualenv \`${VIRTUAL_ENVIRONMENT}\`";
 
+
 .PHONY: deploy
 deploy:
 	make clean \
 	make install \
 	make run
+
 
 .PHONY: test
 test: env
@@ -60,6 +67,7 @@ test: env
 		coverage html --title='Coverage Report' -d .reports && \
 		open .reports/index.html
 
+
 .PHONY: update
 update: env
 	$(LOCAL_PYTHON) -m pip install --upgrade pip setuptools wheel && \
@@ -67,11 +75,13 @@ update: env
 	poetry export -f requirements.txt --output requirements.txt --without-hashes && \
 	echo "Updated dependencies in virtualenv \`${VIRTUAL_ENVIRONMENT}\`";
 
+
 .PHONY: format
 format: env
 	source $(LOCAL_PYTHON_ACTIVATE) \
 	isort --multi-line=3 . \
 	&& black .
+
 
 .PHONY: lint
 lint: env
@@ -80,6 +90,7 @@ lint: env
 			--exclude .git,.github,__pycache__,.pytest_cache,.venv,logs,creds,.venv,docs,logs,.reports \
 			--show-source \
 			--statistics
+
 
 .PHONY: clean
 clean:
