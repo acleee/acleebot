@@ -79,7 +79,7 @@ def fetch_lineups_per_fixture(fixture_id: int) -> Optional[dict]:
             params=params,
             timeout=HTTP_REQUEST_TIMEOUT,
         )
-        return resp.json()["response"]
+        return resp.json().get("response")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy XIs: {e.response.content}")
     except ValueError as e:

@@ -35,7 +35,7 @@ def nba_standings() -> str:
             resp = requests.get(endpoint, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT)
             if resp.status_code == 200:
                 standings += f"{conference.upper()}\n"
-                for team_info in resp.json()["response"][0]:
+                for team_info in resp.json().get("response")[0]:
                     team_standing = f"{team_info['position']}. {team_info['team']['name']} {team_info['games']['win']['total']}-{team_info['games']['lose']['total']} ({team_info['games']['win']['percentage']})\n"
                     standings += team_standing
                 standings += "\n"

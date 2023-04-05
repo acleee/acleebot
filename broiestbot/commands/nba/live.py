@@ -20,7 +20,7 @@ def live_nba_games() -> str:
         if resp.status_code == 200:
             live_games = [
                 game
-                for game in resp.json()["response"]
+                for game in resp.json().get("response")
                 if game["status"]["short"] != "NS" and game["status"]["short"] != "FT"
             ]
             if len(live_games) > 0:
@@ -35,7 +35,7 @@ def live_nba_games() -> str:
                         f"{away_team} <b>{away_team_score}</b> @ {home_team} <b>{home_team_score}</b>\n{game_clock}"
                     )
                 return games
-            elif len(resp.json()["response"]) > 0:
+            elif len(resp.json().get("response")) > 0:
                 upcoming_games = upcoming_nba_games()
                 games += f"No live NBA games. Upcoming games today:\n"
                 games += upcoming_games

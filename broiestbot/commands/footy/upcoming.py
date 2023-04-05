@@ -136,7 +136,7 @@ def fetch_upcoming_fixtures_by_league(params: dict) -> Optional[List[dict]]:
             timeout=HTTP_REQUEST_TIMEOUT,
         )
         if resp.status_code == 200:
-            return resp.json()["response"]
+            return resp.json().get("response")
     except HTTPError as e:
         LOGGER.error(f"HTTPError {resp.status_code} while fetching footy fixtures: {e.response.content}")
     except Exception as e:

@@ -21,7 +21,7 @@ def upcoming_nba_games() -> str:
             upcoming_games = [game for game in resp.json()["response"] if game["status"]["short"] == "NS"]
             if len(upcoming_games) > 0:
                 games += emojize(":basketball: <b>NBA Games Today:</b>\n", language="en")
-                for game in resp.json()["response"]:
+                for game in resp.json().get("response"):
                     if game["status"]["short"] != "FT":
                         away_team = game["teams"]["away"]["name"]
                         home_team = game["teams"]["home"]["name"]

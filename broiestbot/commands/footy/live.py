@@ -84,7 +84,7 @@ def footy_live_fixtures_per_league(
         LOGGER.error(f"Unexpected error when fetching live fixtures: {e}")
 
 
-def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[str]:
+def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[dict]:
     """
     Fetch live footy fixtures across EPL, LIGA, BUND, FA, UCL, EUROPA, etc.
 
@@ -92,7 +92,7 @@ def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[st
     :param str room: Chatango room in which command was triggered.
     :param str username: Name of user who triggered the command.
 
-    :returns: Optional[str]
+    :returns: Optional[dict]
     """
     try:
         params = {"league": league_id, "live": "all"}
@@ -104,7 +104,7 @@ def fetch_live_fixtures(league_id: int, room: str, username: str) -> Optional[st
             timeout=HTTP_REQUEST_TIMEOUT,
         )
         if resp.status_code == 200:
-            return resp.json()["response"]
+            return resp.json().get("response")
     except HTTPError as e:
         LOGGER.error(f"HTTPError while fetching footy fixtures: {e.response.content}")
     except KeyError as e:
