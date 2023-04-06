@@ -325,6 +325,7 @@ CARABOU_CUP_ID = 48
 AFCON_CUP_ID = 6
 AFCON_QUALIFIERS_ID = 36
 PRIMEIRA_LIGA_ID = 94
+CONMEBOL_LIBERTADORES_ID = 13
 
 # Footy Leagues, cups and tournaments
 FOOTY_LEAGUES = {
@@ -342,6 +343,7 @@ FOOTY_LEAGUES = {
     ":trophy: :England: FA CUP": FA_CUP_ID,
     # ":trophy: :rainbow: EUROS 2024": EUROS_LEAGUE_ID,
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
+    ":trophy: :globe_showing_Americas: CONMEBOL LIBERTADORES": CONMEBOL_LIBERTADORES_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
     ":Italy: SERIE A": SERIE_A_LEAGUE_ID,
@@ -376,6 +378,7 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
     ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
+    ":trophy: :globe_showing_Americas: CONMEBOL LIBERTADORES": CONMEBOL_LIBERTADORES_ID,
     # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
     # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
@@ -402,6 +405,7 @@ FOOTY_LEAGUES_LINEUPS = {
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":Italy: Serie A": SERIE_A_LEAGUE_ID,
     ":Germany: BUND": BUND_LEAGUE_ID,
+    ":trophy: :globe_showing_Americas: CONMEBOL LIBERTADORES": CONMEBOL_LIBERTADORES_ID,
 }
 
 # Footy leagues to be considered for "golden shoe" award
