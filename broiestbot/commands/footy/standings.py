@@ -24,18 +24,22 @@ def league_table_standings(league_id: int) -> Optional[str]:
     :returns: Optional[str]
     """
     try:
-        standings_table = "\n\n\n\n"
-        standings = res["response"][0]["league"]["standings"][0]
-        for standing in standings:
-            rank = standing["rank"]
-            team = standing["team"]["name"]
-            points = standing["points"]
-            wins = standing["all"]["win"]
-            draws = standing["all"]["draw"]
-            losses = standing["all"]["lose"]
-            standings_table = standings_table + f"{rank}. {team}: {points}pts ({wins}w-{draws}d-{losses}l)\n"
-        if standings_table != "\n\n\n\n":
-            return standings_table
+        league_table_response = fetch_league_table_standings(league_id)
+        if league_table_response:
+            standings_table = "\n\n\n\n"
+            standings = league_table_response[0]["league"]["standings"][0]
+            for standing in standings:
+                rank = standing["rank"]
+                team = standing["team"]["name"]
+                points = standing["points"]
+                wins = standing["all"]["win"]
+                draws = standing["all"]["draw"]
+                losses = standing["all"]["lose"]
+                standings_table = (
+                    standings_table + f"<b>{rank:3}. {team:20}</b>: <i>{points}pts</i> ({wins}W {draws}D {losses}L)\n"
+                )
+            if standings_table != "\n\n\n\n":
+                return standings_table
         return emojize(":warning: Couldn't fetch standings :warning:", language="en")
     except KeyError as e:
         LOGGER.error(f"KeyError while fetching {league_id} standings: {e}")
@@ -43,10 +47,15 @@ def league_table_standings(league_id: int) -> Optional[str]:
         LOGGER.error(f"Unexpected error when fetching {league_id} standings: {e}")
 
 
-def fetch_league_table_standings(league_id: int):
-    """ """
-    try:
+def fetch_league_table_standings(league_id: int) -> Optional[dict]:
+    """
+    Fetch league table standings for a given league.
 
+    :param int league_id: ID of league to get table standings for.
+
+    :returns: Optional[dict]
+    """
+    try:
         params = {"league": league_id, "season": get_season_year(league_id)}
         resp = requests.get(
             FOOTY_STANDINGS_ENDPOINT,

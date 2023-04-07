@@ -114,7 +114,7 @@ def sms_error_handler(log: dict) -> None:
     :returns: None
     """
     sms.messages.create(
-        body=f'BROBOT ERROR: {log["time"].strftime("%m/%d/%Y, %H:%M:%S")} | {log["message"]}',
+        body=f'BROBOT ERROR: {log["time"]} | {log["message"]}',
         from_=TWILIO_SENDER_PHONE,
         to=TWILIO_BRO_PHONE_NUMBER,
     )
