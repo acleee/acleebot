@@ -36,7 +36,7 @@ def league_table_standings(league_id: int) -> Optional[str]:
                 draws = standing["all"]["draw"]
                 losses = standing["all"]["lose"]
                 standings_table = (
-                    standings_table + f"<b>{rank:3}. {team:20}</b>: <i>{points}pts</i> ({wins}W {draws}D {losses}L)\n"
+                    standings_table + f"<b>{rank:5}. {team}</b>: {points}pts <i>({wins}W {draws}D {losses}L)</i>\n"
                 )
             if standings_table != "\n\n\n\n":
                 return standings_table
