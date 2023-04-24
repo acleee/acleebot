@@ -136,23 +136,26 @@ def covid_cases_usa() -> str:
 
     :returns: str
     """
-    url = COVID_API_ENDPOINT
-    params = {
-        "code": "usa",
-        "format": "json",
-    }
-    headers = {
-        "x-rapidapi-key": RAPID_API_KEY,
-        "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
-    }
-    resp = requests.get(url, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT).json()[0]
-    deaths = resp["deaths"]
-    critical = resp["critical"]
-    cases = resp["confirmed"]
-    covid_summary = (
-        f"\n\n\n"
-        f":United_States: :eagle: USA! USA! USA! USA! :eagle: :United_States:\n"
-        f":chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n"
-        f":face_with_medical_mask: {critical:,} critical"
-    )
-    return emojize(covid_summary, language="en")
+    try:
+        params = {
+            "code": "usa",
+            "format": "json",
+        }
+        headers = {
+            "x-rapidapi-key": RAPID_API_KEY,
+            "x-rapidapi-host": "covid-19-data.p.rapidapi.com",
+        }
+        resp = requests.get(COVID_API_ENDPOINT, headers=headers, params=params, timeout=HTTP_REQUEST_TIMEOUT).json()[0]
+        deaths = resp["deaths"]
+        critical = resp["critical"]
+        cases = resp["confirmed"]
+        covid_summary = (
+            f"\n\n\n"
+            f":United_States: :eagle: USA! USA! USA! USA! :eagle: :United_States:\n"
+            f":chart_increasing: {cases:,} cases\n:skull: {deaths:,} deaths\n"
+            f":face_with_medical_mask: {critical:,} critical"
+        )
+        return emojize(covid_summary, language="en")
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while retrieving COVID-19 data: {e}")
+        return emojize(f":warning: Unexpected error while retrieving COVID-19 data: {e}", language="en")

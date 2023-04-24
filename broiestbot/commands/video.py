@@ -17,14 +17,19 @@ from config import (
 from logger import LOGGER
 
 
-def get_all_live_twitch_streams():
+def get_all_live_twitch_streams() -> str:
+    """
+    Check all Twitch broadcasters for live streams.
+
+    :returns: str
+    """
     token = get_twitch_auth_token()
     try:
         twitch_streams = []
         i = 0
         for user, broadcaster_id in TWITCH_BROADCASTERS.items():
             stream = get_live_twitch_stream(broadcaster_id, token)
-            if bool(stream):
+            if stream:
                 i += 1
                 twitch_streams.append(stream)
                 if i == 1:
@@ -33,9 +38,12 @@ def get_all_live_twitch_streams():
                     return "\n-----------------------\n".join(twitch_streams)
                 return "".join(twitch_streams)
         return emojize(f":frowning: no memers streaming twitch rn :frowning:", language="en")
+    except HTTPError as e:
+        LOGGER.error(f"HTTPError error while fetching Twitch streams: {e}")
+        return emojize(f":frowning: twitch is down or something idk :frowning:", language="en")
     except Exception as e:
         LOGGER.error(f"Unexpected error when fetching Twitch streams: {e}")
-        return emojize(f":frowning: Twitch is down or something idk :frowning:", language="en")
+        return emojize(f":frowning: fmga bot died trying to get meme streamers :frowning:", language="en")
 
 
 def get_live_twitch_stream(broadcaster_id: str, token: str) -> Optional[str]:

@@ -23,26 +23,32 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
             movie_id = movies[0].getID()
             movie = ia.get_movie(movie_id)
             if movie:
+                title = f"<b>{movie.data.get('title').upper()}</b>"
                 cast = movie.data.get("cast")
-                art = movie.data.get("cover url", None)
                 director = movie.data.get("director")
                 year = movie.data.get("year")
-                genres = f"({', '.join(movie.data.get('genres'))}, {year})."
-                title = f"{movie.data.get('title').upper()},"
-                rating = f"{movie.data.get('rating')}/10"
+                genres = movie.data.get("genres")
+                rating = movie.data.get("rating")
+                art = movie.data.get("cover url")
                 box_office = get_box_office_data(movie)
                 synopsis = movie.data.get("synopsis")
+                if title and year:
+                    title = f"{title} ({year})"
+                if rating:
+                    rating = f":star: {movie.data.get('rating')}/10"
                 if cast:
-                    cast = f"STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}."
+                    cast = f":people_hugging: STARRING {', '.join([actor['name'] for actor in movie.data['cast'][:2]])}"
                 if director:
-                    director = f"DIRECTED by {movie.data.get('director')[0].get('name')}."
+                    director = f":clapper_board: DIRECTED by {movie.data.get('director')[0].get('name')}"
+                if genres:
+                    genres = f":movie_camera: {', '.join(movie.data.get('genres'))}"
+                if box_office:
+                    box_office = f":money_bag: {box_office}"
                 if synopsis:
-                    try:
-                        synopsis = synopsis[0]
-                        synopsis = " ".join(synopsis[0].split(". ")[:2])
-                    except KeyError as e:
-                        LOGGER.error(f"IMDB movie `{title}` does not have a synopsis: {e}")
-                response = " ".join(
+                    synopsis = synopsis[0]
+                    synopsis = " ".join(synopsis.split(". ")[:2])
+                    synopsis = f":speech_balloon: {synopsis}"
+                response = "\n".join(
                     filter(
                         None,
                         [
@@ -57,7 +63,7 @@ def find_imdb_movie(movie_title: str) -> Optional[str]:
                         ],
                     )
                 )
-                return response
+                return emojize(f"\n\n\n{response}", language="en")
             LOGGER.warning(f"No IMDB info found for `{movie_title}`.")
             return emojize(f":warning: wtf kind of movie is {movie} :warning:", language="en")
     except IMDbError as e:
