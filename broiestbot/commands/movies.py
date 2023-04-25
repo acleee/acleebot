@@ -9,13 +9,13 @@ from clients import ia
 from logger import LOGGER
 
 
-def find_imdb_movie(movie_title: str) -> Optional[str]:
+def find_imdb_movie(movie_title: str) -> str:
     """
     Get movie summary, rating, actors, poster, & box office info from IMDB.
 
     :param str movie_title: Movie to fetch IMDB info & box office info for.
 
-    :returns: Optional[str]
+    :returns: str
     """
     try:
         movies = ia.search_movie(movie_title)
