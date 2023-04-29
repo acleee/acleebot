@@ -47,7 +47,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         is_day = resp["current"]["is_day"]
         temperature = resp["current"]["temperature"]
         feels_like = resp["current"]["feelslike"]
-        precipitation = resp["current"]["precip"] * 100
+        precipitation = resp["current"]["precip"] * 1000
         cloud_cover = resp["current"]["cloudcover"]
         humidity = resp["current"]["humidity"]
         wind_speed = resp["current"]["wind_speed"]
@@ -60,7 +60,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
             f'\n\n<b>{resp["request"]["query"]}</b>\n \
                         {weather_emoji} {resp["current"]["weather_descriptions"][0]}\n \
                         :thermometer: Temp: {temperature}°{"c" if params["units"] == "m" else "f"} (feels like: {feels_like}{"c" if params["units"] == "m" else "f"}°)\n \
-                        {precipitation_emoji} Precipitation: {precipitation}%\n \
+                        {precipitation_emoji} Precipitation: {precipitation:.0f}%\n \
                         {humidity_emoji} Humidity: {humidity}%\n \
                         {cloud_cover_emoji} Cloud cover: {cloud_cover}%\n \
                         :wind_face: Wind speed: {wind_speed}{"km/h" if params["units"] == "m" else "mph"}\n \
