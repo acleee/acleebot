@@ -1,6 +1,7 @@
 """Fetch all (live & upcoming) NBA games for today."""
 from datetime import datetime
 
+import pytz
 import requests
 from requests import Response
 from requests.exceptions import HTTPError
@@ -21,7 +22,7 @@ def today_nba_games() -> Response:
             "timezone": "America/New_York",
             "season": NBA_SEASON_YEAR,
             "league": "12",
-            "date": datetime.now().strftime("%Y-%m-%d"),
+            "date": datetime.now(pytz.timezone("America/New_York")).strftime("%Y-%m-%d"),
         }
         headers = {
             "X-RapidAPI-Host": "api-basketball.p.rapidapi.com",

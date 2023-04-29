@@ -57,7 +57,7 @@ def today_upcoming_fixtures_per_league(league_name: str, league_id: int, room: s
     try:
         league_upcoming_fixtures = ""
         fixtures = fetch_today_fixtures_by_league(league_id, room, username)
-        if bool(fixtures) is not False:
+        if fixtures:
             for i, fixture in enumerate(fixtures):
                 fixture_start_time = datetime.strptime(fixture["fixture"]["date"], "%Y-%m-%dT%H:%M:%S%z")
                 if i == 0 and len(fixture) > 1:

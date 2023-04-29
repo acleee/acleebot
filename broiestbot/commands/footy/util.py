@@ -4,7 +4,6 @@ from typing import Optional, Tuple, Union
 
 import pytz
 from pytz import BaseTzInfo
-from emoji import emojize
 
 
 from config import (

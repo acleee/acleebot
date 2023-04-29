@@ -47,7 +47,7 @@ def weather_by_location(location: str, room: str, user: str) -> str:
         is_day = resp["current"]["is_day"]
         temperature = resp["current"]["temperature"]
         feels_like = resp["current"]["feelslike"]
-        precipitation = resp["current"]["precip"] * 10
+        precipitation = resp["current"]["precip"] * 100
         cloud_cover = resp["current"]["cloudcover"]
         humidity = resp["current"]["humidity"]
         wind_speed = resp["current"]["wind_speed"]
