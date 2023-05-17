@@ -12,6 +12,7 @@ from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
     change_or_stay_vote,
+    initialize_poll,
     covid_cases_usa,
     epl_golden_boot,
     # extract_url,
@@ -224,8 +225,10 @@ class Bot(RoomManager):
             return tovala_counter(user_name)
         elif cmd_type == "imagecount":
             return gcs_count_images_in_bucket(content)
-        elif cmd_type == "changeorstay":
+        elif cmd_type == "changeorstayvote":
             return change_or_stay_vote(user_name, content)
+        elif cmd_type == "changeorstay":
+            return initialize_poll(user_name)
         # elif cmd_type == "psn":
         # return get_psn_online_friends()
         # elif cmd_type == "philliesgames":

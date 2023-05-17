@@ -17,18 +17,22 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
     :returns: str
     """
     try:
-        votes_to_change = r.smembers("change")
-        votes_to_stay = r.smembers("stay")
-        if not votes_to_change or not votes_to_stay:
+        change_votes = r.smembers("change")
+        stay_votes = r.smembers("stay")
+        if r.sismember("change", user_name) or r.sismember("stay", user_name):
+            return emojize(f":warning: <b>pls @{user_name} u already voted</b> :warning:", lang="en")
+        r.sadd(vote, user_name)
+        if change_votes is None:
             r.sadd("change", "")
-            r.sadd("stay", "")
-            r.sadd(vote, user_name)
             r.expire("change", 60)
+        elif stay_votes is None:
+            r.sadd("stay", "")
             r.expire("stay", 60)
-            # r.enqueue(datetime.now() + timedelta(seconds=60), poll_results)
-        elif r.sismember("change", user_name) or r.sismember("stay", user_name):
-            return f":warning: pls @{user_name} u already voted :warning:"
-        r.lpush(vote, user_name)
+        # if not votes_to_change or not votes_to_stay:
+        #    r.sadd("change", "")
+        #    r.sadd("stay", "")
+        #    r.sadd(vote, user_name)
+        # r.enqueue(datetime.now() + timedelta(seconds=60), poll_results)
         return poll_announcement(user_name, vote)
     except RedisError as e:
         LOGGER.error(f"RedisError while saving 'change or stay' vote from @{user_name}: {e}")
@@ -44,9 +48,32 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
         )
 
 
+def initialize_poll(user_name: str) -> str:
+    """
+    Initialize a poll (if exists) or summarize the status of a preexisting poll.
+
+    :param str user_name: Name of user submitting a vote.
+    :param str vote: User's submitted vote (either 'change' or 'stay').
+
+    :returns: str
+    """
+    change_votes = r.smembers("change")
+    stay_votes = r.smembers("stay")
+    return emojize(
+        f"\n\n"
+        f":television: <b>CHANGE OR STAY!</b>\n"
+        f"@{user_name} just started a poll.\n"
+        f":hourglass_not_done: Voting ends in <i>60 seconds</i>.\n"
+        f"\n"
+        f":shuffle_tracks_button: !CHANGE: <b>{len(change_votes)}</b> votes\n"
+        f":stop_button: !STAY <b>{len(stay_votes)}</b> votes\n\n",
+        language="en",
+    )
+
+
 def poll_announcement(user_name: str, vote: str) -> str:
     """
-    Initialize a live 'change or stay' poll.
+    Summarize the status of a preexisting poll.
 
     :param str user_name: Name of user submitting a vote.
     :param str vote: User's submitted vote (either 'change' or 'stay').
