@@ -12,7 +12,7 @@ from broiestbot.commands import (
     basic_message,
     blaze_time_remaining,
     change_or_stay_vote,
-    initialize_poll,
+    get_live_poll_results,
     covid_cases_usa,
     epl_golden_boot,
     # extract_url,
@@ -228,7 +228,7 @@ class Bot(RoomManager):
         elif cmd_type == "changeorstayvote":
             return change_or_stay_vote(user_name, content)
         elif cmd_type == "changeorstay":
-            return initialize_poll(user_name)
+            return get_live_poll_results(user_name)
         # elif cmd_type == "psn":
         # return get_psn_online_friends()
         # elif cmd_type == "philliesgames":

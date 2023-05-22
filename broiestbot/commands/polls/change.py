@@ -1,6 +1,5 @@
 """Conduct a chat poll whether to 'change or stay'."""
 from typing import Tuple, Optional, List
-from datetime import datetime, timedelta
 from emoji import emojize
 from redis.exceptions import RedisError
 
@@ -21,7 +20,7 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
     :returns: str
     """
     try:
-        time_remaining = get_time_remaining()
+        time_remaining = r.ttl("changeorstay")
         change_votes, stay_votes = live_poll_results()
         if (change_votes and user_name in change_votes) or (stay_votes and user_name in stay_votes):
             return emojize(
@@ -29,12 +28,7 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
                 :hourglass_not_done: Voting ends in <i>{time_remaining} seconds</i>.",
                 language="en",
             )
-        r.hset("changeorstay", vote, user_name)
-        r.expire("changeorstay", 60)
-        if vote == "change" and stay_votes is None:
-            r.hset("changeorstay", "stay", "")
-        if vote == "stay" and change_votes is None:
-            r.hset("changeorstay", "change", "")
+        submit_user_vote(user_name, vote)
         # r.hdel("changeorstay", "stay")
         # r.enqueue(datetime.now() + timedelta(seconds=60), poll_results)
         return poll_announcement(user_name, vote)
@@ -52,40 +46,29 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
         )
 
 
-def initialize_poll(user_name: str) -> str:
+def get_live_poll_results(user_name: str) -> str:
     """
-    Initialize a poll (if exists) or summarize the status of a preexisting poll.
+    Summarize the status of an existing poll (if exists).
 
-    :param str user_name: Name of user submitting a vote.
-    :param str vote: User's submitted vote (either 'change' or 'stay').
+    :param str user_name: Name of user requesting poll results.
 
     :returns: str
     """
-    time_remaining = get_time_remaining()
+    time_remaining = r.ttl("changeorstay")
+    response = f"\n\n:television: <b>CHANGE OR STAY</b>\n \
+                :hourglass_not_done: Voting ends in <i>{time_remaining} seconds</i>.\n\n"
     change_votes, stay_votes = live_poll_results()
-    response = f"\n\n \
-        :television: <b>CHANGE OR STAY</b>\n \
-        @{user_name} just started a poll.\n \
-        :hourglass_not_done: Voting ends in <i>{time_remaining} seconds</i>.\n \
-        --------------\n"
+    if bool(change_votes) is False and bool(stay_votes) is False:
+        return emojize(f":warning: sry @{user_name}, no change-or-stay poll currently live :warning:", language="en")
     if change_votes:
         response += f":shuffle_tracks_button: !CHANGE: <b>{len(change_votes)} votes</b> ({', '.join(change_votes)})\n"
     else:
         response += ":shuffle_tracks_button: !CHANGE: <b>0 votes</b>\n"
     if stay_votes:
-        response += f":stop_button: !STAY <b>{len(stay_votes)} votes</b> ({', '.join(stay_votes)})"
+        response += f":stop_button: !STAY <b>{len(stay_votes)} votes</b> ({', '.join(stay_votes)})\n"
     else:
         response += ":stop_button: !STAY <b>0 votes</b>"
     return emojize(response, language="en")
-
-
-def get_time_remaining() -> int:
-    """
-    Determine time remaining based on TTL of votes.
-
-    :returns: int
-    """
-    return r.ttl("changeorstay")
 
 
 def live_poll_results() -> Tuple[Optional[List[str]], Optional[List[str]]]:
@@ -101,8 +84,33 @@ def live_poll_results() -> Tuple[Optional[List[str]], Optional[List[str]]]:
         change_votes = change_votes.split(",")
     if stay_votes:
         stay_votes = stay_votes.split(",")
-    LOGGER.info(f"poll_results = {poll_results}")
     return change_votes, stay_votes
+
+
+def submit_user_vote(user_name: str, vote: str):
+    """
+    Add user's vote to the poll.
+
+    :param str user_name: Name of user submitting a vote.
+    :param str vote: User's submitted vote (either 'change' or 'stay').
+    """
+    try:
+        poll_results = r.hgetall("changeorstay")
+        if bool(poll_results) is False:
+            r.hset("changeorstay", vote, user_name)
+            r.expire("changeorstay", 60)
+            if vote == "change":
+                r.hset("changeorstay", "stay", "")
+            if vote == "stay":
+                r.hset("changeorstay", "change", "")
+        else:
+            current_votes = r.hget("changeorstay", vote)
+            if current_votes:
+                r.hset("changeorstay", vote, current_votes + user_name)
+            else:
+                r.hset("changeorstay", vote, user_name)
+    except Exception as e:
+        LOGGER.error(f"Unexpected error while saving 'change or stay' vote from @{user_name}: {e}")
 
 
 def poll_announcement(user_name: str, vote: str) -> str:
@@ -114,8 +122,8 @@ def poll_announcement(user_name: str, vote: str) -> str:
 
     :returns: str
     """
-    time_remaining = get_time_remaining()
     change_votes, stay_votes = live_poll_results()
+    time_remaining = r.ttl("changeorstay")
     response = f"\n\n \
         :television: <b>CHANGE OR STAY</b>\n \
         @{user_name} just started a poll and voted to <i>{vote}</i>.\n \
