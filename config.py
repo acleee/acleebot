@@ -329,6 +329,7 @@ PRIMEIRA_LIGA_ID = 94
 CONMEBOL_LIBERTADORES_ID = 13
 CONMEBOL_SUDAMERICANA_ID = 11
 CONMEBOL_RECOUPA_ID = 541
+WOMENS_WORLD_CUP = 8
 
 # Footy Leagues, cups and tournaments
 FOOTY_LEAGUES = {
@@ -344,8 +345,8 @@ FOOTY_LEAGUES = {
     # ":palm_tree: :globe_showing_Americas: CONCACAF NATIONS LEAGUE": CONCACAF_NATIONS_LEAGUE_ID,
     # ":trophy: :globe_showing_Americas: CONCACAF CHAMPIONS": CONCACAF_CHAMPIONS_LEAGUE_ID,
     # ":European_Union: :rainbow: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
-    ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
-    ":United_States: MLS": MLS_LEAGUE_ID,
+    # ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
+    "WOMENS WORLD CUP" ":United_States: MLS": MLS_LEAGUE_ID,
     # ":trophy: :England: FA CUP": FA_CUP_ID,
     # ":trophy: :rainbow: EUROS 2024": EUROS_LEAGUE_ID,
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
