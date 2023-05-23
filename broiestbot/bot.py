@@ -72,6 +72,7 @@ from config import (
     ENGLISH_LEAGUE_FIVE_ID,
     BUND_LEAGUE_ID,
     LIGUE_ONE_ID,
+    PRIMEIRA_LIGA_ID,
 )
 from logger import LOGGER
 
@@ -163,6 +164,8 @@ class Bot(RoomManager):
             return league_table_standings(ENGLISH_LEAGUE_FIVE_ID)
         elif cmd_type == "liguetable":
             return league_table_standings(LIGUE_ONE_ID)
+        elif cmd_type == "primeratable":
+            return league_table_standings(PRIMEIRA_LIGA_ID)
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "allfixtures":
