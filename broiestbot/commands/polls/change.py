@@ -106,7 +106,7 @@ def submit_user_vote(user_name: str, vote: str):
         else:
             current_votes = r.hget("changeorstay", vote)
             if current_votes:
-                r.hset("changeorstay", vote, current_votes + user_name)
+                r.hset("changeorstay", vote, f"{current_votes}," + user_name)
             else:
                 r.hset("changeorstay", vote, user_name)
     except Exception as e:
