@@ -73,8 +73,6 @@ def footy_live_fixtures_per_league(
                     live_fixtures += events
                 if i < len(fixtures):
                     live_fixtures += "\n\n\n"
-                elif i == len(fixtures) - 1:
-                    live_fixtures += "\n\n----------------------\n\n"
             if live_fixtures != "\n\n\n\n":
                 return live_fixtures
         return None

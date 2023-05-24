@@ -1,7 +1,6 @@
 """Chatango bot."""
 import re
 from typing import Optional, Tuple
-from time import sleep
 
 from database import session
 from database.models import Command, Phrase
@@ -370,9 +369,9 @@ class Bot(RoomManager):
 
         :returns: Tuple[str, Optional[str]]
         """
-        user_msg = user_msg.lower().strip()
+        user_msg = user_msg.strip()
         if " " in user_msg:
-            cmd = user_msg.split(" ", 1)[0]
+            cmd = user_msg.split(" ", 1)[0].lower()
             args = user_msg.split(" ", 1)[1]
             return cmd, args
         return user_msg, None

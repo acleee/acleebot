@@ -64,7 +64,6 @@ def send_text_message(message: str, user: str, recipient: str) -> Optional[str]:
         if user.lower() in CHATANGO_SPECIAL_USERS:
             phone_number = TWILIO_PHONE_NUMBERS.get(recipient)
             if phone_number:
-                LOGGER.warning(f"Sending SMS to {recipient} from {user}: {message}")
                 sms.messages.create(
                     body=f"{user.upper()}: {message}",
                     from_=TWILIO_SENDER_PHONE,
