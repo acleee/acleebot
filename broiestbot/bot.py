@@ -94,8 +94,8 @@ class Bot(RoomManager):
         self.set_font_face("Arial")
         self.set_font_size(11)
 
-    @staticmethod
     def create_message(
+        self,
         cmd_type,
         content,
         command: Optional[str] = None,

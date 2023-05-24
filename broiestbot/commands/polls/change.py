@@ -1,9 +1,10 @@
 """Conduct a chat poll whether to 'change or stay'."""
 from typing import Tuple, Optional, List
+
 from emoji import emojize
 from redis.exceptions import RedisError
 
-from clients import r
+from clients import r, scheduler
 from logger import LOGGER
 
 from config import CHATANGO_SPECIAL_USERS
@@ -29,8 +30,7 @@ def change_or_stay_vote(user_name: str, vote: str) -> str:
                 language="en",
             )
         submit_user_vote(user_name, vote)
-        # r.hdel("changeorstay", "stay")
-        # r.enqueue(datetime.now() + timedelta(seconds=60), poll_results)
+        # scheduler.enqueue_at(datetime.now() + timedelta(seconds=60), completed_poll_results)
         return poll_announcement(user_name, vote)
     except RedisError as e:
         LOGGER.error(f"RedisError while saving 'change or stay' vote from @{user_name}: {e}")
@@ -82,8 +82,12 @@ def live_poll_results() -> Tuple[Optional[List[str]], Optional[List[str]]]:
     stay_votes = poll_results.get("stay")
     if change_votes:
         change_votes = change_votes.split(",")
+    else:
+        change_votes = []
     if stay_votes:
         stay_votes = stay_votes.split(",")
+    else:
+        stay_votes = []
     return change_votes, stay_votes
 
 
@@ -140,22 +144,21 @@ def poll_announcement(user_name: str, vote: str) -> str:
     return emojize(response, language="en")
 
 
-def poll_results():
+def completed_poll_results():
     """
     Post `change or stay` poll results.
 
     :returns: str
     """
+    response = f"<b>:television: <b>CHANGE OR STAY RESULTS</b>\n"
     change_votes, stay_votes = live_poll_results()
     if len(change_votes) > len(stay_votes):
-        return emojize(
-            f"<b>CHANGE OR STAY</b>\n" f"Chat has voted to CHANGE!\n",
-            f"{'@ '.join(CHATANGO_SPECIAL_USERS)}",
-            language="en",
-        )
-    if len(change_votes) < len(stay_votes):
-        return emojize(
-            f":television: <b>CHANGE OR STAY</b>\n" f"Chat has voted to <b>STAY!</b> Don't touch that dial!\n",
-            language="en",
-        )
-    return f"<b>CHANGE OR STAY</b>\n" f"Chat is in a stalemate! AAAAAA"
+        response += f"Chat has voted to <b>CHANGE!</b> {'@ '.join(CHATANGO_SPECIAL_USERS)}\n"
+    elif len(change_votes) < len(stay_votes):
+        response += f"Chat has voted to <b>STAY!</b> Don't touch that dial!\n"
+    else:
+        response += f"Chat is in a stalemate! AAAAAA IDK HOW TO HANDOL THIS!!!!!"
+    response += f":shuffle_tracks_button: !CHANGE: <b>0 votes</b>\n \
+                :shuffle_tracks_button: !CHANGE: <b>{len(change_votes)} votes</b> ({', '.join(change_votes)})\n \
+                :stop_button: !STAY <b>{len(stay_votes)} votes</b> ({', '.join(stay_votes)})"
+    return emojize(response, language="en")

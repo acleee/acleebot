@@ -259,14 +259,14 @@ files = [
 
 [[package]]
 name = "botocore"
-version = "1.29.139"
+version = "1.29.140"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.139-py3-none-any.whl", hash = "sha256:b164af929eb2f1507833718de9eb8811e3adc6943b464c1869e95ac87f3bab88"},
-    {file = "botocore-1.29.139.tar.gz", hash = "sha256:acc62710bdf11e47f4f26fb290a9082ff00377d7e93a16e1f080f9c789898114"},
+    {file = "botocore-1.29.140-py3-none-any.whl", hash = "sha256:82c610de0cdf4e13faeb9750c9b950da4201d2c98e1d4f18b0eface7a7b452cc"},
+    {file = "botocore-1.29.140.tar.gz", hash = "sha256:a52ced1a0311178849e332c2c85c5b702adb30b68c5de66a5fd59488d19de65a"},
 ]
 
 [package.dependencies]
@@ -293,14 +293,14 @@ beautifulsoup4 = "*"
 
 [[package]]
 name = "bytecode"
-version = "0.14.1"
+version = "0.14.2"
 description = "Python module to generate and modify bytecode"
 category = "main"
 optional = false
 python-versions = ">=3.8"
 files = [
-    {file = "bytecode-0.14.1-py3-none-any.whl", hash = "sha256:00a8f87d9e2385d445c9ee630a1860b75b4a93d646c6dfb15e769bec827609cc"},
-    {file = "bytecode-0.14.1.tar.gz", hash = "sha256:82e99af6b0f9e71ba9c5daba11f370fc93adf97d423e93a22659dfc7895fb6a2"},
+    {file = "bytecode-0.14.2-py3-none-any.whl", hash = "sha256:e368a2b9bbd7c986133c951250db94fb32f774cfc49752a9db9073bcf9899762"},
+    {file = "bytecode-0.14.2.tar.gz", hash = "sha256:386378d9025d68ddb144870ae74330a492717b11b8c9164c4034e88add808f0c"},
 ]
 
 [package.dependencies]
@@ -522,6 +522,17 @@ files = [
 ]
 
 [[package]]
+name = "crontab"
+version = "1.0.1"
+description = "Parse and use crontab schedules in Python"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "crontab-1.0.1.tar.gz", hash = "sha256:89477e3f93c81365e738d5ee2659509e6373bb2846de13922663e79aa74c6b91"},
+]
+
+[[package]]
 name = "datadog"
 version = "0.45.0"
 description = "The Datadog Python library"
@@ -684,13 +695,13 @@ graph = ["objgraph (>=1.7.2)"]
 
 [[package]]
 name = "emoji"
-version = "2.2.0"
+version = "2.4.0"
 description = "Emoji for Python"
 category = "main"
 optional = false
 python-versions = ">=2.7, !=3.0.*, !=3.1.*, !=3.2.*, !=3.3.*"
 files = [
-    {file = "emoji-2.2.0.tar.gz", hash = "sha256:a2986c21e4aba6b9870df40ef487a17be863cb7778dcf1c01e25917b7cd210bb"},
+    {file = "emoji-2.4.0.tar.gz", hash = "sha256:72b918412f7059f57b0f0b0c27f3458802c4c97a2f039f4732610c2582b6c9e4"},
 ]
 
 [package.extras]
@@ -742,6 +753,21 @@ files = [
 mccabe = ">=0.7.0,<0.8.0"
 pycodestyle = ">=2.9.0,<2.10.0"
 pyflakes = ">=2.5.0,<2.6.0"
+
+[[package]]
+name = "freezegun"
+version = "1.2.2"
+description = "Let your Python tests travel through time"
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "freezegun-1.2.2-py3-none-any.whl", hash = "sha256:ea1b963b993cb9ea195adbd893a48d573fda951b0da64f60883d7e988b606c9f"},
+    {file = "freezegun-1.2.2.tar.gz", hash = "sha256:cd22d1ba06941384410cd967d8a99d5ae2442f57dfafeff2fda5de8dc5c05446"},
+]
+
+[package.dependencies]
+python-dateutil = ">=2.7"
 
 [[package]]
 name = "frozenlist"
@@ -852,14 +878,14 @@ grpcio-gcp = ["grpcio-gcp (>=0.2.2,<1.0dev)"]
 
 [[package]]
 name = "google-api-python-client"
-version = "2.86.0"
+version = "2.87.0"
 description = "Google API Client Library for Python"
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "google-api-python-client-2.86.0.tar.gz", hash = "sha256:3ca4e93821f4e9ac29b91ab0d9df168b42c8ad0fb8bff65b8c2ccb2d462b0464"},
-    {file = "google_api_python_client-2.86.0-py2.py3-none-any.whl", hash = "sha256:0f320190ab9d5bd2fdb0cb894e8e53bb5e17d4888ee8dc4d26ba65ce378409e2"},
+    {file = "google-api-python-client-2.87.0.tar.gz", hash = "sha256:bbea5869877c822d12d318943833d988497b3a18b9ca2386967118074db676f3"},
+    {file = "google_api_python_client-2.87.0-py2.py3-none-any.whl", hash = "sha256:29b52232b159be72a79890b6d9f703cf6d8ebbec0ef6371c5670c1abeca5a9f9"},
 ]
 
 [package.dependencies]
@@ -2360,6 +2386,40 @@ typing-extensions = {version = ">=4.0.0,<5.0", markers = "python_version < \"3.9
 jupyter = ["ipywidgets (>=7.5.1,<9)"]
 
 [[package]]
+name = "rq"
+version = "1.14.1"
+description = "RQ is a simple, lightweight, library for creating background jobs, and processing them."
+category = "main"
+optional = false
+python-versions = ">=3.6"
+files = [
+    {file = "rq-1.14.1-py2.py3-none-any.whl", hash = "sha256:37e003db1da205e08db6cc4653b7c6ccfd9292000954240308abfce2ebde43ba"},
+    {file = "rq-1.14.1.tar.gz", hash = "sha256:5fb86038922ddd76eb2d9aa0adeec6dcf64f159dbbe730b26358b1417120dd44"},
+]
+
+[package.dependencies]
+click = ">=5.0.0"
+redis = ">=3.5.0"
+
+[[package]]
+name = "rq-scheduler"
+version = "0.13.1"
+description = "Provides job scheduling capabilities to RQ (Redis Queue)"
+category = "main"
+optional = false
+python-versions = "*"
+files = [
+    {file = "rq-scheduler-0.13.1.tar.gz", hash = "sha256:89d6a18f215536362b22c0548db7dbb8678bc520c18dc18a82fd0bb2b91695ce"},
+    {file = "rq_scheduler-0.13.1-py2.py3-none-any.whl", hash = "sha256:c2b19c3aedfc7de4d405183c98aa327506e423bf4cdc556af55aaab9bbe5d1a1"},
+]
+
+[package.dependencies]
+crontab = ">=0.23.0"
+freezegun = "*"
+python-dateutil = "*"
+rq = ">=0.13"
+
+[[package]]
 name = "rsa"
 version = "4.9"
 description = "Pure-Python RSA implementation"
@@ -2919,4 +2979,4 @@ testing = ["big-O", "flake8 (<5)", "jaraco.functools", "jaraco.itertools", "more
 [metadata]
 lock-version = "2.0"
 python-versions = "^3.8"
-content-hash = "3c0beef43c1454e9a37ff4cbdca64817ab3ee5d7874d56dc40d93bba4f981c26"
+content-hash = "0ba11f4008a64f5123d179210edd28fabf6ef91165f444929f51cb6dbb464d14"
