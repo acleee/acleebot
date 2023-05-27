@@ -1,6 +1,6 @@
 """Define data models for chat commands, phrases, user logs, etc."""
 from database import engine
-from sqlalchemy import Boolean, Column, DateTime, Float, Integer, String, Text
+from sqlalchemy import Column, DateTime, Float, Integer, String, Text, BigInteger
 from sqlalchemy.orm import declarative_base
 from sqlalchemy.sql import func
 
@@ -12,7 +12,7 @@ class Chat(Base):
 
     __tablename__ = "chat"
 
-    id = Column(Integer, primary_key=True, index=True)
+    id = Column(BigInteger, primary_key=True, index=True)
     username = Column(String(255), nullable=False)
     room = Column(String(255), nullable=False, index=True)
     message = Column(Text, nullable=False)
@@ -57,9 +57,9 @@ class ChatangoUser(Base):
     __tablename__ = "user"
 
     id = Column(Integer, primary_key=True, index=True)
-    username = Column(String(255), index=True)
+    username = Column(String(255), index=True, nullable=False)
     chatango_room = Column(String(255))
-    ip = Column(String(255), index=True)
+    ip = Column(String(255), index=True, unique=False)
     city = Column(String(255))
     region = Column(String(255))
     country_name = Column(String(255))
@@ -67,11 +67,11 @@ class ChatangoUser(Base):
     longitude = Column(Float)
     postal = Column(String(255))
     emoji_flag = Column(Text)
-    status = Column(Integer)
     time_zone_name = Column(String(255))
     time_zone_abbr = Column(String(255))
     time_zone_offset = Column(Integer)
     time_zone_is_dst = Column(Integer)
+    time_zone_current_time = Column(DateTime)
     carrier_name = Column(String(255))
     carrier_mnc = Column(Text)
     carrier_mcc = Column(Text)
@@ -80,12 +80,6 @@ class ChatangoUser(Base):
     asn_domain = Column(String(255))
     asn_route = Column(String(255))
     asn_type = Column(String(255))
-    time_zone_current_time = Column(DateTime)
-    is_proxy = Column(Boolean)
-    is_anonymous = Column(Boolean)
-    is_tor = Column(Boolean)
-    is_known_attacker = Column(Boolean)
-    is_known_abuser = Column(Boolean)
     created_at = Column(DateTime, server_default=func.now())
     updated_at = Column(DateTime, onupdate=func.now())
 

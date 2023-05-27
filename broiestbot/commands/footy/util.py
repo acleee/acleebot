@@ -23,6 +23,7 @@ from config import (
     EUROS_QUALIFIERS_ID,
     CONCACAF_NATIONS_LEAGUE_ID,
     U20_WORLD_CUP_ID,
+    WOMENS_WORLD_CUP_ID,
 )
 
 
@@ -160,6 +161,7 @@ def get_season_year(league_id: int) -> Optional[int]:
         EUROS_LEAGUE_ID,
         EUROS_QUALIFIERS_ID,
         U20_WORLD_CUP_ID,
+        WOMENS_WORLD_CUP_ID,
     ):
         return now.year
     # Exception for leagues that have a nonsensical `season` year.
