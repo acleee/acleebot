@@ -57,6 +57,7 @@ from broiestbot.commands import (
     league_table_standings,
     footy_live_fixture_stats,
     generate_twitter_preview,
+    mls_standings,
 )
 from chatango.ch import Message, Room, RoomManager, User
 from config import (
@@ -165,6 +166,8 @@ class Bot(RoomManager):
             return league_table_standings(LIGUE_ONE_ID)
         elif cmd_type == "primeratable":
             return league_table_standings(PRIMEIRA_LIGA_ID)
+        elif cmd_type == "mlstable":
+            return mls_standings()
         elif cmd_type == "fixtures":
             return footy_upcoming_fixtures(room.room_name.lower(), user_name)
         elif cmd_type == "allfixtures":

@@ -350,7 +350,7 @@ FOOTY_LEAGUES = {
     # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
     ":Spain: LA LIGA": LIGA_LEAGUE_ID,
     # ":Germany: BUND": BUND_LEAGUE_ID,
-    # ":Portugal: PRIMEIRA LIGA": PRIMEIRA_LIGA_ID,
+    ":Portugal: PRIMEIRA LIGA": PRIMEIRA_LIGA_ID,
     # ":Italy: SERIE A": SERIE_A_LEAGUE_ID,
     # ":France: LIGUE 1": LIGUE_ONE_ID,
     # ":trophy: :monkey: AFCON:": AFCON_CUP_ID,

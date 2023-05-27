@@ -19,6 +19,7 @@ from .footy import (
     get_footy_odds,
     today_upcoming_fixtures,
     league_table_standings,
+    mls_standings,
     footy_live_fixture_stats,
 )
 from .images import (
