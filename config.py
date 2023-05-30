@@ -367,7 +367,7 @@ FOOTY_LEAGUES = {
     # ":sports_medal: OLYMPICS MEN": OLYMPICS_MEN_LEAGUE_ID,
     # ":sports_medal: OLYMPICS WOMEN": OLYMPICS_WOMEN_LEAGUE_ID,
     # ":trophy: WORLD CUP": WORLD_CUP_ID,
-    ":United_States: WOMENS WORLD CUP": WOMENS_WORLD_CUP_ID,
+    ":trophy: :female_sign: WOMENS WORLD CUP": WOMENS_WORLD_CUP_ID,
     ":slightly_smiling_face: FRIENDLIES": FRIENDLIES_LEAGUE_ID,
     # ":slightly_smiling_face: :globe_showing_Europe-Africa: INTERNATIONAL FRIENDLIES": INT_FRIENDLIES_LEAGUE_ID,
     # ":globe_showing_Americas: COPA AMERICA": COPA_AMERICA_LEAGUE_ID,
