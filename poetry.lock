@@ -259,14 +259,14 @@ files = [
 
 [[package]]
 name = "botocore"
-version = "1.29.142"
+version = "1.29.143"
 description = "Low-level, data-driven core of boto 3."
 category = "main"
 optional = false
 python-versions = ">= 3.7"
 files = [
-    {file = "botocore-1.29.142-py3-none-any.whl", hash = "sha256:0677848bb8ef94d69c5d2f5c613dbab5b6710a8b7649f3fafca5172c464728b8"},
-    {file = "botocore-1.29.142.tar.gz", hash = "sha256:512d2f48fc1471f169bc210eede662f8da66be3cebc1515dfb5411a18b2aeabf"},
+    {file = "botocore-1.29.143-py3-none-any.whl", hash = "sha256:fcb424c750a78a9f86b5ee8319bfa20de8528a80aadcdd171910bcb8d45c3055"},
+    {file = "botocore-1.29.143.tar.gz", hash = "sha256:e5b8dd2fa750f0476667753dc018c2b14a542fec7e20edd3a7613b6d2df2c32a"},
 ]
 
 [package.dependencies]
@@ -320,19 +320,29 @@ files = [
 
 [[package]]
 name = "cattrs"
-version = "22.2.0"
+version = "23.1.1"
 description = "Composable complex class support for attrs and dataclasses."
 category = "main"
 optional = false
 python-versions = ">=3.7"
 files = [
-    {file = "cattrs-22.2.0-py3-none-any.whl", hash = "sha256:bc12b1f0d000b9f9bee83335887d532a1d3e99a833d1bf0882151c97d3e68c21"},
-    {file = "cattrs-22.2.0.tar.gz", hash = "sha256:f0eed5642399423cf656e7b66ce92cdc5b963ecafd041d1b24d136fdde7acf6d"},
+    {file = "cattrs-23.1.1-py3-none-any.whl", hash = "sha256:6558a4ed415bffb202993cdc8ce0ba5b919c6eab19b996251a61a3329f900d62"},
+    {file = "cattrs-23.1.1.tar.gz", hash = "sha256:7d7372fe0156f2868c6b8852e069a0cfa2b493b77850fc7353f45057ac5f5d2d"},
 ]
 
 [package.dependencies]
 attrs = ">=20"
 exceptiongroup = {version = "*", markers = "python_version < \"3.11\""}
+typing_extensions = {version = "*", markers = "python_version < \"3.11\""}
+
+[package.extras]
+bson = ["pymongo (>=4.2.0,<5.0.0)"]
+cbor2 = ["cbor2 (>=5.4.6,<6.0.0)"]
+msgpack = ["msgpack (>=1.0.2,<2.0.0)"]
+orjson = ["orjson (>=3.5.2,<4.0.0)"]
+pyyaml = ["PyYAML (>=6.0,<7.0)"]
+tomlkit = ["tomlkit (>=0.11.4,<0.12.0)"]
+ujson = ["ujson (>=5.4.0,<6.0.0)"]
 
 [[package]]
 name = "certifi"

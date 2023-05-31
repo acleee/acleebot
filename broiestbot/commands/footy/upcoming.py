@@ -8,7 +8,7 @@ from requests.exceptions import HTTPError
 
 from config import (
     CHATANGO_OBI_ROOM,
-    EPL_LEAGUE_ID,
+    ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     FOOTY_FIXTURES_ENDPOINT,
     FOOTY_HTTP_HEADERS,
     FOOTY_LEAGUES,
@@ -164,7 +164,7 @@ def add_upcoming_fixture(fixture: dict, date: datetime, room: str, username: str
 
 def fetch_fox_fixtures(room: str, username: str) -> str:
     """
-    Fetch next 5 fixtures played by Foxes.
+    Fetch next 5 fixtures played by Lesta Foxes (now in EFL).
 
     :param str room: Chatango room which triggered the command.
     :param str username: Chatango user who triggered the command.
@@ -173,7 +173,7 @@ def fetch_fox_fixtures(room: str, username: str) -> str:
     """
     try:
         upcoming_foxtures = "\n\n\n\n<b>:fox: FOXTURES</b>\n"
-        season = get_season_year(EPL_LEAGUE_ID)
+        season = get_season_year(ENGLISH_CHAMPIONSHIP_LEAGUE_ID)
         params = {"season": season, "team": FOXES_TEAM_ID, "next": "7"}
         params.update(get_preferred_timezone(room, username))
         resp = requests.get(

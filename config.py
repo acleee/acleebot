@@ -102,13 +102,13 @@ REDIS_DB = getenv("REDIS_DB")
 DDOG_APP_KEY = getenv("DDOG_APP_KEY")
 DDOG_API_KEY = getenv("DDOG_API_KEY")
 
-# User Logging
+# Chat Logging
 # -------------------------------------------------
-PERSIST_USER_DATA = True
-PERSIST_CHAT_DATA = True
+PERSIST_USER_DATA = getenv("PERSIST_USER_DATA")
+PERSIST_CHAT_DATA = getenv("PERSIST_CHAT_DATA")
 
 # APIs
-HTTP_REQUEST_TIMEOUT = 20
+HTTP_REQUEST_TIMEOUT = int(getenv("HTTP_REQUEST_TIMEOUT"))
 
 # Google Cloud
 # -------------------------------------------------
@@ -387,20 +387,20 @@ FOOTY_LIVE_SCORED_LEAGUES = {
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
-    ":trophy: :baby_light_skin_tone: U20 WORLD CUP": U20_WORLD_CUP_ID,
+    ":trophy: :England: FA CUP": FA_CUP_ID,
+    # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
     # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     # ":England: EFL LEAGUE 3": ENGLISH_LEAGUE_THREE_ID,
     # ":England: EFL LEAGUE 4": ENGLISH_LEAGUE_FOUR_ID,
-    ":United_States: MLS": MLS_LEAGUE_ID,
-    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
-    ":trophy: :England: FA CUP": FA_CUP_ID,
-    # ":cow_face: CARABOU CUP": CARABOU_CUP_ID,
-    # ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
-    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
-    # ":trophy: :European_Union: :rainbow: EUROS 2024": EUROS_LEAGUE_ID,
     # ":Germany: BUND": BUND_LEAGUE_ID,
     # ":Italy: Serie A": SERIE_A_LEAGUE_ID,
+    ":United_States: MLS": MLS_LEAGUE_ID,
+    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
+    # ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
+    # ":trophy: :European_Union: :rainbow: EUROS 2024": EUROS_LEAGUE_ID,
+    ":trophy: :baby_light_skin_tone: U20 WORLD CUP": U20_WORLD_CUP_ID,
     ":slightly_smiling_face: :globe_showing_Europe-Africa: INTERNATIONAL FRIENDLIES": INT_FRIENDLIES_LEAGUE_ID,
     # ":rainbow: :European_Union: EUROS 2024 QUALIFIERS": EUROS_QUALIFIERS_ID,
     ":monkey: :globe_showing_Europe-Africa: AFCON QUALIFIERS": AFCON_QUALIFIERS_ID,
@@ -417,15 +417,16 @@ FOOTY_LEAGUES_LINEUPS = {
     ":blue_circle: UCL": UCL_LEAGUE_ID,
     ":orange_circle: UEFA EUROPA": UEFA_EUROPA_ID,
     ":green_circle: UEFA CONFERENCE": UEFA_CONFERENCE_LEAGUE,
-    # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
-    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     # ":trophy: :England: FA CUP": FA_CUP_ID,
-    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
-    # ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    # ":England: EFL CHAMPIONSHIP": ENGLISH_CHAMPIONSHIP_LEAGUE_ID,
     ":Spain: LIGA": LIGA_LEAGUE_ID,
     ":United_States: MLS": MLS_LEAGUE_ID,
     # ":Italy: Serie A": SERIE_A_LEAGUE_ID,
     # ":Germany: BUND": BUND_LEAGUE_ID,
+    # ":trophy: :Spain: COPA DEL REY": COPA_DEL_REY,
+    # ":Spain: EL CLÁSICO": SPAIN_EL_CLASICO,
+    # ":trophy: :European_Union: :rainbow: EUROS 2024": EUROS_LEAGUE_ID,
+    # ":trophy: UEFA NATIONS LEAGUE": UEFA_NATIONS_LEAGUE,
     ":trophy: :baby_light_skin_tone: U20 WORLD CUP": U20_WORLD_CUP_ID,
     ":globe_showing_Americas: CONCACAF LEAGUE": CONCACAF_LEAGUE_ID,
     ":globe_showing_Americas: CONCACAF GOLD CUP": CONCACAF_GOLD_CUP_ID,

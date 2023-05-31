@@ -13,7 +13,7 @@ from config import (
 )
 from logger import LOGGER
 
-from .util import get_season_year
+from .util import get_season_year, abbreviate_team_name
 
 
 def league_table_standings(league_id: int) -> Optional[str]:
@@ -105,22 +105,24 @@ def mls_conference_standings(conference_standings: dict):
     """
     try:
         conference_standings_table = ""
-        conference_standings_table += f"<b>{conference_standings[0]['group']}</b>\n"
-        for standing in conference_standings:
-            rank = standing["rank"]
-            team = standing["team"]["name"]
-            points = standing["points"]
-            wins = standing["all"]["win"]
-            draws = standing["all"]["draw"]
-            losses = standing["all"]["lose"]
-            goalDiff = standing["goalsDiff"]
+        conference_standings_table += f"<b>{conference_standings[0]['group'].upper()}</b>\n"
+        for team_standing in conference_standings:
+            rank = team_standing["rank"]
+            name = abbreviate_team_name(team_standing["team"]["name"])
+            points = team_standing["points"]
+            wins = team_standing["all"]["win"]
+            draws = team_standing["all"]["draw"]
+            losses = team_standing["all"]["lose"]
+            goalDiff = team_standing["goalsDiff"]
             form = (
-                standing["form"]
+                team_standing["form"]
                 .replace("W", ":green_circle:")
                 .replace("L", ":red_circle:")
                 .replace("D", ":white_circle:")
             )
-            conference_standings_table += f"{points} {team} <i>({wins}W {draws}D {losses}L, {goalDiff}GD)</i> {form}\n"
+            conference_standings_table += (
+                f"<b>{rank}. {name}</b> {points}pts <i>({wins}W {draws}D {losses}L, {goalDiff}GD)</i> {form}\n"
+            )
         if conference_standings_table != "":
             return f"{conference_standings_table}\n"
     except KeyError as e:
