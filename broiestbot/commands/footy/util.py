@@ -82,8 +82,6 @@ def abbreviate_team_name(team_name: str) -> str:
     """
     return (
         team_name.replace("New England", "NE")
-        .replace("New York City", "NYC")
-        .replace("New York", "NY")
         .replace("Paris Saint Germain", "PSG")
         .replace("Manchester United", "Manu")
         .replace("Manchester City", "Man City")
