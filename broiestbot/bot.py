@@ -326,9 +326,9 @@ class Bot(RoomManager):
         if re.match(r"^!!.+$", chat_message):
             return self._giphy_fallback(chat_message[2::], room)
         if re.match(r"^!ein+$", chat_message):
-            return self._get_response("!ein", room, user_name)
+            return self._respond_if_bot_command("!ein", room, user_name)
         if re.match(r"^!\S+", chat_message):
-            return self._get_response(chat_message, room, user_name)
+            return self._respond_if_bot_command(chat_message, room, user_name)
 
     def _process_phrase(
         self, chat_message: str, room: Room, user_name: str, message: Message, bot_username: str
@@ -346,14 +346,8 @@ class Bot(RoomManager):
         """
         if f"@{bot_username}" in chat_message and "*waves*" in chat_message:
             self._wave_back(room, user_name, bot_username)
-        elif (
-            "petition" in chat_message and "competition" not in chat_message and user_name.upper() not in CHATANGO_BOTS
-        ):
-            room.message(
-                "SIGN THE PETITION: \
-                https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification \
-                https://i.imgur.com/nYQy0GR.jpg",
-            )
+        elif "petition" in chat_message and "competition" not in chat_message:
+            self._petition(room, user_name)
         elif chat_message.endswith("only on aclee"):
             room.message("™")
         elif chat_message.lower() == "tm":
@@ -379,7 +373,7 @@ class Bot(RoomManager):
             return cmd, args
         return user_msg, None
 
-    def _get_response(self, chat_message: str, room: Room, user_name: str):
+    def _respond_if_bot_command(self, chat_message: str, room: Room, user_name: str):
         """
         Fetch response from database to send to chat.
 
@@ -446,6 +440,26 @@ class Bot(RoomManager):
         """
         message.delete()
         room.message("™")
+
+    @staticmethod
+    def _petition(room: Room, user_name: str) -> None:
+        """
+        Urge chat to sign the petition.
+
+        :param Room room: Current Chatango room object.
+        :param Message message: User submitted `tm` to be replaced.
+
+        :returns: None
+        """
+        if user_name.upper() not in CHATANGO_BOTS:
+            room.message(
+                emojize(
+                    "<b>SIGN THE PETITION:</b>\n \
+                    https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification\n \
+                    https://i.imgur.com/nYQy0GR.jpg",
+                    language="en",
+                )
+            )
 
     '''@staticmethod
     def create_link_preview(user_name: str, chat_message: str, room: Room, message: Message) -> None:

@@ -148,7 +148,7 @@ def get_season_year(league_id: int) -> Optional[int]:
 
     :returns:  Optional[int]
     """
-    now = datetime.now()
+    current_year = datetime.now().year
     # Leagues which have a season year that is the same as the current year.
     if league_id in (
         MLS_LEAGUE_ID,
@@ -166,13 +166,13 @@ def get_season_year(league_id: int) -> Optional[int]:
         U20_WORLD_CUP_ID,
         WOMENS_WORLD_CUP_ID,
     ):
-        return now.year
+        return current_year
     # Exception for leagues that have a nonsensical `season` year.
     elif league_id == CONCACAF_NATIONS_LEAGUE_ID:
-        return now.year - 1
+        return current_year - 1
     # Domestic leagues that begin in the summer and end in the spring.
-    if now.month >= 8:
-        return now.year
-    elif now.month <= 5:
-        return now.year - 1
+    if current_year >= 8:
+        return current_year
+    elif current_year <= 7:
+        return current_year - 1
     return None
