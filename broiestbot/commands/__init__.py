@@ -47,6 +47,8 @@ from .polls import change_or_stay_vote, tovala_counter, get_live_poll_results, c
 from .previews import extract_url
 from .tuner import get_current_show, tuner
 
+from .tuner import tuner
+
 # from .video import search_youtube_for_video
 from .video import get_all_live_twitch_streams
 from .weather import weather_by_location

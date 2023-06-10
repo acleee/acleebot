@@ -237,7 +237,7 @@ class Bot(RoomManager):
         # elif cmd_type == "psn":
         # return get_psn_online_friends()
         # elif cmd_type == "philliesgames":
-        #    return today_phillies_games()
+        #    return today_phillies_games(
         # elif cmd_type == "youtube" and args:
         # return search_youtube_for_video(args)
         LOGGER.warning(f"No response for command `{command}` {args}")
@@ -454,7 +454,7 @@ class Bot(RoomManager):
         if user_name.upper() not in CHATANGO_BOTS:
             room.message(
                 emojize(
-                    "<b>SIGN THE PETITION:</b>\n \
+                    ":prohibited: :penguin: <b>SIGN THE PETITION:</b>\n \
                     https://www.change.org/p/nhl-exclude-penguins-from-bird-team-classification\n \
                     https://i.imgur.com/nYQy0GR.jpg",
                     language="en",
